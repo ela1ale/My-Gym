@@ -1,0 +1,19 @@
+profit-app/
+├── package.json
+├── server.js                    ← بک‌اند کامل
+├── profit.db                    (خودکار ساخته می‌شود)
+└── public/
+    ├── index.html
+    └── assets/
+        ├── data-config.js       (بدون تغییر)
+        ├── data-animations.js   (بدون تغییر)
+        ├── data-exercises.js    (بدون تغییر)
+        ├── data-foods.js        (بدون تغییر)
+        ├── data-supplements.js  (بدون تغییر)
+        ├── api.js               ← NEW: کلاینت API
+        ├── app-auth.js          ← NEW: ورود + نقش‌ها + سینک
+        ├── app-core.js          (۱ خط تغییر کوچک)
+        ├── app-workout.js       (بدون تغییر)
+        ├── app-nutrition.js     (بدون تغییر)
+        ├── app-coach.js         ← NEW: پنل مربی
+        └── app-admin.js         ← NEW: پنل ادمین
