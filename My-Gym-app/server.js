@@ -525,6 +525,17 @@ app.use((err, req, res, next) => {
 (async () => {
   try {
     await initSchema();
+    
+    // WIPE_DB flag — برای ریست کامل دیتابیس
+    if (process.env.WIPE_DB === 'true') {
+      console.log('⚠️  WIPE_DB=true — wiping database');
+      await query('DELETE FROM user_data');
+      await query('DELETE FROM coach_notes');
+      await query('DELETE FROM audit_log');
+      await query("DELETE FROM users WHERE role != 'admin'");
+      console.log('✅ Database wiped (admin preserved)');
+    }
+    
     await bootstrapAdmin();
     app.listen(PORT, () => {
       console.log('\n🚀 ProFit running on port ' + PORT);
