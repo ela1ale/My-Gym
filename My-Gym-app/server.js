@@ -1,6 +1,5 @@
 /* ============================================================
    ProFit Server — Express + PostgreSQL + JWT
-   نقش‌ها: admin / coach / student
    ============================================================ */
 const express  = require('express');
 const path     = require('path');
@@ -17,109 +16,65 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* ---------- PostgreSQL Connection ---------- */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
-
 const query = (text, params) => pool.query(text, params);
 
-/* ---------- Schema Setup ---------- */
+/* ---------- Schema ---------- */
 async function initSchema() {
-  await query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id            TEXT PRIMARY KEY,
-      username      TEXT UNIQUE NOT NULL,
-      display_name  TEXT NOT NULL,
-      password_hash TEXT NOT NULL,
-      role          TEXT NOT NULL DEFAULT 'student',
-      coach_id      TEXT,
-      emoji         TEXT DEFAULT '💪',
-      color         TEXT DEFAULT '#3b82f6',
-      active        INTEGER DEFAULT 1,
-      created_at    BIGINT NOT NULL,
-      updated_at    BIGINT NOT NULL
-    );
-  `);
+  await query(`CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY, username TEXT UNIQUE NOT NULL, display_name TEXT NOT NULL,
+    password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'student',
+    coach_id TEXT, emoji TEXT DEFAULT '💪', color TEXT DEFAULT '#3b82f6',
+    active INTEGER DEFAULT 1, created_at BIGINT NOT NULL, updated_at BIGINT NOT NULL
+  );`);
   await query(`CREATE INDEX IF NOT EXISTS idx_users_coach ON users(coach_id);`);
-  await query(`CREATE INDEX IF NOT EXISTS idx_users_role  ON users(role);`);
-
-  await query(`
-    CREATE TABLE IF NOT EXISTS user_data (
-      user_id    TEXT NOT NULL,
-      key        TEXT NOT NULL,
-      value      TEXT,
-      updated_at BIGINT NOT NULL,
-      PRIMARY KEY (user_id, key),
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `);
-
-  await query(`
-    CREATE TABLE IF NOT EXISTS coach_notes (
-      id         SERIAL PRIMARY KEY,
-      coach_id   TEXT NOT NULL,
-      student_id TEXT NOT NULL,
-      content    TEXT NOT NULL,
-      type       TEXT DEFAULT 'general',
-      created_at BIGINT NOT NULL,
-      FOREIGN KEY (coach_id)   REFERENCES users(id) ON DELETE CASCADE,
-      FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `);
+  await query(`CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);`);
+  await query(`CREATE TABLE IF NOT EXISTS user_data (
+    user_id TEXT NOT NULL, key TEXT NOT NULL, value TEXT, updated_at BIGINT NOT NULL,
+    PRIMARY KEY (user_id, key),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );`);
+  await query(`CREATE TABLE IF NOT EXISTS coach_notes (
+    id SERIAL PRIMARY KEY, coach_id TEXT NOT NULL, student_id TEXT NOT NULL,
+    content TEXT NOT NULL, type TEXT DEFAULT 'general', created_at BIGINT NOT NULL,
+    FOREIGN KEY (coach_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
+  );`);
   await query(`CREATE INDEX IF NOT EXISTS idx_notes_student ON coach_notes(student_id);`);
-
-  await query(`
-    CREATE TABLE IF NOT EXISTS audit_log (
-      id         SERIAL PRIMARY KEY,
-      actor_id   TEXT,
-      action     TEXT NOT NULL,
-      target_id  TEXT,
-      details    TEXT,
-      created_at BIGINT NOT NULL
-    );
-  `);
-  console.log('✅ جداول دیتابیس آماده هستند');
+  await query(`CREATE TABLE IF NOT EXISTS audit_log (
+    id SERIAL PRIMARY KEY, actor_id TEXT, action TEXT NOT NULL,
+    target_id TEXT, details TEXT, created_at BIGINT NOT NULL
+  );`);
+  console.log('✅ جداول آماده هستند');
 }
 
 async function bootstrapAdmin() {
-  const result = await query("SELECT id FROM users WHERE role='admin' LIMIT 1");
-  if (result.rows.length > 0) return;
-
+  const r = await query("SELECT id FROM users WHERE role='admin' LIMIT 1");
+  if (r.rows.length > 0) return;
   const id = 'u_admin_' + Date.now();
   const now = Date.now();
   const hash = bcrypt.hashSync(ADMIN_PASS, 10);
-  await query(
-    `INSERT INTO users
-     (id, username, display_name, password_hash, role, emoji, color, active, created_at, updated_at)
-     VALUES ($1, $2, $3, $4, 'admin', '👑', '#f59e0b', 1, $5, $6)`,
-    [id, ADMIN_USER, 'مدیر سیستم', hash, now, now]
-  );
-  console.log('╔════════════════════════════════════════════╗');
-  console.log('║  ✅ ادمین پیش‌فرض ساخته شد                  ║');
-  console.log(`║  Username: ${ADMIN_USER.padEnd(30)}║`);
-  console.log(`║  Password: ${ADMIN_PASS.padEnd(30)}║`);
-  console.log('║  ⚠️  رمز را بعد از اولین ورود تغییر دهید    ║');
-  console.log('╚════════════════════════════════════════════╝');
+  await query(`INSERT INTO users (id, username, display_name, password_hash, role, emoji, color, active, created_at, updated_at)
+    VALUES ($1, $2, $3, $4, 'admin', '👑', '#f59e0b', 1, $5, $6)`,
+    [id, ADMIN_USER, 'مدیر سیستم', hash, now, now]);
+  console.log('╔═══════════════════════════════════╗');
+  console.log('║  ✅ ادمین پیش‌فرض ساخته شد         ║');
+  console.log('║  Username: ' + ADMIN_USER.padEnd(23) + '║');
+  console.log('║  Password: ' + ADMIN_PASS.padEnd(23) + '║');
+  console.log('╚═══════════════════════════════════╝');
 }
 
-/* ---------- Helpers ---------- */
 async function log(actorId, action, targetId, details) {
-  try {
-    await query(
-      'INSERT INTO audit_log (actor_id, action, target_id, details, created_at) VALUES ($1,$2,$3,$4,$5)',
-      [actorId || null, action, targetId || null, JSON.stringify(details || {}), Date.now()]
-    );
-  } catch(e) { console.error('log error:', e.message); }
+  try { await query('INSERT INTO audit_log (actor_id, action, target_id, details, created_at) VALUES ($1,$2,$3,$4,$5)',
+    [actorId || null, action, targetId || null, JSON.stringify(details || {}), Date.now()]); } catch(e) {}
 }
 
 function publicUser(u) {
-  return {
-    id: u.id, username: u.username, displayName: u.display_name,
-    role: u.role, coachId: u.coach_id, emoji: u.emoji, color: u.color,
-    active: !!u.active, createdAt: Number(u.created_at)
-  };
+  return { id: u.id, username: u.username, displayName: u.display_name, role: u.role,
+    coachId: u.coach_id, emoji: u.emoji, color: u.color, active: !!u.active, createdAt: Number(u.created_at) };
 }
 
 async function auth(req, res, next) {
@@ -127,13 +82,11 @@ async function auth(req, res, next) {
   if (!token) return res.status(401).json({ error: 'no_token' });
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    const result = await query('SELECT * FROM users WHERE id = $1 AND active = 1', [payload.id]);
-    if (result.rows.length === 0) return res.status(401).json({ error: 'invalid_user' });
-    req.user = result.rows[0];
+    const r = await query('SELECT * FROM users WHERE id = $1 AND active = 1', [payload.id]);
+    if (r.rows.length === 0) return res.status(401).json({ error: 'invalid_user' });
+    req.user = r.rows[0];
     next();
-  } catch (e) {
-    res.status(401).json({ error: 'invalid_token' });
-  }
+  } catch (e) { res.status(401).json({ error: 'invalid_token' }); }
 }
 
 function requireRole(...roles) {
@@ -147,16 +100,38 @@ function canAccess(actor, target) {
   return false;
 }
 
+/* ================= SELF-REGISTRATION ================= */
+app.post('/api/auth/register', async (req, res) => {
+  const { username, password, displayName } = req.body || {};
+  if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
+  if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
+  if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
+
+  const existing = await query('SELECT id FROM users WHERE username = $1', [username]);
+  if (existing.rows.length > 0) return res.status(409).json({ error: 'username_taken' });
+
+  const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
+  const now = Date.now();
+  const hash = bcrypt.hashSync(password, 10);
+  try {
+    await query(`INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, created_at, updated_at)
+      VALUES ($1,$2,$3,$4,'student',NULL,'💪','#3b82f6',1,$5,$6)`,
+      [id, username, displayName, hash, now, now]);
+  } catch (e) { return res.status(500).json({ error: 'db_error', message: e.message }); }
+
+  await log(null, 'user_registered', id, { username });
+  const token = jwt.sign({ id, role: 'student' }, JWT_SECRET, { expiresIn: '30d' });
+  const u = await query('SELECT * FROM users WHERE id = $1', [id]);
+  res.json({ token, user: publicUser(u.rows[0]) });
+});
+
 /* ================= AUTH ================= */
 app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) return res.status(400).json({ error: 'missing_fields' });
-  const result = await query('SELECT * FROM users WHERE username = $1 AND active = 1', [username]);
-  const user = result.rows[0];
-  if (!user) {
-    await log(null, 'login_failed', null, { username, reason: 'no_user' });
-    return res.status(401).json({ error: 'invalid_credentials' });
-  }
+  const r = await query('SELECT * FROM users WHERE username = $1 AND active = 1', [username]);
+  const user = r.rows[0];
+  if (!user) { await log(null, 'login_failed', null, { username }); return res.status(401).json({ error: 'invalid_credentials' }); }
   if (!bcrypt.compareSync(password, user.password_hash)) {
     await log(user.id, 'login_failed', user.id, { reason: 'wrong_password' });
     return res.status(401).json({ error: 'invalid_credentials' });
@@ -166,34 +141,25 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ token, user: publicUser(user) });
 });
 
-app.get('/api/auth/me', auth, (req, res) => {
-  res.json(publicUser(req.user));
-});
+app.get('/api/auth/me', auth, (req, res) => res.json(publicUser(req.user)));
 
 app.post('/api/auth/change-password', auth, async (req, res) => {
   const { oldPassword, newPassword } = req.body || {};
   if (!newPassword || newPassword.length < 6) return res.status(400).json({ error: 'password_too_short' });
-  if (!bcrypt.compareSync(oldPassword || '', req.user.password_hash)) {
-    return res.status(401).json({ error: 'wrong_old_password' });
-  }
-  const hash = bcrypt.hashSync(newPassword, 10);
+  if (!bcrypt.compareSync(oldPassword || '', req.user.password_hash)) return res.status(401).json({ error: 'wrong_old_password' });
   await query('UPDATE users SET password_hash = $1, updated_at = $2 WHERE id = $3',
-    [hash, Date.now(), req.user.id]);
+    [bcrypt.hashSync(newPassword, 10), Date.now(), req.user.id]);
   await log(req.user.id, 'password_changed', req.user.id, {});
   res.json({ ok: true });
 });
 
 /* ================= USERS ================= */
 app.get('/api/users', auth, async (req, res) => {
-  let result;
-  if (req.user.role === 'admin') {
-    result = await query('SELECT * FROM users ORDER BY created_at DESC');
-  } else if (req.user.role === 'coach') {
-    result = await query('SELECT * FROM users WHERE coach_id = $1 ORDER BY display_name', [req.user.id]);
-  } else {
-    result = { rows: [req.user] };
-  }
-  res.json(result.rows.map(publicUser));
+  let r;
+  if (req.user.role === 'admin') r = await query('SELECT * FROM users ORDER BY created_at DESC');
+  else if (req.user.role === 'coach') r = await query('SELECT * FROM users WHERE coach_id = $1 ORDER BY display_name', [req.user.id]);
+  else r = { rows: [req.user] };
+  res.json(r.rows.map(publicUser));
 });
 
 app.post('/api/users', auth, async (req, res) => {
@@ -201,10 +167,8 @@ app.post('/api/users', auth, async (req, res) => {
   if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
   if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
   if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
-
   if (req.user.role === 'student') return res.status(403).json({ error: 'forbidden' });
-  if (req.user.role === 'coach' && role !== 'student')
-    return res.status(403).json({ error: 'coach_can_only_create_students' });
+  if (req.user.role === 'coach' && role !== 'student') return res.status(403).json({ error: 'coach_can_only_create_students' });
 
   let effectiveCoachId = null;
   if (req.user.role === 'coach') effectiveCoachId = req.user.id;
@@ -213,71 +177,61 @@ app.post('/api/users', auth, async (req, res) => {
     if (c.rows.length === 0) return res.status(400).json({ error: 'invalid_coach' });
     effectiveCoachId = coachId;
   }
-
-  const existing = await query('SELECT id FROM users WHERE username = $1', [username]);
-  if (existing.rows.length > 0) return res.status(409).json({ error: 'username_taken' });
+  const ex = await query('SELECT id FROM users WHERE username = $1', [username]);
+  if (ex.rows.length > 0) return res.status(409).json({ error: 'username_taken' });
 
   const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
   const now = Date.now();
-  const hash = bcrypt.hashSync(password, 10);
   try {
-    await query(
-      `INSERT INTO users
-       (id, username, display_name, password_hash, role, coach_id, emoji, color, active, created_at, updated_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,1,$9,$10)`,
-      [id, username, displayName, hash, role, effectiveCoachId, emoji, color, now, now]
-    );
-  } catch(e) {
-    return res.status(500).json({ error: 'db_error', message: e.message });
-  }
+    await query(`INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, created_at, updated_at)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,1,$9,$10)`,
+      [id, username, displayName, bcrypt.hashSync(password, 10), role, effectiveCoachId, emoji, color, now, now]);
+  } catch (e) { return res.status(500).json({ error: 'db_error' }); }
   await log(req.user.id, 'user_created', id, { username, role });
-  const r = await query('SELECT * FROM users WHERE id = $1', [id]);
-  res.json(publicUser(r.rows[0]));
+  const nr = await query('SELECT * FROM users WHERE id = $1', [id]);
+  res.json(publicUser(nr.rows[0]));
 });
 
 app.put('/api/users/:id', auth, async (req, res) => {
-  const targetR = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = targetR.rows[0];
+  const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  const target = tr.rows[0];
   if (!target) return res.status(404).json({ error: 'not_found' });
-
-  const isSelf     = target.id === req.user.id;
-  const isAdmin    = req.user.role === 'admin';
+  const isSelf = target.id === req.user.id;
+  const isAdmin = req.user.role === 'admin';
   const ownStudent = req.user.role === 'coach' && target.coach_id === req.user.id;
   if (!isSelf && !isAdmin && !ownStudent) return res.status(403).json({ error: 'forbidden' });
 
   const { displayName, emoji, color, password, active, coachId, role } = req.body || {};
   const sets = [], vals = [];
-  let idx = 1;
-  if (displayName != null) { sets.push(`display_name = $${idx++}`); vals.push(displayName); }
-  if (emoji != null)       { sets.push(`emoji = $${idx++}`);       vals.push(emoji); }
-  if (color != null)       { sets.push(`color = $${idx++}`);       vals.push(color); }
-
+  let i = 1;
+  if (displayName != null) { sets.push(`display_name = $${i++}`); vals.push(displayName); }
+  if (emoji != null) { sets.push(`emoji = $${i++}`); vals.push(emoji); }
+  if (color != null) { sets.push(`color = $${i++}`); vals.push(color); }
   if (active != null) {
     if (!isAdmin) return res.status(403).json({ error: 'only_admin_can_toggle_active' });
-    sets.push(`active = $${idx++}`); vals.push(active ? 1 : 0);
+    sets.push(`active = $${i++}`); vals.push(active ? 1 : 0);
   }
   if (coachId !== undefined) {
     if (!isAdmin) return res.status(403).json({ error: 'only_admin_can_reassign' });
-    sets.push(`coach_id = $${idx++}`); vals.push(coachId || null);
+    sets.push(`coach_id = $${i++}`); vals.push(coachId || null);
   }
   if (role != null) {
     if (!isAdmin) return res.status(403).json({ error: 'only_admin_can_change_role' });
     if (!['student','coach','admin'].includes(role)) return res.status(400).json({ error: 'invalid_role' });
-    sets.push(`role = $${idx++}`); vals.push(role);
+    sets.push(`role = $${i++}`); vals.push(role);
   }
   if (password) {
     if (!isAdmin && !ownStudent) return res.status(403).json({ error: 'forbidden_password_reset' });
     if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
-    sets.push(`password_hash = $${idx++}`); vals.push(bcrypt.hashSync(password, 10));
+    sets.push(`password_hash = $${i++}`); vals.push(bcrypt.hashSync(password, 10));
   }
   if (!sets.length) return res.json(publicUser(target));
-
-  sets.push(`updated_at = $${idx++}`); vals.push(Date.now());
+  sets.push(`updated_at = $${i++}`); vals.push(Date.now());
   vals.push(target.id);
-  await query(`UPDATE users SET ${sets.join(', ')} WHERE id = $${idx}`, vals);
+  await query(`UPDATE users SET ${sets.join(', ')} WHERE id = $${i}`, vals);
   await log(req.user.id, 'user_updated', target.id, { fields: Object.keys(req.body) });
-  const r = await query('SELECT * FROM users WHERE id = $1', [target.id]);
-  res.json(publicUser(r.rows[0]));
+  const nr = await query('SELECT * FROM users WHERE id = $1', [target.id]);
+  res.json(publicUser(nr.rows[0]));
 });
 
 app.delete('/api/users/:id', auth, requireRole('admin'), async (req, res) => {
@@ -285,59 +239,52 @@ app.delete('/api/users/:id', auth, requireRole('admin'), async (req, res) => {
   if (!adminPassword) return res.status(400).json({ error: 'password_required' });
   if (!bcrypt.compareSync(adminPassword, req.user.password_hash))
     return res.status(401).json({ error: 'wrong_password' });
-
-  const targetR = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = targetR.rows[0];
+  const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  const target = tr.rows[0];
   if (!target) return res.status(404).json({ error: 'not_found' });
   if (target.id === req.user.id) return res.status(400).json({ error: 'cannot_delete_self' });
-
   if (target.role === 'admin') {
-    const cnt = await query("SELECT COUNT(*) AS c FROM users WHERE role='admin' AND active=1");
-    if (parseInt(cnt.rows[0].c) <= 1) return res.status(400).json({ error: 'last_admin' });
+    const c = await query("SELECT COUNT(*) AS c FROM users WHERE role='admin' AND active=1");
+    if (parseInt(c.rows[0].c) <= 1) return res.status(400).json({ error: 'last_admin' });
   }
-
   await query('DELETE FROM users WHERE id = $1', [target.id]);
   await log(req.user.id, 'user_deleted', target.id, { username: target.username, role: target.role });
   res.json({ ok: true });
 });
 
-/* ================= USER DATA (KV) ================= */
+/* ================= USER DATA ================= */
 app.get('/api/users/:id/data', auth, async (req, res) => {
-  const targetR = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = targetR.rows[0];
+  const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  const target = tr.rows[0];
   if (!target) return res.status(404).json({ error: 'not_found' });
   if (!canAccess(req.user, target)) return res.status(403).json({ error: 'forbidden' });
-  const result = await query('SELECT key, value FROM user_data WHERE user_id = $1', [target.id]);
+  const r = await query('SELECT key, value FROM user_data WHERE user_id = $1', [target.id]);
   const out = {};
-  result.rows.forEach(r => { try { out[r.key] = JSON.parse(r.value); } catch {} });
+  r.rows.forEach(x => { try { out[x.key] = JSON.parse(x.value); } catch {} });
   res.json(out);
 });
 
 app.get('/api/users/:id/data/:key', auth, async (req, res) => {
-  const targetR = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = targetR.rows[0];
+  const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  const target = tr.rows[0];
   if (!target) return res.status(404).json({ error: 'not_found' });
   if (!canAccess(req.user, target)) return res.status(403).json({ error: 'forbidden' });
-  const result = await query('SELECT value, updated_at FROM user_data WHERE user_id = $1 AND key = $2',
-    [target.id, req.params.key]);
-  if (result.rows.length === 0) return res.json({ value: null, updatedAt: 0 });
-  const row = result.rows[0];
-  try { res.json({ value: JSON.parse(row.value), updatedAt: Number(row.updated_at) }); }
+  const r = await query('SELECT value, updated_at FROM user_data WHERE user_id = $1 AND key = $2', [target.id, req.params.key]);
+  if (r.rows.length === 0) return res.json({ value: null, updatedAt: 0 });
+  try { res.json({ value: JSON.parse(r.rows[0].value), updatedAt: Number(r.rows[0].updated_at) }); }
   catch { res.json({ value: null, updatedAt: 0 }); }
 });
 
 app.post('/api/users/:id/data/:key', auth, async (req, res) => {
-  const targetR = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = targetR.rows[0];
+  const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  const target = tr.rows[0];
   if (!target) return res.status(404).json({ error: 'not_found' });
   if (!canAccess(req.user, target)) return res.status(403).json({ error: 'forbidden' });
   const value = JSON.stringify(req.body?.value ?? null);
   const now = Date.now();
-  await query(
-    `INSERT INTO user_data (user_id, key, value, updated_at) VALUES ($1,$2,$3,$4)
-     ON CONFLICT (user_id, key) DO UPDATE SET value = EXCLUDED.value, updated_at = EXCLUDED.updated_at`,
-    [target.id, req.params.key, value, now]
-  );
+  await query(`INSERT INTO user_data (user_id, key, value, updated_at) VALUES ($1,$2,$3,$4)
+    ON CONFLICT (user_id, key) DO UPDATE SET value = EXCLUDED.value, updated_at = EXCLUDED.updated_at`,
+    [target.id, req.params.key, value, now]);
   res.json({ ok: true, updatedAt: now });
 });
 
@@ -345,78 +292,62 @@ app.post('/api/users/:id/data/:key', auth, async (req, res) => {
 app.get('/api/coach/students', auth, requireRole('coach','admin'), async (req, res) => {
   const coachId = req.user.role === 'coach' ? req.user.id : req.query.coachId;
   if (!coachId) return res.status(400).json({ error: 'missing_coach' });
-  const studentsR = await query('SELECT * FROM users WHERE coach_id = $1 ORDER BY display_name', [coachId]);
+  const sr = await query('SELECT * FROM users WHERE coach_id = $1 ORDER BY display_name', [coachId]);
   const now = Date.now();
   const out = [];
-  for (const s of studentsR.rows) {
-    const stateR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='state'", [s.id]);
-    const histR  = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='history'", [s.id]);
+  for (const s of sr.rows) {
+    const stR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='state'", [s.id]);
+    const hiR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='history'", [s.id]);
     let state = null, hist = null;
-    try { state = stateR.rows[0] ? JSON.parse(stateR.rows[0].value) : null; } catch {}
-    try { hist  = histR.rows[0]  ? JSON.parse(histR.rows[0].value)  : null; } catch {}
+    try { state = stR.rows[0] ? JSON.parse(stR.rows[0].value) : null; } catch {}
+    try { hist = hiR.rows[0] ? JSON.parse(hiR.rows[0].value) : null; } catch {}
     const completedCount = state?.completedExercises ? Object.values(state.completedExercises).filter(Boolean).length : 0;
     let volume = 0;
-    Object.values(state?.exerciseLogs || {}).forEach(arr => (arr||[]).forEach(l => {
-      if (l?.weight && l?.reps) volume += l.weight * l.reps;
-    }));
-    let sessions7 = 0, volume7 = 0;
+    Object.values(state?.exerciseLogs || {}).forEach(a => (a||[]).forEach(l => { if (l?.weight && l?.reps) volume += l.weight * l.reps; }));
+    let s7 = 0, v7 = 0;
     if (hist) Object.keys(hist).forEach(k => {
       const t = new Date(k).getTime();
-      if (now - t < 7*86400000) {
-        if ((hist[k].completed || 0) > 0) sessions7++;
-        volume7 += hist[k].volume || 0;
-      }
+      if (now - t < 7*86400000) { if ((hist[k].completed || 0) > 0) s7++; v7 += hist[k].volume || 0; }
     });
-    out.push({
-      ...publicUser(s),
-      stats: { completedCount, volume: Math.round(volume), sessions7, volume7: Math.round(volume7) }
-    });
+    out.push({ ...publicUser(s), stats: { completedCount, volume: Math.round(volume), sessions7: s7, volume7: Math.round(v7) } });
   }
   res.json(out);
 });
 
 app.get('/api/coach/students/:id/overview', auth, requireRole('coach','admin'), async (req, res) => {
-  const targetR = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = targetR.rows[0];
+  const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  const target = tr.rows[0];
   if (!target) return res.status(404).json({ error: 'not_found' });
   if (req.user.role === 'coach' && target.coach_id !== req.user.id)
     return res.status(403).json({ error: 'not_own_student' });
-
   const keys = ['state','history','program','nutrition','body','settings'];
   const data = {};
   for (const k of keys) {
     const r = await query('SELECT value FROM user_data WHERE user_id=$1 AND key=$2', [target.id, k]);
     try { data[k] = r.rows[0] ? JSON.parse(r.rows[0].value) : null; } catch { data[k] = null; }
   }
-  const notes = await query('SELECT * FROM coach_notes WHERE student_id=$1 ORDER BY created_at DESC', [target.id]);
-  res.json({
-    student: publicUser(target),
-    data,
-    notes: notes.rows.map(n => ({ ...n, created_at: Number(n.created_at) }))
-  });
+  const nr = await query('SELECT * FROM coach_notes WHERE student_id=$1 ORDER BY created_at DESC', [target.id]);
+  res.json({ student: publicUser(target), data, notes: nr.rows.map(n => ({ ...n, created_at: Number(n.created_at) })) });
 });
 
 app.post('/api/coach/students/:id/notes', auth, requireRole('coach','admin'), async (req, res) => {
-  const targetR = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = targetR.rows[0];
+  const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  const target = tr.rows[0];
   if (!target) return res.status(404).json({ error: 'not_found' });
   if (req.user.role === 'coach' && target.coach_id !== req.user.id)
     return res.status(403).json({ error: 'not_own_student' });
   const { content, type = 'general' } = req.body || {};
   if (!content || !content.trim()) return res.status(400).json({ error: 'empty' });
-  const r = await query(
-    'INSERT INTO coach_notes (coach_id, student_id, content, type, created_at) VALUES ($1,$2,$3,$4,$5) RETURNING id',
-    [req.user.id, target.id, content.trim(), type, Date.now()]
-  );
+  const r = await query('INSERT INTO coach_notes (coach_id, student_id, content, type, created_at) VALUES ($1,$2,$3,$4,$5) RETURNING id',
+    [req.user.id, target.id, content.trim(), type, Date.now()]);
   res.json({ id: r.rows[0].id, ok: true });
 });
 
 app.delete('/api/coach/notes/:id', auth, requireRole('coach','admin'), async (req, res) => {
-  const noteR = await query('SELECT * FROM coach_notes WHERE id = $1', [req.params.id]);
-  const note = noteR.rows[0];
+  const nr = await query('SELECT * FROM coach_notes WHERE id = $1', [req.params.id]);
+  const note = nr.rows[0];
   if (!note) return res.status(404).json({ error: 'not_found' });
-  if (req.user.role === 'coach' && note.coach_id !== req.user.id)
-    return res.status(403).json({ error: 'forbidden' });
+  if (req.user.role === 'coach' && note.coach_id !== req.user.id) return res.status(403).json({ error: 'forbidden' });
   await query('DELETE FROM coach_notes WHERE id = $1', [req.params.id]);
   res.json({ ok: true });
 });
@@ -428,48 +359,26 @@ app.get('/api/admin/audit', auth, requireRole('admin'), async (req, res) => {
 });
 
 app.get('/api/admin/stats', auth, requireRole('admin'), async (req, res) => {
-  const totalUsers    = await query('SELECT COUNT(*) AS c FROM users');
-  const activeUsers   = await query('SELECT COUNT(*) AS c FROM users WHERE active=1');
-  const coaches       = await query("SELECT COUNT(*) AS c FROM users WHERE role='coach'");
-  const students      = await query("SELECT COUNT(*) AS c FROM users WHERE role='student'");
-  const admins        = await query("SELECT COUNT(*) AS c FROM users WHERE role='admin'");
-  const totalDataRows = await query('SELECT COUNT(*) AS c FROM user_data');
-  const totalNotes    = await query('SELECT COUNT(*) AS c FROM coach_notes');
-  res.json({
-    totalUsers:    parseInt(totalUsers.rows[0].c),
-    activeUsers:   parseInt(activeUsers.rows[0].c),
-    coaches:       parseInt(coaches.rows[0].c),
-    students:      parseInt(students.rows[0].c),
-    admins:        parseInt(admins.rows[0].c),
-    totalDataRows: parseInt(totalDataRows.rows[0].c),
-    totalNotes:    parseInt(totalNotes.rows[0].c)
-  });
+  const a = await query('SELECT COUNT(*) AS c FROM users');
+  const b = await query('SELECT COUNT(*) AS c FROM users WHERE active=1');
+  const c = await query("SELECT COUNT(*) AS c FROM users WHERE role='coach'");
+  const d = await query("SELECT COUNT(*) AS c FROM users WHERE role='student'");
+  const e = await query("SELECT COUNT(*) AS c FROM users WHERE role='admin'");
+  res.json({ totalUsers: parseInt(a.rows[0].c), activeUsers: parseInt(b.rows[0].c),
+    coaches: parseInt(c.rows[0].c), students: parseInt(d.rows[0].c), admins: parseInt(e.rows[0].c) });
 });
 
-/* ================= SPA fallback ================= */
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+/* ================= SPA ================= */
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
-/* ================= Error handler ================= */
-app.use((err, req, res, next) => {
-  console.error('❌ Server error:', err);
-  res.status(500).json({ error: 'server_error' });
-});
+app.use((err, req, res, next) => { console.error('❌', err); res.status(500).json({ error: 'server_error' }); });
 
-/* ================= Start ================= */
 (async () => {
   try {
     await initSchema();
     await bootstrapAdmin();
     app.listen(PORT, () => {
-      console.log('\n🚀 ProFit server running:');
-      console.log(`   ➜ Port: ${PORT}`);
-      console.log(`   ➜ DB:   PostgreSQL`);
-      console.log('');
+      console.log('\n🚀 ProFit server running on port ' + PORT + '\n');
     });
-  } catch(e) {
-    console.error('❌ Startup failed:', e);
-    process.exit(1);
-  }
+  } catch(e) { console.error('❌ Startup:', e); process.exit(1); }
 })();
