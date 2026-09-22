@@ -69,22 +69,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .enum{width:28px;height:28px;border-radius:8px;background:rgba(148,163,184,.15);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:var(--t2);flex-shrink:0}
 .eanim{position:relative;width:100%;height:250px;background:linear-gradient(180deg,#f8fafc,#e2e8f0);display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--bd)}
 [data-theme=dark] .eanim{background:linear-gradient(180deg,#1e293b,#0f172a)}
-.eanim .frames{position:relative;width:100%;height:100%}
-.eanim .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:12px}
-.eanim .fstart{opacity:1}.eanim .fend{opacity:0}
-.eanim.playing .fstart{animation:ss 1.6s ease-in-out infinite}
-.eanim.playing .fend{animation:se 1.6s ease-in-out infinite}
-@keyframes ss{0%,45%{opacity:1}55%,100%{opacity:0}}
-@keyframes se{0%,45%{opacity:0}55%,100%{opacity:1}}
 .eanim .svgfb{position:absolute;inset:0;padding:8px;display:flex;align-items:center;justify-content:center}
 .eanim .svgfb svg{width:100%;height:100%}
 .flabels{position:absolute;bottom:8px;left:8px;right:8px;display:flex;justify-content:space-between;font-size:.7rem;font-weight:700;opacity:.75}
 .lbl{background:rgba(15,23,42,.85);color:#fff;padding:3px 10px;border-radius:8px}
 .lbl.end{background:rgba(16,185,129,.9)}
-.actrls{position:absolute;top:10px;left:10px;display:flex;gap:6px}
-.abtn2{width:34px;height:34px;border-radius:10px;border:none;background:rgba(15,23,42,.85);color:#fff;cursor:pointer;font-size:.95rem}
-.abtn2:hover{background:rgba(59,130,246,.95)}
-.abtn2.active{background:var(--ag)}
 .exen{position:absolute;top:10px;right:10px;background:rgba(15,23,42,.85);color:#7dd3fc;padding:4px 10px;border-radius:8px;font-size:.65rem;font-weight:600;max-width:60%;text-align:right;direction:ltr;font-family:monospace}
 .ebadges{position:absolute;bottom:44px;right:10px;display:flex;gap:5px;flex-wrap:wrap}
 .ebadge{padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:700;color:#fff}
@@ -94,7 +83,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .mi{background:rgba(148,163,184,.06);border-radius:10px;padding:10px 8px;text-align:center}
 .mv{font-size:1rem;font-weight:800}
 .ml{font-size:.7rem;color:var(--tm);margin-top:3px}
-.echk2{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;border-radius:10px;background:rgba(148,163,184,.05);cursor:pointer;user-select:none}
+.echk2{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;border-radius:10px;background:rgba(148,163,184,.05);user-select:none}
 .rest{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.15)}
 .tdisp{font-size:1.1rem;font-weight:800;color:var(--aa);min-width:55px}
 .tbtn{padding:6px 14px;border-radius:8px;border:none;background:var(--aa);color:#000;font-weight:700;font-size:.78rem;cursor:pointer}
@@ -123,30 +112,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .sacts{display:flex;gap:6px;padding:10px 12px;background:rgba(148,163,184,.04);border-top:1px solid var(--bd);flex-wrap:wrap}
 .mbtn{flex:1;min-width:70px;padding:7px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.72rem;cursor:pointer}
 .mbtn:hover{color:var(--t1);border-color:var(--ab)}
-.cardio-sec{margin:0 20px 20px;padding:16px 20px;border-radius:16px;background:rgba(15,23,42,.5);border:1px solid var(--bd);display:flex;align-items:center;gap:15px;flex-wrap:wrap}
-[data-theme=light] .cardio-sec{background:rgba(241,245,249,.8)}
-.cbadge{padding:8px 16px;border-radius:12px;font-weight:700;font-size:.85rem;color:#fff;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);flex-shrink:0}
-.ctext{color:var(--t2);font-size:.95rem;flex:1;min-width:180px}
-.ctwrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.cring{position:relative;width:84px;height:84px;flex-shrink:0}
-.cring svg{transform:rotate(-90deg);width:100%;height:100%}
-.cring .rt{fill:none;stroke:rgba(148,163,184,.15);stroke-width:6}
-.cring .rp{fill:none;stroke:var(--ag);stroke-width:6;stroke-linecap:round;stroke-dasharray:226;stroke-dashoffset:0;transition:stroke-dashoffset .95s linear}
-.cring.run .rp{stroke:var(--aa)}
-.cring .tt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.02rem;font-weight:800;color:var(--t1);direction:ltr}
-.cring.run .tt{color:var(--aa)}
-.cc{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.cin{width:68px;padding:8px 6px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:800;text-align:center;font-size:.95rem;outline:none}
-.cbtn{padding:9px 16px;border-radius:10px;border:none;font-weight:700;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.cbtn.start{background:var(--ag);color:#fff}
-.cbtn.pause{background:var(--aa);color:#000}
-.cbtn.reset{background:rgba(148,163,184,.15);color:var(--t1);padding:9px 12px}
 .dprog{padding:0 24px 22px;display:flex;align-items:center;gap:14px}
 .ptrack{flex:1;height:8px;background:rgba(148,163,184,.12);border-radius:10px;overflow:hidden}
 .pfill{height:100%;background:linear-gradient(90deg,var(--ab),var(--ap));width:0;transition:width .5s}
 .ptxt{font-size:.85rem;font-weight:700;color:var(--t2);white-space:nowrap}
 .chart{background:var(--bgc);border:1px solid var(--bd);border-radius:20px;padding:22px;margin-bottom:25px}
-.chart h2{font-size:1.15rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.chart h2{font-size:1.15rem;font-weight:800;margin-bottom:16px}
 .ctabs{display:flex;gap:4px;padding:4px;background:rgba(148,163,184,.08);border-radius:12px;margin-bottom:14px;width:fit-content}
 .ctab{padding:7px 14px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.78rem;cursor:pointer;border-radius:9px}
 .ctab.active{background:linear-gradient(135deg,var(--ab),var(--ap));color:#fff}
@@ -233,13 +204,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .fi:focus{border-color:var(--ab)}
 .fa{display:flex;gap:8px;margin-top:6px}
 .fa .btn{flex:1;justify-content:center}
-.emo{display:flex;flex-wrap:wrap;gap:6px}
-.eo{width:40px;height:40px;border-radius:10px;border:2px solid var(--bd);background:var(--bg2);cursor:pointer;font-size:1.15rem;display:flex;align-items:center;justify-content:center}
-.eo.sel{border-color:var(--ag);background:rgba(16,185,129,.15)}
-.co{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer}
-.co.sel{border-color:var(--t1);transform:scale(1.15)}
 .pday{border:1px solid var(--bd);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:rgba(148,163,184,.03)}
-.pday.editing{border-color:var(--ag);background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02))}
 .pday-h{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .pday-i{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(168,85,247,.15));flex-shrink:0}
 .pday-in{flex:1;min-width:0}
@@ -281,7 +246,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .dtp-c[data-type=cardio].sel{background:linear-gradient(135deg,#10b981,#059669)}
 .dtp-c[data-type=rest].sel{background:linear-gradient(135deg,#64748b,#475569)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid2f{grid-template-columns:1fr}
 .pday-badge{padding:12px 16px;border-radius:12px;margin-bottom:14px;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));border:1px solid rgba(59,130,246,.25);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .pfb{padding:14px 24px;border-top:1px solid var(--bd);display:flex;gap:10px;align-items:center;background:linear-gradient(135deg,rgba(59,130,246,.05),rgba(168,85,247,.03))}
 .pfb .pf{flex:1;font-size:.82rem;color:var(--t2);font-weight:600}
@@ -308,7 +272,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .mfill.f{background:linear-gradient(90deg,#f59e0b,#eab308)}
 .mval{font-size:.78rem;font-weight:800;min-width:50px;text-align:left;direction:ltr}
 .medit{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.04));border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:14px;margin-top:14px}
-.medit .mt{font-size:.82rem;font-weight:900;color:var(--aa);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.medit .mt{font-size:.82rem;font-weight:900;color:var(--aa);margin-bottom:10px}
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .minp label{display:block;font-size:.7rem;font-weight:800;color:var(--t2);margin-bottom:4px}
 .minp input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:800;font-size:.85rem;text-align:center;outline:none}
@@ -376,16 +340,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .bm-stat .l{font-size:.65rem;color:var(--tm);font-weight:700;margin-top:2px}
 .jdp{display:grid;grid-template-columns:1fr 1.6fr 1.1fr;gap:6px;direction:rtl}
 .jdp select{padding:10px 6px;text-align:center;font-weight:800;font-size:.88rem;cursor:pointer}
-.auth-scr{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px}
+.auth-scr{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;overflow-y:auto}
 .auth-scr.hidden{display:none}
-.auth-c{background:var(--bgc);border:1px solid var(--bd);border-radius:24px;padding:36px 32px;max-width:420px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.auth-c{background:var(--bgc);border:1px solid var(--bd);border-radius:24px;padding:32px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);margin:auto}
 .auth-c h1{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
-.auth-c .sub{font-size:.85rem;color:var(--t2);margin-bottom:24px}
+.auth-c .sub{font-size:.85rem;color:var(--t2);margin-bottom:20px}
 .auth-c input{width:100%;padding:14px 18px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:600;font-size:.95rem;margin-bottom:12px;outline:none}
 .auth-c input:focus{border-color:var(--ab);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
 .auth-c button{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#3b82f6,#a855f7);color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;margin-top:6px}
 .auth-c button:disabled{opacity:.6}
-.auth-err{margin-top:14px;font-size:.82rem;color:var(--ar);font-weight:700;min-height:20px}
+.auth-err{margin-top:12px;font-size:.82rem;color:var(--ar);font-weight:700;min-height:20px}
 .role-badge{padding:6px 12px;border-radius:20px;font-size:.72rem;font-weight:800;margin-right:8px}
 .role-badge.admin{background:rgba(245,158,11,.2);color:#fbbf24}
 .role-badge.coach{background:rgba(59,130,246,.2);color:#60a5fa}
@@ -398,6 +362,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .guide-section p{font-size:.85rem;line-height:1.9;color:var(--t2);margin-bottom:8px}
 .guide-section ul{padding-right:22px;font-size:.85rem;line-height:1.9;color:var(--t2);margin-bottom:8px}
 .guide-section code{background:rgba(148,163,184,.15);padding:2px 6px;border-radius:5px;font-family:monospace;font-size:.78rem;color:var(--aa);direction:ltr;display:inline-block}
+.two-buttons-row{display:flex;gap:6px;margin-top:14px}
+.two-buttons-row .btn{flex:1;justify-content:center;font-size:.78rem;padding:10px}
 @media (max-width:768px){
   .hero h1{font-size:1.5rem}.hero{padding:16px 14px 10px}
   .stats{grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
@@ -414,7 +380,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   .dnav{flex-wrap:nowrap;gap:3px;padding:5px}
   .dnav-btn{flex:1 1 0;min-width:0;padding:9px 2px;font-size:.68rem}
   .dnav-btn::before{display:none!important}
-  .egrid{grid-template-columns:1fr}
   .grid2{grid-template-columns:1fr}
   .drawer{width:100vw}
   body{padding:12px 12px 90px 12px}
@@ -424,8 +389,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   .mh-tt{font-size:.65rem}.meitem{grid-template-columns:24px 1fr 70px 50px 45px 20px;gap:3px}
   .meitem .mq{width:34px}.meitem .munit{font-size:.6rem}
   .bm-grid{grid-template-columns:1fr}
-  .mh-tt{padding:3px 8px}
-  .cg{grid-template-columns:1fr}
+  .nut-sum{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
@@ -434,14 +398,26 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 
 <!-- AUTH SCREEN -->
 <div class="auth-scr hidden" id="authScr">
-  <div class="auth-c">
+  <div class="auth-c" id="loginCard">
     <div style="font-size:3.5rem;margin-bottom:10px">🏋️</div>
     <h1>ProFit</h1>
     <p class="sub">برای ادامه وارد شوید</p>
     <input type="text" id="au" placeholder="نام کاربری" dir="ltr" autocomplete="username">
-    <input type="password" id="ap" placeholder="رمز عبور" dir="ltr" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="password" id="ap" placeholder="رمز عبور" dir="ltr" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     <button id="albtn" onclick="doLogin()">ورود</button>
+    <button onclick="showRegister()" style="width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:'Vazirmatn',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer">✨ حساب ندارید؟ ثبت‌نام کنید</button>
     <div class="auth-err" id="aerr"></div>
+  </div>
+  <div class="auth-c" id="registerCard" style="display:none">
+    <div style="font-size:3.5rem;margin-bottom:10px">✨</div>
+    <h1>ثبت‌نام</h1>
+    <p class="sub">حساب کاربری جدید بسازید</p>
+    <input type="text" id="ru" placeholder="نام کاربری (انگلیسی)" dir="ltr" autocomplete="username">
+    <input type="text" id="rn" placeholder="نام نمایشی (فارسی)" autocomplete="name">
+    <input type="password" id="rp" placeholder="رمز (حداقل ۶ کاراکتر)" dir="ltr" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+    <button id="arbtn" onclick="doRegister()">✅ ایجاد حساب</button>
+    <button onclick="showLogin()" style="width:100%;padding:12px;margin-top:10px;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:'Vazirmatn',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer">← قبلاً حساب دارید؟ ورود</button>
+    <div class="auth-err" id="rerr"></div>
   </div>
 </div>
 
@@ -521,7 +497,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
         <div class="fr"><label class="fl">RPE</label><input class="fi" id="ecP"></div>
         <div class="fr"><label class="fl">استراحت (ثانیه)</label><input class="fi" id="ecRs" type="number" min="10" max="600"></div>
       </div>
-      <div class="fa"><button class="btn primary" onclick="confirmAddEx()">➕ افزودن (و انتخاب بعدی)</button><button class="btn" onclick="closeEC()">لغو</button></div>
+      <div class="fa"><button class="btn primary" onclick="confirmAddEx()">➕ افزودن</button><button class="btn" onclick="closeEC()">لغو</button></div>
     </div>
   </div>
 </div>
@@ -580,19 +556,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   </div>
   <div class="dcont" id="st-backup">
     <div class="sect2">💾 پشتیبان‌گیری</div>
-    <div class="setg"><p style="font-size:.78rem;color:var(--t2);margin-bottom:10px;line-height:1.7">تمام اطلاعات کاربر فعلی در یک فایل JSON ذخیره می‌شود. سایر کاربران دست‌نخورده می‌مانند.</p>
+    <div class="setg"><p style="font-size:.78rem;color:var(--t2);margin-bottom:10px;line-height:1.7">تمام اطلاعات کاربر فعلی در یک فایل JSON ذخیره می‌شود.</p>
       <button class="btn success" style="width:100%;justify-content:center" onclick="exportData()">⬇️ دانلود پشتیبان</button></div>
     <div class="setg"><p style="font-size:.78rem;color:var(--t2);margin-bottom:10px;line-height:1.7">⚠️ اطلاعات فعلی فقط برای همین کاربر جایگزین می‌شود.</p>
-      <button class="btn primary" style="width:100%;justify-content:center" onclick="document.getElementById('impF').click()">⬆️ بازیابی از فایل</button>
+      <button class="btn primary" style="width:100%;justify-content:center" onclick="document.getElementById('impF').click()">⬆️ بازیابی</button>
       <input type="file" id="impF" accept=".json" style="display:none" onchange="importData(event)"></div>
     <div class="sect2">🔄 بازنشانی</div>
-    <div class="setg"><p style="font-size:.78rem;color:var(--t2);margin-bottom:10px;line-height:1.7">تمام تیک‌ها و وزنه‌ها پاک می‌شود.</p>
-      <button class="btn danger" style="width:100%;justify-content:center" onclick="resetAll()">🔄 ریست اطلاعات</button></div>
+    <div class="setg"><button class="btn danger" style="width:100%;justify-content:center" onclick="resetAll()">🔄 ریست اطلاعات</button></div>
   </div>
   <div class="dcont" id="st-guide" style="font-size:.86rem;line-height:1.9;color:var(--t2)"><div id="guideContent"></div></div>
-  <div class="dfoot" id="stFoot">
-    <button class="btn primary" onclick="closeS()">💾 ذخیره و بستن</button>
-  </div>
+  <div class="dfoot" id="stFoot"><button class="btn primary" onclick="closeS()">💾 ذخیره و بستن</button></div>
 </div>
 
 <!-- FOOD PICKER -->
@@ -636,8 +609,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
         </div>
       </div>
       <div class="bm-grid">
-        <div class="fr"><label class="fl">⚖️ وزن (kg)</label><input type="number" class="fi" id="bmWeight" step="0.1" placeholder="۷۵"></div>
-        <div class="fr"><label class="fl">🔥 درصد چربی (%)</label><input type="number" class="fi" id="bmBodyfat" step="0.1" placeholder="۲۰"></div>
+        <div class="fr"><label class="fl">⚖️ وزن (kg)</label><input type="number" class="fi" id="bmWeight" step="0.1"></div>
+        <div class="fr"><label class="fl">🔥 درصد چربی (%)</label><input type="number" class="fi" id="bmBodyfat" step="0.1"></div>
         <div class="fr"><label class="fl">👤 گردن (cm)</label><input type="number" class="fi" id="bmNeck" step="0.1"></div>
         <div class="fr"><label class="fl">💪 سینه (cm)</label><input type="number" class="fi" id="bmChest" step="0.1"></div>
         <div class="fr"><label class="fl">👖 کمر (cm)</label><input type="number" class="fi" id="bmWaist" step="0.1"></div>
@@ -681,8 +654,25 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <button class="dtab active" data-ct="students" onclick="switchCT('students')">👥 شاگردان</button>
     <button class="dtab" id="cpdtab" data-ct="detail" onclick="switchCT('detail')" style="display:none">📊 جزئیات</button>
   </div>
-  <div class="dcont active" id="ct-students" style="padding:16px 20px"><div id="cpList"></div></div>
+  <div class="dcont active" id="ct-students" style="padding:16px 20px">
+    <button class="addbtn" style="margin-bottom:14px" onclick="showCSF()"><span>➕</span><span>شاگرد جدید</span></button>
+    <div id="cpList"></div>
+  </div>
   <div class="dcont" id="ct-detail" style="padding:16px 20px"><div id="cpDetail"></div></div>
+</div>
+
+<!-- COACH NEW STUDENT FORM -->
+<div class="bd top" id="csbd" onclick="closeCSF()"></div>
+<div class="drawer right top" id="csd" style="width:420px">
+  <div class="dh"><h2>➕ شاگرد جدید</h2><button class="dclose" onclick="closeCSF()">✕</button></div>
+  <div class="dcont active" style="flex:1;overflow-y:auto">
+    <div class="form open">
+      <div class="fr"><label class="fl">نام کاربری *</label><input class="fi" id="csU" dir="ltr"></div>
+      <div class="fr"><label class="fl">نام نمایشی *</label><input class="fi" id="csN"></div>
+      <div class="fr"><label class="fl">رمز (حداقل ۶ کاراکتر)</label><input class="fi" id="csP" type="password" dir="ltr"></div>
+      <div class="fa"><button class="btn primary" onclick="saveCSF()">💾 ذخیره</button><button class="btn" onclick="closeCSF()">لغو</button></div>
+    </div>
+  </div>
 </div>
 
 <!-- ADMIN PANEL -->
@@ -733,7 +723,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   </div>
 </div>
 
-<!-- MAIN CONTAINER -->
+<!-- MAIN -->
 <div class="container">
   <div class="hero"><h1>🏋️ برنامه تمرینی هفتگی</h1></div>
   <div id="weekBanner"></div>
@@ -805,7 +795,7 @@ const FOOD_CATS={protein:{name:'پروتئین',emoji:'🍗'},carb:{name:'کرب
 const BMR_FORMULAS={mifflin:{name:'Mifflin-St Jeor',desc:'دقیق‌ترین فرمول عمومی',male:'10×W + 6.25×H − 5×A + 5',female:'10×W + 6.25×H − 5×A − 161'},harris:{name:'Harris-Benedict (1984)',desc:'فرمول کلاسیک',male:'88.362 + 13.397×W + 4.799×H − 5.677×A',female:'447.593 + 9.247×W + 3.098×H − 4.330×A'},katch:{name:'Katch-McArdle',desc:'بر اساس LBM',male:'370 + 21.6 × LBM',female:'370 + 21.6 × LBM'},cunningham:{name:'Cunningham',desc:'مشابه Katch',male:'500 + 22 × LBM',female:'500 + 22 × LBM'}};
 const BODY_METRICS=[{key:'weight',name:'وزن',unit:'kg',emoji:'⚖️'},{key:'bodyfat',name:'چربی',unit:'%',emoji:'🔥'},{key:'neck',name:'گردن',unit:'cm',emoji:'👤'},{key:'chest',name:'سینه',unit:'cm',emoji:'💪'},{key:'waist',name:'کمر',unit:'cm',emoji:'👖'},{key:'hip',name:'باسن',unit:'cm',emoji:'🍑'},{key:'arm',name:'بازو',unit:'cm',emoji:'💪'},{key:'forearm',name:'ساعد',unit:'cm',emoji:'🦾'},{key:'thigh',name:'ران',unit:'cm',emoji:'🦵'},{key:'calf',name:'ساق',unit:'cm',emoji:'🦿'}];
 const JALALI_MONTHS=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
-const CARDIO_PRESETS=[{id:'treadmill_walk',name:'تردمیل پیاده‌روی شیب‌دار',icon:'🚶',desc:'۲۰ دقیقه پیاده‌روی شیب‌دار (شیب ۱۰، سرعت ۵)'},{id:'treadmill_run',name:'تردمیل دویدن',icon:'🏃',desc:'۲۰ دقیقه دویدن با شدت متوسط'},{id:'bike',name:'دوچرخه ثابت',icon:'🚴',desc:'۲۰ دقیقه دوچرخه ثابت'},{id:'elliptical',name:'الپتیکال',icon:'🏃‍♂️',desc:'۲۰ دقیقه الپتیکال'},{id:'rowing',name:'دستگاه روئینگ',icon:'🚣',desc:'۱۵-۲۰ دقیقه روئینگ'},{id:'stair',name:'پله نوردی',icon:'🪜',desc:'۱۵ دقیقه پله نوردی'},{id:'jumprope',name:'طناب زدن',icon:'🪢',desc:'۱۰-۱۵ دقیقه طناب زدن'},{id:'swim',name:'شنا',icon:'🏊',desc:'۲۰-۳۰ دقیقه شنا'},{id:'walking',name:'پیاده‌روی',icon:'🚶‍♂️',desc:'۳۰ دقیقه پیاده‌روی'},{id:'hiit',name:'HIIT',icon:'⚡',desc:'۱۵-۲۰ دقیقه HIIT'}];
+const CARDIO_PRESETS=[{id:'treadmill_walk',name:'تردمیل پیاده‌روی شیب‌دار',icon:'🚶',desc:'۲۰ دقیقه پیاده‌روی شیب‌دار'},{id:'treadmill_run',name:'تردمیل دویدن',icon:'🏃',desc:'۲۰ دقیقه دویدن'},{id:'bike',name:'دوچرخه ثابت',icon:'🚴',desc:'۲۰ دقیقه دوچرخه'},{id:'elliptical',name:'الپتیکال',icon:'🏃‍♂️',desc:'۲۰ دقیقه الپتیکال'},{id:'rowing',name:'دستگاه روئینگ',icon:'🚣',desc:'۱۵-۲۰ دقیقه روئینگ'},{id:'stair',name:'پله نوردی',icon:'🪜',desc:'۱۵ دقیقه پله'},{id:'jumprope',name:'طناب زدن',icon:'🪢',desc:'۱۰-۱۵ دقیقه طناب'},{id:'swim',name:'شنا',icon:'🏊',desc:'۲۰-۳۰ دقیقه شنا'},{id:'walking',name:'پیاده‌روی',icon:'🚶‍♂️',desc:'۳۰ دقیقه پیاده‌روی'},{id:'hiit',name:'HIIT',icon:'⚡',desc:'۱۵-۲۰ دقیقه HIIT'}];
 const SPLIT_TEMPLATES={full:{name:'تمام بدن',focus:'تمرین کل بدن',icon:'💪',exs:['leg_squat_bb','chest_bench_barbell','back_row_barbell','sh_press_db_seated','arm_curl_db','arm_triceps_pushdown','core_plank']},upper:{name:'بالاتنه',focus:'سینه، پشت، شانه، بازو',icon:'💪',exs:['chest_bench_barbell','chest_inc_db','back_pulldown_wide','back_row_v','sh_press_db_seated','sh_lateral','arm_curl_db','arm_triceps_pushdown']},lower:{name:'پایین‌تنه',focus:'پا، باسن، ساق',icon:'🦵',exs:['leg_squat_bb','leg_hipthrust','leg_rdl','leg_ext','leg_curl','leg_calf_stand','core_plank']},push:{name:'فشاری',focus:'سینه، شانه، پشت بازو',icon:'🔥',exs:['chest_bench_barbell','chest_inc_db','chest_fly','sh_press_db_seated','sh_lateral','arm_triceps_pushdown','arm_triceps_oh']},pull:{name:'کششی',focus:'پشت، جلو بازو',icon:'🔙',exs:['back_pullup','back_row_barbell','back_pulldown_wide','back_row_v','back_face_pull','arm_curl_db','arm_curl_hammer']},legs:{name:'پا',focus:'چهارسر، همسترینگ، ساق',icon:'🦿',exs:['leg_squat_bb','leg_press','leg_ext','leg_rdl','leg_curl','leg_calf_stand','leg_calf_seat']}};
 const SPLITS_BY_DAYS={2:['full','full'],3:['push','pull','legs'],4:['upper','lower','upper','lower'],5:['push','pull','legs','upper','lower'],6:['push','pull','legs','push','pull','legs']};
 const VOLUME_BY_LEVEL={beginner:{sets:3,repsCompound:'۱۰-۱۲',repsIsolation:'۱۲-۱۵',exsPerDay:5,rest:90},intermediate:{sets:4,repsCompound:'۸-۱۰',repsIsolation:'۱۰-۱۲',exsPerDay:6,rest:90},advanced:{sets:4,repsCompound:'۶-۸',repsIsolation:'۱۰-۱۲',exsPerDay:7,rest:120}};
@@ -815,12 +805,12 @@ const DEFAULT_EXERCISES=[
 {id:'chest_bench_barbell',name:'پرس سینه هالتر (نیمکت تخت)',en:'Barbell Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'chest_bench_incline_bb',name:'پرس بالاسینه هالتر',en:'Incline Barbell Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'chest_bench_decline_bb',name:'پرس زیرسینه هالتر',en:'Decline Barbell Bench Press',cat:'chest',anim:'benchPress',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
-{id:'chest_bench_db',name:'پرس سینه دمبل (تخت)',en:'Dumbbell Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'chest_inc_db',name:'پرس بالاسینه دمبل (۳۰ درجه)',en:'Incline Dumbbell Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
+{id:'chest_bench_db',name:'پرس سینه دمبل',en:'Dumbbell Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
+{id:'chest_inc_db',name:'پرس بالاسینه دمبل',en:'Incline Dumbbell Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'chest_decline_db',name:'پرس زیرسینه دمبل',en:'Decline Dumbbell Bench Press',cat:'chest',anim:'benchPress',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'chest_machine_press',name:'پرس سینه دستگاه',en:'Machine Bench Press',cat:'chest',anim:'benchPress',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'chest_smith_bench',name:'پرس سینه اسمیت',en:'Smith Machine Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'chest_fly',name:'فلای سینه دمبل (تخت)',en:'Dumbbell Flyes',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
+{id:'chest_fly',name:'فلای سینه دمبل',en:'Dumbbell Flyes',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
 {id:'chest_fly_incline',name:'فلای بالاسینه دمبل',en:'Incline Dumbbell Flyes',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
 {id:'chest_cable_cross',name:'کراس اور سیم‌کش',en:'Cable Crossover',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'chest_pec_deck',name:'پک دک دستگاه',en:'Butterfly (Pec Deck)',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
@@ -830,14 +820,14 @@ const DEFAULT_EXERCISES=[
 {id:'back_deadlift',name:'ددلیفت هالتر (کلاسیک)',en:'Barbell Deadlift',cat:'back',anim:'deadlift',sets:4,reps:'۶-۸',rpe:'۸-۹',rest:120},
 {id:'back_deadlift_sumo',name:'ددلیفت سومو',en:'Sumo Deadlift',cat:'back',anim:'deadlift',sets:4,reps:'۶-۸',rpe:'۸-۹',rest:120},
 {id:'back_rack_pull',name:'رک پول',en:'Rack Pulls',cat:'back',anim:'deadlift',sets:4,reps:'۶-۸',rpe:'۸-۹',rest:120},
-{id:'back_pullup',name:'بارفیکس (دست باز)',en:'Pullups',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸-۹',rest:90},
+{id:'back_pullup',name:'بارفیکس دست باز',en:'Pullups',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸-۹',rest:90},
 {id:'back_chinup',name:'بارفیکس دست جمع (چین آپ)',en:'Chin-Up',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸-۹',rest:90},
 {id:'back_pullup_neutral',name:'بارفیکس دست موازی',en:'Neutral Grip Pullups',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸',rest:90},
 {id:'back_pullup_weighted',name:'بارفیکس با وزنه',en:'Weighted Pullups',cat:'back',anim:'pulldown',sets:4,reps:'۵-۸',rpe:'۸-۹',rest:120},
-{id:'back_pulldown_wide',name:'زیربغل سیم‌کش (دست باز)',en:'Wide-Grip Lat Pulldown',cat:'back',anim:'pulldown',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'back_pulldown_close',name:'زیربغل سیم‌کش (دست جمع)',en:'Close-Grip Lat Pulldown',cat:'back',anim:'pulldown',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'back_pulldown_reverse',name:'زیربغل سیم‌کش (دست برعکس)',en:'Reverse Grip Pulldown',cat:'back',anim:'pulldown',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
-{id:'back_pulldown_neutral',name:'زیربغل سیم‌کش (دست موازی)',en:'Neutral Grip Lat Pulldown',cat:'back',anim:'pulldown',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
+{id:'back_pulldown_wide',name:'زیربغل سیم‌کش دست باز',en:'Wide-Grip Lat Pulldown',cat:'back',anim:'pulldown',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
+{id:'back_pulldown_close',name:'زیربغل سیم‌کش دست جمع',en:'Close-Grip Lat Pulldown',cat:'back',anim:'pulldown',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
+{id:'back_pulldown_reverse',name:'زیربغل سیم‌کش دست برعکس',en:'Reverse Grip Pulldown',cat:'back',anim:'pulldown',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
+{id:'back_pulldown_neutral',name:'زیربغل سیم‌کش دست موازی',en:'Neutral Grip Lat Pulldown',cat:'back',anim:'pulldown',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'back_row_v',name:'قایقی سیم‌کش (V-Handle)',en:'Seated Cable Rows',cat:'back',anim:'row',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'back_row_barbell',name:'قایقی هالتر خم',en:'Bent Over Barbell Row',cat:'back',anim:'row',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'back_row_1arm',name:'قایقی دمبل یک‌طرفه',en:'One-Arm Dumbbell Row',cat:'back',anim:'oneArmRow',sets:3,reps:'۱۰-۱۲ (هر طرف)',rpe:'۸',rest:90},
@@ -865,12 +855,12 @@ const DEFAULT_EXERCISES=[
 {id:'sh_lateral_machine',name:'نشر جانب دستگاه',en:'Machine Lateral Raise',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'sh_front_raise',name:'نشر جلو دمبل',en:'Front Dumbbell Raise',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۸-۹',rest:60},
 {id:'sh_front_raise_bb',name:'نشر جلو هالتر',en:'Front Barbell Raise',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
-{id:'sh_rear',name:'نشر خفی دمبل (نشسته)',en:'Seated Rear Delt Fly',cat:'shoulders',anim:'rearDelt',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
+{id:'sh_rear',name:'نشر خفی دمبل نشسته',en:'Seated Rear Delt Fly',cat:'shoulders',anim:'rearDelt',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'sh_rear_cable',name:'نشر خفی سیم‌کش',en:'Cable Rear Delt Fly',cat:'shoulders',anim:'rearDelt',sets:3,reps:'۱۵',rpe:'۹',rest:60},
 {id:'sh_rear_machine',name:'نشر خفی دستگاه',en:'Reverse Machine Flyes',cat:'shoulders',anim:'rearDelt',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'sh_upright_row',name:'پارویی هالتر',en:'Upright Barbell Row',cat:'shoulders',anim:'row',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
 {id:'sh_upright_row_cable',name:'پارویی سیم‌کش',en:'Cable Upright Row',cat:'shoulders',anim:'row',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
-{id:'sh_facepull',name:'فیس پول (شانه)',en:'Face Pull',cat:'shoulders',anim:'facePull',sets:3,reps:'۱۵',rpe:'۸',rest:60},
+{id:'sh_facepull',name:'فیس پول',en:'Face Pull',cat:'shoulders',anim:'facePull',sets:3,reps:'۱۵',rpe:'۸',rest:60},
 {id:'arm_curl_db',name:'جلو بازو دمبل (جفتی)',en:'Dumbbell Bicep Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
 {id:'arm_curl_db_alt',name:'جلو بازو دمبل یک‌طرفه',en:'Alternate Incline Dumbbell Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۲ (هر دست)',rpe:'۸-۹',rest:60},
 {id:'arm_curl_barbell',name:'جلو بازو هالتر',en:'Barbell Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:60},
@@ -879,11 +869,11 @@ const DEFAULT_EXERCISES=[
 {id:'arm_curl_preacher',name:'جلو بازو لاری',en:'Preacher Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
 {id:'arm_curl_concentration',name:'جلو بازو تمرکزی',en:'Concentration Curls',cat:'arms',anim:'curl',sets:3,reps:'۱۲',rpe:'۹',rest:60},
 {id:'arm_curl_cable',name:'جلو بازو سیم‌کش',en:'Standing Biceps Cable Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
-{id:'arm_curl_incline_db',name:'جلو بازو دمبل روی نیمکت شیب‌دار',en:'Incline Dumbbell Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
+{id:'arm_curl_incline_db',name:'جلو بازو دمبل نیمکت شیب‌دار',en:'Incline Dumbbell Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
 {id:'arm_curl_spider',name:'جلو بازو اسپایدر',en:'Spider Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
-{id:'arm_curl_21s',name:'جلو بازو ۲۱ (۲۱s)',en:'21s Bicep Curl',cat:'arms',anim:'curl',sets:3,reps:'۲۱',rpe:'۹',rest:60},
-{id:'arm_triceps_pushdown',name:'پشت بازو سیم‌کش (دستگیره صاف)',en:'Triceps Pushdown',cat:'arms',anim:'facePull',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
-{id:'arm_triceps_rope',name:'پشت بازو سیم‌کش (طناب)',en:'Triceps Rope Pushdown',cat:'arms',anim:'facePull',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
+{id:'arm_curl_21s',name:'جلو بازو ۲۱',en:'21s Bicep Curl',cat:'arms',anim:'curl',sets:3,reps:'۲۱',rpe:'۹',rest:60},
+{id:'arm_triceps_pushdown',name:'پشت بازو سیم‌کش دستگیره صاف',en:'Triceps Pushdown',cat:'arms',anim:'facePull',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
+{id:'arm_triceps_rope',name:'پشت بازو سیم‌کش طناب',en:'Triceps Rope Pushdown',cat:'arms',anim:'facePull',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
 {id:'arm_triceps_oh',name:'پشت بازو بالای سر دمبل',en:'Standing Dumbbell Triceps Extension',cat:'arms',anim:'curl',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
 {id:'arm_triceps_oh_cable',name:'پشت بازو بالای سر سیم‌کش',en:'Cable Overhead Triceps Extension',cat:'arms',anim:'curl',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
 {id:'arm_triceps_skull',name:'پشت بازو هالتر خوابیده',en:'Lying Triceps Press',cat:'arms',anim:'benchPress',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:90},
@@ -913,7 +903,7 @@ const DEFAULT_EXERCISES=[
 {id:'leg_curl_standing',name:'پشت پا ایستاده (یک‌پا)',en:'Standing Leg Curl',cat:'legs',anim:'legCurl',sets:3,reps:'۱۲ (هر پا)',rpe:'۸-۹',rest:60},
 {id:'leg_rdl',name:'ددلیفت رومانیایی دمبل',en:'Romanian Deadlift',cat:'legs',anim:'deadlift',sets:4,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'leg_rdl_bb',name:'ددلیفت رومانیایی هالتر',en:'Romanian Deadlift (Barbell)',cat:'legs',anim:'deadlift',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'leg_hipthrust',name:'هیپ تراست (هالتر/اسمیت)',en:'Barbell Hip Thrust',cat:'glutes',anim:'hipThrust',sets:4,reps:'۱۰-۱۲',rpe:'۸',rest:90},
+{id:'leg_hipthrust',name:'هیپ تراست',en:'Barbell Hip Thrust',cat:'glutes',anim:'hipThrust',sets:4,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'leg_glute_bridge',name:'پل باسن (گلوت بریج)',en:'Glute Bridge',cat:'glutes',anim:'hipThrust',sets:3,reps:'۱۵',rpe:'۷-۸',rest:60},
 {id:'leg_glute_kickback',name:'لگد باسن سیم‌کش',en:'Glute Kickback',cat:'glutes',anim:'hipThrust',sets:3,reps:'۱۵ (هر پا)',rpe:'۸',rest:45},
 {id:'leg_goodmorning',name:'گود مورنینگ',en:'Good Morning',cat:'legs',anim:'deadlift',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
@@ -932,7 +922,7 @@ const DEFAULT_EXERCISES=[
 {id:'core_leg_raise',name:'بالا آوردن پا خوابیده',en:'Flat Bench Lying Leg Raise',cat:'core',anim:'crunch',sets:3,reps:'۱۵',rpe:'—',rest:60},
 {id:'core_hanging_leg_raise',name:'بالا آوردن پا آویزان',en:'Hanging Leg Raise',cat:'core',anim:'crunch',sets:3,reps:'۱۰-۱۵',rpe:'۸-۹',rest:60},
 {id:'core_hanging_knee_raise',name:'بالا آوردن زانو آویزان',en:'Hanging Knee Raise',cat:'core',anim:'crunch',sets:3,reps:'۱۵-۲۰',rpe:'۸',rest:60},
-{id:'core_ab_wheel',name:'چرخ شکم (آب ویل)',en:'Ab Roller',cat:'core',anim:'plank',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
+{id:'core_ab_wheel',name:'چرخ شکم',en:'Ab Roller',cat:'core',anim:'plank',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
 {id:'core_mountain_climber',name:'کوهنوردی (مانتین کلایمر)',en:'Mountain Climbers',cat:'core',anim:'plank',sets:3,reps:'۳۰ ثانیه',rpe:'۸',rest:45},
 {id:'core_dead_bug',name:'دد باگ',en:'Dead Bug',cat:'core',anim:'plank',sets:3,reps:'۱۲ (هر طرف)',rpe:'—',rest:45},
 {id:'core_hyper',name:'هایپراکستنشن (اکسترنشن کمر)',en:'Hyperextensions',cat:'core',anim:'hyperextension',sets:3,reps:'۱۵',rpe:'۸',rest:60},
@@ -940,7 +930,7 @@ const DEFAULT_EXERCISES=[
 {id:'core_toe_touch',name:'لمس پا (Toe Touch)',en:'Toe Touchers',cat:'core',anim:'crunch',sets:3,reps:'۲۰',rpe:'—',rest:45},
 {id:'cardio_treadmill_walk',name:'تردمیل پیاده‌روی شیب‌دار',en:'Treadmill Incline Walk',cat:'cardio',anim:'lunge',sets:1,reps:'۲۰ دقیقه',rpe:'۶-۷',rest:0},
 {id:'cardio_treadmill_run',name:'تردمیل دویدن',en:'Treadmill Running',cat:'cardio',anim:'lunge',sets:1,reps:'۱۵-۲۰ دقیقه',rpe:'۷-۸',rest:0},
-{id:'cardio_treadmill_sprint',name:'تردمیل سرعتی (HIIT)',en:'Treadmill Sprint Interval',cat:'cardio',anim:'lunge',sets:8,reps:'۳۰ ثانیه سرعت بالا',rpe:'۹',rest:60},
+{id:'cardio_treadmill_sprint',name:'تردمیل سرعتی (HIIT)',en:'Treadmill Sprint Interval',cat:'cardio',anim:'lunge',sets:8,reps:'۳۰ ثانیه',rpe:'۹',rest:60},
 {id:'cardio_bike',name:'دوچرخه ثابت',en:'Stationary Bike',cat:'cardio',anim:'legExtension',sets:1,reps:'۲۰ دقیقه',rpe:'۶-۷',rest:0},
 {id:'cardio_spin',name:'اسپینینگ',en:'Spinning',cat:'cardio',anim:'legExtension',sets:1,reps:'۳۰ دقیقه',rpe:'۷',rest:0},
 {id:'cardio_rowing',name:'دستگاه روئینگ',en:'Rowing Machine',cat:'cardio',anim:'row',sets:1,reps:'۱۵-۲۰ دقیقه',rpe:'۷',rest:0},
@@ -954,223 +944,73 @@ const DEFAULT_EXERCISES=[
 {id:'cardio_swim',name:'شنا',en:'Swimming',cat:'cardio',anim:'lunge',sets:1,reps:'۲۰-۳۰ دقیقه',rpe:'۷',rest:0}
 ];
 
-/* ============ FOODS ============ */
+/* ============ FOODS (خلاصه) ============ */
 const FOOD_DB=[
-{id:'chicken_breast',name:'سینه مرغ پخته',cat:'protein',emoji:'🍗',cal:165,prot:31,carb:0,fat:3.6,units:[{n:'گرم',g:1},{n:'فیله کوچک',g:120},{n:'فیله بزرگ',g:220}]},
-{id:'chicken_thigh',name:'ران مرغ پخته',cat:'protein',emoji:'🍗',cal:209,prot:26,carb:0,fat:10.9,units:[{n:'گرم',g:1},{n:'عدد',g:130}]},
-{id:'chicken_wing',name:'بال مرغ',cat:'protein',emoji:'🍗',cal:203,prot:30,carb:0,fat:8.1,units:[{n:'گرم',g:1},{n:'عدد',g:50}]},
-{id:'chicken_tender',name:'فیله مرغ',cat:'protein',emoji:'🍗',cal:110,prot:23,carb:0,fat:1.5,units:[{n:'گرم',g:1},{n:'عدد',g:40}]},
-{id:'turkey_breast',name:'سینه بوقلمون',cat:'protein',emoji:'🦃',cal:189,prot:29,carb:0,fat:7,units:[{n:'گرم',g:1},{n:'برش',g:30}]},
-{id:'duck_breast',name:'سینه اردک',cat:'protein',emoji:'🦆',cal:201,prot:24,carb:0,fat:11,units:[{n:'گرم',g:1}]},
-{id:'beef_lean',name:'گوشت گاو کم چرب',cat:'protein',emoji:'🥩',cal:250,prot:26,carb:0,fat:15,units:[{n:'گرم',g:1},{n:'استیک کوچک',g:150}]},
-{id:'beef_ground_lean',name:'گوشت چرخ‌کرده کم چرب',cat:'protein',emoji:'🥩',cal:215,prot:26,carb:0,fat:12,units:[{n:'گرم',g:1},{n:'کف دست',g:100}]},
-{id:'beef_ground_regular',name:'گوشت چرخ‌کرده معمولی',cat:'protein',emoji:'🥩',cal:250,prot:24,carb:0,fat:17,units:[{n:'گرم',g:1},{n:'کف دست',g:100}]},
+{id:'chicken_breast',name:'سینه مرغ پخته',cat:'protein',emoji:'🍗',cal:165,prot:31,carb:0,fat:3.6,units:[{n:'گرم',g:1},{n:'فیله',g:150}]},
+{id:'beef_ground',name:'گوشت چرخ‌کرده',cat:'protein',emoji:'🥩',cal:215,prot:26,carb:0,fat:12,units:[{n:'گرم',g:1}]},
 {id:'beef_steak',name:'استیک گوشت گاو',cat:'protein',emoji:'🥩',cal:271,prot:25,carb:0,fat:19,units:[{n:'گرم',g:1}]},
-{id:'beef_liver',name:'جگر گاو',cat:'protein',emoji:'🥩',cal:135,prot:20,carb:3.9,fat:3.6,units:[{n:'گرم',g:1},{n:'برش',g:60}]},
-{id:'lamb',name:'گوشت بره',cat:'protein',emoji:'🥩',cal:294,prot:25,carb:0,fat:21,units:[{n:'گرم',g:1}]},
-{id:'lamb_leg',name:'ران بره',cat:'protein',emoji:'🥩',cal:206,prot:28,carb:0,fat:10,units:[{n:'گرم',g:1}]},
-{id:'pork_loin',name:'فیله خوک',cat:'protein',emoji:'🥓',cal:242,prot:27,carb:0,fat:14,units:[{n:'گرم',g:1}]},
 {id:'salmon',name:'ماهی سالمون',cat:'protein',emoji:'🐟',cal:208,prot:20,carb:0,fat:13,units:[{n:'گرم',g:1},{n:'فیله',g:150}]},
-{id:'tuna_fresh',name:'ماهی تن تازه',cat:'protein',emoji:'🐟',cal:132,prot:28,carb:0,fat:1,units:[{n:'گرم',g:1}]},
 {id:'tuna_can',name:'تن ماهی کنسرو',cat:'protein',emoji:'🐟',cal:116,prot:26,carb:0,fat:1,units:[{n:'گرم',g:1},{n:'قوطی',g:150}]},
-{id:'sardine',name:'ساردین کنسرو',cat:'protein',emoji:'🐟',cal:208,prot:25,carb:0,fat:11,units:[{n:'گرم',g:1},{n:'قوطی',g:90}]},
-{id:'mackerel',name:'ماهی خال‌خالی',cat:'protein',emoji:'🐟',cal:205,prot:19,carb:0,fat:14,units:[{n:'گرم',g:1}]},
-{id:'tilapia',name:'ماهی تیلاپیا',cat:'protein',emoji:'🐟',cal:129,prot:26,carb:0,fat:2.7,units:[{n:'گرم',g:1},{n:'فیله',g:120}]},
-{id:'trout',name:'ماهی قزل‌آلا',cat:'protein',emoji:'🐟',cal:148,prot:21,carb:0,fat:6.6,units:[{n:'گرم',g:1},{n:'عدد',g:200}]},
-{id:'cod',name:'ماهی کاد',cat:'protein',emoji:'🐟',cal:82,prot:18,carb:0,fat:0.7,units:[{n:'گرم',g:1}]},
-{id:'haddock',name:'ماهی هادوک',cat:'protein',emoji:'🐟',cal:90,prot:20,carb:0,fat:0.7,units:[{n:'گرم',g:1}]},
-{id:'shrimp',name:'میگو پخته',cat:'protein',emoji:'🦐',cal:99,prot:24,carb:0.2,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:10}]},
-{id:'crab',name:'خرچنگ',cat:'protein',emoji:'🦀',cal:87,prot:18,carb:0,fat:1.5,units:[{n:'گرم',g:1}]},
-{id:'squid',name:'ماهی مرکب',cat:'protein',emoji:'🦑',cal:92,prot:15.6,carb:3.1,fat:1.4,units:[{n:'گرم',g:1}]},
-{id:'egg_whole',name:'تخم مرغ کامل',cat:'protein',emoji:'🥚',cal:155,prot:13,carb:1.1,fat:11,units:[{n:'گرم',g:1},{n:'عدد کوچک',g:40},{n:'عدد متوسط',g:50},{n:'عدد بزرگ',g:60}]},
-{id:'egg_white',name:'سفیده تخم مرغ',cat:'protein',emoji:'🥚',cal:52,prot:11,carb:0.7,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:33}]},
-{id:'egg_yolk',name:'زرده تخم مرغ',cat:'protein',emoji:'🥚',cal:322,prot:16,carb:3.6,fat:27,units:[{n:'گرم',g:1},{n:'عدد',g:17}]},
+{id:'shrimp',name:'میگو پخته',cat:'protein',emoji:'🦐',cal:99,prot:24,carb:.2,fat:.3,units:[{n:'گرم',g:1},{n:'عدد',g:10}]},
+{id:'egg_whole',name:'تخم مرغ کامل',cat:'protein',emoji:'🥚',cal:155,prot:13,carb:1.1,fat:11,units:[{n:'گرم',g:1},{n:'عدد',g:50}]},
+{id:'egg_white',name:'سفیده تخم مرغ',cat:'protein',emoji:'🥚',cal:52,prot:11,carb:.7,fat:.2,units:[{n:'گرم',g:1},{n:'عدد',g:33}]},
 {id:'whey',name:'پودر پروتئین وی',cat:'protein',emoji:'🥛',cal:400,prot:80,carb:8,fat:5,units:[{n:'گرم',g:1},{n:'اسکوپ',g:30}]},
-{id:'casein',name:'پودر کازیین',cat:'protein',emoji:'🥛',cal:370,prot:76,carb:10,fat:3,units:[{n:'گرم',g:1},{n:'اسکوپ',g:33}]},
-{id:'protein_bar',name:'پروتئین بار',cat:'protein',emoji:'🍫',cal:380,prot:30,carb:40,fat:10,units:[{n:'گرم',g:1},{n:'عدد',g:60}]},
-{id:'tofu',name:'توفو',cat:'protein',emoji:'🧈',cal:76,prot:8,carb:1.9,fat:4.8,units:[{n:'گرم',g:1},{n:'مکعب',g:30}]},
-{id:'tempeh',name:'تمپه',cat:'protein',emoji:'🧈',cal:195,prot:19,carb:7.6,fat:11,units:[{n:'گرم',g:1}]},
-{id:'seitan',name:'سایتان',cat:'protein',emoji:'🍞',cal:120,prot:25,carb:14,fat:1.9,units:[{n:'گرم',g:1}]},
-{id:'lentil',name:'عدس پخته',cat:'protein',emoji:'🫘',cal:116,prot:9,carb:20,fat:0.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:200}]},
+{id:'turkey_breast',name:'سینه بوقلمون',cat:'protein',emoji:'🦃',cal:189,prot:29,carb:0,fat:7,units:[{n:'گرم',g:1}]},
+{id:'lentil',name:'عدس پخته',cat:'protein',emoji:'🫘',cal:116,prot:9,carb:20,fat:.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:200}]},
 {id:'chickpea',name:'نخود پخته',cat:'protein',emoji:'🫘',cal:164,prot:8.9,carb:27,fat:2.6,units:[{n:'گرم',g:1},{n:'پیمانه',g:164}]},
-{id:'kidney_bean',name:'لوبیا قرمز پخته',cat:'protein',emoji:'🫘',cal:127,prot:8.7,carb:22.8,fat:0.5,units:[{n:'گرم',g:1},{n:'پیمانه',g:177}]},
-{id:'white_bean',name:'لوبیا سفید پخته',cat:'protein',emoji:'🫘',cal:139,prot:9.7,carb:25,fat:0.35,units:[{n:'گرم',g:1},{n:'پیمانه',g:179}]},
-{id:'black_bean',name:'لوبیا سیاه پخته',cat:'protein',emoji:'🫘',cal:132,prot:8.9,carb:24,fat:0.5,units:[{n:'گرم',g:1},{n:'پیمانه',g:172}]},
-{id:'rice_white',name:'برنج سفید پخته',cat:'carb',emoji:'🍚',cal:130,prot:2.7,carb:28,fat:0.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:200},{n:'کفگیر',g:90}]},
+{id:'rice_white',name:'برنج سفید پخته',cat:'carb',emoji:'🍚',cal:130,prot:2.7,carb:28,fat:.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:200},{n:'کفگیر',g:90}]},
 {id:'rice_brown',name:'برنج قهوه‌ای پخته',cat:'carb',emoji:'🍚',cal:123,prot:2.7,carb:26,fat:1,units:[{n:'گرم',g:1},{n:'پیمانه',g:195}]},
-{id:'rice_basmati',name:'برنج باسماتی',cat:'carb',emoji:'🍚',cal:121,prot:3,carb:25,fat:0.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:200}]},
-{id:'rice_jasmine',name:'برنج یاس',cat:'carb',emoji:'🍚',cal:129,prot:2.7,carb:28,fat:0.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:200}]},
 {id:'bread_barbari',name:'نان بربری',cat:'carb',emoji:'🥖',cal:281,prot:9,carb:53,fat:2.5,units:[{n:'گرم',g:1},{n:'برش',g:80}]},
 {id:'bread_sangak',name:'نان سنگک',cat:'carb',emoji:'🥖',cal:254,prot:8.5,carb:50,fat:1.5,units:[{n:'گرم',g:1},{n:'برش',g:60}]},
-{id:'bread_lavash',name:'نان لواش',cat:'carb',emoji:'🥖',cal:275,prot:9.5,carb:55,fat:1.5,units:[{n:'گرم',g:1},{n:'عدد',g:80}]},
-{id:'bread_taftoon',name:'نان تافتون',cat:'carb',emoji:'🥖',cal:255,prot:9,carb:50,fat:2,units:[{n:'گرم',g:1},{n:'عدد',g:90}]},
-{id:'bread_whole',name:'نان سبوس‌دار',cat:'carb',emoji:'🍞',cal:247,prot:13,carb:41,fat:3.4,units:[{n:'گرم',g:1},{n:'برش',g:30}]},
-{id:'bread_white',name:'نان سفید (توست)',cat:'carb',emoji:'🍞',cal:265,prot:9,carb:49,fat:3.2,units:[{n:'گرم',g:1},{n:'برش',g:25}]},
-{id:'bread_rye',name:'نان چاودار',cat:'carb',emoji:'🍞',cal:259,prot:9,carb:48,fat:3.3,units:[{n:'گرم',g:1},{n:'برش',g:32}]},
-{id:'pita',name:'نان پیتا',cat:'carb',emoji:'🥙',cal:275,prot:9,carb:55,fat:1.2,units:[{n:'گرم',g:1},{n:'عدد',g:60}]},
-{id:'baguette',name:'باگت',cat:'carb',emoji:'🥖',cal:274,prot:8.9,carb:52,fat:1.8,units:[{n:'گرم',g:1},{n:'برش',g:30}]},
-{id:'oat',name:'جو دوسر (خشک)',cat:'carb',emoji:'🌾',cal:389,prot:17,carb:66,fat:7,units:[{n:'گرم',g:1},{n:'پیمانه',g:80},{n:'قاشق غذاخوری',g:10}]},
-{id:'oatmeal_cooked',name:'جو دوسر پخته',cat:'carb',emoji:'🥣',cal:71,prot:2.5,carb:12,fat:1.5,units:[{n:'گرم',g:1},{n:'پیمانه',g:234}]},
-{id:'granola',name:'گرانولا',cat:'carb',emoji:'🥣',cal:471,prot:10,carb:64,fat:20,units:[{n:'گرم',g:1},{n:'پیمانه',g:110}]},
-{id:'potato_boiled',name:'سیب‌زمینی آب‌پز',cat:'carb',emoji:'🥔',cal:77,prot:2,carb:17,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد کوچک',g:130},{n:'عدد بزرگ',g:220}]},
-{id:'potato_baked',name:'سیب‌زمینی تنوری',cat:'carb',emoji:'🥔',cal:93,prot:2.5,carb:21,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد',g:170}]},
-{id:'potato_mashed',name:'پوره سیب‌زمینی',cat:'carb',emoji:'🥔',cal:108,prot:2,carb:17,fat:4,units:[{n:'گرم',g:1},{n:'پیمانه',g:210}]},
-{id:'sweet_potato',name:'سیب‌زمینی شیرین',cat:'carb',emoji:'🍠',cal:86,prot:1.6,carb:20,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد متوسط',g:150}]},
+{id:'oat',name:'جو دوسر (خشک)',cat:'carb',emoji:'🌾',cal:389,prot:17,carb:66,fat:7,units:[{n:'گرم',g:1},{n:'پیمانه',g:80},{n:'ق.غ',g:10}]},
+{id:'potato_boiled',name:'سیب‌زمینی آب‌پز',cat:'carb',emoji:'🥔',cal:77,prot:2,carb:17,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:150}]},
+{id:'sweet_potato',name:'سیب‌زمینی شیرین',cat:'carb',emoji:'🍠',cal:86,prot:1.6,carb:20,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:150}]},
 {id:'pasta_cooked',name:'ماکارونی پخته',cat:'carb',emoji:'🍝',cal:131,prot:5,carb:25,fat:1.1,units:[{n:'گرم',g:1},{n:'پیمانه',g:140}]},
-{id:'spaghetti_cooked',name:'اسپاگتی پخته',cat:'carb',emoji:'🍝',cal:158,prot:5.8,carb:31,fat:0.9,units:[{n:'گرم',g:1},{n:'پیمانه',g:140}]},
-{id:'noodle_soba',name:'نودل سوبا پخته',cat:'carb',emoji:'🍜',cal:99,prot:5,carb:21,fat:0.1,units:[{n:'گرم',g:1},{n:'پیمانه',g:114}]},
 {id:'quinoa_cooked',name:'کینوا پخته',cat:'carb',emoji:'🌾',cal:120,prot:4.4,carb:21,fat:1.9,units:[{n:'گرم',g:1},{n:'پیمانه',g:185}]},
-{id:'barley_cooked',name:'جو پخته',cat:'carb',emoji:'🌾',cal:123,prot:2.3,carb:28,fat:0.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:157}]},
-{id:'couscous_cooked',name:'کوسکوس پخته',cat:'carb',emoji:'🌾',cal:112,prot:3.8,carb:23,fat:0.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:157}]},
-{id:'corn',name:'ذرت پخته',cat:'carb',emoji:'🌽',cal:96,prot:3.4,carb:21,fat:1.5,units:[{n:'گرم',g:1},{n:'بلال',g:90}]},
-{id:'pea_green',name:'نخود سبز پخته',cat:'carb',emoji:'🫛',cal:84,prot:5.4,carb:15.6,fat:0.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:160}]},
-{id:'rice_cake',name:'کیک برنجی',cat:'carb',emoji:'🍘',cal:387,prot:8,carb:81,fat:3,units:[{n:'گرم',g:1},{n:'عدد',g:9}]},
-{id:'olive_oil',name:'روغن زیتون',cat:'fat',emoji:'🫒',cal:884,prot:0,carb:0,fat:100,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:13.5},{n:'قاشق چای‌خوری',g:4.5}]},
-{id:'butter',name:'کره حیوانی',cat:'fat',emoji:'🧈',cal:717,prot:0.9,carb:0.1,fat:81,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:14},{n:'قاشق چای‌خوری',g:4.7}]},
-{id:'ghee',name:'روغن حیوانی',cat:'fat',emoji:'🧈',cal:900,prot:0,carb:0,fat:100,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:12.8}]},
-{id:'coconut_oil',name:'روغن نارگیل',cat:'fat',emoji:'🥥',cal:862,prot:0,carb:0,fat:100,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:13.6}]},
+{id:'olive_oil',name:'روغن زیتون',cat:'fat',emoji:'🫒',cal:884,prot:0,carb:0,fat:100,units:[{n:'گرم',g:1},{n:'ق.غ',g:13.5},{n:'ق.چ',g:4.5}]},
+{id:'butter',name:'کره حیوانی',cat:'fat',emoji:'🧈',cal:717,prot:.9,carb:.1,fat:81,units:[{n:'گرم',g:1},{n:'ق.غ',g:14}]},
 {id:'avocado',name:'آووکادو',cat:'fat',emoji:'🥑',cal:160,prot:2,carb:9,fat:15,units:[{n:'گرم',g:1},{n:'عدد',g:200}]},
-{id:'tahini',name:'ارده',cat:'fat',emoji:'🥜',cal:595,prot:17,carb:21,fat:54,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:15}]},
-{id:'peanut_butter',name:'کره بادام زمینی',cat:'fat',emoji:'🥜',cal:588,prot:25,carb:20,fat:50,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:16}]},
-{id:'almond_butter',name:'کره بادام',cat:'fat',emoji:'🥜',cal:614,prot:21,carb:19,fat:56,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:16}]},
-{id:'cashew_butter',name:'کره بادام هندی',cat:'fat',emoji:'🥜',cal:587,prot:18,carb:28,fat:49,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:16}]},
-{id:'dark_chocolate',name:'شکلات تلخ ۷۰٪',cat:'fat',emoji:'🍫',cal:598,prot:7.8,carb:46,fat:43,units:[{n:'گرم',g:1},{n:'مربع',g:10}]},
+{id:'tahini',name:'ارده',cat:'fat',emoji:'🥜',cal:595,prot:17,carb:21,fat:54,units:[{n:'گرم',g:1},{n:'ق.غ',g:15}]},
+{id:'peanut_butter',name:'کره بادام زمینی',cat:'fat',emoji:'🥜',cal:588,prot:25,carb:20,fat:50,units:[{n:'گرم',g:1},{n:'ق.غ',g:16}]},
 {id:'almond',name:'بادام',cat:'nut',emoji:'🥜',cal:579,prot:21,carb:22,fat:50,units:[{n:'گرم',g:1},{n:'عدد',g:1.2},{n:'مشت',g:30}]},
 {id:'walnut',name:'گردو',cat:'nut',emoji:'🌰',cal:654,prot:15,carb:14,fat:65,units:[{n:'گرم',g:1},{n:'عدد',g:5},{n:'مشت',g:30}]},
-{id:'pistachio',name:'پسته',cat:'nut',emoji:'🌰',cal:560,prot:20,carb:28,fat:45,units:[{n:'گرم',g:1},{n:'عدد',g:0.7},{n:'مشت',g:30}]},
-{id:'cashew',name:'بادام هندی',cat:'nut',emoji:'🥜',cal:553,prot:18,carb:30,fat:44,units:[{n:'گرم',g:1},{n:'عدد',g:1.5},{n:'مشت',g:30}]},
-{id:'hazelnut',name:'فندق',cat:'nut',emoji:'🌰',cal:628,prot:15,carb:17,fat:61,units:[{n:'گرم',g:1},{n:'عدد',g:1.5}]},
-{id:'peanut',name:'بادام زمینی',cat:'nut',emoji:'🥜',cal:567,prot:26,carb:16,fat:49,units:[{n:'گرم',g:1},{n:'مشت',g:30}]},
-{id:'macadamia',name:'ماکادمیا',cat:'nut',emoji:'🌰',cal:718,prot:8,carb:14,fat:76,units:[{n:'گرم',g:1},{n:'عدد',g:2.5}]},
-{id:'brazil_nut',name:'فندق برزیلی',cat:'nut',emoji:'🌰',cal:659,prot:14,carb:12,fat:67,units:[{n:'گرم',g:1},{n:'عدد',g:5}]},
-{id:'pine_nut',name:'کاج (پیگنولی)',cat:'nut',emoji:'🌰',cal:673,prot:14,carb:13,fat:68,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:9}]},
-{id:'sunflower_seed',name:'تخمه آفتابگردان',cat:'nut',emoji:'🌻',cal:584,prot:21,carb:20,fat:51,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:9}]},
-{id:'pumpkin_seed',name:'تخمه کدو',cat:'nut',emoji:'🎃',cal:559,prot:30,carb:11,fat:49,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:10}]},
-{id:'sesame',name:'کنجد',cat:'nut',emoji:'🌱',cal:573,prot:18,carb:23,fat:50,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:9}]},
-{id:'flax_seed',name:'تخم کتان',cat:'nut',emoji:'🌱',cal:534,prot:18,carb:29,fat:42,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:10}]},
-{id:'chia_seed',name:'تخم چیا',cat:'nut',emoji:'🌱',cal:486,prot:17,carb:42,fat:31,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:12}]},
-{id:'hemp_seed',name:'تخم شاهدانه',cat:'nut',emoji:'🌱',cal:553,prot:32,carb:8.7,fat:49,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:10}]},
-{id:'broccoli',name:'کلم بروکلی',cat:'veg',emoji:'🥦',cal:34,prot:2.8,carb:7,fat:0.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:91}]},
-{id:'cauliflower',name:'گل کلم',cat:'veg',emoji:'🥦',cal:25,prot:1.9,carb:5,fat:0.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:107}]},
-{id:'spinach',name:'اسفناج',cat:'veg',emoji:'🥬',cal:23,prot:2.9,carb:3.6,fat:0.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:30}]},
-{id:'kale',name:'کلم پیچ',cat:'veg',emoji:'🥬',cal:35,prot:2.9,carb:4.4,fat:1.5,units:[{n:'گرم',g:1},{n:'پیمانه',g:67}]},
-{id:'lettuce',name:'کاهو',cat:'veg',emoji:'🥬',cal:15,prot:1.4,carb:2.9,fat:0.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:36}]},
-{id:'arugula',name:'شاهی',cat:'veg',emoji:'🌿',cal:25,prot:2.6,carb:3.7,fat:0.7,units:[{n:'گرم',g:1},{n:'پیمانه',g:20}]},
-{id:'tomato',name:'گوجه فرنگی',cat:'veg',emoji:'🍅',cal:18,prot:0.9,carb:3.9,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد متوسط',g:120},{n:'عدد گیلاسی',g:15}]},
-{id:'cherry_tomato',name:'گوجه گیلاسی',cat:'veg',emoji:'🍅',cal:18,prot:0.9,carb:3.9,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:15}]},
-{id:'cucumber',name:'خیار',cat:'veg',emoji:'🥒',cal:15,prot:0.7,carb:3.6,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد',g:200}]},
-{id:'bell_pepper',name:'فلفل دلمه‌ای',cat:'veg',emoji:'🫑',cal:31,prot:1,carb:6,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:120}]},
-{id:'chili_pepper',name:'فلفل تند',cat:'veg',emoji:'🌶️',cal:40,prot:1.9,carb:8.8,fat:0.4,units:[{n:'گرم',g:1},{n:'عدد',g:15}]},
-{id:'zucchini',name:'کدو سبز',cat:'veg',emoji:'🥒',cal:17,prot:1.2,carb:3.1,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:180}]},
-{id:'eggplant',name:'بادمجان',cat:'veg',emoji:'🍆',cal:25,prot:1,carb:6,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:250}]},
-{id:'onion',name:'پیاز',cat:'veg',emoji:'🧅',cal:40,prot:1.1,carb:9.3,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد کوچک',g:70},{n:'عدد بزرگ',g:150}]},
-{id:'garlic',name:'سیر',cat:'veg',emoji:'🧄',cal:149,prot:6.4,carb:33,fat:0.5,units:[{n:'گرم',g:1},{n:'حبه',g:3}]},
-{id:'carrot',name:'هویج',cat:'veg',emoji:'🥕',cal:41,prot:0.9,carb:10,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:60}]},
-{id:'beet',name:'چغندر',cat:'veg',emoji:'🟣',cal:43,prot:1.6,carb:10,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:80}]},
-{id:'radish',name:'تربچه',cat:'veg',emoji:'🔴',cal:16,prot:0.7,carb:3.4,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد',g:10}]},
-{id:'cabbage',name:'کلم سفید',cat:'veg',emoji:'🥬',cal:25,prot:1.3,carb:5.8,fat:0.1,units:[{n:'گرم',g:1},{n:'پیمانه',g:89}]},
-{id:'red_cabbage',name:'کلم قرمز',cat:'veg',emoji:'🥬',cal:31,prot:1.4,carb:7.4,fat:0.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:89}]},
-{id:'brussels_sprout',name:'کلم بروکسل',cat:'veg',emoji:'🥬',cal:43,prot:3.4,carb:9,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:19}]},
-{id:'mushroom',name:'قارچ',cat:'veg',emoji:'🍄',cal:22,prot:3.1,carb:3.3,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:15}]},
-{id:'asparagus',name:'مارچوبه',cat:'veg',emoji:'🌱',cal:20,prot:2.2,carb:3.9,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد',g:20}]},
-{id:'green_bean',name:'لوبیا سبز',cat:'veg',emoji:'🫛',cal:31,prot:1.8,carb:7,fat:0.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:100}]},
-{id:'okra',name:'بامیه',cat:'veg',emoji:'🌱',cal:33,prot:1.9,carb:7.5,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:15}]},
-{id:'celery',name:'کرفس',cat:'veg',emoji:'🌿',cal:16,prot:0.7,carb:3,fat:0.2,units:[{n:'گرم',g:1},{n:'ساقه',g:40}]},
-{id:'artichoke',name:'کنگر فرنگی',cat:'veg',emoji:'🌿',cal:47,prot:3.3,carb:11,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:120}]},
-{id:'pumpkin',name:'کدو حلوایی',cat:'veg',emoji:'🎃',cal:26,prot:1,carb:6.5,fat:0.1,units:[{n:'گرم',g:1},{n:'پیمانه',g:116}]},
-{id:'leek',name:'تره فرنگی',cat:'veg',emoji:'🌿',cal:61,prot:1.5,carb:14,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:90}]},
-{id:'apple',name:'سیب',cat:'fruit',emoji:'🍎',cal:52,prot:0.3,carb:14,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد متوسط',g:180}]},
-{id:'banana',name:'موز',cat:'fruit',emoji:'🍌',cal:89,prot:1.1,carb:23,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد متوسط',g:120}]},
-{id:'orange',name:'پرتقال',cat:'fruit',emoji:'🍊',cal:47,prot:0.9,carb:12,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد متوسط',g:150}]},
-{id:'pear',name:'گلابی',cat:'fruit',emoji:'🍐',cal:57,prot:0.4,carb:15,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد متوسط',g:180}]},
-{id:'peach',name:'هلو',cat:'fruit',emoji:'🍑',cal:39,prot:0.9,carb:10,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد متوسط',g:150}]},
-{id:'nectarine',name:'شلیل',cat:'fruit',emoji:'🍑',cal:44,prot:1.1,carb:11,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:140}]},
-{id:'apricot',name:'زردآلو',cat:'fruit',emoji:'🍑',cal:48,prot:1.4,carb:11,fat:0.4,units:[{n:'گرم',g:1},{n:'عدد',g:35}]},
-{id:'plum',name:'آلو',cat:'fruit',emoji:'🍑',cal:46,prot:0.7,carb:11,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:65}]},
-{id:'cherry',name:'گیلاس',cat:'fruit',emoji:'🍒',cal:63,prot:1.1,carb:16,fat:0.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:155}]},
-{id:'grape',name:'انگور',cat:'fruit',emoji:'🍇',cal:69,prot:0.7,carb:18,fat:0.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:150}]},
-{id:'strawberry',name:'توت فرنگی',cat:'fruit',emoji:'🍓',cal:32,prot:0.7,carb:7.7,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:12},{n:'پیمانه',g:150}]},
-{id:'blueberry',name:'بلوبری',cat:'fruit',emoji:'🫐',cal:57,prot:0.7,carb:14,fat:0.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:148}]},
-{id:'raspberry',name:'تمشک',cat:'fruit',emoji:'🍇',cal:52,prot:1.2,carb:12,fat:0.7,units:[{n:'گرم',g:1},{n:'پیمانه',g:123}]},
-{id:'blackberry',name:'شاه‌توت',cat:'fruit',emoji:'🍇',cal:43,prot:1.4,carb:10,fat:0.5,units:[{n:'گرم',g:1},{n:'پیمانه',g:144}]},
-{id:'mango',name:'انبه',cat:'fruit',emoji:'🥭',cal:60,prot:0.8,carb:15,fat:0.4,units:[{n:'گرم',g:1},{n:'عدد',g:200}]},
-{id:'papaya',name:'پاپایا',cat:'fruit',emoji:'🥭',cal:43,prot:0.5,carb:11,fat:0.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:145}]},
-{id:'pineapple',name:'آناناس',cat:'fruit',emoji:'🍍',cal:50,prot:0.5,carb:13,fat:0.1,units:[{n:'گرم',g:1},{n:'پیمانه',g:165}]},
-{id:'kiwi',name:'کیوی',cat:'fruit',emoji:'🥝',cal:61,prot:1.1,carb:15,fat:0.5,units:[{n:'گرم',g:1},{n:'عدد',g:75}]},
-{id:'watermelon',name:'هندوانه',cat:'fruit',emoji:'🍉',cal:30,prot:0.6,carb:8,fat:0.2,units:[{n:'گرم',g:1},{n:'برش',g:280}]},
-{id:'melon',name:'طالبی',cat:'fruit',emoji:'🍈',cal:34,prot:0.8,carb:8,fat:0.2,units:[{n:'گرم',g:1},{n:'برش',g:160}]},
-{id:'date',name:'خرما',cat:'fruit',emoji:'🌴',cal:282,prot:2.5,carb:75,fat:0.4,units:[{n:'گرم',g:1},{n:'عدد',g:8}]},
-{id:'fig_dried',name:'انجیر خشک',cat:'fruit',emoji:'🟤',cal:249,prot:3.3,carb:64,fat:0.9,units:[{n:'گرم',g:1},{n:'عدد',g:8}]},
-{id:'raisin',name:'کشمش',cat:'fruit',emoji:'🍇',cal:299,prot:3.1,carb:79,fat:0.5,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:15}]},
-{id:'pomegranate',name:'انار',cat:'fruit',emoji:'🍎',cal:83,prot:1.7,carb:19,fat:1.2,units:[{n:'گرم',g:1},{n:'عدد',g:280}]},
-{id:'lemon',name:'لیمو ترش',cat:'fruit',emoji:'🍋',cal:29,prot:1.1,carb:9.3,fat:0.3,units:[{n:'گرم',g:1},{n:'عدد',g:60}]},
-{id:'grapefruit',name:'گریپ فروت',cat:'fruit',emoji:'🍊',cal:42,prot:0.8,carb:11,fat:0.1,units:[{n:'گرم',g:1},{n:'عدد',g:230}]},
-{id:'persimmon',name:'خرمالو',cat:'fruit',emoji:'🟠',cal:70,prot:0.6,carb:19,fat:0.2,units:[{n:'گرم',g:1},{n:'عدد',g:170}]},
-{id:'milk_whole',name:'شیر پرچرب',cat:'dairy',emoji:'🥛',cal:61,prot:3.2,carb:4.8,fat:3.3,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'milk_low',name:'شیر کم چرب',cat:'dairy',emoji:'🥛',cal:42,prot:3.4,carb:5,fat:1,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'milk_skim',name:'شیر بدون چربی',cat:'dairy',emoji:'🥛',cal:34,prot:3.4,carb:5,fat:0.1,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'milk_almond',name:'شیر بادام',cat:'dairy',emoji:'🥛',cal:17,prot:0.6,carb:0.6,fat:1.2,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'milk_soy',name:'شیر سویا',cat:'dairy',emoji:'🥛',cal:33,prot:2.8,carb:1.2,fat:1.6,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'milk_oat',name:'شیر جو دوسر',cat:'dairy',emoji:'🥛',cal:47,prot:1,carb:7,fat:1.5,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'yogurt_plain',name:'ماست ساده پرچرب',cat:'dairy',emoji:'🥛',cal:61,prot:3.5,carb:4.7,fat:3.3,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:15},{n:'لیوان',g:240}]},
-{id:'yogurt_low',name:'ماست کم چرب',cat:'dairy',emoji:'🥛',cal:59,prot:10,carb:3.6,fat:0.4,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:15},{n:'لیوان',g:240}]},
-{id:'yogurt_greek',name:'ماست یونانی',cat:'dairy',emoji:'🥛',cal:97,prot:9,carb:3.6,fat:5,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:15}]},
-{id:'kefir',name:'کفیر',cat:'dairy',emoji:'🥛',cal:55,prot:3.3,carb:4.5,fat:3,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'doogh',name:'دوغ',cat:'dairy',emoji:'🥛',cal:38,prot:2,carb:4,fat:1.5,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'cheese_feta',name:'پنیر فتا',cat:'dairy',emoji:'🧀',cal:264,prot:14,carb:4.1,fat:21,units:[{n:'گرم',g:1},{n:'مکعب',g:17}]},
+{id:'pistachio',name:'پسته',cat:'nut',emoji:'🌰',cal:560,prot:20,carb:28,fat:45,units:[{n:'گرم',g:1},{n:'مشت',g:30}]},
+{id:'broccoli',name:'کلم بروکلی',cat:'veg',emoji:'🥦',cal:34,prot:2.8,carb:7,fat:.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:91}]},
+{id:'spinach',name:'اسفناج',cat:'veg',emoji:'🥬',cal:23,prot:2.9,carb:3.6,fat:.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:30}]},
+{id:'tomato',name:'گوجه فرنگی',cat:'veg',emoji:'🍅',cal:18,prot:.9,carb:3.9,fat:.2,units:[{n:'گرم',g:1},{n:'عدد',g:120}]},
+{id:'cucumber',name:'خیار',cat:'veg',emoji:'🥒',cal:15,prot:.7,carb:3.6,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:200}]},
+{id:'lettuce',name:'کاهو',cat:'veg',emoji:'🥬',cal:15,prot:1.4,carb:2.9,fat:.2,units:[{n:'گرم',g:1},{n:'پیمانه',g:36}]},
+{id:'carrot',name:'هویج',cat:'veg',emoji:'🥕',cal:41,prot:.9,carb:10,fat:.2,units:[{n:'گرم',g:1},{n:'عدد',g:60}]},
+{id:'apple',name:'سیب',cat:'fruit',emoji:'🍎',cal:52,prot:.3,carb:14,fat:.2,units:[{n:'گرم',g:1},{n:'عدد',g:180}]},
+{id:'banana',name:'موز',cat:'fruit',emoji:'🍌',cal:89,prot:1.1,carb:23,fat:.3,units:[{n:'گرم',g:1},{n:'عدد',g:120}]},
+{id:'orange',name:'پرتقال',cat:'fruit',emoji:'🍊',cal:47,prot:.9,carb:12,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:150}]},
+{id:'strawberry',name:'توت فرنگی',cat:'fruit',emoji:'🍓',cal:32,prot:.7,carb:7.7,fat:.3,units:[{n:'گرم',g:1},{n:'عدد',g:12}]},
+{id:'blueberry',name:'بلوبری',cat:'fruit',emoji:'🫐',cal:57,prot:.7,carb:14,fat:.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:148}]},
+{id:'date',name:'خرما',cat:'fruit',emoji:'🌴',cal:282,prot:2.5,carb:75,fat:.4,units:[{n:'گرم',g:1},{n:'عدد',g:8}]},
+{id:'milk_whole',name:'شیر پرچرب',cat:'dairy',emoji:'🥛',cal:61,prot:3.2,carb:4.8,fat:3.3,units:[{n:'ml',g:1},{n:'لیوان',g:240}]},
+{id:'milk_low',name:'شیر کم چرب',cat:'dairy',emoji:'🥛',cal:42,prot:3.4,carb:5,fat:1,units:[{n:'ml',g:1},{n:'لیوان',g:240}]},
+{id:'yogurt_plain',name:'ماست پرچرب',cat:'dairy',emoji:'🥛',cal:61,prot:3.5,carb:4.7,fat:3.3,units:[{n:'گرم',g:1},{n:'لیوان',g:240}]},
+{id:'yogurt_low',name:'ماست کم چرب',cat:'dairy',emoji:'🥛',cal:59,prot:10,carb:3.6,fat:.4,units:[{n:'گرم',g:1},{n:'لیوان',g:240}]},
 {id:'cheese_white',name:'پنیر سفید ایرانی',cat:'dairy',emoji:'🧀',cal:350,prot:22,carb:2,fat:28,units:[{n:'گرم',g:1},{n:'برش',g:30}]},
 {id:'cheese_mozzarella',name:'پنیر موزارلا',cat:'dairy',emoji:'🧀',cal:300,prot:22,carb:2.2,fat:22,units:[{n:'گرم',g:1},{n:'برش',g:28}]},
-{id:'cheese_cheddar',name:'پنیر چدار',cat:'dairy',emoji:'🧀',cal:402,prot:25,carb:1.3,fat:33,units:[{n:'گرم',g:1},{n:'برش',g:28}]},
-{id:'cheese_parmesan',name:'پنیر پارمزان',cat:'dairy',emoji:'🧀',cal:431,prot:38,carb:4.1,fat:29,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:5}]},
-{id:'cottage',name:'پنیر کوتاژ',cat:'dairy',emoji:'🧀',cal:98,prot:11,carb:3.4,fat:4.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:210}]},
-{id:'cream_cheese',name:'پنیر خامه‌ای',cat:'dairy',emoji:'🧀',cal:342,prot:6,carb:4,fat:34,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:15}]},
-{id:'cream_heavy',name:'خامه پرچرب',cat:'dairy',emoji:'🥛',cal:345,prot:2.1,carb:2.8,fat:37,units:[{n:'میلی‌لیتر',g:1},{n:'قاشق غذاخوری',g:15}]},
-{id:'sour_cream',name:'خامه ترش',cat:'dairy',emoji:'🥛',cal:198,prot:2.4,carb:4.6,fat:19,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:12}]},
 {id:'kebab_koobideh',name:'کباب کوبیده',cat:'iranian',emoji:'🍢',cal:280,prot:19,carb:8,fat:19,units:[{n:'گرم',g:1},{n:'سیخ',g:120}]},
 {id:'kebab_barg',name:'کباب برگ',cat:'iranian',emoji:'🍢',cal:220,prot:25,carb:0,fat:13,units:[{n:'گرم',g:1},{n:'سیخ',g:150}]},
 {id:'jujeh_kabab',name:'جوجه کباب',cat:'iranian',emoji:'🍗',cal:165,prot:28,carb:2,fat:5,units:[{n:'گرم',g:1},{n:'سیخ',g:150}]},
-{id:'kebab_soltani',name:'کباب سلطانی',cat:'iranian',emoji:'🍢',cal:340,prot:30,carb:5,fat:22,units:[{n:'گرم',g:1},{n:'پرس',g:250}]},
 {id:'ghormeh_sabzi',name:'قورمه سبزی با برنج',cat:'iranian',emoji:'🍛',cal:420,prot:18,carb:45,fat:18,units:[{n:'گرم',g:1},{n:'پرس',g:350}]},
 {id:'gheymeh',name:'قیمه با برنج',cat:'iranian',emoji:'🍛',cal:410,prot:17,carb:48,fat:15,units:[{n:'گرم',g:1},{n:'پرس',g:350}]},
-{id:'fesenjan',name:'فسنجان با برنج',cat:'iranian',emoji:'🍛',cal:520,prot:22,carb:42,fat:28,units:[{n:'گرم',g:1},{n:'پرس',g:350}]},
 {id:'zereshk_polo',name:'زرشک پلو با مرغ',cat:'iranian',emoji:'🍛',cal:450,prot:25,carb:52,fat:14,units:[{n:'گرم',g:1},{n:'پرس',g:350}]},
-{id:'baghali_polo',name:'باقالی پلو با ماهیچه',cat:'iranian',emoji:'🍛',cal:480,prot:28,carb:55,fat:15,units:[{n:'گرم',g:1},{n:'پرس',g:350}]},
-{id:'tachin',name:'ته‌چین مرغ',cat:'iranian',emoji:'🍛',cal:460,prot:22,carb:48,fat:20,units:[{n:'گرم',g:1},{n:'پرس',g:300}]},
 {id:'abgoosht',name:'آبگوشت',cat:'iranian',emoji:'🍲',cal:280,prot:22,carb:15,fat:14,units:[{n:'گرم',g:1},{n:'کاسه',g:400}]},
-{id:'ash_reshteh',name:'آش رشته',cat:'iranian',emoji:'🍲',cal:130,prot:5,carb:22,fat:3,units:[{n:'گرم',g:1},{n:'کاسه',g:300}]},
-{id:'ash_doogh',name:'آش دوغ',cat:'iranian',emoji:'🍲',cal:110,prot:4,carb:16,fat:3.5,units:[{n:'گرم',g:1},{n:'کاسه',g:300}]},
-{id:'kale_pache',name:'کله پاچه',cat:'iranian',emoji:'🍲',cal:420,prot:35,carb:5,fat:28,units:[{n:'گرم',g:1},{n:'پرس',g:400}]},
-{id:'kuku_sabzi',name:'کوکو سبزی',cat:'iranian',emoji:'🍳',cal:230,prot:11,carb:6,fat:18,units:[{n:'گرم',g:1},{n:'برش',g:100}]},
-{id:'mirza_ghasemi',name:'میرزا قاسمی',cat:'iranian',emoji:'🍳',cal:180,prot:8,carb:9,fat:13,units:[{n:'گرم',g:1},{n:'پرس',g:200}]},
 {id:'kashk_bademjan',name:'کشک بادمجان',cat:'iranian',emoji:'🍆',cal:170,prot:6,carb:11,fat:12,units:[{n:'گرم',g:1},{n:'پرس',g:200}]},
-{id:'halim',name:'حلیم گندم و گوشت',cat:'iranian',emoji:'🥣',cal:190,prot:10,carb:22,fat:6,units:[{n:'گرم',g:1},{n:'کاسه',g:250}]},
-{id:'adas_polo',name:'عدس پلو',cat:'iranian',emoji:'🍛',cal:360,prot:13,carb:60,fat:8,units:[{n:'گرم',g:1},{n:'پرس',g:350}]},
-{id:'kashk',name:'کشک',cat:'iranian',emoji:'🥛',cal:160,prot:10,carb:6,fat:10,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:20}]},
-{id:'torshi',name:'ترشی مخلوط',cat:'iranian',emoji:'🥒',cal:25,prot:0.5,carb:4,fat:0.6,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:20}]},
-{id:'sabzi_khordan',name:'سبزی خوردن',cat:'iranian',emoji:'🌿',cal:22,prot:1.5,carb:3.5,fat:0.3,units:[{n:'گرم',g:1},{n:'دسته',g:50}]},
-{id:'morgh_polo',name:'مرغ پلو (زعفرانی)',cat:'iranian',emoji:'🍛',cal:430,prot:24,carb:52,fat:13,units:[{n:'گرم',g:1},{n:'پرس',g:350}]},
-{id:'khoresh_bademjan',name:'خورش بادمجان',cat:'iranian',emoji:'🍛',cal:280,prot:18,carb:14,fat:17,units:[{n:'گرم',g:1},{n:'پرس',g:250}]},
-{id:'water',name:'آب',cat:'drink',emoji:'💧',cal:0,prot:0,carb:0,fat:0,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'coffee_black',name:'قهوه تلخ',cat:'drink',emoji:'☕',cal:2,prot:0.1,carb:0,fat:0,units:[{n:'میلی‌لیتر',g:1},{n:'فنجان',g:240}]},
-{id:'tea_black',name:'چای تلخ',cat:'drink',emoji:'🍵',cal:1,prot:0,carb:0.3,fat:0,units:[{n:'میلی‌لیتر',g:1},{n:'استکان',g:80}]},
-{id:'green_tea',name:'چای سبز',cat:'drink',emoji:'🍵',cal:1,prot:0,carb:0.2,fat:0,units:[{n:'میلی‌لیتر',g:1},{n:'فنجان',g:240}]},
-{id:'herbal_tea',name:'دمنوش',cat:'drink',emoji:'🍵',cal:2,prot:0,carb:0.5,fat:0,units:[{n:'میلی‌لیتر',g:1},{n:'فنجان',g:240}]},
-{id:'orange_juice',name:'آب پرتقال',cat:'drink',emoji:'🥤',cal:45,prot:0.7,carb:10,fat:0.2,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'apple_juice',name:'آب سیب',cat:'drink',emoji:'🥤',cal:46,prot:0.1,carb:11,fat:0.1,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'cola',name:'نوشابه (کولا)',cat:'drink',emoji:'🥤',cal:42,prot:0,carb:10.6,fat:0,units:[{n:'میلی‌لیتر',g:1},{n:'قوطی',g:330}]},
-{id:'soda_diet',name:'نوشابه رژیمی',cat:'drink',emoji:'🥤',cal:1,prot:0,carb:0.3,fat:0,units:[{n:'میلی‌لیتر',g:1},{n:'قوطی',g:330}]},
-{id:'smoothie_berry',name:'اسموتی توت',cat:'drink',emoji:'🥤',cal:70,prot:1,carb:15,fat:0.5,units:[{n:'میلی‌لیتر',g:1},{n:'لیوان',g:240}]},
-{id:'honey',name:'عسل',cat:'sweet',emoji:'🍯',cal:304,prot:0.3,carb:82,fat:0,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:21}]},
-{id:'sugar',name:'شکر',cat:'sweet',emoji:'🍬',cal:387,prot:0,carb:100,fat:0,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:12},{n:'قاشق چای‌خوری',g:4}]},
-{id:'jam',name:'مربا',cat:'sweet',emoji:'🍯',cal:278,prot:0.4,carb:69,fat:0.1,units:[{n:'گرم',g:1},{n:'قاشق غذاخوری',g:20}]},
+{id:'kuku_sabzi',name:'کوکو سبزی',cat:'iranian',emoji:'🍳',cal:230,prot:11,carb:6,fat:18,units:[{n:'گرم',g:1},{n:'برش',g:100}]},
+{id:'water',name:'آب',cat:'drink',emoji:'💧',cal:0,prot:0,carb:0,fat:0,units:[{n:'ml',g:1},{n:'لیوان',g:240}]},
+{id:'coffee_black',name:'قهوه تلخ',cat:'drink',emoji:'☕',cal:2,prot:.1,carb:0,fat:0,units:[{n:'ml',g:1},{n:'فنجان',g:240}]},
+{id:'tea_black',name:'چای تلخ',cat:'drink',emoji:'🍵',cal:1,prot:0,carb:.3,fat:0,units:[{n:'ml',g:1},{n:'استکان',g:80}]},
+{id:'honey',name:'عسل',cat:'sweet',emoji:'🍯',cal:304,prot:.3,carb:82,fat:0,units:[{n:'گرم',g:1},{n:'ق.غ',g:21}]},
+{id:'sugar',name:'شکر',cat:'sweet',emoji:'🍬',cal:387,prot:0,carb:100,fat:0,units:[{n:'گرم',g:1},{n:'ق.غ',g:12}]},
 {id:'chocolate_milk',name:'شکلات شیری',cat:'sweet',emoji:'🍫',cal:535,prot:7.6,carb:59,fat:30,units:[{n:'گرم',g:1},{n:'مربع',g:10}]},
-{id:'cake',name:'کیک ساده',cat:'sweet',emoji:'🎂',cal:350,prot:5,carb:50,fat:15,units:[{n:'گرم',g:1},{n:'برش',g:80}]},
-{id:'biscuit',name:'بیسکویت ساده',cat:'sweet',emoji:'🍪',cal:450,prot:7,carb:70,fat:15,units:[{n:'گرم',g:1},{n:'عدد',g:8}]},
 {id:'ice_cream',name:'بستنی سنتی',cat:'sweet',emoji:'🍨',cal:210,prot:3.5,carb:24,fat:11,units:[{n:'گرم',g:1},{n:'اسکوپ',g:60}]},
-{id:'halva',name:'حلوا',cat:'sweet',emoji:'🍮',cal:430,prot:4,carb:55,fat:22,units:[{n:'گرم',g:1},{n:'برش',g:60}]},
-{id:'faloodeh',name:'فالوده',cat:'sweet',emoji:'🍧',cal:145,prot:0.2,carb:36,fat:0,units:[{n:'گرم',g:1},{n:'کاسه',g:200}]},
 {id:'gaz',name:'گز اصفهان',cat:'sweet',emoji:'🍬',cal:430,prot:5,carb:65,fat:17,units:[{n:'گرم',g:1},{n:'عدد',g:30}]},
-{id:'sohan',name:'سوهان',cat:'sweet',emoji:'🍬',cal:510,prot:8,carb:55,fat:30,units:[{n:'گرم',g:1},{n:'برش',g:25}]},
+{id:'protein_bar',name:'پروتئین بار',cat:'protein',emoji:'🍫',cal:380,prot:30,carb:40,fat:10,units:[{n:'گرم',g:1},{n:'عدد',g:60}]},
 {id:'energy_bar',name:'انرژی بار',cat:'carb',emoji:'🍫',cal:420,prot:10,carb:60,fat:15,units:[{n:'گرم',g:1},{n:'عدد',g:50}]},
 {id:'mass_gainer',name:'گینر پودر',cat:'carb',emoji:'🥛',cal:400,prot:15,carb:75,fat:3,units:[{n:'گرم',g:1},{n:'اسکوپ',g:60}]}
 ];
@@ -1178,7 +1018,7 @@ const FOOD_DB=[
 /* ============ SUPPLEMENTS ============ */
 const SUPPLEMENT_DB={
 lose:[{name:'پروتئین وی',dose:'۱-۲ اسکوپ در روز',timing:'بعد از تمرین یا بین وعده‌ها',note:'حفظ عضله در کسری کالری'},{name:'L-Carnitine',dose:'۲ گرم',timing:'۳۰ دقیقه قبل از کاردیو',note:'کمک به چربی‌سوزی'},{name:'کافئین',dose:'۱۰۰-۲۰۰ میلی‌گرم',timing:'۳۰ دقیقه قبل تمرین',note:'افزایش متابولیسم'},{name:'چای سبز (EGCG)',dose:'۳۰۰-۵۰۰ میلی‌گرم',timing:'با وعده‌ها',note:'افزایش اکسیداسیون چربی'},{name:'فیبر (Psyllium)',dose:'۵ گرم',timing:'قبل از وعده اصلی',note:'افزایش سیری'},{name:'مولتی ویتامین',dose:'۱ عدد',timing:'صبح با صبحانه',note:'جبران کمبودها'},{name:'ویتامین D3',dose:'۲۰۰۰ IU',timing:'با وعده چرب',note:'حمایت هورمونی'},{name:'امگا ۳',dose:'۱-۲ گرم EPA+DHA',timing:'با وعده چرب',note:'ضدالتهاب'}],
-cut:[{name:'پروتئین وی ایزوله',dose:'۲ اسکوپ',timing:'بعد از تمرین + میان وعده',note:'پروتئین خالص بدون چربی'},{name:'BCAA',dose:'۵-۱۰ گرم',timing:'حین تمرین',note:'کاهش کاتابولیسم'},{name:'کافئین',dose:'۲۰۰ میلی‌گرم',timing:'قبل تمرین',note:'انرژی و تمرکز'},{name:'L-Glutamine',dose:'۵ گرم',timing:'بعد از تمرین',note:'ریکاوری'},{name:'مولتی ویتامین',dose:'۱ عدد',timing:'صبح',note:'ریزمغذی‌ها'},{name:'ویتامین D3',dose:'۲۰۰۰ IU',timing:'با وعده چرب',note:'ایمنی و هورمون'},{name:'امگا ۳',dose:'۲ گرم',timing:'با وعده چرب',note:'ضدالتهاب'},{name:'الکارنیتین',dose:'۲ گرم',timing:'قبل کاردیو',note:'اکسیداسیون چربی'}],
+cut:[{name:'پروتئین وی ایزوله',dose:'۲ اسکوپ',timing:'بعد از تمرین + میان وعده',note:'پروتئین خالص بدون چربی'},{name:'BCAA',dose:'۵-۱۰ گرم',timing:'حین تمرین',note:'کاهش کاتابولیسم'},{name:'کافئین',dose:'۲۰۰ میلی‌گرم',timing:'قبل تمرین',note:'انرژی و تمرکز'},{name:'L-Glutamine',dose:'۵ گرم',timing:'بعد از تمرین',note:'ریکاوری'},{name:'مولتی ویتامین',dose:'۱ عدد',timing:'صبح',note:'ریزمغذی‌ها'},{name:'ویتامین D3',dose:'۲۰۰۰ IU',timing:'با وعده چرب',note:'ایمنی و هورمون'},{name:'امگا ۳',dose:'۲ گرم',timing:'با وعده چرب',note:'ضدالتهاب'}],
 maintain:[{name:'پروتئین وی',dose:'۱ اسکوپ',timing:'بعد از تمرین',note:'تکمیل پروتئین روزانه'},{name:'مولتی ویتامین',dose:'۱ عدد',timing:'صبح',note:'تامین عمومی'},{name:'ویتامین D3',dose:'۲۰۰۰ IU',timing:'با وعده چرب',note:'سلامت استخوان'},{name:'امگا ۳',dose:'۱ گرم',timing:'با وعده چرب',note:'سلامت قلب'},{name:'منیزیم',dose:'۳۰۰ میلی‌گرم',timing:'شب قبل خواب',note:'آرامش و خواب'}],
 gain:[{name:'پروتئین وی',dose:'۲ اسکوپ',timing:'بعد از تمرین + میان وعده',note:'سنتز عضله'},{name:'کراتین مونوهیدرات',dose:'۵ گرم',timing:'هر روز',note:'افزایش قدرت و حجم'},{name:'گینر',dose:'۱-۲ اسکوپ',timing:'بین وعده‌ها یا بعد تمرین',note:'کالری مازاد'},{name:'BCAA',dose:'۵-۱۰ گرم',timing:'حین تمرین',note:'کاهش کاتابولیسم'},{name:'بتا آلانین',dose:'۳-۵ گرم',timing:'قبل تمرین',note:'استقامت عضلانی'},{name:'سیترولین مالیت',dose:'۶-۸ گرم',timing:'قبل تمرین',note:'پمپ عضلانی'},{name:'زینک + منیزیم',dose:'ZMA',timing:'شب',note:'ریکاوری'},{name:'مولتی ویتامین',dose:'۱ عدد',timing:'صبح',note:'ریزمغذی‌ها'},{name:'ویتامین D3',dose:'۴۰۰۰ IU',timing:'با وعده چرب',note:'حمایت هورمونی'},{name:'امگا ۳',dose:'۲ گرم',timing:'با وعده چرب',note:'ضدالتهاب'}],
 bulk:[{name:'پروتئین وی',dose:'۲-۳ اسکوپ',timing:'بعد تمرین + بین وعده‌ها',note:'پروتئین بالا'},{name:'کراتین مونوهیدرات',dose:'۵-۱۰ گرم',timing:'هر روز',note:'قدرت و حجم'},{name:'گینر قوی',dose:'۲-۳ اسکوپ',timing:'بین وعده‌ها',note:'کالری بسیار بالا'},{name:'بتا آلانین',dose:'۵ گرم',timing:'قبل تمرین',note:'استقامت'},{name:'سیترولین مالیت',dose:'۸ گرم',timing:'قبل تمرین',note:'پمپ'},{name:'زینک + منیزیم',dose:'ZMA',timing:'شب',note:'ریکاوری'},{name:'مولتی ویتامین',dose:'۱ عدد',timing:'صبح',note:'ریزمغذی'},{name:'ویتامین D3',dose:'۴۰۰۰ IU',timing:'با وعده چرب',note:'هورمون'},{name:'امگا ۳',dose:'۳ گرم',timing:'با وعده چرب',note:'ضدالتهاب'}]
@@ -1208,7 +1048,7 @@ lunge:'<svg viewBox="0 0 220 200"><g><animateTransform attributeName="transform"
 
 /* ============ STATE ============ */
 let currentUserId=null,authUser=null;
-let users=[],exerciseBank={},userProgram={days:[]},workoutData={};
+let exerciseBank={},userProgram={days:[]},workoutData={};
 let currentDay='all',completedExercises={},collapsedExercises={};
 let activeTimers={},cardioTimers={},exerciseLogs={},setTimers={},openLoggers={};
 let userSettings={...DEFAULT_SETTINGS},chartInstance=null,bodyChartInstance=null,globalTicker=null;
@@ -1218,7 +1058,7 @@ let editingDayKey=null,pendingExId=null,pickerCount=0,bankCat='all',pickerCat='a
 let selectedWeekday=null,selectedDayType='workout';
 let nutritionData=null,currentFoodMeal=null,currentFoodCat='all',editingSuppIdx=null;
 let bodyData=[];
-let cpStudentId=null,apPendingDelete=null,apPwdResolve=null;
+let cpStudentId=null,apPwdResolve=null;
 let apUsersCache=[],apCoachesCache=[];
 let exerciseObserver=null;
 
@@ -1309,6 +1149,47 @@ function saveSettings(){try{localStorage.setItem(SK('profit-set-'),JSON.stringif
 function getToday(){const d=new Date().getDay();for(const day of userProgram.days)if(day.weekday===d)return day.key;return null}
 
 /* ============ AUTH ============ */
+function showRegister(){
+  const lc=document.getElementById('loginCard');
+  const rc=document.getElementById('registerCard');
+  if(lc)lc.style.display='none';
+  if(rc)rc.style.display='block';
+  document.getElementById('aerr').textContent='';
+  document.getElementById('rerr').textContent='';
+  setTimeout(()=>document.getElementById('ru').focus(),100);
+}
+function showLogin(){
+  const lc=document.getElementById('loginCard');
+  const rc=document.getElementById('registerCard');
+  if(rc)rc.style.display='none';
+  if(lc)lc.style.display='block';
+  document.getElementById('aerr').textContent='';
+  document.getElementById('rerr').textContent='';
+}
+async function doRegister(){
+  const u=document.getElementById('ru').value.trim();
+  const n=document.getElementById('rn').value.trim();
+  const p=document.getElementById('rp').value;
+  const err=document.getElementById('rerr');
+  const btn=document.getElementById('arbtn');
+  err.textContent='';
+  if(!u||!n||!p){err.textContent='⚠️ همه فیلدها را پر کنید';return}
+  if(u.length<3){err.textContent='⚠️ نام کاربری حداقل ۳ کاراکتر';return}
+  if(!/^[a-zA-Z0-9_.-]+$/.test(u)){err.textContent='⚠️ نام کاربری فقط حروف انگلیسی، عدد، _ . -';return}
+  if(p.length<6){err.textContent='⚠️ رمز حداقل ۶ کاراکتر';return}
+  btn.disabled=true;btn.textContent='در حال ایجاد...';
+  try{
+    const r=await apiCall('POST','/api/auth/register',{username:u,displayName:n,password:p},true);
+    setToken(r.token);authUser=r.user;currentUserId=r.user.id;
+    await afterLogin();
+  }catch(e){
+    const msg=e.data&&e.data.error;
+    if(msg==='username_taken')err.textContent='⚠️ این نام کاربری گرفته شده';
+    else if(msg==='invalid_username')err.textContent='⚠️ نام کاربری نامعتبر';
+    else if(msg==='password_too_short')err.textContent='⚠️ رمز خیلی کوتاه';
+    else err.textContent='⚠️ خطا: '+(msg||e.message);
+  }finally{btn.disabled=false;btn.textContent='✅ ایجاد حساب'}
+}
 async function doLogin(){
   const u=document.getElementById('au').value.trim(),p=document.getElementById('ap').value;
   const err=document.getElementById('aerr'),btn=document.getElementById('albtn');
@@ -1352,22 +1233,28 @@ function addRoleButtons(){
   const badge=document.createElement('span');badge.className='role-badge '+authUser.role;
   badge.textContent={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'}[authUser.role];
   tb.prepend(badge);
-  if(authUser.role==='coach'||authUser.role==='admin'){
-    if(!document.getElementById('cpBtn')){const b=document.createElement('button');b.id='cpBtn';b.className='btn';b.onclick=openCP;b.innerHTML='<span class="bico">👨‍🏫</span>مربی';badge.after(b)}
-  }
-  if(authUser.role==='admin'){
-    if(!document.getElementById('apBtn')){const b=document.createElement('button');b.id='apBtn';b.className='btn';b.onclick=openAP;b.innerHTML='<span class="bico">👑</span>مدیر';badge.after(b)}
-  }
 }
 
 /* ============ USER DRAWER ============ */
 function openUD(){renderUserList();document.getElementById('ubd').classList.add('open');document.getElementById('ud').classList.add('open')}
 function closeUD(){document.getElementById('ubd').classList.remove('open');document.getElementById('ud').classList.remove('open')}
-function renderUserList(){const el=document.getElementById('ulist');if(!el||!authUser)return;
+function renderUserList(){
+  const el=document.getElementById('ulist');if(!el||!authUser)return;
   const roles={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'};
-  el.innerHTML='<div class="ucard active" style="cursor:default"><div class="uav-l" style="background:'+authUser.color+'">'+authUser.emoji+'</div>'+
-    '<div class="uin"><div class="un">'+esc(authUser.displayName)+'</div><div class="um">@'+esc(authUser.username)+' · '+(roles[authUser.role]||'')+'</div></div></div>'+
-    '<button class="btn danger" style="width:100%;justify-content:center;margin-top:14px" onclick="doLogout()">🚪 خروج</button>'}
+  let panelButtons='';
+  if(authUser.role==='admin'||authUser.role==='coach'){
+    panelButtons+='<button class="btn primary" style="width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#3b82f6,#a855f7);border-color:transparent" onclick="closeUD();openCP()">👨‍🏫 پنل مربی</button>';
+  }
+  if(authUser.role==='admin'){
+    panelButtons+='<button class="btn primary" style="width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#f59e0b,#d97706);border-color:transparent" onclick="closeUD();openAP()">👑 پنل مدیر</button>';
+  }
+  el.innerHTML='<div class="ucard active" style="cursor:default">'+
+    '<div class="uav-l" style="background:'+authUser.color+'">'+authUser.emoji+'</div>'+
+    '<div class="uin"><div class="un">'+esc(authUser.displayName)+'</div>'+
+    '<div class="um">@'+esc(authUser.username)+' · '+(roles[authUser.role]||'')+'</div></div></div>'+
+    panelButtons+
+    '<button class="btn danger" style="width:100%;justify-content:center;margin-top:14px" onclick="doLogout()">🚪 خروج از حساب</button>';
+}
 
 /* ============ PROGRAM ============ */
 function openPD(){renderPD();renderCatF('catF');renderBL();document.getElementById('pbd').classList.add('open');document.getElementById('pd').classList.add('open')}
@@ -1564,7 +1451,7 @@ function renderDays(){
         '<div style="color:var(--tm);font-weight:700;font-size:.85rem">😴 استراحت</div></div>'+
         '<div style="margin:20px;padding:36px;text-align:center;background:linear-gradient(135deg,rgba(100,116,139,.14),rgba(71,85,105,.05));border:1px dashed rgba(148,163,184,.35);border-radius:18px">'+
         '<div style="font-size:3.4rem">😴</div><div style="font-weight:900;margin:10px 0">روز استراحت</div>'+
-        '<div style="color:var(--t2);font-size:.88rem">بدن در حال بازسازی است — کشش سبک، آب و خواب فراموش نشود.</div></div></div>';return}
+        '<div style="color:var(--t2);font-size:.88rem">بدن در حال بازسازی است</div></div></div>';return}
     const filtered=d.exercises.filter(e=>!term||e.name.toLowerCase().includes(term)||(e.en||'').toLowerCase().includes(term));
     if(term&&!filtered.length)return;
     const done=d.exercises.filter((_,i)=>completedExercises[k+'-'+i]).length;
@@ -1575,14 +1462,13 @@ function renderDays(){
     if(d.exercises.length){
       h+='<div class="egrid">'+filtered.map(ex=>{
         const oi=d.exercises.indexOf(ex);const key=k+'-'+oi;
-        const isDone=completedExercises[key];const col=collapse(key);
+        const isDone=completedExercises[key];
         const logs=exerciseLogs[key]||[];
         let vol=0,maxW=0,tot=0;
         logs.forEach(l=>{if(l&&l.weight&&l.reps)vol+=l.weight*l.reps;if(l&&l.weight>maxW)maxW=l.weight;if(l&&l.time)tot+=l.time});
         const rs=activeTimers[key];const rr=rs?rem(rs):ex.rest;const rR=rs&&rs.running;
         const sst=setTimers[key];const ai=sst?sst.activeSetIndex:-1;const sRun=sst&&sst.running;
         const animSvg=A[ex.anim]||A.squat;
-        const animPlay=userSettings.autoAnimPlay?'playing':'';
         let rows='<div class="srow h"><div>ست</div><div>وزنه</div><div>تکرار</div><div>زمان</div><div></div></div>';
         let lw='';for(let i=logs.length-1;i>=0;i--){if(logs[i]&&logs[i].weight){lw=logs[i].weight;break}}
         for(let i=0;i<ex.sets;i++){const log=logs[i]||{};const tsec=i===ai?setEl(key):(log.time||0);
@@ -1599,7 +1485,7 @@ function renderDays(){
             '<span class="enum">'+fN(oi+1)+'</span>'+
             '<span class="ename">'+esc(ex.name)+'</span>'+
           '</div>'+
-          '<div class="eanim '+animPlay+'"><div class="svgfb">'+animSvg+'</div>'+
+          '<div class="eanim"><div class="svgfb">'+animSvg+'</div>'+
             '<div class="flabels"><span class="lbl">▶ شروع</span><span class="lbl end">◀ پایان</span></div>'+
             '<div class="exen">'+esc(ex.en||'')+'</div>'+
             '<div class="ebadges"><span class="ebadge bst">'+fN(ex.sets)+' ست</span><span class="ebadge brp">'+esc(ex.reps)+'</span><span class="ebadge brpe">RPE '+esc(ex.rpe)+'</span></div>'+
@@ -1629,7 +1515,6 @@ function renderDays(){
   updateStats();restartTicker();setTimeout(setupObs,120)
 }
 function toggleE(k,e){if(e){e.preventDefault();e.stopPropagation()}
-  const card=document.querySelector('.ecard[data-key="'+k+'"]');
   const wc=!completedExercises[k];
   completedExercises[k]=wc;
   if(wc)delete collapsedExercises[k];else collapsedExercises[k]='expanded';
@@ -1669,9 +1554,7 @@ function playBeep(freqs){if(userSettings.vibrationEnabled&&navigator.vibrate){tr
     g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(v,c.currentTime+.02);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.42);o.stop(c.currentTime+.46)}catch(e){}},i*260)})}catch(e){}}
 function restartTicker(){clearInterval(globalTicker);globalTicker=setInterval(()=>{
   Object.keys(cardioTimers).forEach(k=>{const s=cardioTimers[k];if(!s)return;const r=rem(s);
-    if(s.running&&r<=0){s.remaining=0;s.running=false;s.endTimestamp=null;playBeep([880,1046,1318]);showToast('کاردیو تمام شد! 🎉','success');saveState()}
-    const t=document.getElementById('ctime-'+k);if(t)t.textContent=fT(r);
-    const p=document.getElementById('prog-'+k);if(p){const pct=Math.max(0,r/s.total);p.style.strokeDashoffset=226*(1-pct)}});
+    if(s.running&&r<=0){s.remaining=0;s.running=false;s.endTimestamp=null;playBeep([880,1046,1318]);showToast('کاردیو تمام شد! 🎉','success');saveState()}});
   Object.keys(activeTimers).forEach(k=>{const s=activeTimers[k];if(!s)return;const r=rem(s);
     const d=document.getElementById('disp-'+k);if(d)d.textContent=r>0?fN(r)+'ث':'✅';
     const b=document.getElementById('rbtn-'+k);if(b){if(s.running){b.textContent='توقف';b.classList.add('stop')}else{b.textContent='شروع';b.classList.remove('stop')}}
@@ -1734,10 +1617,7 @@ function exportData(){if(!authUser)return;
     completed:completedExercises,logs:exerciseLogs,collapsed:collapsedExercises,history,
     theme:document.documentElement.getAttribute('data-theme'),currentDay,settings:userSettings,
     program:userProgram,bank:Object.values(exerciseBank),
-    nutrition:(nutritionData||null),bodyMeasurements:bodyData,
-    cardio:Object.fromEntries(Object.keys(cardioTimers).map(k=>{const s=cardioTimers[k];return[k,{total:s.total,remaining:rem(s)}]})),
-    rest:Object.fromEntries(Object.keys(activeTimers).map(k=>{const s=activeTimers[k];return[k,{total:s.total,remaining:rem(s)}]})),
-    sets:Object.fromEntries(Object.keys(setTimers).map(k=>{const s=setTimers[k];return[k,{activeSetIndex:s.activeSetIndex,elapsed:setEl(k)}]}))};
+    nutrition:(nutritionData||null),bodyMeasurements:bodyData};
   const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);
   a.download='profit-'+authUser.username+'-'+new Date().toISOString().slice(0,10)+'.json';a.click();
@@ -1755,9 +1635,6 @@ function importData(e){const f=e.target.files[0];if(!f)return;
     if(d.program){userProgram=d.program;saveProgram();rebuild()}
     if(d.nutrition){nutritionData=d.nutrition;try{localStorage.setItem(SK('profit-nut-'),JSON.stringify(nutritionData))}catch(e){}}
     if(d.bodyMeasurements){bodyData=d.bodyMeasurements;try{localStorage.setItem(SK('profit-body-'),JSON.stringify(bodyData))}catch(e){}}
-    cardioTimers={};if(d.cardio)Object.keys(d.cardio).forEach(k=>{cardioTimers[k]={total:d.cardio[k].total,remaining:d.cardio[k].remaining,running:false,endTimestamp:null}});
-    activeTimers={};if(d.rest)Object.keys(d.rest).forEach(k=>{activeTimers[k]={total:d.rest[k].total,remaining:d.rest[k].remaining,running:false,endTimestamp:null}});
-    setTimers={};if(d.sets)Object.keys(d.sets).forEach(k=>{setTimers[k]={activeSetIndex:d.sets[k].activeSetIndex,elapsed:d.sets[k].elapsed||0,running:false,startedAt:null}});
     saveState();renderNav();renderDays();updateChart();showToast('بازگردانی شد ✓','success')
   }catch(e){showToast('فایل نامعتبر','warn')}};r.readAsText(f);e.target.value=''}
 function resetAll(){if(!confirm('اطلاعات کاربر فعلی پاک شوند؟'))return;
@@ -1827,9 +1704,9 @@ function renderCalcResults(){if(!nutritionData.targets)return '';const t=nutriti
       '<div class="minp"><label>BMR</label><input type="number" id="editBmr" value="'+(t.bmr||0)+'"></div>'+
       '<div class="minp"><label>TDEE</label><input type="number" id="editTdee" value="'+(t.tdee||0)+'"></div>'+
       '<div class="minp"><label>کالری</label><input type="number" id="editCal" value="'+t.calories+'"></div>'+
-      '<div class="minp"><label>پروتئین (g)</label><input type="number" id="editProt" value="'+t.protein+'"></div>'+
-      '<div class="minp"><label>کرب (g)</label><input type="number" id="editCarb" value="'+t.carbs+'"></div>'+
-      '<div class="minp"><label>چربی (g)</label><input type="number" id="editFat" value="'+t.fat+'"></div>'+
+      '<div class="minp"><label>پروتئین</label><input type="number" id="editProt" value="'+t.protein+'"></div>'+
+      '<div class="minp"><label>کرب</label><input type="number" id="editCarb" value="'+t.carbs+'"></div>'+
+      '<div class="minp"><label>چربی</label><input type="number" id="editFat" value="'+t.fat+'"></div>'+
     '</div><div class="mactions"><button class="mbtn" onclick="applyManualEdit()">💾 اعمال</button><button class="mbtn" onclick="resetToCalc()">↺ بازگشت</button></div></div></div>'}
 function calcNut(){const p={gender:document.getElementById('npG').value,age:parseInt(document.getElementById('npA').value)||30,
   weight:parseFloat(document.getElementById('npW').value)||75,height:parseFloat(document.getElementById('npH').value)||175,
@@ -1875,7 +1752,7 @@ function renderPlan(){const c=document.getElementById('nt-plan');if(!c||!nutriti
     '<div class="ns-it"><div class="ns-v">'+fN(Math.round(dt.carb))+'g</div><div class="ns-l">کرب</div></div>'+
     '<div class="ns-it"><div class="ns-v">'+fN(Math.round(dt.fat))+'g</div><div class="ns-l">چربی</div></div></div>'+
     '<div style="font-size:.76rem;font-weight:700;text-align:center;margin-bottom:12px;color:'+(Math.abs(diff)<50?'var(--ag)':(diff>0?'var(--ar)':'var(--aa)'))+'">هدف: '+fN(t.calories)+' kcal — اختلاف: '+fN(Math.abs(diff))+'</div>'+
-    '<div class="quick-actions-row" style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap"><button class="btn success" style="flex:1" onclick="genSamplePlan()">✨ تولید نمونه</button><button class="btn danger" style="flex:1" onclick="clearPlan()">🗑️ پاک کردن</button></div>';
+    '<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap"><button class="btn success" style="flex:1" onclick="genSamplePlan()">✨ تولید نمونه</button><button class="btn danger" style="flex:1" onclick="clearPlan()">🗑️ پاک کردن</button></div>';
   MEAL_CONFIG.forEach(meal=>{const items=nutritionData.meals[meal.key]||[];const mt=Math.round(t.calories*meal.pct);const tt=calcMealTotals(meal.key);
     const d=tt.cal-mt;const state=items.length===0?'under':(Math.abs(d)<mt*.1?'ok':(d>0?'over':'under'));
     h+='<div class="meal-sec"><div class="mh"><div class="mh-l"><span class="mh-ic">'+meal.emoji+'</span><div><div class="mh-nm">'+meal.name+'</div><div class="mh-tg">هدف: '+fN(mt)+' kcal — مجموع: '+fN(tt.cal)+'</div></div></div>'+
@@ -1904,7 +1781,7 @@ function genSamplePlan(){const t=nutritionData.targets;if(!t){showToast('ابت�
   const nm={};
   MEAL_CONFIG.forEach(meal=>{const tp=tmp[meal.key];const mc=t.calories*meal.pct;const mp=t.protein*meal.pct;const mcar=t.carbs*meal.pct;const mf=t.fat*meal.pct;const arr=[];
     if(tp.p){const f=getFoodById(tp.p);if(f&&f.prot>0){const g=Math.max(30,Math.min(350,Math.round(mp*.8*100/f.prot)));const e={foodId:f.id,qty:g,unitIdx:0};
-      if(f.id==='egg_whole'){e.qty=Math.max(1,Math.round(g/50));e.unitIdx=2}arr.push(e)}}
+      if(f.id==='egg_whole'){e.qty=Math.max(1,Math.round(g/50));e.unitIdx=1}arr.push(e)}}
     if(tp.c){const f=getFoodById(tp.c);if(f&&f.carb>0){const g=Math.max(20,Math.min(400,Math.round(mcar*.8*100/f.carb)));arr.push({foodId:f.id,qty:g,unitIdx:0})}}
     if(tp.f){const f=getFoodById(tp.f);if(f&&f.fat>0){const g=Math.max(4,Math.min(80,Math.round(mf*.6*100/f.fat)));arr.push({foodId:f.id,qty:g,unitIdx:0})}}
     if(tp.v)arr.push({foodId:tp.v,qty:120,unitIdx:0});
@@ -1934,7 +1811,7 @@ function renderFPL(){const l=document.getElementById('fpl');if(!l)return;
   if(!foods.length){l.innerHTML='<div class="empty" style="padding:20px"><div class="ic">🔍</div><div>غذایی یافت نشد</div></div>';return}
   l.innerHTML=foods.map(f=>{const mu=f.units&&f.units[0]?f.units[0].n:'گرم';
     return'<div class="fitem" onclick="addFood(\''+f.id+'\')"><div class="fe">'+f.emoji+'</div>'+
-      '<div class="fi2"><div class="fnm">'+esc(f.name)+'</div><div class="fmc">P:'+f.prot+' C:'+f.carb+' F:'+f.fat+' (per 100g) · '+mu+'</div></div>'+
+      '<div class="fi2"><div class="fnm">'+esc(f.name)+'</div><div class="fmc">P:'+f.prot+' C:'+f.carb+' F:'+f.fat+' · '+mu+'</div></div>'+
       '<div class="fc2">'+f.cal+' kcal<small>در ۱۰۰ گرم</small></div></div>'}).join('')}
 function addFood(id){if(!currentFoodMeal)return;const f=getFoodById(id);if(!f)return;
   const units=f.units||[{n:'گرم',g:1}];let qty=100,ui=0;
@@ -2053,12 +1930,21 @@ function switchCT(t){document.querySelectorAll('.dtab[data-ct]').forEach(x=>x.cl
 async function renderCP(){const el=document.getElementById('cpList');if(!el)return;
   el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">⏳</div><div>بارگذاری...</div></div>';
   try{const list=await apiCall('GET','/api/coach/students');
-    if(!list.length){el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">👥</div><div>هنوز شاگردی نداری</div></div>';return}
+    if(!list.length){el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">👥</div><div>هنوز شاگردی نداری — از دکمه بالای این صفحه بساز</div></div>';return}
     el.innerHTML='<div style="font-weight:800;margin-bottom:14px">👥 '+list.length+' شاگرد</div>'+
       list.map(s=>'<div class="ucard" onclick="openStudentDetail(\''+s.id+'\')"><div class="uav-l" style="background:'+s.color+'">'+s.emoji+'</div>'+
         '<div class="uin"><div class="un">'+esc(s.displayName)+'</div><div class="um">@'+esc(s.username)+' · '+(s.stats.sessions7||0)+' جلسه این هفته · '+fN(s.stats.volume7||0)+' kg</div></div>'+
         '<div style="font-size:.72rem;color:var(--tm)">'+(s.stats.completedCount||0)+' حرکت</div></div>').join('')
   }catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا</div></div>'}}
+function showCSF(){document.getElementById('csU').value='';document.getElementById('csN').value='';document.getElementById('csP').value='';
+  document.getElementById('csbd').classList.add('open');document.getElementById('csd').classList.add('open')}
+function closeCSF(){document.getElementById('csbd').classList.remove('open');document.getElementById('csd').classList.remove('open')}
+async function saveCSF(){const u=document.getElementById('csU').value.trim(),n=document.getElementById('csN').value.trim(),p=document.getElementById('csP').value;
+  if(!u||!n||!p){showToast('همه فیلدها را پر کنید','warn');return}
+  if(p.length<6){showToast('رمز حداقل ۶ کاراکتر','warn');return}
+  try{await apiCall('POST','/api/users',{username:u,displayName:n,password:p,role:'student'});
+    showToast('شاگرد ساخته شد ✓','success');closeCSF();renderCP()}
+  catch(e){showToast(e.data&&e.data.error==='username_taken'?'نام تکراری':'خطا','warn')}}
 async function openStudentDetail(id){cpStudentId=id;const t=document.getElementById('cpdtab');if(t)t.style.display='';
   switchCT('detail');const el=document.getElementById('cpDetail');
   el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">⏳</div><div>بارگذاری...</div></div>';
@@ -2084,7 +1970,7 @@ async function openStudentDetail(id){cpStudentId=id;const t=document.getElementB
         '<div class="ns-it"><div class="ns-v">'+fN(Math.round(vol))+'</div><div class="ns-l">حجم (kg)</div></div>'+
         '<div class="ns-it"><div class="ns-v">'+s7+'</div><div class="ns-l">جلسه هفته</div></div>'+
         '<div class="ns-it"><div class="ns-v">'+(vc==='—'?'—':vc+'٪')+'</div><div class="ns-l">تغییر حجم</div></div></div>'+
-      '<div class="sect2">🧠 آنالیز</div>'+analysis.map(a=>{const bg=a.tone==='good'?'rgba(16,185,129,.12)':a.tone==='warn'?'rgba(245,158,11,.12)':'rgba(59,130,246,.12)';
+      '<div class="sect2">🧠 آنالیز خودکار</div>'+analysis.map(a=>{const bg=a.tone==='good'?'rgba(16,185,129,.12)':a.tone==='warn'?'rgba(245,158,11,.12)':'rgba(59,130,246,.12)';
         const bc=a.tone==='good'?'rgba(16,185,129,.3)':a.tone==='warn'?'rgba(245,158,11,.3)':'rgba(59,130,246,.3)';
         return'<div style="padding:10px 14px;border-radius:10px;background:'+bg+';border:1px solid '+bc+';margin-bottom:8px;font-size:.83rem;font-weight:600">'+a.text+'</div>'}).join('')+
       '<div class="sect2">🗓️ برنامه ('+(prog.days||[]).length+' روز)</div>'+((prog.days||[]).length?(prog.days||[]).map(d=>'<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border-radius:10px;margin-bottom:6px;font-size:.8rem"><span>'+(d.icon||'💪')+'</span><strong style="flex:1">'+esc(d.name)+'</strong><span style="color:var(--tm)">'+((d.exercises||[]).length)+' حرکت</span></div>').join(''):'<div style="padding:14px;text-align:center;color:var(--tm)">برنامه‌ای نیست</div>')+
@@ -2139,10 +2025,11 @@ async function toggleUserAP(id){const u=apUsersCache.find(x=>x.id===id);if(!u)re
 async function resetPwdAP(id){const u=apUsersCache.find(x=>x.id===id);if(!u)return;
   const np=prompt('رمز جدید برای «'+u.displayName+'» (حداقل ۶):');if(!np)return;
   if(np.length<6){showToast('حداقل ۶ کاراکتر','warn');return}
-  try{await apiCall('PUT','/api/users/'+id,{password:np});showToast('بازنشانی شد','success')}catch(e){showToast('خطا','warn')}}
+  try{await apiCall('PUT','/api/users/'+id,{password:np});showToast('بازنشانی شد ✓','success')}catch(e){showToast('خطا','warn')}}
 function showAUF(){document.getElementById('auU').value='';document.getElementById('auN').value='';document.getElementById('auP').value='';
-  document.getElementById('auR').value='student';updACoachRow();
+  document.getElementById('auR').value='student';
   const c=document.getElementById('auC');c.innerHTML='<option value="">— بدون مربی —</option>'+apCoachesCache.map(x=>'<option value="'+x.id+'">'+x.emoji+' '+esc(x.displayName)+'</option>').join('');
+  updACoachRow();
   document.getElementById('aubd').classList.add('open');document.getElementById('aud').classList.add('open')}
 function updACoachRow(){const r=document.getElementById('auR').value;document.getElementById('auCoachRow').style.display=r==='student'?'block':'none'}
 function closeAUF(){document.getElementById('aubd').classList.remove('open');document.getElementById('aud').classList.remove('open')}
@@ -2150,7 +2037,7 @@ async function saveAUF(){const u=document.getElementById('auU').value.trim(),n=d
   if(!u||!n||!p){showToast('همه فیلدها را پر کنید','warn');return}
   if(p.length<6){showToast('رمز حداقل ۶','warn');return}
   try{await apiCall('POST','/api/users',{username:u,displayName:n,password:p,role:r,coachId:r==='student'?c:null});
-    showToast('ساخته شد','success');closeAUF();renderAP()}
+    showToast('ساخته شد ✓','success');closeAUF();renderAP()}
   catch(e){showToast(e.data&&e.data.error==='username_taken'?'تکراری':'خطا','warn')}}
 function reqAPW(title){return new Promise(res=>{apPwdResolve=res;
   document.getElementById('apwT').textContent=title||'رمز خود را وارد کنید';
@@ -2166,7 +2053,7 @@ async function renderAudit(){const el=document.getElementById('apAudit');if(!el)
   el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">⏳</div><div>بارگذاری...</div></div>';
   try{const rows=await apiCall('GET','/api/admin/audit');
     if(!rows.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--tm)">فعالیتی ثبت نشده</div>';return}
-    const labels={login_success:'✅ ورود موفق',login_failed:'❌ ورود ناموفق',user_created:'➕ ساخت',user_updated:'✏️ ویرایش',user_deleted:'🗑️ حذف',password_changed:'🔑 تغییر رمز'};
+    const labels={login_success:'✅ ورود موفق',login_failed:'❌ ورود ناموفق',user_created:'➕ ساخت',user_updated:'✏️ ویرایش',user_deleted:'🗑️ حذف',password_changed:'🔑 تغییر رمز',user_registered:'✨ ثبت‌نام جدید'};
     el.innerHTML=rows.map(r=>{const actor=apUsersCache.find(x=>x.id===r.actor_id);const an=actor?actor.displayName:(r.actor_id||'سیستم');
       return'<div style="padding:10px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;font-size:.78rem">'+
         '<div style="display:flex;justify-content:space-between;margin-bottom:4px"><strong>'+(labels[r.action]||r.action)+'</strong>'+
@@ -2177,11 +2064,11 @@ async function renderAudit(){const el=document.getElementById('apAudit');if(!el)
 /* ============ GUIDE ============ */
 function renderGuide(){const el=document.getElementById('guideContent');if(!el)return;
   el.innerHTML='<div class="guide-highlight"><strong style="color:var(--t1);font-size:1rem">📖 راهنمای کامل ProFit</strong><br>همه امکانات با نقش‌های مدیر، مربی و شاگرد.</div>'+
-    '<div class="guide-section"><h3>🔐 ورود و نقش‌ها</h3><p>سه نقش: <strong>👑 مدیر</strong> (مدیریت کاربران)، <strong>👨‍🏫 مربی</strong> (ساخت شاگرد + تحلیل)، <strong>🎓 شاگرد</strong> (داده خودش).</p></div>'+
-    '<div class="guide-section"><h3>👑 پنل مدیر</h3><ul><li>ساخت/ویرایش/حذف کاربران</li><li>تغییر نقش</li><li>بازنشانی رمز</li><li>فعال/غیرفعال کردن</li><li>لاگ فعالیت</li></ul></div>'+
-    '<div class="guide-section"><h3>👨‍🏫 پنل مربی</h3><ul><li>لیست شاگردان با آمار</li><li>آنالیز خودکار (تعداد جلسات، تغییر حجم)</li><li>یادداشت</li></ul></div>'+
+    '<div class="guide-section"><h3>🔐 ورود و ثبت‌نام</h3><p>صفحه ورود دو دکمه دارد: <strong>ورود</strong> برای کاربران قبلی و <strong>ثبت‌نام</strong> برای ساخت حساب جدید. با ثبت‌نام، یک حساب شاگرد ساخته می‌شود.</p></div>'+
+    '<div class="guide-section"><h3>👑 پنل مدیر</h3><p>از آواتار → «پنل مدیر». امکان ساخت/ویرایش/حذف کاربران، تعیین نقش، بازنشانی رمز، فعال/غیرفعال و مشاهده لاگ.</p></div>'+
+    '<div class="guide-section"><h3>👨‍🏫 پنل مربی</h3><p>از آواتار → «پنل مربی». ساخت شاگرد جدید، مشاهده آنالیز خودکار پیشرفت، ثبت یادداشت.</p></div>'+
     '<div class="guide-section"><h3>💪 ثبت تمرین</h3><p>هر کارت: انیمیشن، ست/تکرار/RPE، تایمر استراحت، ثبت وزنه هر ست با زمان‌سنج.</p></div>'+
-    '<div class="guide-section"><h3>🥗 تغذیه</h3><p>محاسبه BMR با ۴ فرمول، برنامه غذایی با ۲۵۰+ غذا، مکمل بر اساس هدف.</p></div>'+
+    '<div class="guide-section"><h3>🥗 تغذیه</h3><p>محاسبه BMR با ۴ فرمول، برنامه غذایی با ۲۰۰+ غذا، مکمل بر اساس هدف.</p></div>'+
     '<div class="guide-section"><h3>📏 اندازه‌های بدن</h3><p>۱۰ متریک با نمودار تغییرات.</p></div>'+
     '<div class="guide-section"><h3>💾 پشتیبان</h3><p>⬇️ دانلود: فقط کاربر فعلی. ⬆️ بازیابی: فقط برای کاربر فعلی.</p></div>'}
 
@@ -2189,19 +2076,27 @@ function renderGuide(){const el=document.getElementById('guideContent');if(!el)r
 (async function(){
   const t=localStorage.getItem('profit-theme')||'dark';
   document.documentElement.setAttribute('data-theme',t);
-  const tb=document.getElementById('thBtn');if(tb)tb.querySelector('.bico').textContent=t==='light'?'☀️':'🌙';
+  const tb=document.getElementById('thBtn');if(tb){const b=tb.querySelector('.bico');if(b)b.textContent=t==='light'?'☀️':'🌙'}
   const mi=document.getElementById('mthI');if(mi)mi.textContent=t==='light'?'☀️':'🌙';
   loadSettings();renderGuide();
-  // populate static selects
-  document.getElementById('exC').innerHTML=Object.keys(CATEGORIES).map(k=>'<option value="'+k+'">'+CATEGORIES[k].emoji+' '+CATEGORIES[k].name+'</option>').join('');
+  const exC=document.getElementById('exC');
+  if(exC)exC.innerHTML=Object.keys(CATEGORIES).map(k=>'<option value="'+k+'">'+CATEGORIES[k].emoji+' '+CATEGORIES[k].name+'</option>').join('');
   if(!getToken()){document.getElementById('authScr').classList.remove('hidden');return}
   try{const me=await apiCall('GET','/api/auth/me');authUser=me;currentUserId=me.id;await afterLogin()}
   catch(e){clearToken();document.getElementById('authScr').classList.remove('hidden')}
 })();
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePD();closePK();closeEC();closeExF();closeS();closeUD();closeCP();closeAP();closeND();closeBD();closeFP();closeSPF();closeAPW()}
-  if(e.key==='Enter'&&apPwdResolve&&document.getElementById('apwd').classList.contains('open'))submitAPW()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    closePD();closePK();closeEC();closeExF();closeS();closeUD();closeCP();closeAP();closeND();closeBD();closeFP();closeSPF();closeAPW();closeCSF()
+  }
+  if(e.key==='Enter'&&apPwdResolve&&document.getElementById('apwd').classList.contains('open'))submitAPW();
+  if(e.key==='Enter'&&document.getElementById('authScr')&&!document.getElementById('authScr').classList.contains('hidden')){
+    const rc=document.getElementById('registerCard');
+    if(rc&&rc.style.display!=='none')doRegister();else doLogin();
+  }
+});
 window.addEventListener('beforeunload',()=>{if(currentUserId)saveState()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&currentUserId)saveState()});
 </script>
 </body>
-                                                                                           </html>
+    </html>
