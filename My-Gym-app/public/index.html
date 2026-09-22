@@ -1062,25 +1062,65 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   <button class="theme-btn" id="mobileThemeBtn" onclick="toggleTheme()"><span class="mn-icon" id="mobileThemeIcon">🌙</span><span class="mn-label">تم</span></button>
 </nav>
 
-<!-- ============ DATA FILES ============ -->
-<script src="assets/data-config.js"></script>
-<script src="assets/data-animations.js"></script>
-<script src="assets/data-exercises.js"></script>
-<script src="assets/data-foods.js"></script>
-<script src="assets/data-supplements.js"></script>
+<script>
+// ============================================================
+// بارگذاری ترتیبی فایل‌ها (به‌جای موازی) — برای Render رایگان
+// ============================================================
+(function() {
+  const FILES = [
+    'data-config.js',
+    'data-animations.js',
+    'data-exercises.js',
+    'data-foods.js',
+    'data-supplements.js',
+    'api.js',
+    'app-core.js',
+    'app-workout.js',
+    'app-nutrition.js',
+    'app-coach.js',
+    'app-admin.js',
+    'app-auth.js'
+  ];
 
-<!-- ============ API CLIENT ============ -->
-<script src="assets/api.js"></script>
+  function loadScript(src) {
+    return new Promise(resolve => {
+      const s = document.createElement('script');
+      s.src = 'assets/' + src;
+      s.async = false;
+      s.onload = () => resolve(true);
+      s.onerror = () => { s.remove(); resolve(false); };
+      document.head.appendChild(s);
+    });
+  }
 
-<!-- ============ APP LOGIC ============ -->
-<script src="assets/app-core.js"></script>
-<script src="assets/app-workout.js"></script>
-<script src="assets/app-nutrition.js"></script>
-<script src="assets/app-coach.js"></script>
-<script src="assets/app-admin.js"></script>
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-<!-- ============ AUTH (آخر از همه — توابع را override می‌کند) ============ -->
-<script src="assets/app-auth.js"></script>
+  function showError(file) {
+    document.body.innerHTML = `
+      <div style="padding:60px 20px;text-align:center;font-family:'Vazirmatn',sans-serif;color:#f1f5f9;background:#0a0e1a;min-height:100vh">
+        <div style="font-size:4rem;margin-bottom:16px">⚠️</div>
+        <h2 style="margin-bottom:12px">خطا در بارگذاری فایل‌ها</h2>
+        <p style="color:#94a3b8;margin-bottom:24px">فایل <code style="background:rgba(148,163,184,.2);padding:3px 8px;border-radius:6px">${file}</code> بارگذاری نشد.</p>
+        <p style="color:#94a3b8;margin-bottom:24px;font-size:.9rem">این معمولاً به‌خاطر خوابیدن سرور رایگان Render است. لطفاً صفحه را رفرش کن.</p>
+        <button onclick="location.reload()" style="padding:14px 32px;border-radius:12px;border:none;background:linear-gradient(135deg,#3b82f6,#a855f7);color:#fff;font-family:inherit;font-weight:800;font-size:1rem;cursor:pointer">
+          🔄 تلاش مجدد
+        </button>
+      </div>
+    `;
+  }
+
+  (async function loadAll() {
+    for (const f of FILES) {
+      let ok = false;
+      for (let attempt = 0; attempt < 8 && !ok; attempt++) {
+        if (attempt > 0) await sleep(400 * attempt);
+        ok = await loadScript(f);
+      }
+      if (!ok) { showError(f); return; }
+    }
+  })();
+})();
+</script>
 
 </body>
 </html>
