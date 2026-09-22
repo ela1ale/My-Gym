@@ -421,24 +421,33 @@ app.post('/api/users/:id/data/:key', auth, async (req, res) => {
 });
 
 /* ============ COACH ============ */
+/* ================= COACH ================= */
 app.get('/api/coach/students', auth, requireRole('coach','admin'), async (req, res) => {
-  const coachId = req.user.role === 'coach' ? req.user.id : req.query.coachId;
-  if (!coachId) return res.status(400).json({ error: 'missing_coach' });
+  let rows;
+  if (req.user.role === 'coach') {
+    rows = (await query('SELECT * FROM users WHERE coach_id = $1 ORDER BY display_name', [req.user.id])).rows;
+  } else {
+    // Admin: filter by coachId if given, otherwise show all students
+    const cid = req.query.coachId;
+    if (cid) {
+      rows = (await query("SELECT * FROM users WHERE coach_id = $1 AND role='student' ORDER BY display_name", [cid])).rows;
+    } else {
+      rows = (await query("SELECT * FROM users WHERE role='student' ORDER BY display_name")).rows;
+    }
+  }
 
-  const sr = await query('SELECT * FROM users WHERE coach_id = $1 ORDER BY display_name', [coachId]);
   const now = Date.now();
   const out = [];
-
-  for (const s of sr.rows) {
-    const stR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='state'", [s.id]);
+  for (const s of rows) {
+    const stR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='workout'", [s.id]);
     const hiR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='history'", [s.id]);
-    let state = null, hist = null;
-    try { state = stR.rows[0] ? JSON.parse(stR.rows[0].value) : null; } catch {}
+    let workout = null, hist = null;
+    try { workout = stR.rows[0] ? JSON.parse(stR.rows[0].value) : null; } catch {}
     try { hist = hiR.rows[0] ? JSON.parse(hiR.rows[0].value) : null; } catch {}
 
-    const completedCount = state?.completedExercises ? Object.values(state.completedExercises).filter(Boolean).length : 0;
+    const completedCount = workout?.completed ? Object.values(workout.completed).filter(Boolean).length : 0;
     let volume = 0;
-    Object.values(state?.exerciseLogs || {}).forEach(a => (a||[]).forEach(l => {
+    Object.values(workout?.logs || {}).forEach(a => Object.values(a || {}).forEach(l => {
       if (l?.weight && l?.reps) volume += l.weight * l.reps;
     }));
 
