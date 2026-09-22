@@ -1,0 +1,437 @@
+/* ==========================================================
+   ProFit — Exercise Bank v1
+   شامل ۲۵۰+ حرکت، دسته‌بندی‌ها، تمپلیت‌های اسپلیت
+   ========================================================== */
+
+const PRO_CATEGORIES = {
+  chest:     { name: 'سینه',           emoji: '🏋️', order: 1 },
+  back:      { name: 'پشت',            emoji: '🔙', order: 2 },
+  shoulders: { name: 'شانه',           emoji: '🎯', order: 3 },
+  biceps:    { name: 'جلوبازو',        emoji: '💪', order: 4 },
+  triceps:   { name: 'پشت‌بازو',       emoji: '🔻', order: 5 },
+  quads:     { name: 'چهارسر',         emoji: '🦵', order: 6 },
+  hams:      { name: 'همسترینگ و باسن', emoji: '🦿', order: 7 },
+  calves:    { name: 'ساق',            emoji: '🦶', order: 8 },
+  core:      { name: 'شکم',            emoji: '🧘', order: 9 },
+  traps:     { name: 'تراپز',          emoji: '🔺', order: 10 },
+  forearms:  { name: 'ساعد',           emoji: '🦾', order: 11 },
+  cardio:    { name: 'کاردیو',         emoji: '🏃', order: 12 },
+  mobility:  { name: 'موبیلیتی',       emoji: '🤸', order: 13 }
+};
+
+const PRO_EQUIPMENT = {
+  barbell: 'هالتر',
+  dumbbell: 'دمبل',
+  machine: 'دستگاه',
+  cable: 'سیم‌کش',
+  bodyweight: 'وزن بدن',
+  kettlebell: 'کتل‌بل',
+  band: 'کش',
+  smith: 'اسمیت',
+  ez_bar: 'هالتر خم',
+  cardio: 'کاردیو',
+  other: 'سایر'
+};
+
+const PRO_EQUIP_EMOJI = {
+  barbell: '🏋️',
+  dumbbell: '💪',
+  machine: '⚙️',
+  cable: '🔗',
+  bodyweight: '🤸',
+  kettlebell: '🔔',
+  band: '🎗️',
+  smith: '🏗️',
+  ez_bar: '📐',
+  cardio: '🏃',
+  other: '📦'
+};
+
+/* ========== ۲۵۰+ حرکت ========== */
+const PRO_EXERCISES = [
+  /* ============ سینه (۲۰) ============ */
+  {id:'chest_bench_bb',name:'پرس سینه هالتر',en:'Barbell Bench Press',cat:'chest',muscles:['chest','triceps','front_delt'],equip:'barbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_incline_bb',name:'پرس بالاسینه هالتر',en:'Incline Barbell Bench Press',cat:'chest',muscles:['upper_chest','front_delt','triceps'],equip:'barbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_decline_bb',name:'پرس زیرسینه هالتر',en:'Decline Barbell Bench Press',cat:'chest',muscles:['lower_chest','triceps'],equip:'barbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_bench_db',name:'پرس سینه دمبل',en:'Dumbbell Bench Press',cat:'chest',muscles:['chest','triceps','front_delt'],equip:'dumbbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_incline_db',name:'پرس بالاسینه دمبل',en:'Incline Dumbbell Press',cat:'chest',muscles:['upper_chest','front_delt'],equip:'dumbbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_decline_db',name:'پرس زیرسینه دمبل',en:'Decline Dumbbell Press',cat:'chest',muscles:['lower_chest','triceps'],equip:'dumbbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_machine',name:'پرس سینه دستگاه',en:'Machine Chest Press',cat:'chest',muscles:['chest','triceps'],equip:'machine',diff:'beg',type:'comp',anim:'benchPress'},
+  {id:'chest_smith',name:'پرس سینه اسمیت',en:'Smith Machine Bench Press',cat:'chest',muscles:['chest','triceps'],equip:'smith',diff:'beg',type:'comp',anim:'benchPress'},
+  {id:'chest_cable_press',name:'پرس سینه سیم‌کش',en:'Cable Chest Press',cat:'chest',muscles:['chest'],equip:'cable',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_fly_db',name:'فلای سینه دمبل',en:'Dumbbell Flyes',cat:'chest',muscles:['chest'],equip:'dumbbell',diff:'int',type:'iso',anim:'chestFly'},
+  {id:'chest_fly_incline',name:'فلای بالاسینه دمبل',en:'Incline Dumbbell Flyes',cat:'chest',muscles:['upper_chest'],equip:'dumbbell',diff:'int',type:'iso',anim:'chestFly'},
+  {id:'chest_fly_decline',name:'فلای زیرسینه',en:'Decline Dumbbell Flyes',cat:'chest',muscles:['lower_chest'],equip:'dumbbell',diff:'int',type:'iso',anim:'chestFly'},
+  {id:'chest_cable_cross',name:'کراس اور سیم‌کش',en:'Cable Crossover',cat:'chest',muscles:['chest'],equip:'cable',diff:'int',type:'iso',anim:'chestFly'},
+  {id:'chest_low_cable',name:'کراس اور از پایین',en:'Low Cable Crossover',cat:'chest',muscles:['upper_chest'],equip:'cable',diff:'int',type:'iso',anim:'chestFly'},
+  {id:'chest_pec_deck',name:'پک دک دستگاه',en:'Pec Deck',cat:'chest',muscles:['chest'],equip:'machine',diff:'beg',type:'iso',anim:'chestFly'},
+  {id:'chest_pushup',name:'شنا',en:'Pushups',cat:'chest',muscles:['chest','triceps','front_delt'],equip:'bodyweight',diff:'beg',type:'comp',anim:'benchPress'},
+  {id:'chest_pushup_diamond',name:'شنا الماسی',en:'Diamond Pushups',cat:'chest',muscles:['chest','triceps'],equip:'bodyweight',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_dip',name:'دیپ سینه',en:'Chest Dips',cat:'chest',muscles:['lower_chest','triceps'],equip:'bodyweight',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'chest_pushup_incline',name:'شنا شیب‌دار',en:'Incline Pushups',cat:'chest',muscles:['chest','front_delt'],equip:'bodyweight',diff:'beg',type:'comp',anim:'benchPress'},
+  {id:'chest_pushup_weighted',name:'شنا با وزنه',en:'Weighted Pushups',cat:'chest',muscles:['chest','triceps'],equip:'bodyweight',diff:'adv',type:'comp',anim:'benchPress'},
+
+  /* ============ پشت (۳۵) ============ */
+  {id:'back_deadlift',name:'ددلیفت هالتر',en:'Barbell Deadlift',cat:'back',muscles:['lower_back','traps','glutes','hams'],equip:'barbell',diff:'adv',type:'comp',anim:'deadlift'},
+  {id:'back_deadlift_sumo',name:'ددلیفت سومو',en:'Sumo Deadlift',cat:'back',muscles:['lower_back','glutes','hams'],equip:'barbell',diff:'adv',type:'comp',anim:'deadlift'},
+  {id:'back_deadlift_trap',name:'ددلیفت تراپ بار',en:'Trap Bar Deadlift',cat:'back',muscles:['lower_back','glutes','quads'],equip:'barbell',diff:'int',type:'comp',anim:'deadlift'},
+  {id:'back_rack_pull',name:'رک پول',en:'Rack Pulls',cat:'back',muscles:['lower_back','traps'],equip:'barbell',diff:'adv',type:'comp',anim:'deadlift'},
+  {id:'back_pullup',name:'بارفیکس',en:'Pullups',cat:'back',muscles:['lats','biceps'],equip:'bodyweight',diff:'int',type:'comp',anim:'pulldown'},
+  {id:'back_chinup',name:'بارفیکس چین‌آپ',en:'Chin-Up',cat:'back',muscles:['lats','biceps'],equip:'bodyweight',diff:'int',type:'comp',anim:'pulldown'},
+  {id:'back_pullup_neutral',name:'بارفیکس دست موازی',en:'Neutral Grip Pullups',cat:'back',muscles:['lats'],equip:'bodyweight',diff:'int',type:'comp',anim:'pulldown'},
+  {id:'back_pullup_weighted',name:'بارفیکس با وزنه',en:'Weighted Pullups',cat:'back',muscles:['lats'],equip:'bodyweight',diff:'adv',type:'comp',anim:'pulldown'},
+  {id:'back_pulldown_wide',name:'زیربغل دست باز',en:'Wide-Grip Lat Pulldown',cat:'back',muscles:['lats'],equip:'cable',diff:'beg',type:'comp',anim:'pulldown'},
+  {id:'back_pulldown_close',name:'زیربغل دست جمع',en:'Close-Grip Lat Pulldown',cat:'back',muscles:['lats'],equip:'cable',diff:'beg',type:'comp',anim:'pulldown'},
+  {id:'back_pulldown_reverse',name:'زیربغل دست برعکس',en:'Reverse Grip Pulldown',cat:'back',muscles:['lats','biceps'],equip:'cable',diff:'int',type:'comp',anim:'pulldown'},
+  {id:'back_pulldown_neutral',name:'زیربغل دست موازی',en:'Neutral Grip Pulldown',cat:'back',muscles:['lats'],equip:'cable',diff:'beg',type:'comp',anim:'pulldown'},
+  {id:'back_row_cable',name:'قایقی سیم‌کش',en:'Seated Cable Rows',cat:'back',muscles:['back','lats'],equip:'cable',diff:'beg',type:'comp',anim:'row'},
+  {id:'back_row_bb',name:'قایقی هالتر خم',en:'Bent Over Barbell Row',cat:'back',muscles:['back','lats','traps'],equip:'barbell',diff:'int',type:'comp',anim:'row'},
+  {id:'back_row_1arm_db',name:'قایقی دمبل یک‌طرفه',en:'One-Arm Dumbbell Row',cat:'back',muscles:['back','lats'],equip:'dumbbell',diff:'beg',type:'comp',anim:'oneArmRow'},
+  {id:'back_row_tbar',name:'تی بار رو',en:'T-Bar Row',cat:'back',muscles:['back','lats'],equip:'barbell',diff:'int',type:'comp',anim:'row'},
+  {id:'back_row_machine',name:'قایقی دستگاه',en:'Machine Row',cat:'back',muscles:['back'],equip:'machine',diff:'beg',type:'comp',anim:'row'},
+  {id:'back_row_db_bent',name:'قایقی دمبل جفتی',en:'Bent Over Two-Dumbbell Row',cat:'back',muscles:['back','lats'],equip:'dumbbell',diff:'int',type:'comp',anim:'row'},
+  {id:'back_row_pendlay',name:'پندلی رو',en:'Pendlay Row',cat:'back',muscles:['back','lats','traps'],equip:'barbell',diff:'adv',type:'comp',anim:'row'},
+  {id:'back_row_inverted',name:'قایقی افقی (بدن)',en:'Inverted Row',cat:'back',muscles:['back','lats'],equip:'bodyweight',diff:'int',type:'comp',anim:'row'},
+  {id:'back_straight_arm',name:'پول‌اور سیم‌کش',en:'Straight-Arm Pulldown',cat:'back',muscles:['lats'],equip:'cable',diff:'int',type:'iso',anim:'pulldown'},
+  {id:'back_pullover_db',name:'پول‌اور دمبل',en:'Dumbbell Pullover',cat:'back',muscles:['lats','chest'],equip:'dumbbell',diff:'int',type:'iso',anim:'row'},
+  {id:'back_face_pull',name:'فیس پول',en:'Face Pull',cat:'back',muscles:['rear_delt','traps'],equip:'cable',diff:'int',type:'iso',anim:'facePull'},
+  {id:'back_row_chest_supp',name:'قایقی سینه‌تکیه',en:'Chest-Supported Row',cat:'back',muscles:['back','lats'],equip:'machine',diff:'beg',type:'comp',anim:'row'},
+  {id:'back_row_yates',name:'قایقی یتس',en:'Yates Row',cat:'back',muscles:['back','lats'],equip:'barbell',diff:'int',type:'comp',anim:'row'},
+  {id:'back_row_meadows',name:'میدوز رو',en:'Meadows Row',cat:'back',muscles:['back','lats'],equip:'barbell',diff:'adv',type:'comp',anim:'oneArmRow'},
+  {id:'back_row_kroc',name:'کروک رو',en:'Kroc Row',cat:'back',muscles:['back','lats','traps'],equip:'dumbbell',diff:'adv',type:'comp',anim:'oneArmRow'},
+  {id:'back_row_landmine',name:'لندماین رو',en:'Landmine Row',cat:'back',muscles:['back','lats'],equip:'barbell',diff:'int',type:'comp',anim:'row'},
+  {id:'back_row_renegade',name:'رنگید رو',en:'Renegade Row',cat:'back',muscles:['back','core'],equip:'dumbbell',diff:'adv',type:'comp',anim:'row'},
+  {id:'back_row_gorilla',name:'گوریلا رو',en:'Gorilla Row',cat:'back',muscles:['back','lats'],equip:'kettlebell',diff:'int',type:'comp',anim:'oneArmRow'},
+  {id:'back_row_seal',name:'سیل رو',en:'Seal Row',cat:'back',muscles:['back','lats'],equip:'barbell',diff:'int',type:'comp',anim:'row'},
+  {id:'back_row_helms',name:'هلمز رو',en:'Helms Row',cat:'back',muscles:['back'],equip:'dumbbell',diff:'int',type:'comp',anim:'row'},
+  {id:'back_row_single_cable',name:'قایقی سیم‌کش یک‌طرفه',en:'Single-Arm Cable Row',cat:'back',muscles:['back','lats'],equip:'cable',diff:'int',type:'comp',anim:'oneArmRow'},
+  {id:'back_row_high_machine',name:'قایقی دستگاه زاویه بالا',en:'High Row Machine',cat:'back',muscles:['back','lats','traps'],equip:'machine',diff:'beg',type:'comp',anim:'row'},
+  {id:'back_row_wide_seated',name:'قایقی سیم‌کش دست باز',en:'Wide-Grip Seated Row',cat:'back',muscles:['back','rear_delt'],equip:'cable',diff:'int',type:'comp',anim:'row'},
+
+  /* ============ شانه (۲۵) ============ */
+  {id:'sh_press_bb_stand',name:'پرس سرشانه هالتر ایستاده',en:'Barbell Shoulder Press',cat:'shoulders',muscles:['front_delt','triceps'],equip:'barbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'sh_press_db_seated',name:'پرس سرشانه دمبل نشسته',en:'Seated Dumbbell Press',cat:'shoulders',muscles:['front_delt','triceps'],equip:'dumbbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'sh_press_db_stand',name:'پرس سرشانه دمبل ایستاده',en:'Standing Dumbbell Press',cat:'shoulders',muscles:['front_delt','triceps'],equip:'dumbbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'sh_press_arnold',name:'پرس آرنولد',en:'Arnold Press',cat:'shoulders',muscles:['front_delt','side_delt'],equip:'dumbbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'sh_press_machine',name:'پرس سرشانه دستگاه',en:'Machine Shoulder Press',cat:'shoulders',muscles:['front_delt'],equip:'machine',diff:'beg',type:'comp',anim:'benchPress'},
+  {id:'sh_press_smith',name:'پرس سرشانه اسمیت',en:'Smith Machine Shoulder Press',cat:'shoulders',muscles:['front_delt'],equip:'smith',diff:'beg',type:'comp',anim:'benchPress'},
+  {id:'sh_push_press',name:'پوش پرس',en:'Push Press',cat:'shoulders',muscles:['front_delt','triceps'],equip:'barbell',diff:'adv',type:'comp',anim:'benchPress'},
+  {id:'sh_press_behind',name:'پرس از پشت گردن',en:'Behind-the-Neck Press',cat:'shoulders',muscles:['front_delt','side_delt'],equip:'barbell',diff:'adv',type:'comp',anim:'benchPress'},
+  {id:'sh_landmine_press',name:'لندماین پرس',en:'Landmine Press',cat:'shoulders',muscles:['front_delt'],equip:'barbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'sh_z_press',name:'زد پرس',en:'Z Press',cat:'shoulders',muscles:['front_delt','core'],equip:'barbell',diff:'adv',type:'comp',anim:'benchPress'},
+  {id:'sh_lateral',name:'نشر جانب دمبل',en:'Side Lateral Raise',cat:'shoulders',muscles:['side_delt'],equip:'dumbbell',diff:'beg',type:'iso',anim:'lateralRaise'},
+  {id:'sh_lateral_cable',name:'نشر جانب سیم‌کش',en:'Cable Lateral Raise',cat:'shoulders',muscles:['side_delt'],equip:'cable',diff:'int',type:'iso',anim:'lateralRaise'},
+  {id:'sh_lateral_machine',name:'نشر جانب دستگاه',en:'Machine Lateral Raise',cat:'shoulders',muscles:['side_delt'],equip:'machine',diff:'beg',type:'iso',anim:'lateralRaise'},
+  {id:'sh_lateral_lean',name:'نشر جانب خوابیده به پهلو',en:'Lean-Away Lateral Raise',cat:'shoulders',muscles:['side_delt'],equip:'cable',diff:'adv',type:'iso',anim:'lateralRaise'},
+  {id:'sh_front_raise_db',name:'نشر جلو دمبل',en:'Front Dumbbell Raise',cat:'shoulders',muscles:['front_delt'],equip:'dumbbell',diff:'beg',type:'iso',anim:'lateralRaise'},
+  {id:'sh_front_raise_bb',name:'نشر جلو هالتر',en:'Front Barbell Raise',cat:'shoulders',muscles:['front_delt'],equip:'barbell',diff:'int',type:'iso',anim:'lateralRaise'},
+  {id:'sh_front_raise_plate',name:'نشر جلو صفحه',en:'Plate Front Raise',cat:'shoulders',muscles:['front_delt'],equip:'barbell',diff:'beg',type:'iso',anim:'lateralRaise'},
+  {id:'sh_rear_db',name:'نشر خفی دمبل نشسته',en:'Seated Rear Delt Fly',cat:'shoulders',muscles:['rear_delt'],equip:'dumbbell',diff:'int',type:'iso',anim:'rearDelt'},
+  {id:'sh_rear_cable',name:'نشر خفی سیم‌کش',en:'Cable Rear Delt Fly',cat:'shoulders',muscles:['rear_delt'],equip:'cable',diff:'int',type:'iso',anim:'rearDelt'},
+  {id:'sh_rear_machine',name:'نشر خفی دستگاه',en:'Reverse Machine Flyes',cat:'shoulders',muscles:['rear_delt'],equip:'machine',diff:'beg',type:'iso',anim:'rearDelt'},
+  {id:'sh_rear_bent',name:'نشر خفی خم',en:'Bent-Over Rear Delt Fly',cat:'shoulders',muscles:['rear_delt'],equip:'dumbbell',diff:'int',type:'iso',anim:'rearDelt'},
+  {id:'sh_upright_bb',name:'پارویی هالتر',en:'Upright Barbell Row',cat:'shoulders',muscles:['side_delt','traps'],equip:'barbell',diff:'int',type:'comp',anim:'row'},
+  {id:'sh_upright_cable',name:'پارویی سیم‌کش',en:'Cable Upright Row',cat:'shoulders',muscles:['side_delt','traps'],equip:'cable',diff:'int',type:'comp',anim:'row'},
+  {id:'sh_face_pull',name:'فیس پول',en:'Face Pull',cat:'shoulders',muscles:['rear_delt','traps'],equip:'cable',diff:'int',type:'iso',anim:'facePull'},
+  {id:'sh_pull_apart',name:'کش pull apart',en:'Band Pull-Apart',cat:'shoulders',muscles:['rear_delt'],equip:'band',diff:'beg',type:'iso',anim:'facePull'},
+
+  /* ============ جلوبازو (۲۰) ============ */
+  {id:'biceps_curl_db',name:'جلوبازو دمبل',en:'Dumbbell Bicep Curl',cat:'biceps',muscles:['biceps'],equip:'dumbbell',diff:'beg',type:'iso',anim:'curl'},
+  {id:'biceps_curl_bb',name:'جلوبازو هالتر',en:'Barbell Curl',cat:'biceps',muscles:['biceps'],equip:'barbell',diff:'beg',type:'iso',anim:'curl'},
+  {id:'biceps_curl_ez',name:'جلوبازو هالتر خم',en:'EZ-Bar Curl',cat:'biceps',muscles:['biceps'],equip:'ez_bar',diff:'beg',type:'iso',anim:'curl'},
+  {id:'biceps_hammer',name:'جلوبازو چکشی',en:'Hammer Curls',cat:'biceps',muscles:['biceps','forearms'],equip:'dumbbell',diff:'beg',type:'iso',anim:'curl'},
+  {id:'biceps_preacher',name:'جلوبازو لاری',en:'Preacher Curl',cat:'biceps',muscles:['biceps'],equip:'ez_bar',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_concentration',name:'جلوبازو تمرکزی',en:'Concentration Curls',cat:'biceps',muscles:['biceps'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_cable',name:'جلوبازو سیم‌کش',en:'Cable Biceps Curl',cat:'biceps',muscles:['biceps'],equip:'cable',diff:'beg',type:'iso',anim:'curl'},
+  {id:'biceps_incline_db',name:'جلوبازو دمبل روی نیمکت شیب‌دار',en:'Incline Dumbbell Curl',cat:'biceps',muscles:['biceps'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_spider',name:'جلوبازو اسپایدر',en:'Spider Curl',cat:'biceps',muscles:['biceps'],equip:'ez_bar',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_21s',name:'جلوبازو ۲۱',en:'21s Bicep Curl',cat:'biceps',muscles:['biceps'],equip:'barbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_reverse_bb',name:'جلوبازو برعکس هالتر',en:'Reverse Barbell Curl',cat:'biceps',muscles:['forearms','biceps'],equip:'barbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_zottman',name:'جلوبازو زاتمن',en:'Zottman Curl',cat:'biceps',muscles:['biceps','forearms'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_drag',name:'درگ کرل',en:'Drag Curl',cat:'biceps',muscles:['biceps'],equip:'barbell',diff:'adv',type:'iso',anim:'curl'},
+  {id:'biceps_bayesian',name:'جلوبازو بایزیَن',en:'Bayesian Cable Curl',cat:'biceps',muscles:['biceps'],equip:'cable',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_cross_hammer',name:'جلوبازو چکشی ضربدری',en:'Cross-Body Hammer Curl',cat:'biceps',muscles:['biceps'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_prone_incline',name:'جلوبازو روی نیمکت شیب‌دار دمر',en:'Prone Incline Curl',cat:'biceps',muscles:['biceps'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_high_cable',name:'جلوبازو سیم‌کش از بالا',en:'High Cable Curl',cat:'biceps',muscles:['biceps'],equip:'cable',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_kettlebell',name:'جلوبازو کتل‌بل',en:'Kettlebell Curl',cat:'biceps',muscles:['biceps','forearms'],equip:'kettlebell',diff:'int',type:'iso',anim:'curl'},
+  {id:'biceps_band',name:'جلوبازو کش',en:'Band Curl',cat:'biceps',muscles:['biceps'],equip:'band',diff:'beg',type:'iso',anim:'curl'},
+  {id:'biceps_chinup',name:'جلوبازو با چین‌آپ',en:'Chin-Up (Biceps Focus)',cat:'biceps',muscles:['biceps','lats'],equip:'bodyweight',diff:'int',type:'comp',anim:'pulldown'},
+
+  /* ============ پشت‌بازو (۲۰) ============ */
+  {id:'triceps_pushdown_bar',name:'پشت‌بازو سیم‌کش دستگیره صاف',en:'Triceps Pushdown',cat:'triceps',muscles:['triceps'],equip:'cable',diff:'beg',type:'iso',anim:'facePull'},
+  {id:'triceps_pushdown_rope',name:'پشت‌بازو سیم‌کش طناب',en:'Triceps Rope Pushdown',cat:'triceps',muscles:['triceps'],equip:'cable',diff:'beg',type:'iso',anim:'facePull'},
+  {id:'triceps_ext_oh_db',name:'پشت‌بازو بالای سر دمبل',en:'Overhead Dumbbell Triceps Extension',cat:'triceps',muscles:['triceps'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'triceps_ext_oh_cable',name:'پشت‌بازو بالای سر سیم‌کش',en:'Cable Overhead Triceps Extension',cat:'triceps',muscles:['triceps'],equip:'cable',diff:'int',type:'iso',anim:'curl'},
+  {id:'triceps_skull_crusher',name:'پشت‌بازو هالتر خوابیده',en:'Lying Triceps Press',cat:'triceps',muscles:['triceps'],equip:'ez_bar',diff:'int',type:'iso',anim:'benchPress'},
+  {id:'triceps_close_bench',name:'پرس سینه دست جمع',en:'Close-Grip Bench Press',cat:'triceps',muscles:['triceps','chest'],equip:'barbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'triceps_kickback',name:'پشت‌بازو کیک‌بک',en:'Tricep Dumbbell Kickback',cat:'triceps',muscles:['triceps'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'triceps_dip',name:'دیپ پشت‌بازو',en:'Triceps Dips',cat:'triceps',muscles:['triceps'],equip:'bodyweight',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'triceps_bench_dip',name:'دیپ روی نیمکت',en:'Bench Dips',cat:'triceps',muscles:['triceps'],equip:'bodyweight',diff:'beg',type:'comp',anim:'benchPress'},
+  {id:'triceps_ext_oh_db_single',name:'پشت‌بازو بالای سر یک‌طرفه',en:'Single-Arm Overhead Extension',cat:'triceps',muscles:['triceps'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'triceps_skull_ez',name:'پشت‌بازو هالتر خم خوابیده',en:'EZ-Bar Skull Crusher',cat:'triceps',muscles:['triceps'],equip:'ez_bar',diff:'int',type:'iso',anim:'benchPress'},
+  {id:'triceps_reverse_pushdown',name:'پشت‌بازو سیم‌کش دست برعکس',en:'Reverse Grip Pushdown',cat:'triceps',muscles:['triceps'],equip:'cable',diff:'int',type:'iso',anim:'facePull'},
+  {id:'triceps_single_pushdown',name:'پشت‌بازو سیم‌کش یک‌طرفه',en:'Single-Arm Cable Pushdown',cat:'triceps',muscles:['triceps'],equip:'cable',diff:'int',type:'iso',anim:'facePull'},
+  {id:'triceps_oh_rope',name:'پشت‌بازو طناب بالای سر',en:'Overhead Rope Extension',cat:'triceps',muscles:['triceps'],equip:'cable',diff:'int',type:'iso',anim:'curl'},
+  {id:'triceps_tate_press',name:'تیت پرس',en:'Tate Press',cat:'triceps',muscles:['triceps'],equip:'dumbbell',diff:'adv',type:'iso',anim:'benchPress'},
+  {id:'triceps_jm_press',name:'جی‌ام پرس',en:'JM Press',cat:'triceps',muscles:['triceps'],equip:'barbell',diff:'adv',type:'comp',anim:'benchPress'},
+  {id:'triceps_floor_press',name:'پرس زمینی دمبل',en:'Dumbbell Floor Press',cat:'triceps',muscles:['triceps','chest'],equip:'dumbbell',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'triceps_diamond',name:'شنا الماسی',en:'Diamond Pushups',cat:'triceps',muscles:['triceps','chest'],equip:'bodyweight',diff:'int',type:'comp',anim:'benchPress'},
+  {id:'triceps_ring_dip',name:'دیپ حلقه',en:'Ring Dips',cat:'triceps',muscles:['triceps','chest'],equip:'bodyweight',diff:'adv',type:'comp',anim:'benchPress'},
+  {id:'triceps_band',name:'پشت‌بازو کش',en:'Band Triceps Extension',cat:'triceps',muscles:['triceps'],equip:'band',diff:'beg',type:'iso',anim:'curl'},
+
+  /* ============ چهارسر (۲۰) ============ */
+  {id:'quads_squat_bb',name:'اسکات هالتر پشت',en:'Barbell Back Squat',cat:'quads',muscles:['quads','glutes'],equip:'barbell',diff:'int',type:'comp',anim:'squat'},
+  {id:'quads_front_squat',name:'فرانت اسکات',en:'Front Squat',cat:'quads',muscles:['quads','core'],equip:'barbell',diff:'adv',type:'comp',anim:'squat'},
+  {id:'quads_goblet',name:'گوبلت اسکات',en:'Goblet Squat',cat:'quads',muscles:['quads','glutes'],equip:'dumbbell',diff:'beg',type:'comp',anim:'squat'},
+  {id:'quads_hack',name:'هاک اسکات',en:'Hack Squat',cat:'quads',muscles:['quads'],equip:'machine',diff:'int',type:'comp',anim:'squat'},
+  {id:'quads_smith_squat',name:'اسکات اسمیت',en:'Smith Machine Squat',cat:'quads',muscles:['quads','glutes'],equip:'smith',diff:'beg',type:'comp',anim:'squat'},
+  {id:'quads_bulgarian',name:'بلغاری اسپلیت اسکات',en:'Bulgarian Split Squat',cat:'quads',muscles:['quads','glutes'],equip:'dumbbell',diff:'int',type:'comp',anim:'lunge'},
+  {id:'quads_lunge_walk',name:'لانگ راه رونده',en:'Walking Lunges',cat:'quads',muscles:['quads','glutes'],equip:'dumbbell',diff:'int',type:'comp',anim:'lunge'},
+  {id:'quads_lunge_rear',name:'لانگ معکوس',en:'Rear Lunges',cat:'quads',muscles:['quads','glutes'],equip:'dumbbell',diff:'int',type:'comp',anim:'lunge'},
+  {id:'quads_stepup',name:'استپ آپ',en:'Step-Ups',cat:'quads',muscles:['quads','glutes'],equip:'dumbbell',diff:'int',type:'comp',anim:'lunge'},
+  {id:'quads_split_squat',name:'اسپلیت اسکات',en:'Split Squat',cat:'quads',muscles:['quads'],equip:'dumbbell',diff:'int',type:'comp',anim:'lunge'},
+  {id:'quads_leg_press',name:'پرس پا دستگاه',en:'Leg Press',cat:'quads',muscles:['quads','glutes'],equip:'machine',diff:'beg',type:'comp',anim:'squat'},
+  {id:'quads_leg_press_narrow',name:'پرس پا پای جمع',en:'Narrow Stance Leg Press',cat:'quads',muscles:['quads'],equip:'machine',diff:'int',type:'comp',anim:'squat'},
+  {id:'quads_leg_ext',name:'جلو پا ماشین',en:'Leg Extensions',cat:'quads',muscles:['quads'],equip:'machine',diff:'beg',type:'iso',anim:'legExtension'},
+  {id:'quads_sissy',name:'سیسی اسکات',en:'Sissy Squat',cat:'quads',muscles:['quads'],equip:'bodyweight',diff:'adv',type:'iso',anim:'squat'},
+  {id:'quads_pistol',name:'پیستول اسکات',en:'Pistol Squat',cat:'quads',muscles:['quads','glutes','core'],equip:'bodyweight',diff:'adv',type:'comp',anim:'squat'},
+  {id:'quads_zercher',name:'زرچر اسکات',en:'Zercher Squat',cat:'quads',muscles:['quads','core'],equip:'barbell',diff:'adv',type:'comp',anim:'squat'},
+  {id:'quads_oh_squat',name:'اسکات بالای سر',en:'Overhead Squat',cat:'quads',muscles:['quads','core','shoulders'],equip:'barbell',diff:'adv',type:'comp',anim:'squat'},
+  {id:'quads_anderson',name:'اندرسون اسکات',en:'Anderson Squat',cat:'quads',muscles:['quads','glutes'],equip:'barbell',diff:'adv',type:'comp',anim:'squat'},
+  {id:'quads_box_squat',name:'باکس اسکات',en:'Box Squat',cat:'quads',muscles:['quads','glutes'],equip:'barbell',diff:'int',type:'comp',anim:'squat'},
+  {id:'quads_wall_sit',name:'وال سیت',en:'Wall Sit',cat:'quads',muscles:['quads'],equip:'bodyweight',diff:'beg',type:'iso',anim:'squat'},
+
+  /* ============ همسترینگ و باسن (۲۵) ============ */
+  {id:'hams_rdl_bb',name:'ددلیفت رومانیایی هالتر',en:'Romanian Deadlift (Barbell)',cat:'hams',muscles:['hams','glutes','lower_back'],equip:'barbell',diff:'int',type:'comp',anim:'deadlift'},
+  {id:'hams_rdl_db',name:'ددلیفت رومانیایی دمبل',en:'Romanian Deadlift (Dumbbell)',cat:'hams',muscles:['hams','glutes'],equip:'dumbbell',diff:'int',type:'comp',anim:'deadlift'},
+  {id:'hams_sldl',name:'ددلیفت پا صاف',en:'Stiff-Leg Deadlift',cat:'hams',muscles:['hams','glutes'],equip:'barbell',diff:'int',type:'comp',anim:'deadlift'},
+  {id:'hams_rdl_single',name:'ددلیفت رومانیایی یک‌پا',en:'Single-Leg RDL',cat:'hams',muscles:['hams','glutes'],equip:'dumbbell',diff:'int',type:'comp',anim:'deadlift'},
+  {id:'hams_curl_lying',name:'پشت پا خوابیده',en:'Lying Leg Curls',cat:'hams',muscles:['hams'],equip:'machine',diff:'beg',type:'iso',anim:'legCurl'},
+  {id:'hams_curl_seated',name:'پشت پا نشسته',en:'Seated Leg Curl',cat:'hams',muscles:['hams'],equip:'machine',diff:'beg',type:'iso',anim:'legCurl'},
+  {id:'hams_curl_standing',name:'پشت پا ایستاده یک‌پا',en:'Standing Leg Curl',cat:'hams',muscles:['hams'],equip:'machine',diff:'int',type:'iso',anim:'legCurl'},
+  {id:'hams_nordic',name:'نوردیک کرل',en:'Nordic Hamstring Curl',cat:'hams',muscles:['hams'],equip:'bodyweight',diff:'adv',type:'iso',anim:'legCurl'},
+  {id:'hams_ghr',name:'گلوت هم ریز',en:'Glute Ham Raise',cat:'hams',muscles:['hams','glutes'],equip:'machine',diff:'adv',type:'comp',anim:'legCurl'},
+  {id:'hams_goodmorning',name:'گود مورنینگ',en:'Good Morning',cat:'hams',muscles:['hams','lower_back'],equip:'barbell',diff:'int',type:'comp',anim:'deadlift'},
+  {id:'glutes_hipthrust_bb',name:'هیپ تراست هالتر',en:'Barbell Hip Thrust',cat:'hams',muscles:['glutes'],equip:'barbell',diff:'int',type:'comp',anim:'hipThrust'},
+  {id:'glutes_hipthrust_machine',name:'هیپ تراست دستگاه',en:'Machine Hip Thrust',cat:'hams',muscles:['glutes'],equip:'machine',diff:'beg',type:'comp',anim:'hipThrust'},
+  {id:'glutes_hipthrust_single',name:'هیپ تراست یک‌پا',en:'Single-Leg Hip Thrust',cat:'hams',muscles:['glutes'],equip:'bodyweight',diff:'int',type:'comp',anim:'hipThrust'},
+  {id:'glutes_bridge',name:'پل باسن',en:'Glute Bridge',cat:'hams',muscles:['glutes'],equip:'bodyweight',diff:'beg',type:'iso',anim:'hipThrust'},
+  {id:'glutes_kickback',name:'لگد باسن',en:'Glute Kickback',cat:'hams',muscles:['glutes'],equip:'bodyweight',diff:'beg',type:'iso',anim:'hipThrust'},
+  {id:'glutes_kickback_cable',name:'لگد باسن سیم‌کش',en:'Cable Kickback',cat:'hams',muscles:['glutes'],equip:'cable',diff:'int',type:'iso',anim:'hipThrust'},
+  {id:'glutes_pull_through',name:'پول ترو',en:'Cable Pull-Through',cat:'hams',muscles:['glutes','hams'],equip:'cable',diff:'int',type:'comp',anim:'hipThrust'},
+  {id:'glutes_frog_pump',name:'فراگ پامپ',en:'Frog Pump',cat:'hams',muscles:['glutes'],equip:'bodyweight',diff:'beg',type:'iso',anim:'hipThrust'},
+  {id:'glutes_clamshell',name:'کلامشل',en:'Clamshell',cat:'hams',muscles:['glutes'],equip:'band',diff:'beg',type:'iso',anim:'hipThrust'},
+  {id:'glutes_side_walk',name:'پیاده‌روی با کش',en:'Banded Side Walk',cat:'hams',muscles:['glutes'],equip:'band',diff:'beg',type:'iso',anim:'hipThrust'},
+  {id:'glutes_abduction',name:'پا باز کن دستگاه',en:'Hip Abduction Machine',cat:'hams',muscles:['glutes'],equip:'machine',diff:'beg',type:'iso',anim:'squat'},
+  {id:'glutes_adduction',name:'پا جمع کن دستگاه',en:'Hip Adduction Machine',cat:'hams',muscles:['quads'],equip:'machine',diff:'beg',type:'iso',anim:'squat'},
+  {id:'hams_rev_hyper',name:'هایپر معکوس',en:'Reverse Hyperextension',cat:'hams',muscles:['glutes','hams','lower_back'],equip:'machine',diff:'int',type:'comp',anim:'hyperextension'},
+  {id:'hams_back_ext',name:'هایپراکستنشن',en:'Back Extension',cat:'hams',muscles:['lower_back','glutes'],equip:'machine',diff:'beg',type:'iso',anim:'hyperextension'},
+
+  /* ============ ساق (۱۰) ============ */
+  {id:'calves_stand_machine',name:'ساق پا ایستاده دستگاه',en:'Standing Calf Raises',cat:'calves',muscles:['calves'],equip:'machine',diff:'beg',type:'iso',anim:'calfRaise'},
+  {id:'calves_seated',name:'ساق پا نشسته',en:'Seated Calf Raise',cat:'calves',muscles:['calves'],equip:'machine',diff:'beg',type:'iso',anim:'calfRaise'},
+  {id:'calves_leg_press',name:'ساق پا در پرس پا',en:'Calf Press on Leg Press',cat:'calves',muscles:['calves'],equip:'machine',diff:'beg',type:'iso',anim:'calfRaise'},
+  {id:'calves_donkey',name:'ساق پا دنکی',en:'Donkey Calf Raises',cat:'calves',muscles:['calves'],equip:'machine',diff:'int',type:'iso',anim:'calfRaise'},
+  {id:'calves_single',name:'ساق پا تک‌پا',en:'Single-Leg Calf Raise',cat:'calves',muscles:['calves'],equip:'bodyweight',diff:'int',type:'iso',anim:'calfRaise'},
+  {id:'calves_smith',name:'ساق پا اسمیت',en:'Smith Machine Calf Raise',cat:'calves',muscles:['calves'],equip:'smith',diff:'beg',type:'iso',anim:'calfRaise'},
+  {id:'calves_barbell',name:'ساق پا هالتر',en:'Barbell Calf Raise',cat:'calves',muscles:['calves'],equip:'barbell',diff:'int',type:'iso',anim:'calfRaise'},
+  {id:'calves_dumbbell',name:'ساق پا دمبل',en:'Dumbbell Calf Raise',cat:'calves',muscles:['calves'],equip:'dumbbell',diff:'beg',type:'iso',anim:'calfRaise'},
+  {id:'calves_bodyweight',name:'ساق پا وزن بدن',en:'Bodyweight Calf Raise',cat:'calves',muscles:['calves'],equip:'bodyweight',diff:'beg',type:'iso',anim:'calfRaise'},
+  {id:'calves_jumprope',name:'طناب زدن برای ساق',en:'Jump Rope (Calves Focus)',cat:'calves',muscles:['calves'],equip:'bodyweight',diff:'int',type:'comp',anim:'calfRaise'},
+
+  /* ============ شکم (۳۰) ============ */
+  {id:'core_plank',name:'پلانک',en:'Plank',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'core_side_plank',name:'پلانک از پهلو',en:'Side Plank',cat:'core',muscles:['obliques'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'core_crunch_weighted',name:'کرانچ با وزنه',en:'Weighted Crunch',cat:'core',muscles:['abs'],equip:'barbell',diff:'int',type:'iso',anim:'crunch'},
+  {id:'core_crunch_cable',name:'کرانچ سیم‌کش',en:'Cable Crunch',cat:'core',muscles:['abs'],equip:'cable',diff:'int',type:'iso',anim:'crunch'},
+  {id:'core_bicycle',name:'دوچرخه شکم',en:'Bicycle Crunch',cat:'core',muscles:['abs','obliques'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_russian',name:'چرخش روسی',en:'Russian Twist',cat:'core',muscles:['obliques'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_leg_raise_flat',name:'بالا آوردن پا خوابیده',en:'Flat Bench Lying Leg Raise',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_hanging_leg',name:'بالا آوردن پا آویزان',en:'Hanging Leg Raise',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'int',type:'iso',anim:'crunch'},
+  {id:'core_hanging_knee',name:'بالا آوردن زانو آویزان',en:'Hanging Knee Raise',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_ab_wheel',name:'چرخ شکم',en:'Ab Roller',cat:'core',muscles:['abs'],equip:'other',diff:'int',type:'iso',anim:'plank'},
+  {id:'core_mountain_climber',name:'کوهنوردی',en:'Mountain Climbers',cat:'core',muscles:['abs','cardio'],equip:'bodyweight',diff:'int',type:'comp',anim:'plank'},
+  {id:'core_dead_bug',name:'دد باگ',en:'Dead Bug',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'core_vup',name:'V-Up',en:'V-Up',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'int',type:'iso',anim:'crunch'},
+  {id:'core_toe_touch',name:'لمس پا',en:'Toe Touchers',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_decline_situp',name:'سيت‌آپ روی شیب',en:'Decline Bench Sit-Up',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'int',type:'iso',anim:'crunch'},
+  {id:'core_situp',name:'سيت‌آپ',en:'Sit-Up',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_machine_crunch',name:'کرانچ دستگاه',en:'Crunch Machine',cat:'core',muscles:['abs'],equip:'machine',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_woodchopper',name:'چرخش چوب',en:'Cable Woodchopper',cat:'core',muscles:['obliques'],equip:'cable',diff:'int',type:'iso',anim:'crunch'},
+  {id:'core_pallof',name:'پلوف پرس',en:'Pallof Press',cat:'core',muscles:['abs','obliques'],equip:'cable',diff:'int',type:'iso',anim:'plank'},
+  {id:'core_bird_dog',name:'پرنده-سگ',en:'Bird Dog',cat:'core',muscles:['abs','lower_back'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'core_hollow_hold',name:'هالو بادی',en:'Hollow Body Hold',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'int',type:'iso',anim:'plank'},
+  {id:'core_dragon_flag',name:'دراگون فلگ',en:'Dragon Flag',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'adv',type:'iso',anim:'plank'},
+  {id:'core_lsit',name:'ال‌سیت',en:'L-Sit',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'adv',type:'iso',anim:'plank'},
+  {id:'core_windshield',name:'برف‌پاک‌کن',en:'Windshield Wiper',cat:'core',muscles:['abs','obliques'],equip:'bodyweight',diff:'adv',type:'iso',anim:'crunch'},
+  {id:'core_reverse_crunch',name:'کرانچ معکوس',en:'Reverse Crunch',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_scissor',name:'قیچی',en:'Scissor Kicks',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_flutter',name:'فلاتر کیک',en:'Flutter Kicks',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'beg',type:'iso',anim:'crunch'},
+  {id:'core_leg_climb',name:'بالا رفتن از پای خود',en:'Leg Climb',cat:'core',muscles:['abs'],equip:'bodyweight',diff:'adv',type:'iso',anim:'crunch'},
+  {id:'core_copenhagen',name:'پلانک کپنهاگن',en:'Copenhagen Plank',cat:'core',muscles:['obliques'],equip:'bodyweight',diff:'adv',type:'iso',anim:'plank'},
+  {id:'core_ab_wheel_standing',name:'چرخ شکم ایستاده',en:'Standing Ab Wheel',cat:'core',muscles:['abs'],equip:'other',diff:'adv',type:'iso',anim:'plank'},
+
+  /* ============ تراپز (۸) ============ */
+  {id:'traps_shrug_bb',name:'شراگ هالتر',en:'Barbell Shrug',cat:'traps',muscles:['traps'],equip:'barbell',diff:'beg',type:'iso',anim:'deadlift'},
+  {id:'traps_shrug_db',name:'شراگ دمبل',en:'Dumbbell Shrug',cat:'traps',muscles:['traps'],equip:'dumbbell',diff:'beg',type:'iso',anim:'deadlift'},
+  {id:'traps_shrug_smith',name:'شراگ اسمیت',en:'Smith Machine Shrug',cat:'traps',muscles:['traps'],equip:'smith',diff:'beg',type:'iso',anim:'deadlift'},
+  {id:'traps_shrug_cable',name:'شراگ سیم‌کش',en:'Cable Shrugs',cat:'traps',muscles:['traps'],equip:'cable',diff:'beg',type:'iso',anim:'deadlift'},
+  {id:'traps_shrug_behind',name:'شراگ از پشت',en:'Behind-the-Back Shrug',cat:'traps',muscles:['traps'],equip:'barbell',diff:'int',type:'iso',anim:'deadlift'},
+  {id:'traps_shrug_trap',name:'شراگ تراپ بار',en:'Trap Bar Shrug',cat:'traps',muscles:['traps'],equip:'barbell',diff:'int',type:'iso',anim:'deadlift'},
+  {id:'traps_farmers',name:'فارمرز واک',en:"Farmer's Walk",cat:'traps',muscles:['traps','forearms','core'],equip:'dumbbell',diff:'int',type:'comp',anim:'deadlift'},
+  {id:'traps_oh_shrug',name:'شراگ بالای سر',en:'Overhead Shrug',cat:'traps',muscles:['traps'],equip:'barbell',diff:'adv',type:'iso',anim:'deadlift'},
+
+  /* ============ ساعد (۸) ============ */
+  {id:'forearms_wrist_down',name:'مچ پرونیشن',en:'Palms-Down Wrist Curl',cat:'forearms',muscles:['forearms'],equip:'dumbbell',diff:'beg',type:'iso',anim:'curl'},
+  {id:'forearms_wrist_up',name:'مچ سوپینیشن',en:'Palms-Up Wrist Curl',cat:'forearms',muscles:['forearms'],equip:'dumbbell',diff:'beg',type:'iso',anim:'curl'},
+  {id:'forearms_rev_bb',name:'جلوبازو برعکس هالتر',en:'Reverse Barbell Curl',cat:'forearms',muscles:['forearms'],equip:'barbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'forearms_rev_hammer',name:'ریورس همر',en:'Reverse Hammer Curl',cat:'forearms',muscles:['forearms'],equip:'dumbbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'forearms_roller',name:'رول مچ',en:'Wrist Roller',cat:'forearms',muscles:['forearms'],equip:'other',diff:'int',type:'iso',anim:'curl'},
+  {id:'forearms_plate_pinch',name:'پینچ صفحه',en:'Plate Pinch',cat:'forearms',muscles:['forearms'],equip:'barbell',diff:'int',type:'iso',anim:'curl'},
+  {id:'forearms_dead_hang',name:'آویزان شدن',en:'Dead Hang',cat:'forearms',muscles:['forearms','lats'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'forearms_towel_hold',name:'نگه‌داشتن حوله',en:'Towel Grip Hold',cat:'forearms',muscles:['forearms'],equip:'bodyweight',diff:'int',type:'iso',anim:'plank'},
+
+  /* ============ کاردیو (۲۰) ============ */
+  {id:'cardio_treadmill_walk',name:'تردمیل پیاده‌روی شیب‌دار',en:'Treadmill Incline Walk',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'beg',type:'comp',anim:'lunge'},
+  {id:'cardio_treadmill_run',name:'تردمیل دویدن',en:'Treadmill Run',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'int',type:'comp',anim:'lunge'},
+  {id:'cardio_treadmill_sprint',name:'تردمیل سرعتی',en:'Treadmill Sprint Interval',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'adv',type:'comp',anim:'lunge'},
+  {id:'cardio_bike',name:'دوچرخه ثابت',en:'Stationary Bike',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'beg',type:'comp',anim:'legExtension'},
+  {id:'cardio_spin',name:'اسپینینگ',en:'Spinning',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'int',type:'comp',anim:'legExtension'},
+  {id:'cardio_row',name:'دستگاه روئینگ',en:'Rowing Machine',cat:'cardio',muscles:['cardio','back'],equip:'cardio',diff:'int',type:'comp',anim:'row'},
+  {id:'cardio_stair',name:'پله نوردی',en:'Stair Climber',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'int',type:'comp',anim:'lunge'},
+  {id:'cardio_elliptical',name:'الیپتیکال',en:'Elliptical',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'beg',type:'comp',anim:'lunge'},
+  {id:'cardio_jumprope',name:'طناب زدن',en:'Rope Jumping',cat:'cardio',muscles:['cardio','calves'],equip:'bodyweight',diff:'int',type:'comp',anim:'calfRaise'},
+  {id:'cardio_burpee',name:'برپی',en:'Burpee',cat:'cardio',muscles:['cardio','full_body'],equip:'bodyweight',diff:'int',type:'comp',anim:'squat'},
+  {id:'cardio_jumping_jack',name:'جامپینگ جک',en:'Jumping Jack',cat:'cardio',muscles:['cardio'],equip:'bodyweight',diff:'beg',type:'comp',anim:'lateralRaise'},
+  {id:'cardio_box_jump',name:'پرش جعبه',en:'Box Jump',cat:'cardio',muscles:['cardio','quads'],equip:'other',diff:'int',type:'comp',anim:'squat'},
+  {id:'cardio_battle_rope',name:'طناب جنگی',en:'Battle Ropes',cat:'cardio',muscles:['cardio','shoulders'],equip:'other',diff:'int',type:'comp',anim:'lateralRaise'},
+  {id:'cardio_swim',name:'شنا',en:'Swimming',cat:'cardio',muscles:['cardio','full_body'],equip:'cardio',diff:'int',type:'comp',anim:'lunge'},
+  {id:'cardio_cycle_outdoor',name:'دوچرخه سواری',en:'Cycling (Outdoor)',cat:'cardio',muscles:['cardio'],equip:'cardio',diff:'int',type:'comp',anim:'legExtension'},
+  {id:'cardio_sled_push',name:'هل دادن سورتمه',en:'Incline Sled Push',cat:'cardio',muscles:['cardio','quads'],equip:'other',diff:'adv',type:'comp',anim:'lunge'},
+  {id:'cardio_kb_swing',name:'سوئینگ کتل‌بل',en:'Kettlebell Swing',cat:'cardio',muscles:['cardio','glutes','hams'],equip:'kettlebell',diff:'int',type:'comp',anim:'hipThrust'},
+  {id:'cardio_high_knee',name:'زانو بالا',en:'High Knees',cat:'cardio',muscles:['cardio'],equip:'bodyweight',diff:'beg',type:'comp',anim:'lunge'},
+  {id:'cardio_jump_squat',name:'جامپ اسکات',en:'Jump Squats',cat:'cardio',muscles:['cardio','quads'],equip:'bodyweight',diff:'int',type:'comp',anim:'squat'},
+  {id:'cardio_bear_crawl',name:'خرس راه رونده',en:'Bear Crawl',cat:'cardio',muscles:['cardio','core'],equip:'bodyweight',diff:'int',type:'comp',anim:'plank'},
+
+  /* ============ موبیلیتی (۱۲) ============ */
+  {id:'mobility_cat_cow',name:'گربه-گاو',en:'Cat-Cow',cat:'mobility',muscles:['lower_back'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'mobility_bird_dog',name:'پرنده-سگ',en:'Bird Dog',cat:'mobility',muscles:['core'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'mobility_hip_flexor',name:'کشش فلکسور ران',en:'Hip Flexor Stretch',cat:'mobility',muscles:['quads'],equip:'bodyweight',diff:'beg',type:'iso',anim:'lunge'},
+  {id:'mobility_shoulder_disloc',name:'چرخش شانه با چوب',en:'Shoulder Dislocates',cat:'mobility',muscles:['shoulders'],equip:'band',diff:'beg',type:'iso',anim:'lateralRaise'},
+  {id:'mobility_pigeon',name:'کبوتر',en:'Pigeon Pose',cat:'mobility',muscles:['glutes'],equip:'bodyweight',diff:'beg',type:'iso',anim:'lunge'},
+  {id:'mobility_thoracic_rot',name:'چرخش توراسیک',en:'Thoracic Rotation',cat:'mobility',muscles:['back'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'mobility_deep_squat',name:'اسکات عمیق نگه‌داشتن',en:'Deep Squat Hold',cat:'mobility',muscles:['quads','glutes'],equip:'bodyweight',diff:'beg',type:'iso',anim:'squat'},
+  {id:'mobility_couch',name:'کشش کاوچ',en:'Couch Stretch',cat:'mobility',muscles:['quads'],equip:'bodyweight',diff:'beg',type:'iso',anim:'lunge'},
+  {id:'mobility_foam_quads',name:'فوم رول ران',en:'Foam Roll Quads',cat:'mobility',muscles:['quads'],equip:'other',diff:'beg',type:'iso',anim:'lunge'},
+  {id:'mobility_foam_back',name:'فوم رول پشت',en:'Foam Roll Upper Back',cat:'mobility',muscles:['back'],equip:'other',diff:'beg',type:'iso',anim:'plank'},
+  {id:'mobility_down_dog',name:'سگ سر پایین',en:'Downward Dog',cat:'mobility',muscles:['hams','shoulders'],equip:'bodyweight',diff:'beg',type:'iso',anim:'plank'},
+  {id:'mobility_wgs',name:'کشش بزرگ',en:"World's Greatest Stretch",cat:'mobility',muscles:['full_body'],equip:'bodyweight',diff:'beg',type:'iso',anim:'lunge'}
+];
+
+/* ============ اسپلیت‌های تمرینی ============ */
+const PRO_SPLITS = {
+  2: ['full', 'full'],
+  3: ['push', 'pull', 'legs'],
+  4: ['upper', 'lower', 'upper', 'lower'],
+  5: ['push', 'pull', 'legs', 'upper', 'lower'],
+  6: ['push', 'pull', 'legs', 'push', 'pull', 'legs']
+};
+
+const PRO_TEMPLATES = {
+  full: {
+    name: 'تمام بدن',
+    focus: 'کل بدن',
+    icon: '💪',
+    groups: [
+      {cat:'chest', n:1}, {cat:'back', n:1}, {cat:'quads', n:1},
+      {cat:'shoulders', n:1}, {cat:'biceps', n:1}, {cat:'triceps', n:1},
+      {cat:'core', n:1}
+    ]
+  },
+  upper: {
+    name: 'بالاتنه',
+    focus: 'سینه، پشت، شانه، بازو',
+    icon: '💪',
+    groups: [
+      {cat:'chest', n:2}, {cat:'back', n:2}, {cat:'shoulders', n:1},
+      {cat:'biceps', n:1}, {cat:'triceps', n:1}
+    ]
+  },
+  lower: {
+    name: 'پایین‌تنه',
+    focus: 'پا، باسن، ساق',
+    icon: '🦵',
+    groups: [
+      {cat:'quads', n:2}, {cat:'hams', n:2}, {cat:'calves', n:1},
+      {cat:'core', n:1}
+    ]
+  },
+  push: {
+    name: 'فشاری',
+    focus: 'سینه، شانه، پشت‌بازو',
+    icon: '🔥',
+    groups: [
+      {cat:'chest', n:2}, {cat:'shoulders', n:2}, {cat:'triceps', n:2},
+      {cat:'core', n:1}
+    ]
+  },
+  pull: {
+    name: 'کششی',
+    focus: 'پشت و جلوبازو',
+    icon: '🔙',
+    groups: [
+      {cat:'back', n:3}, {cat:'biceps', n:2}, {cat:'traps', n:1},
+      {cat:'core', n:1}
+    ]
+  },
+  legs: {
+    name: 'پا',
+    focus: 'چهارسر، همسترینگ، ساق',
+    icon: '🦿',
+    groups: [
+      {cat:'quads', n:2}, {cat:'hams', n:2}, {cat:'calves', n:2},
+      {cat:'core', n:1}
+    ]
+  }
+};
+
+const PRO_VOLUME_BY_LEVEL = {
+  beginner:     { sets: 3, repsCompound: '۱۰-۱۲', repsIsolation: '۱۲-۱۵', rest: 90 },
+  intermediate: { sets: 4, repsCompound: '۸-۱۰',  repsIsolation: '۱۰-۱۲', rest: 90 },
+  advanced:     { sets: 4, repsCompound: '۶-۸',   repsIsolation: '۱۰-۱۲', rest: 120 }
+};
+
+/* ============ انیمیشن‌های SVG ============ */
+const PRO_ANIMATIONS = {
+  benchPress: '<svg viewBox="0 0 260 180"><rect x="55" y="122" width="140" height="9" rx="4" fill="#475569"/><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 -25;0 -25;0 0" dur="2.4s" repeatCount="indefinite" keyTimes="0;.15;.5;.65;1"/><circle cx="90" cy="105" r="13" fill="#38bdf8"/><rect x="80" y="118" width="60" height="11" rx="4" fill="#38bdf8"/><rect x="72" y="80" width="88" height="7" rx="3" fill="#a855f7"/></g></svg>',
+  chestFly: '<svg viewBox="0 0 260 180"><g><circle cx="90" cy="105" r="13" fill="#38bdf8"/><rect x="80" y="118" width="60" height="11" rx="4" fill="#38bdf8"/><line x1="95" y1="100" x2="130" y2="80" stroke="#a855f7" stroke-width="6"><animate attributeName="x2" values="30;120" dur="2.2s" repeatCount="indefinite"/></line></g></svg>',
+  pulldown: '<svg viewBox="0 0 220 200"><g><circle cx="110" cy="95" r="13" fill="#38bdf8"/><rect x="102" y="108" width="16" height="42" rx="6" fill="#38bdf8"/><line x1="110" y1="115" x2="75" y2="65" stroke="#a855f7" stroke-width="5"><animate attributeName="y2" values="65;115" dur="2s" repeatCount="indefinite"/></line></g></svg>',
+  row: '<svg viewBox="0 0 260 180"><g><ellipse cx="160" cy="120" rx="48" ry="12" fill="#38bdf8"/><line x1="160" y1="112" x2="80" y2="90" stroke="#a855f7" stroke-width="6"><animate attributeName="x2" values="80;120" dur="2s" repeatCount="indefinite"/></line></g></svg>',
+  oneArmRow: '<svg viewBox="0 0 260 180"><g><line x1="70" y1="115" x2="150" y2="100" stroke="#38bdf8" stroke-width="12"/><circle cx="60" cy="118" r="12" fill="#38bdf8"/></g></svg>',
+  lateralRaise: '<svg viewBox="0 0 220 200"><g><circle cx="110" cy="80" r="14" fill="#38bdf8"/><line x1="110" y1="105" x2="90" y2="140" stroke="#a855f7" stroke-width="6"><animate attributeName="x2" values="90;25" dur="2s" repeatCount="indefinite"/></line></g></svg>',
+  rearDelt: '<svg viewBox="0 0 220 200"><g><circle cx="110" cy="80" r="14" fill="#38bdf8"/><line x1="110" y1="105" x2="85" y2="110" stroke="#a855f7" stroke-width="6"><animate attributeName="x2" values="85;25" dur="2s" repeatCount="indefinite"/></line></g></svg>',
+  facePull: '<svg viewBox="0 0 260 180"><g><circle cx="170" cy="88" r="14" fill="#38bdf8"/><line x1="165" y1="100" x2="90" y2="85" stroke="#a855f7" stroke-width="6"><animate attributeName="x2" values="90;135" dur="2s" repeatCount="indefinite"/></line></g></svg>',
+  curl: '<svg viewBox="0 0 200 200"><g><circle cx="100" cy="75" r="14" fill="#38bdf8"/><rect x="92" y="89" width="16" height="55" rx="6" fill="#38bdf8"/></g></svg>',
+  squat: '<svg viewBox="0 0 220 200"><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 30;0 30;0 0" dur="3s" repeatCount="indefinite" keyTimes="0;.15;.45;.7;1"/><circle cx="110" cy="55" r="14" fill="#38bdf8"/><rect x="102" y="69" width="16" height="55" rx="6" fill="#38bdf8"/></g></svg>',
+  hipThrust: '<svg viewBox="0 0 260 180"><g><ellipse cx="140" cy="130" rx="40" ry="14" fill="#38bdf8"><animate attributeName="cy" values="130;95;95;130" dur="2.6s" repeatCount="indefinite"/></ellipse><circle cx="80" cy="105" r="13" fill="#38bdf8"/></g></svg>',
+  deadlift: '<svg viewBox="0 0 220 200"><g><circle cx="110" cy="55" r="14" fill="#38bdf8"/><line x1="80" y1="142" x2="140" y2="142" stroke="#f43f5e" stroke-width="7"/></g></svg>',
+  legCurl: '<svg viewBox="0 0 260 180"><g><ellipse cx="90" cy="105" rx="45" ry="12" fill="#38bdf8"/><circle cx="42" cy="105" r="13" fill="#38bdf8"/><rect x="130" y="98" width="60" height="14" rx="5" fill="#38bdf8"><animateTransform attributeName="transform" type="rotate" values="0 130 105;0 130 105;-75 130 105;-75 130 105;0 130 105" dur="3s" repeatCount="indefinite" keyTimes="0;.15;.45;.7;1"/></rect></g></svg>',
+  legExtension: '<svg viewBox="0 0 260 180"><g><ellipse cx="85" cy="95" rx="42" ry="10" fill="#38bdf8"/><circle cx="42" cy="95" r="12" fill="#38bdf8"/><rect x="140" y="88" width="60" height="13" rx="4" fill="#38bdf8"><animateTransform attributeName="transform" type="rotate" values="0 140 95;0 140 95;70 140 95;70 140 95;0 140 95" dur="3s" repeatCount="indefinite" keyTimes="0;.15;.45;.7;1"/></rect></g></svg>',
+  calfRaise: '<svg viewBox="0 0 200 200"><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 -25;0 -25;0 0" dur="2.4s" repeatCount="indefinite" keyTimes="0;.15;.45;.7;1"/><circle cx="100" cy="65" r="14" fill="#38bdf8"/><rect x="92" y="79" width="16" height="55" rx="6" fill="#38bdf8"/></g></svg>',
+  plank: '<svg viewBox="0 0 260 160"><g><ellipse cx="140" cy="105" rx="60" ry="8" fill="#38bdf8"><animate attributeName="ry" values="8;6;8" dur="2.2s" repeatCount="indefinite"/></ellipse><circle cx="85" cy="100" r="13" fill="#38bdf8"/></g></svg>',
+  crunch: '<svg viewBox="0 0 260 180"><g><ellipse cx="150" cy="130" rx="55" ry="8" fill="#38bdf8"/><circle cx="95" cy="130" r="12" fill="#38bdf8"/></g></svg>',
+  hyperextension: '<svg viewBox="0 0 260 180"><g><line x1="180" y1="100" x2="120" y2="130" stroke="#38bdf8" stroke-width="12"/><circle cx="110" cy="135" r="12" fill="#38bdf8"/></g></svg>',
+  lunge: '<svg viewBox="0 0 220 200"><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 30;0 30;0 0" dur="3s" repeatCount="indefinite" keyTimes="0;.15;.45;.7;1"/><circle cx="110" cy="55" r="14" fill="#38bdf8"/><rect x="102" y="69" width="16" height="55" rx="6" fill="#38bdf8"/></g></svg>'
+};
+
+/* ============ صدور برای استفاده در index.html ============ */
+window.PRO_DATA = {
+  categories: PRO_CATEGORIES,
+  equipment: PRO_EQUIPMENT,
+  equipmentEmoji: PRO_EQUIP_EMOJI,
+  exercises: PRO_EXERCISES,
+  splits: PRO_SPLITS,
+  templates: PRO_TEMPLATES,
+  volumeByLevel: PRO_VOLUME_BY_LEVEL,
+  animations: PRO_ANIMATIONS
+};
