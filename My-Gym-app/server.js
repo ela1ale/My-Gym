@@ -1,13 +1,11 @@
-/* ============================================================
-   ProFit Server — Express + PostgreSQL + JWT
-   ============================================================ */
-const express  = require('express');
-const path     = require('path');
-const bcrypt   = require('bcrypt');
-const jwt      = require('jsonwebtoken');
+/* ProFit Server v3 — Approval System + Role Selection */
+const express = require('express');
+const path = require('path');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 
-const PORT       = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'change-me-' + Math.random().toString(36);
 const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'admin123';
@@ -20,16 +18,17 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
-const query = (text, params) => pool.query(text, params);
+const query = (t, p) => pool.query(t, p);
 
-/* ---------- Schema ---------- */
 async function initSchema() {
   await query(`CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY, username TEXT UNIQUE NOT NULL, display_name TEXT NOT NULL,
     password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'student',
     coach_id TEXT, emoji TEXT DEFAULT '💪', color TEXT DEFAULT '#3b82f6',
-    active INTEGER DEFAULT 1, created_at BIGINT NOT NULL, updated_at BIGINT NOT NULL
+    active INTEGER DEFAULT 1, approval_status TEXT DEFAULT 'approved',
+    created_at BIGINT NOT NULL, updated_at BIGINT NOT NULL
   );`);
+  await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS approval_status TEXT DEFAULT 'approved'`);
   await query(`CREATE INDEX IF NOT EXISTS idx_users_coach ON users(coach_id);`);
   await query(`CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);`);
   await query(`CREATE TABLE IF NOT EXISTS user_data (
@@ -43,12 +42,11 @@ async function initSchema() {
     FOREIGN KEY (coach_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
   );`);
-  await query(`CREATE INDEX IF NOT EXISTS idx_notes_student ON coach_notes(student_id);`);
   await query(`CREATE TABLE IF NOT EXISTS audit_log (
     id SERIAL PRIMARY KEY, actor_id TEXT, action TEXT NOT NULL,
     target_id TEXT, details TEXT, created_at BIGINT NOT NULL
   );`);
-  console.log('✅ جداول آماده هستند');
+  console.log('✅ جداول آماده');
 }
 
 async function bootstrapAdmin() {
@@ -56,15 +54,10 @@ async function bootstrapAdmin() {
   if (r.rows.length > 0) return;
   const id = 'u_admin_' + Date.now();
   const now = Date.now();
-  const hash = bcrypt.hashSync(ADMIN_PASS, 10);
-  await query(`INSERT INTO users (id, username, display_name, password_hash, role, emoji, color, active, created_at, updated_at)
-    VALUES ($1, $2, $3, $4, 'admin', '👑', '#f59e0b', 1, $5, $6)`,
-    [id, ADMIN_USER, 'مدیر سیستم', hash, now, now]);
-  console.log('╔═══════════════════════════════════╗');
-  console.log('║  ✅ ادمین پیش‌فرض ساخته شد         ║');
-  console.log('║  Username: ' + ADMIN_USER.padEnd(23) + '║');
-  console.log('║  Password: ' + ADMIN_PASS.padEnd(23) + '║');
-  console.log('╚═══════════════════════════════════╝');
+  await query(`INSERT INTO users (id, username, display_name, password_hash, role, emoji, color, active, approval_status, created_at, updated_at)
+    VALUES ($1,$2,$3,$4,'admin','👑','#f59e0b',1,'approved',$5,$6)`,
+    [id, ADMIN_USER, 'مدیر سیستم', bcrypt.hashSync(ADMIN_PASS, 10), now, now]);
+  console.log('👑 ادمین: ' + ADMIN_USER + ' / ' + ADMIN_PASS);
 }
 
 async function log(actorId, action, targetId, details) {
@@ -74,7 +67,8 @@ async function log(actorId, action, targetId, details) {
 
 function publicUser(u) {
   return { id: u.id, username: u.username, displayName: u.display_name, role: u.role,
-    coachId: u.coach_id, emoji: u.emoji, color: u.color, active: !!u.active, createdAt: Number(u.created_at) };
+    coachId: u.coach_id, emoji: u.emoji, color: u.color, active: !!u.active,
+    approvalStatus: u.approval_status || 'approved', createdAt: Number(u.created_at) };
 }
 
 async function auth(req, res, next) {
@@ -82,27 +76,25 @@ async function auth(req, res, next) {
   if (!token) return res.status(401).json({ error: 'no_token' });
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    const r = await query('SELECT * FROM users WHERE id = $1 AND active = 1', [payload.id]);
+    const r = await query('SELECT * FROM users WHERE id = $1', [payload.id]);
     if (r.rows.length === 0) return res.status(401).json({ error: 'invalid_user' });
-    req.user = r.rows[0];
+    const u = r.rows[0];
+    if (!u.active) return res.status(401).json({ error: 'inactive' });
+    if (u.approval_status === 'pending') return res.status(401).json({ error: 'pending_approval' });
+    if (u.approval_status === 'rejected') return res.status(401).json({ error: 'rejected' });
+    req.user = u;
     next();
   } catch (e) { res.status(401).json({ error: 'invalid_token' }); }
 }
 
-function requireRole(...roles) {
-  return (req, res, next) => roles.includes(req.user.role) ? next() : res.status(403).json({ error: 'forbidden' });
-}
+const requireRole = (...roles) => (req, res, next) =>
+  roles.includes(req.user.role) ? next() : res.status(403).json({ error: 'forbidden' });
 
-function canAccess(actor, target) {
-  if (actor.id === target.id) return true;
-  if (actor.role === 'admin') return true;
-  if (actor.role === 'coach' && target.coach_id === actor.id) return true;
-  return false;
-}
+const canAccess = (a, t) => a.id === t.id || a.role === 'admin' || (a.role === 'coach' && t.coach_id === a.id);
 
-/* ================= SELF-REGISTRATION ================= */
+/* ================= REGISTER ================= */
 app.post('/api/auth/register', async (req, res) => {
-  const { username, password, displayName } = req.body || {};
+  const { username, password, displayName, requestedRole = 'student' } = req.body || {};
   if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
   if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
   if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
@@ -110,32 +102,48 @@ app.post('/api/auth/register', async (req, res) => {
   const existing = await query('SELECT id FROM users WHERE username = $1', [username]);
   if (existing.rows.length > 0) return res.status(409).json({ error: 'username_taken' });
 
+  const role = requestedRole === 'coach' ? 'coach' : 'student';
+  const approvalStatus = role === 'coach' ? 'pending' : 'approved';
+
   const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
   const now = Date.now();
   const hash = bcrypt.hashSync(password, 10);
   try {
-    await query(`INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, created_at, updated_at)
-      VALUES ($1,$2,$3,$4,'student',NULL,'💪','#3b82f6',1,$5,$6)`,
-      [id, username, displayName, hash, now, now]);
+    await query(`INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, approval_status, created_at, updated_at)
+      VALUES ($1,$2,$3,$4,$5,NULL,'💪','#3b82f6',1,$6,$7,$8)`,
+      [id, username, displayName, hash, role, approvalStatus, now, now]);
   } catch (e) { return res.status(500).json({ error: 'db_error', message: e.message }); }
 
-  await log(null, 'user_registered', id, { username });
-  const token = jwt.sign({ id, role: 'student' }, JWT_SECRET, { expiresIn: '30d' });
+  await log(null, 'user_registered', id, { username, role });
   const u = await query('SELECT * FROM users WHERE id = $1', [id]);
+
+  if (role === 'coach') {
+    return res.json({
+      pending: true,
+      message: 'حساب مربی شما ساخته شد. لطفاً منتظر تأیید مدیر باشید.',
+      user: publicUser(u.rows[0])
+    });
+  }
+
+  const token = jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '30d' });
   res.json({ token, user: publicUser(u.rows[0]) });
 });
 
-/* ================= AUTH ================= */
+/* ================= LOGIN ================= */
 app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) return res.status(400).json({ error: 'missing_fields' });
-  const r = await query('SELECT * FROM users WHERE username = $1 AND active = 1', [username]);
+  const r = await query('SELECT * FROM users WHERE username = $1', [username]);
   const user = r.rows[0];
   if (!user) { await log(null, 'login_failed', null, { username }); return res.status(401).json({ error: 'invalid_credentials' }); }
   if (!bcrypt.compareSync(password, user.password_hash)) {
     await log(user.id, 'login_failed', user.id, { reason: 'wrong_password' });
     return res.status(401).json({ error: 'invalid_credentials' });
   }
+  if (user.approval_status === 'pending') return res.status(403).json({ error: 'pending_approval' });
+  if (user.approval_status === 'rejected') return res.status(403).json({ error: 'rejected' });
+  if (!user.active) return res.status(403).json({ error: 'inactive' });
+
   const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
   await log(user.id, 'login_success', user.id, {});
   res.json({ token, user: publicUser(user) });
@@ -162,6 +170,27 @@ app.get('/api/users', auth, async (req, res) => {
   res.json(r.rows.map(publicUser));
 });
 
+app.get('/api/admin/pending-coaches', auth, requireRole('admin'), async (req, res) => {
+  const r = await query("SELECT * FROM users WHERE role='coach' AND approval_status='pending' ORDER BY created_at DESC");
+  res.json(r.rows.map(publicUser));
+});
+
+app.post('/api/admin/approve/:id', auth, requireRole('admin'), async (req, res) => {
+  const r = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  if (r.rows.length === 0) return res.status(404).json({ error: 'not_found' });
+  await query("UPDATE users SET approval_status='approved', active=1, updated_at=$1 WHERE id=$2", [Date.now(), req.params.id]);
+  await log(req.user.id, 'coach_approved', req.params.id, {});
+  res.json({ ok: true });
+});
+
+app.post('/api/admin/reject/:id', auth, requireRole('admin'), async (req, res) => {
+  const r = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+  if (r.rows.length === 0) return res.status(404).json({ error: 'not_found' });
+  await query("UPDATE users SET approval_status='rejected', active=0, updated_at=$1 WHERE id=$2", [Date.now(), req.params.id]);
+  await log(req.user.id, 'coach_rejected', req.params.id, {});
+  res.json({ ok: true });
+});
+
 app.post('/api/users', auth, async (req, res) => {
   const { username, password, displayName, role = 'student', emoji = '💪', color = '#3b82f6', coachId } = req.body || {};
   if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
@@ -173,7 +202,7 @@ app.post('/api/users', auth, async (req, res) => {
   let effectiveCoachId = null;
   if (req.user.role === 'coach') effectiveCoachId = req.user.id;
   else if (req.user.role === 'admin' && coachId) {
-    const c = await query("SELECT id FROM users WHERE id = $1 AND role IN ('coach','admin') AND active = 1", [coachId]);
+    const c = await query("SELECT id FROM users WHERE id = $1 AND role IN ('coach','admin')", [coachId]);
     if (c.rows.length === 0) return res.status(400).json({ error: 'invalid_coach' });
     effectiveCoachId = coachId;
   }
@@ -182,10 +211,11 @@ app.post('/api/users', auth, async (req, res) => {
 
   const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
   const now = Date.now();
+  const approvalStatus = role === 'coach' ? 'pending' : 'approved';
   try {
-    await query(`INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, created_at, updated_at)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,1,$9,$10)`,
-      [id, username, displayName, bcrypt.hashSync(password, 10), role, effectiveCoachId, emoji, color, now, now]);
+    await query(`INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, approval_status, created_at, updated_at)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,1,$9,$10,$11)`,
+      [id, username, displayName, bcrypt.hashSync(password, 10), role, effectiveCoachId, emoji, color, approvalStatus, now, now]);
   } catch (e) { return res.status(500).json({ error: 'db_error' }); }
   await log(req.user.id, 'user_created', id, { username, role });
   const nr = await query('SELECT * FROM users WHERE id = $1', [id]);
@@ -201,7 +231,7 @@ app.put('/api/users/:id', auth, async (req, res) => {
   const ownStudent = req.user.role === 'coach' && target.coach_id === req.user.id;
   if (!isSelf && !isAdmin && !ownStudent) return res.status(403).json({ error: 'forbidden' });
 
-  const { displayName, emoji, color, password, active, coachId, role } = req.body || {};
+  const { displayName, emoji, color, password, active, coachId, role, approvalStatus } = req.body || {};
   const sets = [], vals = [];
   let i = 1;
   if (displayName != null) { sets.push(`display_name = $${i++}`); vals.push(displayName); }
@@ -219,6 +249,11 @@ app.put('/api/users/:id', auth, async (req, res) => {
     if (!isAdmin) return res.status(403).json({ error: 'only_admin_can_change_role' });
     if (!['student','coach','admin'].includes(role)) return res.status(400).json({ error: 'invalid_role' });
     sets.push(`role = $${i++}`); vals.push(role);
+  }
+  if (approvalStatus != null) {
+    if (!isAdmin) return res.status(403).json({ error: 'only_admin_can_approve' });
+    if (!['approved','pending','rejected'].includes(approvalStatus)) return res.status(400).json({ error: 'invalid_status' });
+    sets.push(`approval_status = $${i++}`); vals.push(approvalStatus);
   }
   if (password) {
     if (!isAdmin && !ownStudent) return res.status(403).json({ error: 'forbidden_password_reset' });
@@ -244,21 +279,20 @@ app.delete('/api/users/:id', auth, requireRole('admin'), async (req, res) => {
   if (!target) return res.status(404).json({ error: 'not_found' });
   if (target.id === req.user.id) return res.status(400).json({ error: 'cannot_delete_self' });
   if (target.role === 'admin') {
-    const c = await query("SELECT COUNT(*) AS c FROM users WHERE role='admin' AND active=1");
+    const c = await query("SELECT COUNT(*) AS c FROM users WHERE role='admin'");
     if (parseInt(c.rows[0].c) <= 1) return res.status(400).json({ error: 'last_admin' });
   }
   await query('DELETE FROM users WHERE id = $1', [target.id]);
-  await log(req.user.id, 'user_deleted', target.id, { username: target.username, role: target.role });
+  await log(req.user.id, 'user_deleted', target.id, { username: target.username });
   res.json({ ok: true });
 });
 
 /* ================= USER DATA ================= */
 app.get('/api/users/:id/data', auth, async (req, res) => {
   const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = tr.rows[0];
-  if (!target) return res.status(404).json({ error: 'not_found' });
-  if (!canAccess(req.user, target)) return res.status(403).json({ error: 'forbidden' });
-  const r = await query('SELECT key, value FROM user_data WHERE user_id = $1', [target.id]);
+  if (tr.rows.length === 0) return res.status(404).json({ error: 'not_found' });
+  if (!canAccess(req.user, tr.rows[0])) return res.status(403).json({ error: 'forbidden' });
+  const r = await query('SELECT key, value FROM user_data WHERE user_id = $1', [req.params.id]);
   const out = {};
   r.rows.forEach(x => { try { out[x.key] = JSON.parse(x.value); } catch {} });
   res.json(out);
@@ -266,26 +300,22 @@ app.get('/api/users/:id/data', auth, async (req, res) => {
 
 app.get('/api/users/:id/data/:key', auth, async (req, res) => {
   const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = tr.rows[0];
-  if (!target) return res.status(404).json({ error: 'not_found' });
-  if (!canAccess(req.user, target)) return res.status(403).json({ error: 'forbidden' });
-  const r = await query('SELECT value, updated_at FROM user_data WHERE user_id = $1 AND key = $2', [target.id, req.params.key]);
-  if (r.rows.length === 0) return res.json({ value: null, updatedAt: 0 });
-  try { res.json({ value: JSON.parse(r.rows[0].value), updatedAt: Number(r.rows[0].updated_at) }); }
-  catch { res.json({ value: null, updatedAt: 0 }); }
+  if (tr.rows.length === 0) return res.status(404).json({ error: 'not_found' });
+  if (!canAccess(req.user, tr.rows[0])) return res.status(403).json({ error: 'forbidden' });
+  const r = await query('SELECT value FROM user_data WHERE user_id=$1 AND key=$2', [req.params.id, req.params.key]);
+  if (r.rows.length === 0) return res.json({ value: null });
+  try { res.json({ value: JSON.parse(r.rows[0].value) }); } catch { res.json({ value: null }); }
 });
 
 app.post('/api/users/:id/data/:key', auth, async (req, res) => {
   const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
-  const target = tr.rows[0];
-  if (!target) return res.status(404).json({ error: 'not_found' });
-  if (!canAccess(req.user, target)) return res.status(403).json({ error: 'forbidden' });
+  if (tr.rows.length === 0) return res.status(404).json({ error: 'not_found' });
+  if (!canAccess(req.user, tr.rows[0])) return res.status(403).json({ error: 'forbidden' });
   const value = JSON.stringify(req.body?.value ?? null);
-  const now = Date.now();
   await query(`INSERT INTO user_data (user_id, key, value, updated_at) VALUES ($1,$2,$3,$4)
     ON CONFLICT (user_id, key) DO UPDATE SET value = EXCLUDED.value, updated_at = EXCLUDED.updated_at`,
-    [target.id, req.params.key, value, now]);
-  res.json({ ok: true, updatedAt: now });
+    [req.params.id, req.params.key, value, Date.now()]);
+  res.json({ ok: true });
 });
 
 /* ================= COACH ================= */
@@ -345,8 +375,8 @@ app.post('/api/coach/students/:id/notes', auth, requireRole('coach','admin'), as
 
 app.delete('/api/coach/notes/:id', auth, requireRole('coach','admin'), async (req, res) => {
   const nr = await query('SELECT * FROM coach_notes WHERE id = $1', [req.params.id]);
+  if (nr.rows.length === 0) return res.status(404).json({ error: 'not_found' });
   const note = nr.rows[0];
-  if (!note) return res.status(404).json({ error: 'not_found' });
   if (req.user.role === 'coach' && note.coach_id !== req.user.id) return res.status(403).json({ error: 'forbidden' });
   await query('DELETE FROM coach_notes WHERE id = $1', [req.params.id]);
   res.json({ ok: true });
@@ -358,27 +388,13 @@ app.get('/api/admin/audit', auth, requireRole('admin'), async (req, res) => {
   res.json(r.rows.map(row => ({ ...row, created_at: Number(row.created_at) })));
 });
 
-app.get('/api/admin/stats', auth, requireRole('admin'), async (req, res) => {
-  const a = await query('SELECT COUNT(*) AS c FROM users');
-  const b = await query('SELECT COUNT(*) AS c FROM users WHERE active=1');
-  const c = await query("SELECT COUNT(*) AS c FROM users WHERE role='coach'");
-  const d = await query("SELECT COUNT(*) AS c FROM users WHERE role='student'");
-  const e = await query("SELECT COUNT(*) AS c FROM users WHERE role='admin'");
-  res.json({ totalUsers: parseInt(a.rows[0].c), activeUsers: parseInt(b.rows[0].c),
-    coaches: parseInt(c.rows[0].c), students: parseInt(d.rows[0].c), admins: parseInt(e.rows[0].c) });
-});
-
-/* ================= SPA ================= */
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
-
 app.use((err, req, res, next) => { console.error('❌', err); res.status(500).json({ error: 'server_error' }); });
 
 (async () => {
   try {
     await initSchema();
     await bootstrapAdmin();
-    app.listen(PORT, () => {
-      console.log('\n🚀 ProFit server running on port ' + PORT + '\n');
-    });
-  } catch(e) { console.error('❌ Startup:', e); process.exit(1); }
+    app.listen(PORT, () => console.log('\n🚀 ProFit running on port ' + PORT + '\n'));
+  } catch(e) { console.error('❌', e); process.exit(1); }
 })();
