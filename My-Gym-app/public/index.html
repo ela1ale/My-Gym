@@ -10,15 +10,14 @@
 :root{--bg1:#0a0e1a;--bg2:#111827;--bgc:rgba(17,24,39,.85);--t1:#f1f5f9;--t2:#94a3b8;--tm:#64748b;--bd:rgba(148,163,184,.12);--ab:#3b82f6;--ap:#a855f7;--ag:#10b981;--ar:#f43f5e;--aa:#f59e0b}
 [data-theme=light]{--bg1:#f1f5f9;--bg2:#fff;--bgc:rgba(255,255,255,.9);--t1:#0f172a;--t2:#475569;--bd:rgba(148,163,184,.25)}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Vazirmatn',sans-serif}
-html{scroll-behavior:smooth}
 body{background:var(--bg1);min-height:100vh;padding:20px;color:var(--t1)}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,rgba(59,130,246,.08),transparent 50%),radial-gradient(circle at 80% 80%,rgba(168,85,247,.08),transparent 50%);pointer-events:none;z-index:0}
 .container{max-width:1200px;margin:0 auto;position:relative;z-index:1}
 .hero{text-align:center;padding:24px 20px 18px}
-.hero h1{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#38bdf8,#a78bfa,#f472b6,#fb923c);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:gs 6s ease infinite;letter-spacing:-1px;line-height:1.2}
+.hero h1{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#38bdf8,#a78bfa,#f472b6,#fb923c);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:gs 6s ease infinite}
 @keyframes gs{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:22px}
-.stat{background:var(--bgc);border:1px solid var(--bd);border-radius:16px;padding:18px 16px;text-align:center;backdrop-filter:blur(20px)}
+.stat{background:var(--bgc);border:1px solid var(--bd);border-radius:16px;padding:18px 16px;text-align:center}
 .sv{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .sl{font-size:.82rem;color:var(--t2);margin-top:6px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px;padding:14px 18px;background:var(--bgc);border:1px solid var(--bd);border-radius:16px}
@@ -26,24 +25,30 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .sbox input{width:100%;padding:12px 44px 12px 16px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-size:.95rem;outline:none}
 .sbox::before{content:'🔍';position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none}
 .tacts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{padding:11px 16px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:600;font-size:.86rem;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;justify-content:center}
+.btn{padding:11px 16px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:600;font-size:.86rem;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;justify-content:center;font-family:inherit}
 .btn:hover{background:var(--bgc);border-color:var(--ab);transform:translateY(-2px)}
 .btn.primary{background:var(--ab);color:#fff;border-color:var(--ab)}
 .btn.success{background:var(--ag);color:#fff;border-color:var(--ag)}
 .btn.danger{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.3);color:#fda4af}
+.btn.admin{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none}
+.btn.coach{background:linear-gradient(135deg,#3b82f6,#a855f7);color:#fff;border:none}
 .bico{font-size:1.05rem;line-height:1}
 .ubtn{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 7px;border-radius:30px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:700;font-size:.85rem;cursor:pointer;order:-1;margin-left:auto}
 .uav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;background:var(--uc,var(--ab));flex-shrink:0}
 .autosave{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);font-size:.78rem;font-weight:700;color:var(--ag);white-space:nowrap}
 .autosave .dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pd 2s infinite}
 @keyframes pd{0%,100%{opacity:1}50%{opacity:.4}}
+.role-badge{padding:6px 12px;border-radius:20px;font-size:.72rem;font-weight:800;margin-right:8px}
+.role-badge.admin{background:rgba(245,158,11,.2);color:#fbbf24}
+.role-badge.coach{background:rgba(59,130,246,.2);color:#60a5fa}
+.role-badge.student{background:rgba(16,185,129,.2);color:#34d399}
 .dnav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;padding:6px;background:var(--bgc);border:1px solid var(--bd);border-radius:16px}
-.dnav-btn{flex:1;min-width:110px;padding:13px 16px;border-radius:12px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.9rem;cursor:pointer;text-align:center;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.dnav-btn{flex:1;min-width:110px;padding:13px 16px;border-radius:12px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.9rem;cursor:pointer;text-align:center;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-family:inherit}
 .dnav-btn:hover{background:rgba(148,163,184,.08);color:var(--t1)}
 .dnav-btn.active{background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(168,85,247,.2));color:var(--t1)}
 .dnav-btn.today::before{content:'امروز';position:absolute;top:-6px;right:10px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:.6rem;padding:2px 8px;border-radius:8px;font-weight:800}
 .dcard{background:var(--bgc);border:1px solid var(--bd);border-radius:24px;margin-bottom:30px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4)}
-.dhead{padding:22px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative}
+.dhead{padding:22px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .dtitle{display:flex;align-items:center;gap:16px}
 .dicon{width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;background:linear-gradient(135deg,#3b82f6,#1d4ed8);flex-shrink:0}
 .dname{font-size:1.35rem;font-weight:800;margin-bottom:4px}
@@ -77,10 +82,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .echk2{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;border-radius:10px;background:rgba(148,163,184,.05);cursor:pointer}
 .rest{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.15)}
 .tdisp{font-size:1.1rem;font-weight:800;color:var(--aa);min-width:55px}
-.tbtn{padding:6px 14px;border-radius:8px;border:none;background:var(--aa);color:#000;font-weight:700;font-size:.78rem;cursor:pointer}
+.tbtn{padding:6px 14px;border-radius:8px;border:none;background:var(--aa);color:#000;font-weight:700;font-size:.78rem;cursor:pointer;font-family:inherit}
 .tbtn.stop{background:var(--ar);color:#fff}
 .slog{margin-top:12px;padding-top:12px;border-top:1px dashed var(--bd)}
-.stog{width:100%;padding:9px 14px;border-radius:10px;border:1px dashed var(--bd);background:rgba(148,163,184,.05);color:var(--t2);font-weight:700;font-size:.82rem;cursor:pointer;display:flex;justify-content:space-between}
+.stog{width:100%;padding:9px 14px;border-radius:10px;border:1px dashed var(--bd);background:rgba(148,163,184,.05);color:var(--t2);font-weight:700;font-size:.82rem;cursor:pointer;display:flex;justify-content:space-between;font-family:inherit}
 .stog.open{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:var(--ab);border-style:solid}
 .sbody{display:none;margin-top:10px;border-radius:12px;background:rgba(148,163,184,.04);border:1px solid var(--bd);overflow:hidden}
 .sbody.open{display:block}
@@ -88,8 +93,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .srow:last-child{border-bottom:none}
 .srow.h{background:rgba(148,163,184,.08);font-size:.7rem;font-weight:700;color:var(--tm)}
 .srow .n{text-align:center;font-weight:800;color:var(--t2);font-size:.82rem}
-.si{width:100%;padding:7px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:700;font-size:.85rem;text-align:center;outline:none}
-.si:focus{border-color:var(--ab)}
+.si{width:100%;padding:7px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:700;font-size:.85rem;text-align:center;outline:none;font-family:inherit}
 .stdisp{font-size:.8rem;font-weight:800;color:var(--t2);text-align:center;padding:7px 4px;border-radius:8px;background:rgba(148,163,184,.06);min-height:32px;display:flex;align-items:center;justify-content:center;direction:ltr}
 .stdisp.run{color:var(--aa);background:rgba(245,158,11,.12)}
 .stdisp.dn{color:var(--ag);background:rgba(16,185,129,.12)}
@@ -100,8 +104,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .ssum .v{font-size:.95rem;font-weight:800;color:var(--ab);text-align:center}
 .ssum .l{font-size:.65rem;color:var(--tm);text-align:center;margin-top:2px}
 .sacts{display:flex;gap:6px;padding:10px 12px;background:rgba(148,163,184,.04);border-top:1px solid var(--bd);flex-wrap:wrap}
-.mbtn{flex:1;min-width:70px;padding:7px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.72rem;cursor:pointer}
-.mbtn:hover{color:var(--t1);border-color:var(--ab)}
+.mbtn{flex:1;min-width:70px;padding:7px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.72rem;cursor:pointer;font-family:inherit}
 .dprog{padding:0 24px 22px;display:flex;align-items:center;gap:14px}
 .ptrack{flex:1;height:8px;background:rgba(148,163,184,.12);border-radius:10px;overflow:hidden}
 .pfill{height:100%;background:linear-gradient(90deg,var(--ab),var(--ap));width:0;transition:width .5s}
@@ -109,7 +112,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .chart{background:var(--bgc);border:1px solid var(--bd);border-radius:20px;padding:22px;margin-bottom:25px}
 .chart h2{font-size:1.15rem;font-weight:800;margin-bottom:16px}
 .ctabs{display:flex;gap:4px;padding:4px;background:rgba(148,163,184,.08);border-radius:12px;margin-bottom:14px;width:fit-content}
-.ctab{padding:7px 14px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.78rem;cursor:pointer;border-radius:9px}
+.ctab{padding:7px 14px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.78rem;cursor:pointer;border-radius:9px;font-family:inherit}
 .ctab.active{background:linear-gradient(135deg,var(--ab),var(--ap));color:#fff}
 .cwrap{height:240px;position:relative}
 .cstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--bd)}
@@ -121,7 +124,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .rrow{display:flex;gap:14px;flex-wrap:wrap;align-items:end}
 .rin{flex:1;min-width:140px}
 .rin label{display:block;font-size:.82rem;color:var(--t2);margin-bottom:6px}
-.rin input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-size:.95rem;outline:none}
+.rin input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-size:.95rem;outline:none;font-family:inherit}
 .rres{margin-top:16px;padding:16px;border-radius:12px;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.1));border:1px solid rgba(59,130,246,.2);font-size:1.05rem;font-weight:700;text-align:center}
 .rres span{font-size:1.5rem;color:var(--aa)}
 .footer{text-align:center;padding:30px 20px;color:var(--tm);font-size:.85rem;border-top:1px solid var(--bd);margin-top:20px}
@@ -144,10 +147,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .drawer.open{transform:none}
 .dh{padding:18px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.08))}
 .dh h2{font-size:1.15rem;font-weight:800;display:flex;align-items:center;gap:10px}
-.dclose{width:36px;height:36px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);cursor:pointer;font-size:1rem}
-.dclose:hover{background:var(--ar);color:#fff;border-color:var(--ar)}
+.dclose{width:36px;height:36px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;font-family:inherit}
 .dtabs{display:flex;padding:0 24px;border-bottom:1px solid var(--bd);overflow-x:auto}
-.dtab{padding:13px 16px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.85rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.dtab{padding:13px 16px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.85rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;font-family:inherit}
 .dtab.active{color:var(--ab);border-bottom-color:var(--ab)}
 .dcont{display:none;flex:1;overflow-y:auto;padding:20px 24px}
 .dcont.active{display:block}
@@ -156,7 +158,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .setg{padding:14px 0;border-bottom:1px solid var(--bd)}
 .setg:last-child{border-bottom:none}
 .setl{display:block;font-size:.88rem;font-weight:700;margin-bottom:8px}
-.sets,.setin{width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:600;font-size:.9rem;outline:none}
+.sets,.setin{width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:600;font-size:.9rem;outline:none;font-family:inherit}
 .setin{text-align:center;font-weight:700}
 .tr2{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .ts{position:relative;display:inline-block;width:50px;height:28px;flex-shrink:0}
@@ -168,28 +170,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .slider{width:100%;-webkit-appearance:none;height:6px;border-radius:6px;background:rgba(148,163,184,.2);outline:none;margin-top:6px}
 .slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--ab);cursor:pointer}
 .sect2{font-size:.72rem;font-weight:800;color:var(--ag);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;padding-bottom:6px;border-bottom:1px dashed rgba(16,185,129,.3)}
-.talarm{width:100%;padding:12px 16px;border-radius:12px;border:none;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:800;font-size:.9rem;cursor:pointer;display:flex;justify-content:center;gap:8px}
-.ucard{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;border:1px solid var(--bd);background:var(--bg2);cursor:pointer;margin-bottom:10px}
+.ucard{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;border:1px solid var(--bd);background:var(--bg2);margin-bottom:10px}
 .ucard.active{border-color:var(--ag);background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(16,185,129,.03))}
 .uav-l{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
 .uin{flex:1;min-width:0}
 .un{font-weight:800;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px}
 .um{font-size:.72rem;color:var(--tm)}
 .uactions{display:flex;gap:6px}
-.uabtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--bd);background:rgba(148,163,184,.06);color:var(--t2);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.uabtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--bd);background:rgba(148,163,184,.06);color:var(--t2);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;font-family:inherit}
 .uabtn:hover{background:var(--ab);color:#fff}
 .uabtn.del:hover{background:var(--ar);border-color:var(--ar)}
-.addbtn{width:100%;padding:14px 18px;border-radius:14px;border:2px dashed var(--bd);background:rgba(148,163,184,.04);color:var(--t2);font-weight:800;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.addbtn{width:100%;padding:14px 18px;border-radius:14px;border:2px dashed var(--bd);background:rgba(148,163,184,.04);color:var(--t2);font-weight:800;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit}
 .addbtn:hover{border-color:var(--ab);color:var(--ab)}
 .form{display:none;border:1px solid var(--ab);border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(168,85,247,.04));margin-bottom:16px}
 .form.open{display:block}
 .ft{font-weight:800;font-size:.95rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .fr{margin-bottom:14px}
 .fl{font-size:.8rem;font-weight:700;color:var(--t2);margin-bottom:6px;display:block}
-.fi{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:700;font-size:.92rem;outline:none}
+.fi{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:700;font-size:.92rem;outline:none;font-family:inherit}
 .fi:focus{border-color:var(--ab)}
 .fa{display:flex;gap:8px;margin-top:6px}
 .fa .btn{flex:1;justify-content:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .pday{border:1px solid var(--bd);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:rgba(148,163,184,.03)}
 .pday-h{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .pday-i{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(168,85,247,.15));flex-shrink:0}
@@ -202,12 +204,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .pex .cb{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.85rem;background:rgba(148,163,184,.1);flex-shrink:0}
 .pex .nm2{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .pex .de{color:var(--tm);font-size:.72rem;white-space:nowrap}
-.pex .rm{background:none;border:none;color:var(--ar);cursor:pointer;font-size:.9rem;padding:2px 6px}
+.pex .rm{background:none;border:none;color:var(--ar);cursor:pointer;font-size:.9rem;padding:2px 6px;font-family:inherit}
 .catf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.chip{padding:7px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.78rem;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
-.chip:hover{border-color:var(--ab);color:var(--t1)}
+.chip{padding:7px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.78rem;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
 .chip.active{background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(168,85,247,.2));border-color:var(--ab);color:#fff}
-.bsearch{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-size:.9rem;outline:none;margin-bottom:14px}
+.bsearch{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-size:.9rem;outline:none;margin-bottom:14px;font-family:inherit}
 .blist{display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow-y:auto;padding-left:4px}
 .bitem{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);cursor:pointer}
 .bitem:hover{border-color:var(--ab)}
@@ -219,18 +220,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .bcat{font-size:.7rem;color:var(--ab);font-weight:700;padding:3px 8px;background:rgba(59,130,246,.15);border-radius:6px;flex-shrink:0}
 .cbadge2{font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(16,185,129,.18);color:var(--ag);margin-right:6px;border:1px solid rgba(16,185,129,.3)}
 .wdp{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.wdc{padding:9px 13px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.82rem;cursor:pointer}
-.wdc:hover:not(:disabled){border-color:var(--ab);color:var(--t1)}
+.wdc{padding:9px 13px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit}
 .wdc.sel{background:linear-gradient(135deg,var(--ab),var(--ap));color:#fff;border-color:transparent}
 .wdc:disabled{opacity:.32;cursor:not-allowed}
 .wdc.today:not(.sel)::before{content:'امروز';font-size:.55rem;background:var(--ag);color:#fff;padding:1px 5px;border-radius:5px;margin-left:3px}
 .dtp{display:flex;gap:8px;flex-wrap:wrap}
-.dtp-c{flex:1;min-width:90px;padding:12px 14px;border-radius:12px;border:2px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:800;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.dtp-c{flex:1;min-width:90px;padding:12px 14px;border-radius:12px;border:2px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:800;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
 .dtp-c.sel{color:#fff;border-color:transparent}
 .dtp-c[data-type=workout].sel{background:linear-gradient(135deg,#3b82f6,#a855f7)}
 .dtp-c[data-type=cardio].sel{background:linear-gradient(135deg,#10b981,#059669)}
 .dtp-c[data-type=rest].sel{background:linear-gradient(135deg,#64748b,#475569)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .pday-badge{padding:12px 16px;border-radius:12px;margin-bottom:14px;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));border:1px solid rgba(59,130,246,.25);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .pfb{padding:14px 24px;border-top:1px solid var(--bd);display:flex;gap:10px;align-items:center}
 .pfb .pf{flex:1;font-size:.82rem;color:var(--t2);font-weight:600}
@@ -245,8 +244,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .cri .l{font-size:.7rem;color:var(--tm);font-weight:700;margin-top:4px}
 .cri.hl{background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(5,150,105,.06));border:1px solid rgba(16,185,129,.3)}
 .cri.hl .v{color:var(--ag)}
-.formula{background:rgba(59,130,246,.08);border:1px dashed rgba(59,130,246,.35);border-radius:10px;padding:10px 12px;font-size:.76rem;color:var(--t2);font-weight:600;line-height:1.7;margin-bottom:12px}
-.formula code{background:rgba(148,163,184,.15);padding:2px 6px;border-radius:5px;font-family:monospace;font-size:.75rem;color:var(--aa);direction:ltr;display:inline-block;margin-top:3px}
 .macros{display:flex;flex-direction:column;gap:8px;margin-top:12px}
 .mrow{display:flex;align-items:center;gap:10px}
 .ml2{font-size:.78rem;font-weight:800;color:var(--t2);min-width:56px}
@@ -256,12 +253,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .mfill.c{background:linear-gradient(90deg,#3b82f6,#06b6d4)}
 .mfill.f{background:linear-gradient(90deg,#f59e0b,#eab308)}
 .mval{font-size:.78rem;font-weight:800;min-width:50px;text-align:left;direction:ltr}
-.medit{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.04));border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:14px;margin-top:14px}
-.medit .mt{font-size:.82rem;font-weight:900;color:var(--aa);margin-bottom:10px}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.minp label{display:block;font-size:.7rem;font-weight:800;color:var(--t2);margin-bottom:4px}
-.minp input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:800;font-size:.85rem;text-align:center;outline:none}
-.mactions{display:flex;gap:6px;margin-top:10px}
 .meal-sec{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;margin-bottom:12px;overflow:hidden}
 .mh{padding:12px 14px;background:linear-gradient(135deg,rgba(148,163,184,.08),rgba(148,163,184,.02));display:flex;align-items:center;justify-content:space-between;gap:10px}
 .mh-l{display:flex;align-items:center;gap:8px}
@@ -278,15 +269,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .meitem .mi2{font-size:1.05rem;text-align:center}
 .meitem .mn{font-size:.78rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .meitem .muw{display:flex;gap:3px;align-items:center}
-.meitem .mq{width:44px;padding:5px 4px;border-radius:7px;border:1px solid var(--bd);background:var(--bgc);color:var(--t1);font-weight:800;font-size:.78rem;text-align:center;outline:none}
-.meitem .munit{flex:1;min-width:40px;padding:4px 2px;border-radius:7px;border:1px solid var(--bd);background:var(--bgc);color:var(--t1);font-weight:700;font-size:.7rem;outline:none;cursor:pointer}
+.meitem .mq{width:44px;padding:5px 4px;border-radius:7px;border:1px solid var(--bd);background:var(--bgc);color:var(--t1);font-weight:800;font-size:.78rem;text-align:center;outline:none;font-family:inherit}
+.meitem .munit{flex:1;min-width:40px;padding:4px 2px;border-radius:7px;border:1px solid var(--bd);background:var(--bgc);color:var(--t1);font-weight:700;font-size:.7rem;outline:none;cursor:pointer;font-family:inherit}
 .meitem .mc{font-size:.72rem;font-weight:800;color:var(--ag);text-align:center;direction:ltr;line-height:1.3}
 .meitem .mc small{display:block;font-size:.58rem;color:var(--tm)}
-.meitem .mdel{background:none;border:none;color:var(--ar);cursor:pointer;font-size:.85rem;padding:2px 4px}
+.meitem .mdel{background:none;border:none;color:var(--ar);cursor:pointer;font-size:.85rem;padding:2px 4px;font-family:inherit}
 .mactions2{display:flex;gap:6px;padding:8px 10px;background:rgba(148,163,184,.03);border-top:1px solid var(--bd)}
 .foods{max-height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
 .fcat{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
-.fct{padding:6px 12px;border-radius:20px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.74rem;cursor:pointer}
+.fct{padding:6px 12px;border-radius:20px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-weight:700;font-size:.74rem;cursor:pointer;font-family:inherit}
 .fct.active{background:linear-gradient(135deg,var(--ab),var(--ap));color:#fff;border-color:transparent}
 .fitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);cursor:pointer}
 .fitem:hover{border-color:var(--ag)}
@@ -298,7 +289,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .fitem .fc2 small{display:block;font-size:.6rem;color:var(--tm)}
 .supp{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
 .supp.on{border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.01))}
-.supp-t{width:24px;height:24px;border-radius:7px;border:2px solid var(--tm);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:transparent;font-size:.75rem;font-weight:900;margin-top:2px}
+.supp-t{width:24px;height:24px;border-radius:7px;border:2px solid var(--tm);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:transparent;font-size:.75rem;font-weight:900;margin-top:2px;font-family:inherit}
 .supp-t.on{background:var(--ag);border-color:var(--ag);color:#fff}
 .supp-in{flex:1;min-width:0}
 .supp-nm{font-weight:800;font-size:.92rem;margin-bottom:4px;display:flex;gap:6px;flex-wrap:wrap}
@@ -306,14 +297,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .supp-r{font-size:.76rem;color:var(--t2);font-weight:600;margin-top:3px;line-height:1.6}
 .supp-r strong{color:var(--aa);font-weight:800}
 .supp-a{display:flex;gap:4px;flex-shrink:0}
-.supp-ab{background:none;border:none;cursor:pointer;font-size:.9rem;padding:4px;border-radius:6px}
+.supp-ab{background:none;border:none;cursor:pointer;font-size:.9rem;padding:4px;border-radius:6px;font-family:inherit}
 .bm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .bm-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);font-size:.72rem;font-weight:700;margin:3px}
 .bm-chip strong{color:var(--ab)}
 .bm-entry{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:10px}
 .bm-eh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .bm-ed{font-size:.82rem;font-weight:800;color:var(--ag)}
-.bm-del{background:none;border:none;color:var(--ar);cursor:pointer;font-size:.9rem;padding:4px 6px}
+.bm-del{background:none;border:none;color:var(--ar);cursor:pointer;font-size:.9rem;padding:4px 6px;font-family:inherit}
 .bm-eb{display:flex;flex-wrap:wrap;gap:4px}
 .bm-chart{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:16px}
 .bm-chart .bm-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
@@ -324,13 +315,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .bm-stat .v{font-size:.95rem;font-weight:800;color:var(--ab)}
 .bm-stat .l{font-size:.65rem;color:var(--tm);font-weight:700;margin-top:2px}
 .jdp{display:grid;grid-template-columns:1fr 1.6fr 1.1fr;gap:6px}
-.jdp select{padding:10px 6px;text-align:center;font-weight:800;font-size:.88rem;cursor:pointer}
+.jdp select{padding:10px 6px;text-align:center;font-weight:800;font-size:.88rem;cursor:pointer;font-family:inherit}
 .auth-scr{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;overflow-y:auto}
 .auth-scr.hidden{display:none}
 .auth-c{background:var(--bgc);border:1px solid var(--bd);border-radius:24px;padding:32px 28px;max-width:440px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.6);margin:auto}
 .auth-c h1{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;text-align:center}
 .auth-c .sub{font-size:.85rem;color:var(--t2);margin-bottom:20px;text-align:center}
-.auth-c input{width:100%;padding:14px 18px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:600;font-size:.95rem;margin-bottom:12px;outline:none}
+.auth-c input{width:100%;padding:14px 18px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:600;font-size:.95rem;margin-bottom:12px;outline:none;font-family:inherit}
 .auth-c input:focus{border-color:var(--ab);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
 .auth-c button{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#3b82f6,#a855f7);color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;margin-top:6px;font-family:inherit}
 .auth-c button:disabled{opacity:.6}
@@ -341,12 +332,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .role-btn[data-role=student].sel{background:linear-gradient(135deg,#10b981,#059669)}
 .role-btn[data-role=coach].sel{background:linear-gradient(135deg,#3b82f6,#a855f7)}
 .role-btn .ric{font-size:1.6rem;line-height:1}
-.role-badge{padding:6px 12px;border-radius:20px;font-size:.72rem;font-weight:800;margin-right:8px}
-.role-badge.admin{background:rgba(245,158,11,.2);color:#fbbf24}
-.role-badge.coach{background:rgba(59,130,246,.2);color:#60a5fa}
-.role-badge.student{background:rgba(16,185,129,.2);color:#34d399}
 .pg-icon{font-size:3rem;margin-bottom:12px;text-align:center}
-.pg-in{width:100%;padding:12px 16px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:700;font-size:1rem;text-align:center;letter-spacing:2px;margin-bottom:10px;outline:none}
+.pg-in{width:100%;padding:12px 16px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-weight:700;font-size:1rem;text-align:center;letter-spacing:2px;margin-bottom:10px;outline:none;font-family:inherit}
 .mnav{display:none}
 .wizard-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .wizard-overlay.hidden{display:none}
@@ -359,38 +346,44 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .pending-msg .pi{font-size:2.5rem;margin-bottom:8px}
 .pending-msg .pt{font-weight:800;color:var(--aa);margin-bottom:6px}
 .pending-msg .ps{font-size:.85rem;color:var(--t2);line-height:1.7}
-.approve-row{display:flex;gap:8px;margin-top:8px}
-.approve-row .btn{flex:1;justify-content:center;padding:10px;font-size:.8rem}
+.approve-row{display:flex;gap:8px;margin-bottom:14px}
+.approve-row .btn{flex:1;justify-content:center;padding:10px;font-size:.82rem}
 .student-card{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
-.student-card:hover{border-color:var(--ab);transform:translateX(-3px)}
+.student-card:hover{border-color:var(--ab)}
 .student-card .sc-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
 .student-card .sc-in{flex:1;min-width:0}
 .student-card .sc-nm{font-weight:800;font-size:.95rem;margin-bottom:3px}
 .student-card .sc-mt{font-size:.72rem;color:var(--tm)}
+.coach-banner{position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:12px;font-weight:700;box-shadow:0 4px 12px rgba(245,158,11,.4);font-family:inherit}
+.coach-banner button{background:rgba(255,255,255,.2);color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:800}
 @media (max-width:768px){
   .hero h1{font-size:1.5rem}.hero{padding:16px 14px 10px}
   .stats{grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
   .stat{padding:8px 4px;border-radius:10px}.sv{font-size:.95rem}.sl{font-size:.58rem}
   .egrid{grid-template-columns:1fr;padding:14px;gap:14px}
   .dhead{padding:18px 20px}.dname{font-size:1.15rem}
-  .toolbar{flex-wrap:nowrap;padding:8px;gap:8px}
-  .tacts{display:none!important}
-  .ubtn{width:42px;height:42px;padding:0;border-radius:50%;justify-content:center;gap:0}
-  .ubtn .un{display:none}
-  .uav{width:34px;height:34px}
-  .autosave{padding:0;width:36px;height:36px;border-radius:50%;justify-content:center}
+  .toolbar{flex-wrap:wrap;padding:8px;gap:6px}
+  .toolbar .sbox{flex:1 1 100%;order:3}
+  .tacts{display:flex!important;flex-wrap:wrap;gap:6px;flex:1 1 auto;justify-content:center;order:2}
+  .tacts .btn{padding:8px 10px;font-size:.72rem}
+  .tacts .bico{font-size:1rem}
+  .ubtn{order:1;width:auto;padding:6px 12px 6px 6px;gap:6px;margin-left:0}
+  .ubtn .un{display:inline;max-width:70px;font-size:.8rem}
+  .uav{width:30px;height:30px;font-size:.9rem}
+  .autosave{order:1;padding:6px 10px}
   .autosave #asvT{display:none}
-  .dnav{flex-wrap:nowrap;gap:3px;padding:5px}
-  .dnav-btn{flex:1 1 0;min-width:0;padding:9px 2px;font-size:.68rem}
-  .dnav-btn::before{display:none!important}
+  .role-badge{font-size:.65rem;padding:4px 8px;margin-right:0}
   .grid2{grid-template-columns:1fr}
   .drawer{width:100vw}
-  body{padding:12px 12px 90px 12px}
-  .mnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--bgc);border-top:1px solid var(--bd);padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:120;gap:2px;backdrop-filter:blur(24px)}
-  .mnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border-radius:12px;border:none;background:transparent;color:var(--t2);font-weight:700;font-size:.66rem;cursor:pointer}
-  .mnav button .ic3{font-size:1.35rem;line-height:1}
+  .jdp{grid-template-columns:1fr 1fr 1fr;gap:3px}
+  .jdp select{font-size:.72rem;padding:7px 3px}
   .bm-grid{grid-template-columns:1fr}
   .nut-sum{grid-template-columns:repeat(2,1fr)}
+  .meitem{grid-template-columns:24px 1fr 70px 50px 45px 20px;gap:3px}
+  .meitem .mq{width:34px;font-size:.7rem}
+  .meitem .munit{font-size:.62rem}
+  body{padding:12px 12px 20px 12px}
+  .mnav{display:none}
 }
 </style>
 </head>
@@ -402,10 +395,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   <div class="wizard-card">
     <div id="wizStep1" class="wiz-step active">
       <h2>🎉 خوش آمدی!</h2>
-      <p class="wsub">برای شروع، چند سؤال کوتاه ازت می‌پرسیم تا یک برنامه اختصاصی برات بسازیم</p>
+      <p class="wsub">چند سؤال کوتاه تا برنامه اختصاصی بسازیم</p>
       <div class="fr"><label class="fl">چند روز در هفته تمرین می‌کنی؟</label>
-        <select class="fi" id="wizDays">
-          <option value="0">🙅 هیچی — خودم برنامه می‌سازم</option>
+        <select class="fi" id="wizDays" onchange="wizDaysChanged()">
+          <option value="0">🙅 بدون برنامه — خودم می‌سازم</option>
           <option value="2">۲ روز در هفته</option>
           <option value="3" selected>۳ روز در هفته</option>
           <option value="4">۴ روز در هفته</option>
@@ -413,48 +406,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
           <option value="6">۶ روز در هفته</option>
         </select>
       </div>
-      <div class="fr" id="wizWDRow">
-        <label class="fl">کدام روزها؟</label>
-        <div class="wdp" id="wizWDPick"></div>
-      </div>
-      <div class="fr" id="wizLevelRow">
-        <label class="fl">سطح تجربه</label>
-        <select class="fi" id="wizLevel">
-          <option value="beginner">🌱 مبتدی</option>
-          <option value="intermediate" selected>🌿 متوسط</option>
-          <option value="advanced">🌳 پیشرفته</option>
-        </select>
+      <div class="fr" id="wizWDRow"><label class="fl">کدام روزها؟</label><div class="wdp" id="wizWDPick"></div></div>
+      <div class="fr" id="wizLevelRow"><label class="fl">سطح تجربه</label>
+        <select class="fi" id="wizLevel"><option value="beginner">🌱 مبتدی</option><option value="intermediate" selected>🌿 متوسط</option><option value="advanced">🌳 پیشرفته</option></select>
       </div>
       <button class="btn primary" style="width:100%;justify-content:center;margin-top:10px" onclick="wizNext()">ادامه →</button>
     </div>
     <div id="wizStep2" class="wiz-step">
       <h2>📋 اطلاعات بدنی</h2>
-      <p class="wsub">برای محاسبه دقیق کالری و برنامه غذایی</p>
+      <p class="wsub">برای محاسبه کالری</p>
       <div class="grid2">
         <div class="fr"><label class="fl">جنسیت</label><select class="fi" id="wizGender"><option value="male">👨 مرد</option><option value="female">👩 زن</option></select></div>
-        <div class="fr"><label class="fl">سن (سال)</label><input class="fi" id="wizAge" type="number" value="30"></div>
+        <div class="fr"><label class="fl">سن</label><input class="fi" id="wizAge" type="number" value="30"></div>
       </div>
       <div class="grid2">
         <div class="fr"><label class="fl">وزن (kg)</label><input class="fi" id="wizWeight" type="number" value="75" step="0.5"></div>
         <div class="fr"><label class="fl">قد (cm)</label><input class="fi" id="wizHeight" type="number" value="175"></div>
       </div>
-      <div class="fr"><label class="fl">سطح فعالیت روزانه</label>
-        <select class="fi" id="wizActivity">
-          <option value="1.2">🛋️ کم‌تحرک</option>
-          <option value="1.375">🚶 سبک</option>
-          <option value="1.55" selected>🏃 متوسط</option>
-          <option value="1.725">💪 بالا</option>
-          <option value="1.9">🔥 خیلی بالا</option>
-        </select>
+      <div class="fr"><label class="fl">فعالیت روزانه</label>
+        <select class="fi" id="wizActivity"><option value="1.2">🛋️ کم‌تحرک</option><option value="1.375">🚶 سبک</option><option value="1.55" selected>🏃 متوسط</option><option value="1.725">💪 بالا</option><option value="1.9">🔥 خیلی بالا</option></select>
       </div>
-      <div class="fr"><label class="fl">🎯 هدفت چیه؟</label>
-        <select class="fi" id="wizGoal">
-          <option value="lose">📉 کاهش وزن</option>
-          <option value="cut">✂️ خشک کردن</option>
-          <option value="maintain" selected>⚖️ حفظ وزن</option>
-          <option value="gain">💪 عضله‌سازی</option>
-          <option value="bulk">🏋️ افزایش حجم</option>
-        </select>
+      <div class="fr"><label class="fl">🎯 هدف</label>
+        <select class="fi" id="wizGoal"><option value="lose">📉 کاهش وزن</option><option value="cut">✂️ خشک کردن</option><option value="maintain" selected>⚖️ حفظ وزن</option><option value="gain">💪 عضله‌سازی</option><option value="bulk">🏋️ افزایش حجم</option></select>
       </div>
       <div class="fa" style="margin-top:10px">
         <button class="btn" onclick="wizBack()">← بازگشت</button>
@@ -464,7 +437,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   </div>
 </div>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div class="auth-scr hidden" id="authScr">
   <div class="auth-c" id="loginCard">
     <div style="font-size:3.5rem;margin-bottom:10px;text-align:center">🏋️</div>
@@ -479,20 +452,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   <div class="auth-c" id="registerCard" style="display:none">
     <div style="font-size:3.5rem;margin-bottom:10px;text-align:center">✨</div>
     <h1>ثبت‌نام</h1>
-    <p class="sub">نوع حساب خود را انتخاب کنید</p>
+    <p class="sub">نوع حساب را انتخاب کنید</p>
     <div class="role-picker">
-      <button type="button" class="role-btn sel" data-role="student" onclick="pickRole('student')">
-        <span class="ric">🎓</span>
-        <span>شاگرد</span>
-      </button>
-      <button type="button" class="role-btn" data-role="coach" onclick="pickRole('coach')">
-        <span class="ric">👨‍🏫</span>
-        <span>مربی</span>
-      </button>
+      <button type="button" class="role-btn sel" data-role="student" onclick="pickRole('student')"><span class="ric">🎓</span><span>شاگرد</span></button>
+      <button type="button" class="role-btn" data-role="coach" onclick="pickRole('coach')"><span class="ric">👨‍🏫</span><span>مربی</span></button>
     </div>
     <div id="roleHint" style="font-size:.72rem;color:var(--tm);text-align:center;margin-bottom:12px;line-height:1.6">حساب شاگرد بلافاصله فعال می‌شود</div>
     <input type="text" id="ru" placeholder="نام کاربری (انگلیسی)" dir="ltr" autocomplete="username">
-    <input type="text" id="rn" placeholder="نام نمایشی (فارسی)" autocomplete="name">
+    <input type="text" id="rn" placeholder="نام نمایشی (فارسی)">
     <input type="password" id="rp" placeholder="رمز (حداقل ۶ کاراکتر)" dir="ltr" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
     <button id="arbtn" onclick="doRegister()">✅ ایجاد حساب</button>
     <button onclick="showLogin()" style="background:transparent;border:1px solid var(--bd);color:var(--t2);margin-top:10px">← قبلاً حساب دارید؟</button>
@@ -501,13 +468,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   <div class="auth-c" id="pendingCard" style="display:none">
     <div class="pg-icon">⏳</div>
     <h1>در انتظار تأیید</h1>
-    <p class="sub">حساب مربی شما با موفقیت ساخته شد</p>
+    <p class="sub">حساب مربی شما ساخته شد</p>
     <div class="pending-msg">
       <div class="pi">🔐</div>
       <div class="pt">منتظر تأیید مدیر باشید</div>
-      <div class="ps">پس از تأیید مدیر، می‌توانید وارد شوید و شاگردان خود را مدیریت کنید.</div>
+      <div class="ps">پس از تأیید مدیر می‌توانید وارد شوید و شاگردان خود را مدیریت کنید.</div>
     </div>
-    <button onclick="showLogin()" style="background:transparent;border:1px solid var(--bd);color:var(--t2);margin-top:20px">← بازگشت به صفحه ورود</button>
+    <button onclick="showLogin()" style="background:transparent;border:1px solid var(--bd);color:var(--t2);margin-top:20px">← بازگشت به ورود</button>
   </div>
 </div>
 
@@ -543,7 +510,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
         <div class="fr"><label class="fl">آیکن</label><input class="fi" id="dayFI" placeholder="💪" maxlength="4"></div>
       </div>
       <div class="fr"><label class="fl">تمرکز</label><input class="fi" id="dayFF" placeholder="بالاتنه قدرتی"></div>
-      <div class="fr"><label class="fl">توضیح کاردیو</label><input class="fi" id="dayFC" placeholder="۲۰ دقیقه پیاده‌روی"></div>
+      <div class="fr"><label class="fl">کاردیو</label><input class="fi" id="dayFC" placeholder="۲۰ دقیقه پیاده‌روی"></div>
       <div class="fa"><button class="btn primary" onclick="saveDayForm()">💾 ذخیره</button><button class="btn" onclick="cancelDayForm()">لغو</button></div>
     </div>
     <div id="pdl"></div>
@@ -556,7 +523,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   </div>
 </div>
 
-<!-- PICKER DRAWER -->
+<!-- PICKER -->
 <div class="bd" id="pkbd" onclick="closePK()"></div>
 <div class="drawer right" id="pkd" style="width:520px">
   <div class="dh"><h2 id="pkT">➕ افزودن حرکت</h2><button class="dclose" onclick="closePK()">✕</button></div>
@@ -613,7 +580,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <div class="setg"><div class="tr2"><label class="setl">📌 حالت تمرکز</label><label class="ts"><input type="checkbox" id="ss1" checked><span class="sld"></span></label></div></div>
     <div class="setg"><div class="tr2"><label class="setl">🔓 باز شدن خودکار ثبت وزنه</label><label class="ts"><input type="checkbox" id="ss8" checked><span class="sld"></span></label></div></div>
     <div class="sect2">📅 رفتار</div>
-    <div class="setg"><div class="tr2"><label class="setl">📅 باز شدن روی تمرین امروز</label><label class="ts"><input type="checkbox" id="ss2" checked><span class="sld"></span></label></div></div>
+    <div class="setg"><div class="tr2"><label class="setl">📅 باز شدن روی امروز</label><label class="ts"><input type="checkbox" id="ss2" checked><span class="sld"></span></label></div></div>
     <div class="setg"><label class="setl">⏱️ ذخیره خودکار</label><select class="sets" id="ss3"><option value="5">۵ ثانیه</option><option value="10">۱۰ ثانیه</option><option value="15" selected>۱۵ ثانیه</option><option value="30">۳۰ ثانیه</option></select></div>
     <div class="setg"><div class="tr2"><label class="setl">📏 جمع شدن خودکار</label><label class="ts"><input type="checkbox" id="ss9" checked><span class="sld"></span></label></div></div>
     <div class="sect2">🔔 آلارم</div>
@@ -622,7 +589,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <div class="sect2">🎨 نمایش</div>
     <div class="setg"><div class="tr2"><label class="setl">🔔 اعلان‌ها</label><label class="ts"><input type="checkbox" id="ssT" checked><span class="sld"></span></label></div></div>
     <div class="setg"><label class="setl">🔢 فرمت اعداد</label><select class="sets" id="ss6"><option value="fa">فارسی</option><option value="en">انگلیسی</option></select></div>
-    <div class="setg"><div class="tr2"><label class="setl">🎬 پخش انیمیشن</label><label class="ts"><input type="checkbox" id="ssA" checked><span class="sld"></span></label></div></div>
   </div>
   <div class="dcont" id="st-backup">
     <div class="sect2">💾 پشتیبان</div>
@@ -652,9 +618,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   <div class="dh"><h2 id="spT">💊 مکمل</h2><button class="dclose" onclick="closeSPF()">✕</button></div>
   <div class="dcont active" style="flex:1;overflow-y:auto">
     <div class="form open">
-      <div class="fr"><label class="fl">نام مکمل</label><input class="fi" id="spN"></div>
+      <div class="fr"><label class="fl">نام</label><input class="fi" id="spN"></div>
       <div class="fr"><label class="fl">دوز</label><input class="fi" id="spD"></div>
-      <div class="fr"><label class="fl">زمان مصرف</label><input class="fi" id="spTi"></div>
+      <div class="fr"><label class="fl">زمان</label><input class="fi" id="spTi"></div>
       <div class="fr"><label class="fl">توضیحات</label><input class="fi" id="spNo"></div>
       <div class="fa"><button class="btn primary" onclick="saveSPF()">💾 ذخیره</button><button class="btn" onclick="closeSPF()">لغو</button></div>
     </div>
@@ -672,14 +638,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <div class="bm-grid">
         <div class="fr"><label class="fl">⚖️ وزن (kg)</label><input type="number" class="fi" id="bmWeight" step="0.1"></div>
         <div class="fr"><label class="fl">🔥 چربی (%)</label><input type="number" class="fi" id="bmBodyfat" step="0.1"></div>
-        <div class="fr"><label class="fl">👤 گردن (cm)</label><input type="number" class="fi" id="bmNeck" step="0.1"></div>
-        <div class="fr"><label class="fl">💪 سینه (cm)</label><input type="number" class="fi" id="bmChest" step="0.1"></div>
-        <div class="fr"><label class="fl">👖 کمر (cm)</label><input type="number" class="fi" id="bmWaist" step="0.1"></div>
-        <div class="fr"><label class="fl">🍑 باسن (cm)</label><input type="number" class="fi" id="bmHip" step="0.1"></div>
-        <div class="fr"><label class="fl">💪 بازو (cm)</label><input type="number" class="fi" id="bmArm" step="0.1"></div>
-        <div class="fr"><label class="fl">🦾 ساعد (cm)</label><input type="number" class="fi" id="bmForearm" step="0.1"></div>
-        <div class="fr"><label class="fl">🦵 ران (cm)</label><input type="number" class="fi" id="bmThigh" step="0.1"></div>
-        <div class="fr"><label class="fl">🦿 ساق (cm)</label><input type="number" class="fi" id="bmCalf" step="0.1"></div>
+        <div class="fr"><label class="fl">👤 گردن</label><input type="number" class="fi" id="bmNeck" step="0.1"></div>
+        <div class="fr"><label class="fl">💪 سینه</label><input type="number" class="fi" id="bmChest" step="0.1"></div>
+        <div class="fr"><label class="fl">👖 کمر</label><input type="number" class="fi" id="bmWaist" step="0.1"></div>
+        <div class="fr"><label class="fl">🍑 باسن</label><input type="number" class="fi" id="bmHip" step="0.1"></div>
+        <div class="fr"><label class="fl">💪 بازو</label><input type="number" class="fi" id="bmArm" step="0.1"></div>
+        <div class="fr"><label class="fl">🦾 ساعد</label><input type="number" class="fi" id="bmForearm" step="0.1"></div>
+        <div class="fr"><label class="fl">🦵 ران</label><input type="number" class="fi" id="bmThigh" step="0.1"></div>
+        <div class="fr"><label class="fl">🦿 ساق</label><input type="number" class="fi" id="bmCalf" step="0.1"></div>
       </div>
       <div class="fa"><button class="btn primary" onclick="saveBodyE()">💾 ذخیره</button><button class="btn" onclick="clearBodyForm()">پاک</button></div>
     </div>
@@ -722,7 +688,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   <div class="dcont" id="ct-detail"><div id="cpDetail"></div></div>
 </div>
 
-<!-- COACH NEW STUDENT FORM -->
+<!-- COACH NEW STUDENT -->
 <div class="bd top" id="csbd" onclick="closeCSF()"></div>
 <div class="drawer right top" id="csd" style="width:420px">
   <div class="dh"><h2>➕ شاگرد جدید</h2><button class="dclose" onclick="closeCSF()">✕</button></div>
@@ -730,7 +696,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <div class="form open">
       <div class="fr"><label class="fl">نام کاربری *</label><input class="fi" id="csU" dir="ltr" placeholder="ali_ahmadi"></div>
       <div class="fr"><label class="fl">نام نمایشی *</label><input class="fi" id="csN" placeholder="علی احمدی"></div>
-      <div class="fr"><label class="fl">رمز (حداقل ۶ کاراکتر)</label><input class="fi" id="csP" type="password" dir="ltr"></div>
+      <div class="fr"><label class="fl">رمز *</label><input class="fi" id="csP" type="password" dir="ltr"></div>
       <div class="fa"><button class="btn primary" onclick="saveCSF()">💾 ذخیره</button><button class="btn" onclick="closeCSF()">لغو</button></div>
     </div>
   </div>
@@ -738,7 +704,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 
 <!-- ADMIN PANEL -->
 <div class="bd" id="abd" onclick="closeAP()"></div>
-<div class="drawer right" id="ap" style="width:720px;max-width:96vw">
+<div class="drawer right" id="ap" style="width:760px;max-width:96vw">
   <div class="dh"><h2>👑 پنل مدیر</h2><button class="dclose" onclick="closeAP()">✕</button></div>
   <div class="dtabs">
     <button class="dtab active" data-at="pending" onclick="switchAT('pending')">⏳ در انتظار</button>
@@ -796,20 +762,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <div class="stat"><div class="sv" id="sP">۰٪</div><div class="sl">پیشرفت</div></div>
   </div>
   <div class="toolbar">
-    <div class="sbox"><input type="text" id="searchI" placeholder="جستجوی حرکت..." oninput="renderDays()"></div>
+    <button class="ubtn" id="ubtn" onclick="openUD()">
+      <span class="uav" id="uav">💪</span>
+      <span class="un" id="unm">کاربر</span>
+    </button>
     <div class="tacts" id="tacts">
       <button class="btn" onclick="openPD()"><span class="bico">🗓️</span>برنامه</button>
       <button class="btn" onclick="openND()"><span class="bico">🥗</span>تغذیه</button>
       <button class="btn" onclick="openBD()"><span class="bico">📏</span>اندازه‌ها</button>
       <button class="btn" onclick="openS()"><span class="bico">⚙️</span>تنظیمات</button>
       <button class="btn" id="thBtn" onclick="toggleTheme()"><span class="bico">🌙</span>تم</button>
-      <button class="btn" onclick="exportData()"><span class="bico">⬇️</span>Export</button>
+      <button class="btn" onclick="exportData()"><span class="bico">⬇️</span></button>
       <button class="btn danger" onclick="resetAll()"><span class="bico">🔄</span></button>
     </div>
-    <button class="ubtn" id="ubtn" onclick="openUD()">
-      <span class="uav" id="uav">💪</span>
-      <span class="un" id="unm">کاربر</span>
-    </button>
+    <div class="sbox"><input type="text" id="searchI" placeholder="جستجوی حرکت..." oninput="renderDays()"></div>
     <div class="autosave"><span class="dot"></span><span id="asvT">ذخیره خودکار</span></div>
   </div>
   <div class="dnav" id="dnav"></div>
@@ -833,60 +799,52 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   <div class="footer">ساخته‌شده با ❤️ — ProFit</div>
 </div>
 
-<nav class="mnav">
-  <button onclick="openPD()"><span class="ic3">🗓️</span>برنامه</button>
-  <button onclick="openND()"><span class="ic3">🥗</span>تغذیه</button>
-  <button onclick="openBD()"><span class="ic3">📏</span>اندازه‌ها</button>
-  <button onclick="openS()"><span class="ic3">⚙️</span>تنظیمات</button>
-  <button onclick="toggleTheme()"><span class="ic3" id="mthI">🌙</span>تم</button>
-</nav>
-
 <script>
 /* ============ CONSTANTS ============ */
 const CATEGORIES={chest:{name:'سینه',emoji:'🏋️'},back:{name:'پشت',emoji:'🔙'},shoulders:{name:'شانه',emoji:'🎯'},arms:{name:'بازو',emoji:'💪'},legs:{name:'پا',emoji:'🦵'},core:{name:'شکم',emoji:'🧘'},cardio:{name:'کاردیو',emoji:'🏃'},traps:{name:'تراپز',emoji:'🔺'},glutes:{name:'باسن',emoji:'🍑'},forearm:{name:'ساعد',emoji:'🦾'}};
 const WEEKDAYS=[{key:'sat',jsDay:6,name:'شنبه',icon:'💪'},{key:'sun',jsDay:0,name:'یکشنبه',icon:'🦵'},{key:'mon',jsDay:1,name:'دوشنبه',icon:'🧘'},{key:'tue',jsDay:2,name:'سه‌شنبه',icon:'🔥'},{key:'wed',jsDay:3,name:'چهارشنبه',icon:'🦿'},{key:'thu',jsDay:4,name:'پنجشنبه',icon:'⚡'},{key:'fri',jsDay:5,name:'جمعه',icon:'🌟'}];
-const DEFAULT_SETTINGS={autosaveInterval:15,soundEnabled:true,soundVolume:.7,numberFormat:'fa',defaultCardioMinutes:20,autoOpenToday:true,scrollSnapEnabled:true,autoOpenLogger:true,autoCollapseDone:true,autoAnimPlay:true,toastsEnabled:true,vibrationEnabled:true};
+const DEFAULT_SETTINGS={autosaveInterval:15,soundEnabled:true,soundVolume:.7,numberFormat:'fa',defaultCardioMinutes:20,autoOpenToday:true,scrollSnapEnabled:true,autoOpenLogger:true,autoCollapseDone:true,toastsEnabled:true,vibrationEnabled:true};
 const MEAL_CONFIG=[{key:'breakfast',name:'صبحانه',emoji:'🌅',pct:.25},{key:'snack1',name:'میان وعده صبح',emoji:'🍎',pct:.10},{key:'lunch',name:'ناهار',emoji:'🍽️',pct:.30},{key:'snack2',name:'میان وعده عصر',emoji:'🥜',pct:.10},{key:'dinner',name:'شام',emoji:'🌙',pct:.25}];
 const FOOD_CATS={protein:{name:'پروتئین',emoji:'🍗'},carb:{name:'کربوهیدرات',emoji:'🍚'},fat:{name:'چربی',emoji:'🥑'},veg:{name:'سبزیجات',emoji:'🥦'},fruit:{name:'میوه',emoji:'🍎'},dairy:{name:'لبنیات',emoji:'🥛'},nut:{name:'مغز و دانه',emoji:'🥜'},iranian:{name:'غذای ایرانی',emoji:'🍛'},drink:{name:'نوشیدنی',emoji:'🥤'},sweet:{name:'شیرینی',emoji:'🍫'}};
 const BMR_FORMULAS={mifflin:{name:'Mifflin-St Jeor',male:p=>10*p.weight+6.25*p.height-5*p.age+5,female:p=>10*p.weight+6.25*p.height-5*p.age-161},harris:{name:'Harris-Benedict',male:p=>88.362+13.397*p.weight+4.799*p.height-5.677*p.age,female:p=>447.593+9.247*p.weight+3.098*p.height-4.33*p.age},katch:{name:'Katch-McArdle',male:p=>370+21.6*p.weight*(1-(p.bodyfat||20)/100),female:p=>370+21.6*p.weight*(1-(p.bodyfat||20)/100)}};
 const BODY_METRICS=[{key:'weight',name:'وزن',unit:'kg',emoji:'⚖️'},{key:'bodyfat',name:'چربی',unit:'%',emoji:'🔥'},{key:'neck',name:'گردن',unit:'cm',emoji:'👤'},{key:'chest',name:'سینه',unit:'cm',emoji:'💪'},{key:'waist',name:'کمر',unit:'cm',emoji:'👖'},{key:'hip',name:'باسن',unit:'cm',emoji:'🍑'},{key:'arm',name:'بازو',unit:'cm',emoji:'💪'},{key:'forearm',name:'ساعد',unit:'cm',emoji:'🦾'},{key:'thigh',name:'ران',unit:'cm',emoji:'🦵'},{key:'calf',name:'ساق',unit:'cm',emoji:'🦿'}];
 const JALALI_MONTHS=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
-const SPLIT_TEMPLATES={full:{name:'تمام بدن',focus:'تمرین کل بدن',icon:'💪',exs:['leg_squat_bb','chest_bench_barbell','back_row_barbell','sh_press_db_seated','arm_curl_db','arm_triceps_pushdown','core_plank']},upper:{name:'بالاتنه',focus:'سینه، پشت، شانه، بازو',icon:'💪',exs:['chest_bench_barbell','chest_inc_db','back_pulldown_wide','back_row_v','sh_press_db_seated','sh_lateral','arm_curl_db','arm_triceps_pushdown']},lower:{name:'پایین‌تنه',focus:'پا، باسن، ساق',icon:'🦵',exs:['leg_squat_bb','leg_hipthrust','leg_rdl','leg_ext','leg_curl','leg_calf_stand','core_plank']},push:{name:'فشاری',focus:'سینه، شانه، پشت بازو',icon:'🔥',exs:['chest_bench_barbell','chest_inc_db','chest_fly','sh_press_db_seated','sh_lateral','arm_triceps_pushdown','arm_triceps_oh']},pull:{name:'کششی',focus:'پشت، جلو بازو',icon:'🔙',exs:['back_pullup','back_row_barbell','back_pulldown_wide','back_row_v','back_face_pull','arm_curl_db','arm_curl_hammer']},legs:{name:'پا',focus:'چهارسر، همسترینگ',icon:'🦿',exs:['leg_squat_bb','leg_press','leg_ext','leg_rdl','leg_curl','leg_calf_stand','leg_calf_seat']}};
+const SPLIT_TEMPLATES={full:{name:'تمام بدن',focus:'تمرین کل بدن',icon:'💪',exs:['leg_squat_bb','chest_bench_barbell','back_row_barbell','sh_press_db_seated','arm_curl_db','arm_triceps_pushdown','core_plank']},upper:{name:'بالاتنه',focus:'سینه، پشت، شانه',icon:'💪',exs:['chest_bench_barbell','chest_inc_db','back_pulldown_wide','back_row_v','sh_press_db_seated','sh_lateral','arm_curl_db','arm_triceps_pushdown']},lower:{name:'پایین‌تنه',focus:'پا، باسن',icon:'🦵',exs:['leg_squat_bb','leg_hipthrust','leg_rdl','leg_ext','leg_curl','leg_calf_stand','core_plank']},push:{name:'فشاری',focus:'سینه، شانه، پشت بازو',icon:'🔥',exs:['chest_bench_barbell','chest_inc_db','chest_fly','sh_press_db_seated','sh_lateral','arm_triceps_pushdown','arm_triceps_oh']},pull:{name:'کششی',focus:'پشت، جلو بازو',icon:'🔙',exs:['back_pullup','back_row_barbell','back_pulldown_wide','back_row_v','back_face_pull','arm_curl_db','arm_curl_hammer']},legs:{name:'پا',focus:'چهارسر و همسترینگ',icon:'🦿',exs:['leg_squat_bb','leg_press','leg_ext','leg_rdl','leg_curl','leg_calf_stand','leg_calf_seat']}};
 const SPLITS_BY_DAYS={2:['full','full'],3:['push','pull','legs'],4:['upper','lower','upper','lower'],5:['push','pull','legs','upper','lower'],6:['push','pull','legs','push','pull','legs']};
 const VOLUME_BY_LEVEL={beginner:{sets:3,rc:'۱۰-۱۲',ri:'۱۲-۱۵',exs:5,rest:90},intermediate:{sets:4,rc:'۸-۱۰',ri:'۱۰-۱۲',exs:6,rest:90},advanced:{sets:4,rc:'۶-۸',ri:'۱۰-۱۲',exs:7,rest:120}};
 
-/* ============ EXERCISES (نمونه کامل - ۸۰+ حرکت) ============ */
+/* ============ EXERCISES ============ */
 const DEFAULT_EXERCISES=[
 {id:'chest_bench_barbell',name:'پرس سینه هالتر',en:'Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'chest_bench_incline_bb',name:'پرس بالاسینه هالتر',en:'Incline Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'chest_bench_db',name:'پرس سینه دمبل',en:'DB Bench Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'chest_inc_db',name:'پرس بالاسینه دمبل',en:'Incline DB Press',cat:'chest',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'chest_fly',name:'فلای سینه دمبل',en:'DB Flyes',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
+{id:'chest_fly',name:'فلای سینه',en:'DB Flyes',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
 {id:'chest_fly_incline',name:'فلای بالاسینه',en:'Incline Flyes',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
-{id:'chest_cable_cross',name:'کراس اور سیم‌کش',en:'Cable Crossover',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
+{id:'chest_cable_cross',name:'کراس اور',en:'Cable Crossover',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'chest_pec_deck',name:'پک دک',en:'Pec Deck',cat:'chest',anim:'chestFly',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'chest_pushup',name:'شنا',en:'Pushups',cat:'chest',anim:'benchPress',sets:3,reps:'۱۵-۲۰',rpe:'۸',rest:60},
 {id:'chest_dip',name:'دیپ سینه',en:'Chest Dips',cat:'chest',anim:'benchPress',sets:3,reps:'۸-۱۲',rpe:'۸-۹',rest:90},
 {id:'back_deadlift',name:'ددلیفت',en:'Deadlift',cat:'back',anim:'deadlift',sets:4,reps:'۶-۸',rpe:'۸-۹',rest:120},
-{id:'back_pullup',name:'بارفیکس دست باز',en:'Pullups',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸-۹',rest:90},
-{id:'back_chinup',name:'بارفیکس چین آپ',en:'Chin-Up',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸-۹',rest:90},
+{id:'back_pullup',name:'بارفیکس',en:'Pullups',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸-۹',rest:90},
+{id:'back_chinup',name:'چین آپ',en:'Chin-Up',cat:'back',anim:'pulldown',sets:4,reps:'۶-۱۰',rpe:'۸-۹',rest:90},
 {id:'back_pulldown_wide',name:'زیربغل دست باز',en:'Lat Pulldown',cat:'back',anim:'pulldown',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'back_pulldown_close',name:'زیربغل دست جمع',en:'Close-Grip Pulldown',cat:'back',anim:'pulldown',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'back_row_v',name:'قایقی سیم‌کش',en:'Cable Row',cat:'back',anim:'row',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'back_row_barbell',name:'قایقی هالتر',en:'Barbell Row',cat:'back',anim:'row',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'back_row_1arm',name:'قایقی دمبل یک‌طرفه',en:'One-Arm DB Row',cat:'back',anim:'oneArmRow',sets:3,reps:'۱۰-۱۲ هر طرف',rpe:'۸',rest:90},
+{id:'back_row_1arm',name:'قایقی دمبل',en:'One-Arm DB Row',cat:'back',anim:'oneArmRow',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'back_row_tbar',name:'تی بار رو',en:'T-Bar Row',cat:'back',anim:'row',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'back_face_pull',name:'فیس پول',en:'Face Pull',cat:'back',anim:'facePull',sets:3,reps:'۱۵',rpe:'۸',rest:60},
 {id:'back_shrug_bb',name:'شراگ هالتر',en:'Barbell Shrug',cat:'traps',anim:'deadlift',sets:4,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'back_shrug_db',name:'شراگ دمبل',en:'DB Shrug',cat:'traps',anim:'deadlift',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'back_hyper',name:'هایپراکستنشن',en:'Hyperextension',cat:'back',anim:'hyperextension',sets:3,reps:'۱۵',rpe:'۸',rest:60},
-{id:'sh_press_bb',name:'پرس سرشانه هالتر',en:'BB Shoulder Press',cat:'shoulders',anim:'benchPress',sets:4,reps:'۶-۱۰',rpe:'۸',rest:90},
-{id:'sh_press_db_seated',name:'پرس سرشانه دمبل نشسته',en:'Seated DB Press',cat:'shoulders',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
+{id:'sh_press_bb',name:'پرس سرشانه هالتر',en:'BB Press',cat:'shoulders',anim:'benchPress',sets:4,reps:'۶-۱۰',rpe:'۸',rest:90},
+{id:'sh_press_db_seated',name:'پرس سرشانه دمبل',en:'Seated DB Press',cat:'shoulders',anim:'benchPress',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'sh_press_arnold',name:'پرس آرنولد',en:'Arnold Press',cat:'shoulders',anim:'benchPress',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
-{id:'sh_lateral',name:'نشر جانب دمبل',en:'Lateral Raise',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
+{id:'sh_lateral',name:'نشر جانب',en:'Lateral Raise',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'sh_lateral_cable',name:'نشر جانب سیم‌کش',en:'Cable Lateral',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
-{id:'sh_front_raise',name:'نشر جلو دمبل',en:'Front Raise',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
-{id:'sh_rear',name:'نشر خفی دمبل',en:'Rear Delt Fly',cat:'shoulders',anim:'rearDelt',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
+{id:'sh_front_raise',name:'نشر جلو',en:'Front Raise',cat:'shoulders',anim:'lateralRaise',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
+{id:'sh_rear',name:'نشر خفی',en:'Rear Delt Fly',cat:'shoulders',anim:'rearDelt',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'sh_upright_row',name:'پارویی هالتر',en:'Upright Row',cat:'shoulders',anim:'row',sets:3,reps:'۱۲',rpe:'۸',rest:60},
 {id:'sh_facepull',name:'فیس پول',en:'Face Pull',cat:'shoulders',anim:'facePull',sets:3,reps:'۱۵',rpe:'۸',rest:60},
 {id:'arm_curl_db',name:'جلو بازو دمبل',en:'DB Curl',cat:'arms',anim:'curl',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
@@ -897,8 +855,8 @@ const DEFAULT_EXERCISES=[
 {id:'arm_triceps_pushdown',name:'پشت بازو سیم‌کش',en:'Triceps Pushdown',cat:'arms',anim:'facePull',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
 {id:'arm_triceps_rope',name:'پشت بازو طناب',en:'Rope Pushdown',cat:'arms',anim:'facePull',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
 {id:'arm_triceps_oh',name:'پشت بازو بالای سر',en:'OH Triceps',cat:'arms',anim:'curl',sets:3,reps:'۱۲',rpe:'۸-۹',rest:60},
-{id:'arm_triceps_skull',name:'پشت بازو هالتر خوابیده',en:'Skull Crusher',cat:'arms',anim:'benchPress',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:90},
-{id:'arm_triceps_close_bench',name:'پرس سینه دست جمع',en:'Close-Grip Bench',cat:'arms',anim:'benchPress',sets:3,reps:'۸-۱۰',rpe:'۸',rest:90},
+{id:'arm_triceps_skull',name:'پشت بازو خوابیده',en:'Skull Crusher',cat:'arms',anim:'benchPress',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:90},
+{id:'arm_triceps_close_bench',name:'پرس دست جمع',en:'Close-Grip Bench',cat:'arms',anim:'benchPress',sets:3,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'arm_triceps_dip',name:'دیپ پشت بازو',en:'Triceps Dips',cat:'arms',anim:'benchPress',sets:3,reps:'۸-۱۲',rpe:'۸-۹',rest:90},
 {id:'arm_triceps_kickback',name:'پشت بازو کیک‌بک',en:'Kickback',cat:'arms',anim:'curl',sets:3,reps:'۱۲-۱۵',rpe:'۸',rest:60},
 {id:'arm_forearm_curl',name:'جلو بازو مچ',en:'Wrist Curl',cat:'forearm',anim:'curl',sets:3,reps:'۱۵-۲۰',rpe:'۸',rest:45},
@@ -908,10 +866,10 @@ const DEFAULT_EXERCISES=[
 {id:'leg_goblet',name:'گوبلت اسکات',en:'Goblet Squat',cat:'legs',anim:'squat',sets:3,reps:'۸-۱۰',rpe:'۷-۸',rest:105},
 {id:'leg_hack_squat',name:'هاک اسکات',en:'Hack Squat',cat:'legs',anim:'squat',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
 {id:'leg_smith_squat',name:'اسکات اسمیت',en:'Smith Squat',cat:'legs',anim:'squat',sets:4,reps:'۸-۱۰',rpe:'۸',rest:90},
-{id:'leg_bulgarian',name:'بلغاری اسپلیت',en:'Bulgarian Split',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲ هر پا',rpe:'۸-۹',rest:90},
-{id:'leg_lunge',name:'لانگز',en:'Lunges',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲ هر پا',rpe:'۸',rest:90},
-{id:'leg_lunge_walk',name:'لانگ راه رونده',en:'Walking Lunge',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲ هر پا',rpe:'۸',rest:90},
-{id:'leg_stepup',name:'استپ آپ',en:'Step Ups',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲ هر پا',rpe:'۸',rest:75},
+{id:'leg_bulgarian',name:'بلغاری',en:'Bulgarian Split',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:90},
+{id:'leg_lunge',name:'لانگز',en:'Lunges',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
+{id:'leg_lunge_walk',name:'لانگ راه رونده',en:'Walking Lunge',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
+{id:'leg_stepup',name:'استپ آپ',en:'Step Ups',cat:'legs',anim:'lunge',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:75},
 {id:'leg_press',name:'پرس پا',en:'Leg Press',cat:'legs',anim:'squat',sets:4,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'leg_ext',name:'جلو پا ماشین',en:'Leg Extension',cat:'legs',anim:'legExtension',sets:3,reps:'۱۲-۱۵',rpe:'۹',rest:60},
 {id:'leg_curl',name:'پشت پا خوابیده',en:'Lying Leg Curl',cat:'legs',anim:'legCurl',sets:4,reps:'۱۲-۱۵',rpe:'۹',rest:60},
@@ -922,26 +880,26 @@ const DEFAULT_EXERCISES=[
 {id:'leg_goodmorning',name:'گود مورنینگ',en:'Good Morning',cat:'legs',anim:'deadlift',sets:3,reps:'۱۰-۱۲',rpe:'۸',rest:90},
 {id:'leg_calf_stand',name:'ساق پا ایستاده',en:'Standing Calf',cat:'legs',anim:'calfRaise',sets:4,reps:'۱۵',rpe:'۹',rest:60},
 {id:'leg_calf_seat',name:'ساق پا نشسته',en:'Seated Calf',cat:'legs',anim:'calfRaise',sets:4,reps:'۱۵-۲۰',rpe:'۹',rest:60},
-{id:'leg_calf_press',name:'ساق پا در پرس پا',en:'Calf Press',cat:'legs',anim:'calfRaise',sets:4,reps:'۱۵-۲۰',rpe:'۹',rest:60},
+{id:'leg_calf_press',name:'ساق پا پرس',en:'Calf Press',cat:'legs',anim:'calfRaise',sets:4,reps:'۱۵-۲۰',rpe:'۹',rest:60},
 {id:'leg_hip_abduction',name:'ابدکشن',en:'Abductor',cat:'legs',anim:'squat',sets:3,reps:'۱۵',rpe:'۸',rest:45},
 {id:'leg_hip_adduction',name:'ادکشن',en:'Adductor',cat:'legs',anim:'squat',sets:3,reps:'۱۵',rpe:'۸',rest:45},
 {id:'core_plank',name:'پلانک',en:'Plank',cat:'core',anim:'plank',sets:3,reps:'۴۵-۶۰ ثانیه',rpe:'—',rest:60},
 {id:'core_side_plank',name:'پلانک از پهلو',en:'Side Plank',cat:'core',anim:'plank',sets:3,reps:'۳۰-۴۵ ثانیه',rpe:'—',rest:45},
 {id:'core_crunch',name:'کرانچ',en:'Crunch',cat:'core',anim:'crunch',sets:3,reps:'۲۰',rpe:'—',rest:60},
 {id:'core_crunch_cable',name:'کرانچ سیم‌کش',en:'Cable Crunch',cat:'core',anim:'crunch',sets:3,reps:'۱۵-۲۰',rpe:'۸',rest:60},
-{id:'core_bicycle',name:'دوچرخه شکم',en:'Bicycle Crunch',cat:'core',anim:'crunch',sets:3,reps:'۲۰ هر طرف',rpe:'—',rest:45},
-{id:'core_russian_twist',name:'چرخش روسی',en:'Russian Twist',cat:'core',anim:'crunch',sets:3,reps:'۲۰ هر طرف',rpe:'—',rest:45},
+{id:'core_bicycle',name:'دوچرخه شکم',en:'Bicycle',cat:'core',anim:'crunch',sets:3,reps:'۲۰',rpe:'—',rest:45},
+{id:'core_russian_twist',name:'چرخش روسی',en:'Russian Twist',cat:'core',anim:'crunch',sets:3,reps:'۲۰',rpe:'—',rest:45},
 {id:'core_leg_raise',name:'بالا آوردن پا',en:'Leg Raise',cat:'core',anim:'crunch',sets:3,reps:'۱۵',rpe:'—',rest:60},
-{id:'core_hanging_leg_raise',name:'بالا آوردن پا آویزان',en:'Hanging Leg Raise',cat:'core',anim:'crunch',sets:3,reps:'۱۰-۱۵',rpe:'۸-۹',rest:60},
+{id:'core_hanging_leg_raise',name:'پا آویزان',en:'Hanging Leg Raise',cat:'core',anim:'crunch',sets:3,reps:'۱۰-۱۵',rpe:'۸-۹',rest:60},
 {id:'core_ab_wheel',name:'چرخ شکم',en:'Ab Wheel',cat:'core',anim:'plank',sets:3,reps:'۱۰-۱۲',rpe:'۸-۹',rest:60},
 {id:'core_mountain_climber',name:'کوهنوردی',en:'Mountain Climbers',cat:'core',anim:'plank',sets:3,reps:'۳۰ ثانیه',rpe:'۸',rest:45},
-{id:'core_dead_bug',name:'دد باگ',en:'Dead Bug',cat:'core',anim:'plank',sets:3,reps:'۱۲ هر طرف',rpe:'—',rest:45},
+{id:'core_dead_bug',name:'دد باگ',en:'Dead Bug',cat:'core',anim:'plank',sets:3,reps:'۱۲',rpe:'—',rest:45},
 {id:'core_vup',name:'V-Up',en:'V-Up',cat:'core',anim:'crunch',sets:3,reps:'۱۵',rpe:'۸',rest:45},
 {id:'cardio_treadmill_walk',name:'تردمیل پیاده‌روی',en:'Treadmill Walk',cat:'cardio',anim:'lunge',sets:1,reps:'۲۰ دقیقه',rpe:'۶-۷',rest:0},
-{id:'cardio_treadmill_run',name:'تردمیل دویدن',en:'Treadmill Run',cat:'cardio',anim:'lunge',sets:1,reps:'۱۵-۲۰ دقیقه',rpe:'۷-۸',rest:0},
-{id:'cardio_bike',name:'دوچرخه ثابت',en:'Stationary Bike',cat:'cardio',anim:'legExtension',sets:1,reps:'۲۰ دقیقه',rpe:'۶-۷',rest:0},
-{id:'cardio_rowing',name:'دستگاه روئینگ',en:'Rowing',cat:'cardio',anim:'row',sets:1,reps:'۱۵-۲۰ دقیقه',rpe:'۷',rest:0},
-{id:'cardio_stair',name:'پله نوردی',en:'Stair Climber',cat:'cardio',anim:'lunge',sets:1,reps:'۱۵ دقیقه',rpe:'۷-۸',rest:0},
+{id:'cardio_treadmill_run',name:'تردمیل دویدن',en:'Treadmill Run',cat:'cardio',anim:'lunge',sets:1,reps:'۲۰ دقیقه',rpe:'۷-۸',rest:0},
+{id:'cardio_bike',name:'دوچرخه ثابت',en:'Bike',cat:'cardio',anim:'legExtension',sets:1,reps:'۲۰ دقیقه',rpe:'۶-۷',rest:0},
+{id:'cardio_rowing',name:'روئینگ',en:'Rowing',cat:'cardio',anim:'row',sets:1,reps:'۱۵-۲۰ دقیقه',rpe:'۷',rest:0},
+{id:'cardio_stair',name:'پله نوردی',en:'Stair',cat:'cardio',anim:'lunge',sets:1,reps:'۱۵ دقیقه',rpe:'۷-۸',rest:0},
 {id:'cardio_elliptical',name:'الیپتیکال',en:'Elliptical',cat:'cardio',anim:'lunge',sets:1,reps:'۲۰ دقیقه',rpe:'۶-۷',rest:0},
 {id:'cardio_jumprope',name:'طناب زدن',en:'Jump Rope',cat:'cardio',anim:'lunge',sets:3,reps:'۲-۳ دقیقه',rpe:'۸',rest:60},
 {id:'cardio_burpee',name:'برپی',en:'Burpee',cat:'cardio',anim:'squat',sets:3,reps:'۱۰-۱۵',rpe:'۸-۹',rest:60},
@@ -950,34 +908,34 @@ const DEFAULT_EXERCISES=[
 {id:'cardio_swim',name:'شنا',en:'Swimming',cat:'cardio',anim:'lunge',sets:1,reps:'۲۰-۳۰ دقیقه',rpe:'۷',rest:0}
 ];
 
-/* ============ FOODS (نمونه کامل) ============ */
+/* ============ FOODS ============ */
 const FOOD_DB=[
-{id:'chicken_breast',name:'سینه مرغ پخته',cat:'protein',emoji:'🍗',cal:165,prot:31,carb:0,fat:3.6,units:[{n:'گرم',g:1},{n:'فیله',g:150}]},
+{id:'chicken_breast',name:'سینه مرغ',cat:'protein',emoji:'🍗',cal:165,prot:31,carb:0,fat:3.6,units:[{n:'گرم',g:1},{n:'فیله',g:150}]},
 {id:'chicken_thigh',name:'ران مرغ',cat:'protein',emoji:'🍗',cal:209,prot:26,carb:0,fat:11,units:[{n:'گرم',g:1},{n:'عدد',g:130}]},
-{id:'turkey',name:'سینه بوقلمون',cat:'protein',emoji:'🦃',cal:189,prot:29,carb:0,fat:7,units:[{n:'گرم',g:1}]},
+{id:'turkey',name:'بوقلمون',cat:'protein',emoji:'🦃',cal:189,prot:29,carb:0,fat:7,units:[{n:'گرم',g:1}]},
 {id:'beef_ground',name:'گوشت چرخ‌کرده',cat:'protein',emoji:'🥩',cal:215,prot:26,carb:0,fat:12,units:[{n:'گرم',g:1}]},
 {id:'beef_steak',name:'استیک گاو',cat:'protein',emoji:'🥩',cal:271,prot:25,carb:0,fat:19,units:[{n:'گرم',g:1}]},
 {id:'lamb',name:'گوشت بره',cat:'protein',emoji:'🥩',cal:294,prot:25,carb:0,fat:21,units:[{n:'گرم',g:1}]},
-{id:'salmon',name:'ماهی سالمون',cat:'protein',emoji:'🐟',cal:208,prot:20,carb:0,fat:13,units:[{n:'گرم',g:1},{n:'فیله',g:150}]},
+{id:'salmon',name:'سالمون',cat:'protein',emoji:'🐟',cal:208,prot:20,carb:0,fat:13,units:[{n:'گرم',g:1},{n:'فیله',g:150}]},
 {id:'tuna_can',name:'تن کنسرو',cat:'protein',emoji:'🐟',cal:116,prot:26,carb:0,fat:1,units:[{n:'گرم',g:1},{n:'قوطی',g:150}]},
-{id:'tuna_fresh',name:'ماهی تن تازه',cat:'protein',emoji:'🐟',cal:132,prot:28,carb:0,fat:1,units:[{n:'گرم',g:1}]},
+{id:'tuna_fresh',name:'تن تازه',cat:'protein',emoji:'🐟',cal:132,prot:28,carb:0,fat:1,units:[{n:'گرم',g:1}]},
 {id:'sardine',name:'ساردین',cat:'protein',emoji:'🐟',cal:208,prot:25,carb:0,fat:11,units:[{n:'گرم',g:1}]},
 {id:'shrimp',name:'میگو',cat:'protein',emoji:'🦐',cal:99,prot:24,carb:.2,fat:.3,units:[{n:'گرم',g:1},{n:'عدد',g:10}]},
-{id:'egg_whole',name:'تخم مرغ کامل',cat:'protein',emoji:'🥚',cal:155,prot:13,carb:1.1,fat:11,units:[{n:'گرم',g:1},{n:'عدد',g:50}]},
+{id:'egg_whole',name:'تخم مرغ',cat:'protein',emoji:'🥚',cal:155,prot:13,carb:1.1,fat:11,units:[{n:'گرم',g:1},{n:'عدد',g:50}]},
 {id:'egg_white',name:'سفیده',cat:'protein',emoji:'🥚',cal:52,prot:11,carb:.7,fat:.2,units:[{n:'گرم',g:1},{n:'عدد',g:33}]},
 {id:'whey',name:'پودر وی',cat:'protein',emoji:'🥛',cal:400,prot:80,carb:8,fat:5,units:[{n:'گرم',g:1},{n:'اسکوپ',g:30}]},
 {id:'lentil',name:'عدس',cat:'protein',emoji:'🫘',cal:116,prot:9,carb:20,fat:.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:200}]},
 {id:'chickpea',name:'نخود',cat:'protein',emoji:'🫘',cal:164,prot:8.9,carb:27,fat:2.6,units:[{n:'گرم',g:1},{n:'پیمانه',g:164}]},
 {id:'rice_white',name:'برنج سفید',cat:'carb',emoji:'🍚',cal:130,prot:2.7,carb:28,fat:.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:200},{n:'کفگیر',g:90}]},
 {id:'rice_brown',name:'برنج قهوه‌ای',cat:'carb',emoji:'🍚',cal:123,prot:2.7,carb:26,fat:1,units:[{n:'گرم',g:1},{n:'پیمانه',g:195}]},
-{id:'bread_barbari',name:'نان بربری',cat:'carb',emoji:'🥖',cal:281,prot:9,carb:53,fat:2.5,units:[{n:'گرم',g:1},{n:'برش',g:80}]},
-{id:'bread_sangak',name:'نان سنگک',cat:'carb',emoji:'🥖',cal:254,prot:8.5,carb:50,fat:1.5,units:[{n:'گرم',g:1},{n:'برش',g:60}]},
-{id:'bread_lavash',name:'نان لواش',cat:'carb',emoji:'🥖',cal:275,prot:9.5,carb:55,fat:1.5,units:[{n:'گرم',g:1},{n:'عدد',g:80}]},
-{id:'oat',name:'جو دوسر',cat:'carb',emoji:'🌾',cal:389,prot:17,carb:66,fat:7,units:[{n:'گرم',g:1},{n:'پیمانه',g:80},{n:'ق.غ',g:10}]},
-{id:'potato_boiled',name:'سیب‌زمینی آب‌پز',cat:'carb',emoji:'🥔',cal:77,prot:2,carb:17,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:150}]},
+{id:'bread_barbari',name:'بربری',cat:'carb',emoji:'🥖',cal:281,prot:9,carb:53,fat:2.5,units:[{n:'گرم',g:1},{n:'برش',g:80}]},
+{id:'bread_sangak',name:'سنگک',cat:'carb',emoji:'🥖',cal:254,prot:8.5,carb:50,fat:1.5,units:[{n:'گرم',g:1},{n:'برش',g:60}]},
+{id:'bread_lavash',name:'لواش',cat:'carb',emoji:'🥖',cal:275,prot:9.5,carb:55,fat:1.5,units:[{n:'گرم',g:1},{n:'عدد',g:80}]},
+{id:'oat',name:'جو دوسر',cat:'carb',emoji:'🌾',cal:389,prot:17,carb:66,fat:7,units:[{n:'گرم',g:1},{n:'پیمانه',g:80}]},
+{id:'potato_boiled',name:'سیب‌زمینی',cat:'carb',emoji:'🥔',cal:77,prot:2,carb:17,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:150}]},
 {id:'potato_baked',name:'سیب‌زمینی تنوری',cat:'carb',emoji:'🥔',cal:93,prot:2.5,carb:21,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:170}]},
 {id:'sweet_potato',name:'سیب‌زمینی شیرین',cat:'carb',emoji:'🍠',cal:86,prot:1.6,carb:20,fat:.1,units:[{n:'گرم',g:1},{n:'عدد',g:150}]},
-{id:'pasta',name:'ماکارونی پخته',cat:'carb',emoji:'🍝',cal:131,prot:5,carb:25,fat:1.1,units:[{n:'گرم',g:1},{n:'پیمانه',g:140}]},
+{id:'pasta',name:'ماکارونی',cat:'carb',emoji:'🍝',cal:131,prot:5,carb:25,fat:1.1,units:[{n:'گرم',g:1},{n:'پیمانه',g:140}]},
 {id:'quinoa',name:'کینوا',cat:'carb',emoji:'🌾',cal:120,prot:4.4,carb:21,fat:1.9,units:[{n:'گرم',g:1},{n:'پیمانه',g:185}]},
 {id:'barley',name:'جو',cat:'carb',emoji:'🌾',cal:123,prot:2.3,carb:28,fat:.4,units:[{n:'گرم',g:1},{n:'پیمانه',g:157}]},
 {id:'corn',name:'ذرت',cat:'carb',emoji:'🌽',cal:96,prot:3.4,carb:21,fat:1.5,units:[{n:'گرم',g:1},{n:'بلال',g:90}]},
@@ -1028,7 +986,7 @@ const FOOD_DB=[
 {id:'yogurt_low',name:'ماست کم چرب',cat:'dairy',emoji:'🥛',cal:59,prot:10,carb:3.6,fat:.4,units:[{n:'گرم',g:1},{n:'لیوان',g:240}]},
 {id:'yogurt_greek',name:'ماست یونانی',cat:'dairy',emoji:'🥛',cal:97,prot:9,carb:3.6,fat:5,units:[{n:'گرم',g:1},{n:'ق.غ',g:15}]},
 {id:'cheese_feta',name:'پنیر فتا',cat:'dairy',emoji:'🧀',cal:264,prot:14,carb:4.1,fat:21,units:[{n:'گرم',g:1},{n:'مکعب',g:17}]},
-{id:'cheese_white',name:'پنیر سفید ایرانی',cat:'dairy',emoji:'🧀',cal:350,prot:22,carb:2,fat:28,units:[{n:'گرم',g:1},{n:'برش',g:30}]},
+{id:'cheese_white',name:'پنیر سفید',cat:'dairy',emoji:'🧀',cal:350,prot:22,carb:2,fat:28,units:[{n:'گرم',g:1},{n:'برش',g:30}]},
 {id:'cheese_mozzarella',name:'موزارلا',cat:'dairy',emoji:'🧀',cal:300,prot:22,carb:2.2,fat:22,units:[{n:'گرم',g:1},{n:'برش',g:28}]},
 {id:'cheese_cheddar',name:'چدار',cat:'dairy',emoji:'🧀',cal:402,prot:25,carb:1.3,fat:33,units:[{n:'گرم',g:1},{n:'برش',g:28}]},
 {id:'cottage',name:'پنیر کوتاژ',cat:'dairy',emoji:'🧀',cal:98,prot:11,carb:3.4,fat:4.3,units:[{n:'گرم',g:1},{n:'پیمانه',g:210}]},
@@ -1112,7 +1070,7 @@ let nutritionData=null,currentFoodMeal=null,currentFoodCat='all',editingSuppIdx=
 let bodyData=[];
 let cpStudentId=null,apPwdResolve=null,editingStudentId=null;
 let apUsersCache=[],apCoachesCache=[];
-let exerciseObserver=null,selectedRegRole='student';
+let selectedRegRole='student';
 let wizSelectedDays=[],wizDaysCount=3;
 
 const TOKEN_KEY='profit-jwt';
@@ -1199,7 +1157,7 @@ function loadSettings(){try{const r=localStorage.getItem(SK('profit-set-'));user
 function saveSettings(){try{localStorage.setItem(SK('profit-set-'),JSON.stringify(userSettings));
   apiCall('POST','/api/users/'+currentUserId+'/data/settings',{value:userSettings}).catch(()=>{})}catch(e){}}
 function getToday(){const d=new Date().getDay();for(const day of userProgram.days)if(day.weekday===d)return day.key;return null}
-function hasOnboarded(){if(!currentUserId)return false;return localStorage.getItem(SK('profit-onboarded-'))==='1'}
+const hasOnboarded=()=>currentUserId?localStorage.getItem(SK('profit-onboarded-'))==='1':false;
 function setOnboarded(){if(!currentUserId)return;try{localStorage.setItem(SK('profit-onboarded-'),'1');
   apiCall('POST','/api/users/'+currentUserId+'/data/onboarded',{value:true}).catch(()=>{})}catch(e){}}
 
@@ -1226,9 +1184,7 @@ function showPending(){
 function pickRole(role){
   selectedRegRole=role;
   document.querySelectorAll('.role-btn').forEach(b=>b.classList.toggle('sel',b.dataset.role===role));
-  document.getElementById('roleHint').textContent=role==='coach'
-    ? '⚠️ حساب مربی نیاز به تأیید مدیر دارد'
-    : 'حساب شاگرد بلافاصله فعال می‌شود';
+  document.getElementById('roleHint').textContent=role==='coach'?'⚠️ حساب مربی نیاز به تأیید مدیر دارد':'حساب شاگرد بلافاصله فعال می‌شود';
 }
 async function doRegister(){
   const u=document.getElementById('ru').value.trim();
@@ -1269,12 +1225,10 @@ async function doLogin(){
     else if(msg==='rejected')err.textContent='حساب شما رد شده است';
     else if(msg==='inactive')err.textContent='حساب غیرفعال است';
     else err.textContent='خطا: '+(msg||e.message);
-  }
-  finally{btn.disabled=false;btn.textContent='ورود'}}
+  }finally{btn.disabled=false;btn.textContent='ورود'}}
 
 async function afterLogin(){
   document.getElementById('authScr').classList.add('hidden');
-  updateUserBtn();addRoleBadge();
   try{const d=await apiCall('GET','/api/users/'+currentUserId+'/data');
     if(d.state)localStorage.setItem(SK('profit-state-'),JSON.stringify(d.state));
     if(d.history)localStorage.setItem(SK('profit-hist-'),JSON.stringify(d.history));
@@ -1287,15 +1241,14 @@ async function afterLogin(){
   }catch(e){console.warn('pull failed',e)}
   loadSettings();loadBank();loadProgram();rebuild();
   try{const h=localStorage.getItem(SK('profit-hist-'));history=h?JSON.parse(h):{}}catch{history={}}
-  loadState();applyScroll();updateUserBtn();
+  loadState();applyScroll();updateUserBtn();addRoleButtons();
   const tk=getToday();currentDay=(userSettings.autoOpenToday&&tk)?tk:'all';
   renderNav();renderDays();updateChart();restartAutosave();renderGuide();
-  // Onboarding
   if(!hasOnboarded()&&authUser.role==='student'){openWizard()}
   else{showToast('خوش آمدی '+authUser.displayName+'!','success',3000)}
 }
 async function doLogout(){
-  if(!confirm('از حساب خارج می‌شوید؟'))return;
+  if(!confirm('خروج؟'))return;
   saveState();clearToken();setTimeout(()=>location.reload(),300);
 }
 function updateUserBtn(){if(!authUser)return;
@@ -1303,12 +1256,23 @@ function updateUserBtn(){if(!authUser)return;
   if(av){av.textContent=authUser.emoji;av.style.background=authUser.color}
   if(nm)nm.textContent=authUser.displayName;
   if(b)b.style.setProperty('--uc',authUser.color)}
-function addRoleBadge(){
+function addRoleButtons(){
+  // Remove old dynamic buttons
+  document.querySelectorAll('.dyn-panel-btn').forEach(b=>b.remove());
   const tb=document.getElementById('tacts');if(!tb||!authUser)return;
-  const old=tb.querySelector('.role-badge');if(old)old.remove();
-  const badge=document.createElement('span');badge.className='role-badge '+authUser.role;
+  const badge=document.createElement('span');badge.className='role-badge '+authUser.role+' dyn-panel-btn';
   badge.textContent={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'}[authUser.role];
   tb.prepend(badge);
+  if(authUser.role==='admin'||authUser.role==='coach'){
+    const b1=document.createElement('button');b1.className='btn coach dyn-panel-btn';b1.onclick=openCP;
+    b1.innerHTML='<span class="bico">👨‍🏫</span>مربی';
+    tb.insertBefore(b1,badge.nextSibling);
+  }
+  if(authUser.role==='admin'){
+    const b2=document.createElement('button');b2.className='btn admin dyn-panel-btn';b2.onclick=openAP;
+    b2.innerHTML='<span class="bico">👑</span>مدیر';
+    tb.insertBefore(b2,badge.nextSibling);
+  }
 }
 
 /* ============ WIZARD ============ */
@@ -1317,8 +1281,15 @@ function openWizard(){
   document.getElementById('wizDays').value='3';
   document.getElementById('wizStep1').classList.add('active');
   document.getElementById('wizStep2').classList.remove('active');
+  document.getElementById('wizWDRow').style.display='block';
+  document.getElementById('wizLevelRow').style.display='block';
   renderWizWD();
   document.getElementById('wizardOverlay').classList.remove('hidden');
+}
+function wizDaysChanged(){
+  wizDaysCount=parseInt(document.getElementById('wizDays').value)||0;
+  if(wizDaysCount===0){document.getElementById('wizWDRow').style.display='none';document.getElementById('wizLevelRow').style.display='none'}
+  else{document.getElementById('wizWDRow').style.display='block';document.getElementById('wizLevelRow').style.display='block'}
 }
 function renderWizWD(){
   const c=document.getElementById('wizWDPick');if(!c)return;
@@ -1328,46 +1299,27 @@ function renderWizWD(){
 }
 function wizPickWD(jsDay,btn){
   if(wizSelectedDays.includes(jsDay)){wizSelectedDays=wizSelectedDays.filter(d=>d!==jsDay);btn.classList.remove('sel')}
-  else{if(wizSelectedDays.length>=wizDaysCount){showToast('فقط '+wizDaysCount+' روز می‌توانی انتخاب کنی','warn');return}
+  else{if(wizSelectedDays.length>=wizDaysCount){showToast('فقط '+wizDaysCount+' روز','warn');return}
     wizSelectedDays.push(jsDay);btn.classList.add('sel')}
 }
 function wizNext(){
-  const days=parseInt(document.getElementById('wizDays').value)||0;
-  wizDaysCount=days;
-  if(days===0){
-    document.getElementById('wizWDRow').style.display='none';
-    document.getElementById('wizLevelRow').style.display='none';
-  }else{
-    document.getElementById('wizWDRow').style.display='block';
-    document.getElementById('wizLevelRow').style.display='block';
-    if(wizSelectedDays.length!==days){showToast('لطفاً '+days+' روز انتخاب کنید ('+wizSelectedDays.length+' انتخاب شده)','warn',4000);return}
-  }
+  wizDaysCount=parseInt(document.getElementById('wizDays').value)||0;
+  if(wizDaysCount>0&&wizSelectedDays.length!==wizDaysCount){showToast('لطفاً '+wizDaysCount+' روز انتخاب کن ('+wizSelectedDays.length+')','warn',4000);return}
   document.getElementById('wizStep1').classList.remove('active');
   document.getElementById('wizStep2').classList.add('active');
 }
-function wizBack(){
-  document.getElementById('wizStep2').classList.remove('active');
-  document.getElementById('wizStep1').classList.add('active');
-}
+function wizBack(){document.getElementById('wizStep2').classList.remove('active');document.getElementById('wizStep1').classList.add('active')}
 async function wizFinish(){
   const days=wizDaysCount;
   const level=document.getElementById('wizLevel').value;
-  // Save nutrition profile
-  const profile={
-    gender:document.getElementById('wizGender').value,
-    age:parseInt(document.getElementById('wizAge').value)||30,
-    weight:parseFloat(document.getElementById('wizWeight').value)||75,
-    height:parseFloat(document.getElementById('wizHeight').value)||175,
-    activity:parseFloat(document.getElementById('wizActivity').value)||1.55,
-    goal:document.getElementById('wizGoal').value,
-    formula:'mifflin',bodyfat:20
-  };
-  if(!nutritionData)loadNut();
-  nutritionData.profile=profile;
+  const profile={gender:document.getElementById('wizGender').value,age:parseInt(document.getElementById('wizAge').value)||30,
+    weight:parseFloat(document.getElementById('wizWeight').value)||75,height:parseFloat(document.getElementById('wizHeight').value)||175,
+    activity:parseFloat(document.getElementById('wizActivity').value)||1.55,goal:document.getElementById('wizGoal').value,
+    formula:'mifflin',bodyfat:20};
+  loadNut();nutritionData.profile=profile;
   try{localStorage.setItem(SK('profit-nut-'),JSON.stringify(nutritionData));
     await apiCall('POST','/api/users/'+currentUserId+'/data/nutrition',{value:nutritionData})}catch(e){}
-  // Generate program
-  if(days>0){generateSmartProgram(days,wizSelectedDays,level)}
+  if(days>0)generateSmartProgram(days,wizSelectedDays,level);
   setOnboarded();
   document.getElementById('wizardOverlay').classList.add('hidden');
   renderNav();renderDays();updateChart();
@@ -1375,11 +1327,11 @@ async function wizFinish(){
 }
 function generateSmartProgram(daysCount,weekdays,level){
   const splitKeys=SPLITS_BY_DAYS[daysCount];
-  if(!splitKeys){showToast('برنامه نیاز به ۲-۶ روز دارد','warn');return}
+  if(!splitKeys){showToast('برنامه نیاز به ۲-۶ روز','warn');return}
   const vol=VOLUME_BY_LEVEL[level]||VOLUME_BY_LEVEL.intermediate;
   const order={6:0,0:1,1:2,2:3,3:4,4:5,5:6};
   const sorted=[...weekdays].sort((a,b)=>order[a]-order[b]);
-  const themeClasses=['day-sat','day-sun','day-tue','day-wed'];
+  const themes=['day-sat','day-sun','day-tue','day-wed'];
   const newDays=sorted.map((jsDay,i)=>{
     const splitKey=splitKeys[i%splitKeys.length];
     const tpl=SPLIT_TEMPLATES[splitKey];
@@ -1388,7 +1340,7 @@ function generateSmartProgram(daysCount,weekdays,level){
       const isComp=idx<3;
       return{exId,sets:isComp?vol.sets:Math.max(3,vol.sets-1),reps:isComp?vol.rc:vol.ri,rpe:'۸',rest:isComp?vol.rest:60}}).filter(Boolean).slice(0,vol.exs);
     return{id:'d_'+Date.now()+'_'+i,key:'day_'+wd.key,weekday:jsDay,name:'روز '+wd.name,icon:tpl.icon,
-      focus:tpl.focus+' — '+vol.sets+'×'+vol.rc,theme:themeClasses[i%4],type:'workout',
+      focus:tpl.focus+' — '+vol.sets+'×'+vol.rc,theme:themes[i%4],type:'workout',
       cardio:'',cardioIcon:'🏃',cardioDefault:20,exercises:exs};
   });
   userProgram.days=newDays;saveProgram();rebuild();
@@ -1402,17 +1354,17 @@ function renderUserList(){
   const roles={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'};
   let btns='';
   if(authUser.role==='admin'||authUser.role==='coach'){
-    btns+='<button class="btn" style="width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#3b82f6,#a855f7);color:#fff;border:none" onclick="closeUD();openCP()">👨‍🏫 پنل مربی</button>';
+    btns+='<button class="btn coach" style="width:100%;justify-content:center;margin-top:10px" onclick="closeUD();openCP()">👨‍🏫 پنل مربی</button>';
   }
   if(authUser.role==='admin'){
-    btns+='<button class="btn" style="width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none" onclick="closeUD();openAP()">👑 پنل مدیر</button>';
+    btns+='<button class="btn admin" style="width:100%;justify-content:center;margin-top:10px" onclick="closeUD();openAP()">👑 پنل مدیر</button>';
   }
   el.innerHTML='<div class="ucard active" style="cursor:default">'+
     '<div class="uav-l" style="background:'+authUser.color+'">'+authUser.emoji+'</div>'+
     '<div class="uin"><div class="un">'+esc(authUser.displayName)+'</div>'+
     '<div class="um">@'+esc(authUser.username)+' · '+(roles[authUser.role]||'')+'</div></div></div>'+
     btns+
-    '<button class="btn danger" style="width:100%;justify-content:center;margin-top:14px" onclick="doLogout()">🚪 خروج از حساب</button>';
+    '<button class="btn danger" style="width:100%;justify-content:center;margin-top:14px" onclick="doLogout()">🚪 خروج</button>';
 }
 
 /* ============ PROGRAM ============ */
@@ -1552,7 +1504,6 @@ function openS(){switchST('settings');
   document.getElementById('volV').textContent=Math.round(userSettings.soundVolume*100)+'%';
   document.getElementById('ssT').checked=userSettings.toastsEnabled;
   document.getElementById('ss6').value=userSettings.numberFormat;
-  document.getElementById('ssA').checked=userSettings.autoAnimPlay;
   document.getElementById('stbd').classList.add('open');document.getElementById('std').classList.add('open')}
 function closeS(){
   userSettings.scrollSnapEnabled=document.getElementById('ss1').checked;
@@ -1564,7 +1515,6 @@ function closeS(){
   userSettings.soundVolume=parseFloat(document.getElementById('ss5').value)||.7;
   userSettings.toastsEnabled=document.getElementById('ssT').checked;
   userSettings.numberFormat=document.getElementById('ss6').value;
-  userSettings.autoAnimPlay=document.getElementById('ssA').checked;
   saveSettings();restartAutosave();applyScroll();
   document.getElementById('stbd').classList.remove('open');document.getElementById('std').classList.remove('open');
   renderDays();showToast('ذخیره شد','success')}
@@ -1579,10 +1529,9 @@ function toggleTheme(){const l=document.documentElement.getAttribute('data-theme
   document.documentElement.setAttribute('data-theme',l?'dark':'light');
   localStorage.setItem('profit-theme',l?'dark':'light');
   const t=document.getElementById('thBtn');if(t)t.querySelector('.bico').textContent=l?'🌙':'☀️';
-  const m=document.getElementById('mthI');if(m)m.textContent=l?'🌙':'☀️';
   saveState();updateChart();if(document.getElementById('bdd').classList.contains('open'))updBodyChart()}
 
-/* ============ DAYS RENDERING ============ */
+/* ============ DAYS ============ */
 function renderNav(){const n=document.getElementById('dnav');if(!n)return;
   let h='<button class="dnav-btn '+(currentDay==='all'?'active':'')+'" onclick="switchDay(\'all\',this)">📋 همه</button>';
   userProgram.days.forEach(d=>{h+='<button class="dnav-btn '+(currentDay===d.key?'active':'')+'" data-day="'+d.key+'" onclick="switchDay(\''+d.key+'\',this)">'+d.icon+' '+esc(d.name.replace('روز ',''))+'</button>'});
@@ -1686,12 +1635,12 @@ function copyLast(k){const parts=k.split('-');const dKey=parts[0];const ei=parse
   if(!exerciseLogs[k])exerciseLogs[k]=[];const logs=exerciseLogs[k];
   let lw=null,lr=null,li=-1;
   for(let i=Math.max(logs.length-1,ex.sets-1);i>=0;i--){if(logs[i]&&logs[i].weight!=null){lw=logs[i].weight;lr=logs[i].reps;li=i;break}}
-  if(lw===null){showToast('ابتدا وزنه وارد کنید','warn');return}
+  if(lw===null){showToast('ابتدا وزنه وارد کن','warn');return}
   let filled=0;
   for(let i=0;i<ex.sets;i++){if(!logs[i])logs[i]={weight:null,reps:null,time:0};
     if(i===li)continue;if(logs[i].weight==null){logs[i].weight=lw;if(logs[i].reps==null&&lr!=null)logs[i].reps=lr;filled++}}
   saveState();renderDays();
-  if(filled===0)showToast('همه ست‌ها پر هستند','info');else showToast(filled+' ست پر شد','success')}
+  if(filled===0)showToast('همه پر هستند','info');else showToast(filled+' ست پر شد','success')}
 function playBeep(freqs){if(userSettings.vibrationEnabled&&navigator.vibrate){try{navigator.vibrate([200,80,200,80,200])}catch(e){}}
   if(!userSettings.soundEnabled)return;
   try{const c=new(window.AudioContext||window.webkitAudioContext)();const v=Math.min(1,userSettings.soundVolume||.7);
@@ -1702,7 +1651,6 @@ function restartTicker(){clearInterval(globalTicker);globalTicker=setInterval(()
   Object.keys(cardioTimers).forEach(k=>{const s=cardioTimers[k];if(!s)return;const r=rem(s);
     if(s.running&&r<=0){s.remaining=0;s.running=false;s.endTimestamp=null;playBeep([880,1046,1318]);showToast('کاردیو تمام شد!','success');saveState()}});
   Object.keys(activeTimers).forEach(k=>{const s=activeTimers[k];if(!s)return;const r=rem(s);
-    const d=document.getElementById('disp-'+k);if(d)d.textContent=r>0?fN(r)+'ث':'✅';
     if(s.running&&r<=0){s.remaining=0;s.running=false;s.endTimestamp=null;playBeep([880]);saveState()}});
 },500)}
 function updateStats(){let tot=0,done=0,vol=0;
@@ -1731,7 +1679,7 @@ function updateChart(){const canvas=document.getElementById('pc');if(!canvas)ret
     JALALI_MONTHS.forEach((n,i)=>{labels.push(n);data.push(mo[i]);colors.push('rgba(16,185,129,.75)')})}
   let mv=Math.max(5,...data);if(chartRange==='week')mv=Math.max(mv,10);
   chartInstance=new Chart(canvas,{type:'bar',data:{labels,datasets:[{label:'حرکات',data,backgroundColor:colors,borderRadius:10,barThickness:chartRange==='year'?16:36}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{rtl:true,textDirection:'rtl',backgroundColor:isDark?'#1e293b':'#fff',titleColor:isDark?'#f1f5f9':'#0f172a',bodyColor:isDark?'#94a3b8':'#475569',padding:12,cornerRadius:10}},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
       scales:{y:{beginAtZero:true,suggestedMax:mv,grid:{color:isDark?'rgba(148,163,184,.08)':'rgba(148,163,184,.15)'},ticks:{color:isDark?'#64748b':'#94a3b8',font:{family:'Vazirmatn',size:11}}},
         x:{grid:{display:false},ticks:{color:isDark?'#94a3b8':'#475569',font:{family:'Vazirmatn',weight:'600',size:chartRange==='year'?9:11}}}}}});
   const se=document.getElementById('cstats');
@@ -1748,7 +1696,7 @@ function calcRPE(){const w=parseFloat(document.getElementById('rpeW').value),r=p
 
 /* ============ EXPORT/IMPORT ============ */
 function exportData(){if(!authUser)return;
-  const d={_meta:{app:'ProFit',v:1,exportedAt:new Date().toISOString(),user:{name:authUser.displayName}},
+  const d={_meta:{app:'ProFit',v:1,user:authUser.displayName},
     user:{name:authUser.displayName,emoji:authUser.emoji,color:authUser.color},
     completed:completedExercises,logs:exerciseLogs,history,
     theme:document.documentElement.getAttribute('data-theme'),currentDay,settings:userSettings,
@@ -1813,8 +1761,7 @@ function renderCalc(){const c=document.getElementById('nt-calc');if(!c||!nutriti
       '<option value="maintain" '+(p.goal==='maintain'?'selected':'')+'>⚖️ حفظ وزن</option>'+
       '<option value="gain" '+(p.goal==='gain'?'selected':'')+'>💪 عضله‌سازی</option>'+
       '<option value="bulk" '+(p.goal==='bulk'?'selected':'')+'>🏋️ افزایش حجم</option></select></div>'+
-    '<div class="sect2" style="margin-top:16px">🧮 فرمول BMR</div>'+
-    '<div class="fr"><label class="fl">فرمول</label><select class="fi" id="npF">'+
+    '<div class="fr"><label class="fl">فرمول BMR</label><select class="fi" id="npF">'+
       Object.keys(BMR_FORMULAS).map(k=>'<option value="'+k+'" '+(p.formula===k?'selected':'')+'>'+BMR_FORMULAS[k].name+'</option>').join('')+'</select></div>'+
     '<button class="btn primary" style="width:100%;justify-content:center" onclick="calcNut()">🧮 محاسبه</button>'+
     renderCalcResults()}
@@ -1856,7 +1803,7 @@ function calcMealTotals(mk){const items=nutritionData.meals[mk]||[];
   let c=0,p=0,ca=0,f=0;items.forEach(it=>{const m=getItemMacros(it);c+=m.cal;p+=m.prot;ca+=m.carb;f+=m.fat});
   return{cal:Math.round(c),prot:Math.round(p*10)/10,carb:Math.round(ca*10)/10,fat:Math.round(f*10)/10}}
 function renderPlan(){const c=document.getElementById('nt-plan');if(!c||!nutritionData)return;const t=nutritionData.targets;
-  if(!t){c.innerHTML='<div class="empty" style="padding:30px"><div class="ic">🧮</div><div>ابتدا کالری را محاسبه کنید</div></div>';return}
+  if(!t){c.innerHTML='<div class="empty" style="padding:30px"><div class="ic">🧮</div><div>ابتدا کالری را محاسبه کن</div></div>';return}
   const dt=MEAL_CONFIG.reduce((a,m)=>{const tt=calcMealTotals(m.key);a.cal+=tt.cal;a.prot+=tt.prot;a.carb+=tt.carb;a.fat+=tt.fat;return a},{cal:0,prot:0,carb:0,fat:0});
   const diff=dt.cal-t.calories;
   let h='<div class="nut-sum">'+
@@ -1864,7 +1811,7 @@ function renderPlan(){const c=document.getElementById('nt-plan');if(!c||!nutriti
     '<div class="ns-it"><div class="ns-v">'+fN(Math.round(dt.prot))+'g</div><div class="ns-l">پروتئین</div></div>'+
     '<div class="ns-it"><div class="ns-v">'+fN(Math.round(dt.carb))+'g</div><div class="ns-l">کرب</div></div>'+
     '<div class="ns-it"><div class="ns-v">'+fN(Math.round(dt.fat))+'g</div><div class="ns-l">چربی</div></div></div>'+
-    '<div style="font-size:.76rem;font-weight:700;text-align:center;margin-bottom:12px;color:'+(Math.abs(diff)<50?'var(--ag)':(diff>0?'var(--ar)':'var(--aa)'))+'">هدف: '+fN(t.calories)+' kcal — اختلاف: '+fN(Math.abs(diff))+'</div>'+
+    '<div style="font-size:.76rem;font-weight:700;text-align:center;margin-bottom:12px;color:'+(Math.abs(diff)<50?'var(--ag)':(diff>0?'var(--ar)':'var(--aa)'))+'">هدف: '+fN(t.calories)+' — اختلاف: '+fN(Math.abs(diff))+'</div>'+
     '<div style="display:flex;gap:8px;margin-bottom:14px"><button class="btn success" style="flex:1" onclick="genSamplePlan()">✨ نمونه</button><button class="btn danger" style="flex:1" onclick="clearPlan()">🗑️ پاک کردن</button></div>';
   MEAL_CONFIG.forEach(meal=>{const items=nutritionData.meals[meal.key]||[];const mt=Math.round(t.calories*meal.pct);const tt=calcMealTotals(meal.key);
     const d=tt.cal-mt;const state=items.length===0?'under':(Math.abs(d)<mt*.1?'ok':(d>0?'over':'under'));
@@ -1916,10 +1863,9 @@ function renderFPL(){const l=document.getElementById('fpl');if(!l)return;
   let foods=FOOD_DB.slice();if(currentFoodCat!=='all')foods=foods.filter(f=>f.cat===currentFoodCat);
   if(term)foods=foods.filter(f=>f.name.toLowerCase().includes(term)||f.id.includes(term));
   if(!foods.length){l.innerHTML='<div class="empty" style="padding:20px"><div class="ic">🔍</div><div>غذایی یافت نشد</div></div>';return}
-  l.innerHTML=foods.map(f=>{const mu=f.units&&f.units[0]?f.units[0].n:'گرم';
-    return'<div class="fitem" onclick="addFood(\''+f.id+'\')"><div class="fe">'+f.emoji+'</div>'+
+  l.innerHTML=foods.map(f=>'<div class="fitem" onclick="addFood(\''+f.id+'\')"><div class="fe">'+f.emoji+'</div>'+
       '<div class="fi2"><div class="fnm">'+esc(f.name)+'</div><div class="fmc">P:'+f.prot+' C:'+f.carb+' F:'+f.fat+'</div></div>'+
-      '<div class="fc2">'+f.cal+'<small>kcal</small></div></div>'}).join('')}
+      '<div class="fc2">'+f.cal+'<small>kcal</small></div></div>').join('')}
 function addFood(id){if(!currentFoodMeal)return;const f=getFoodById(id);if(!f)return;
   const units=f.units||[{n:'گرم',g:1}];let qty=100,ui=0;
   const pri=[['عدد متوسط'],['عدد','برش','پرس','سیخ','کاسه','لیوان','قوطی','فنجان','استکان','فیله'],['اسکوپ','حبه','مربع','دسته','ساقه','مکعب'],['ق.غ','ق.چ'],['مشت','پیمانه','کفگیر']];
@@ -1963,7 +1909,7 @@ function showSPF(i){editingSuppIdx=i!=null?i:null;
   else{t.textContent='💊 مکمل سفارشی';['spN','spD','spTi','spNo'].forEach(id=>document.getElementById(id).value='')}
   document.getElementById('spbd').classList.add('open');document.getElementById('spd').classList.add('open')}
 function closeSPF(){editingSuppIdx=null;document.getElementById('spbd').classList.remove('open');document.getElementById('spd').classList.remove('open')}
-function saveSPF(){const n=document.getElementById('spN').value.trim();if(!n){showToast('نام را وارد کنید','warn');return}
+function saveSPF(){const n=document.getElementById('spN').value.trim();if(!n){showToast('نام را وارد کن','warn');return}
   const d=document.getElementById('spD').value.trim(),ti=document.getElementById('spTi').value.trim(),no=document.getElementById('spNo').value.trim();
   if(editingSuppIdx!=null){const s=nutritionData.supplements[editingSuppIdx];if(s){s.name=n;s.dose=d;s.timing=ti;s.note=no}showToast('ویرایش شد','success')}
   else{nutritionData.supplements.push({id:'sup_c_'+Date.now(),name:n,dose:d,timing:ti,note:no,enabled:true,custom:true});showToast('اضافه شد','success')}
@@ -2048,19 +1994,27 @@ async function renderCP(){const el=document.getElementById('cpList');if(!el)retu
 function showCSF(){document.getElementById('csU').value='';document.getElementById('csN').value='';document.getElementById('csP').value='';
   document.getElementById('csbd').classList.add('open');document.getElementById('csd').classList.add('open')}
 function closeCSF(){document.getElementById('csbd').classList.remove('open');document.getElementById('csd').classList.remove('open')}
-async function saveCSF(){const u=document.getElementById('csU').value.trim(),n=document.getElementById('csN').value.trim(),p=document.getElementById('csP').value;
-  if(!u||!n||!p){showToast('همه فیلدها را پر کنید','warn');return}
-  if(!/^[a-zA-Z0-9_.-]+$/.test(u)){showToast('نام کاربری نامعتبر (فقط انگلیسی)','warn');return}
+async function saveCSF(){
+  const u=document.getElementById('csU').value.trim();
+  const n=document.getElementById('csN').value.trim();
+  const p=document.getElementById('csP').value;
+  if(!u||!n||!p){showToast('همه فیلدها را پر کن','warn');return}
+  if(!/^[a-zA-Z0-9_.-]+$/.test(u)){showToast('نام کاربری فقط انگلیسی','warn');return}
   if(p.length<6){showToast('رمز حداقل ۶ کاراکتر','warn');return}
-  try{await apiCall('POST','/api/users',{username:u,displayName:n,password:p,role:'student'});
-    showToast('شاگرد ساخته شد ✓','success');closeCSF();renderCP()}
-  catch(e){
-    const msg=e.data&&e.data.error;
+  try{
+    await apiCall('POST','/api/users',{username:u,displayName:n,password:p,role:'student'});
+    showToast('✅ شاگرد ساخته شد','success');
+    closeCSF();
+    renderCP();
+  }catch(e){
+    const msg=(e.data&&e.data.error)||e.message;
     if(msg==='username_taken')showToast('این نام کاربری گرفته شده','warn');
     else if(msg==='invalid_username')showToast('نام کاربری نامعتبر','warn');
     else if(msg==='password_too_short')showToast('رمز کوتاه','warn');
-    else if(msg==='missing_fields')showToast('همه فیلدها را پر کنید','warn');
-    else showToast('خطا: '+(msg||e.message),'warn',5000);
+    else if(msg==='missing_fields')showToast('همه فیلدها را پر کن','warn');
+    else if(msg==='coach_can_only_create_students')showToast('مربی فقط شاگرد می‌سازد','warn');
+    else if(msg==='forbidden')showToast('شما دسترسی ندارید','warn');
+    else showToast('خطا: '+msg,'warn',5000);
   }}
 async function openStudentDetail(id){cpStudentId=id;const t=document.getElementById('cpDetTab');if(t)t.style.display='';
   switchCT('detail');const el=document.getElementById('cpDetail');
@@ -2091,13 +2045,13 @@ async function openStudentDetail(id){cpStudentId=id;const t=document.getElementB
       '<div class="sect2">🧠 آنالیز خودکار</div>'+analysis.map(a=>{const bg=a.tone==='good'?'rgba(16,185,129,.12)':a.tone==='warn'?'rgba(245,158,11,.12)':'rgba(59,130,246,.12)';
         const bc=a.tone==='good'?'rgba(16,185,129,.3)':a.tone==='warn'?'rgba(245,158,11,.3)':'rgba(59,130,246,.3)';
         return'<div style="padding:10px 14px;border-radius:10px;background:'+bg+';border:1px solid '+bc+';margin-bottom:8px;font-size:.83rem;font-weight:600">'+a.text+'</div>'}).join('')+
-      '<div class="sect2">🗓️ برنامه فعلی ('+(prog.days||[]).length+' روز)</div>'+((prog.days||[]).length?(prog.days||[]).map(d=>'<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border-radius:10px;margin-bottom:6px;font-size:.8rem"><span>'+(d.icon||'💪')+'</span><strong style="flex:1">'+esc(d.name)+'</strong><span style="color:var(--tm)">'+((d.exercises||[]).length)+' حرکت</span></div>').join(''):'<div style="padding:14px;text-align:center;color:var(--tm)">برنامه‌ای ندارد — روی «ویرایش برنامه» بزن</div>')+
+      '<div class="sect2">🗓️ برنامه فعلی ('+(prog.days||[]).length+' روز)</div>'+((prog.days||[]).length?(prog.days||[]).map(d=>'<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border-radius:10px;margin-bottom:6px;font-size:.8rem"><span>'+(d.icon||'💪')+'</span><strong style="flex:1">'+esc(d.name)+'</strong><span style="color:var(--tm)">'+((d.exercises||[]).length)+' حرکت</span></div>').join(''):'<div style="padding:14px;text-align:center;color:var(--tm)">برنامه‌ای ندارد</div>')+
       '<div class="sect2">📝 یادداشت‌ها</div><textarea class="fi" id="cpNote" style="min-height:80px;margin-bottom:8px" placeholder="یادداشت..."></textarea>'+
       '<button class="btn primary" style="width:100%;justify-content:center;margin-bottom:12px" onclick="addCoachNote(\''+stu.id+'\')">💾 ثبت</button>'+
       (notes.length?notes.map(n=>'<div style="background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-bottom:8px">'+
         '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.7rem;color:var(--ag);font-weight:700">📅 '+new Date(n.created_at).toLocaleDateString('fa-IR')+'</span>'+
         '<button class="bm-del" onclick="rmNote('+n.id+',\''+stu.id+'\')">🗑️</button></div>'+
-        '<div style="font-size:.83rem;line-height:1.7">'+esc(n.content)+'</div></div>').join(''):'<div style="text-align:center;padding:14px;color:var(--tm);font-size:.8rem">هنوز یادداشتی نیست</div>')
+        '<div style="font-size:.83rem;line-height:1.7">'+esc(n.content)+'</div></div>').join(''):'<div style="text-align:center;padding:14px;color:var(--tm);font-size:.8rem">یادداشتی نیست</div>')
   }catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'}}
 async function addCoachNote(id){const t=document.getElementById('cpNote');const c=(t?t.value:'').trim();
   if(!c){showToast('خالی است','warn');return}
@@ -2109,46 +2063,38 @@ async function editStudentProgram(studentId){
     closeCP();
     const ov=await apiCall('GET','/api/coach/students/'+studentId+'/overview');
     editingStudentId=studentId;
-    // Save current user's state
     saveState();
-    // Switch to student's data
-    const studentData=ov.data||{};
-    // Backup current user data in memory
     window.__coachBackup={
-      userId:currentUserId,
-      user:authUser,
+      userId:currentUserId,user:authUser,
       program:JSON.parse(JSON.stringify(userProgram)),
       bank:JSON.parse(JSON.stringify(exerciseBank)),
       settings:JSON.parse(JSON.stringify(userSettings)),
       state:{completedExercises:JSON.parse(JSON.stringify(completedExercises)),exerciseLogs:JSON.parse(JSON.stringify(exerciseLogs)),history:JSON.parse(JSON.stringify(history))}
     };
-    // Load student's data
-    currentUserId=studentId;
-    authUser=ov.student;
+    currentUserId=studentId;authUser=ov.student;
+    const studentData=ov.data||{};
     if(studentData.program)localStorage.setItem(SK('profit-prog-'),JSON.stringify(studentData.program));
     else localStorage.removeItem(SK('profit-prog-'));
     if(studentData.bank)localStorage.setItem(SK('profit-bank-'),JSON.stringify(studentData.bank));
     if(studentData.settings)localStorage.setItem(SK('profit-set-'),JSON.stringify(studentData.settings));
     else localStorage.setItem(SK('profit-set-'),JSON.stringify(DEFAULT_SETTINGS));
     if(studentData.state)localStorage.setItem(SK('profit-state-'),JSON.stringify(studentData.state));
-    // Load
     loadSettings();loadBank();loadProgram();rebuild();
     try{const h=localStorage.getItem(SK('profit-hist-'));history=h?JSON.parse(h):{}}catch{history={}}
     loadState();
-    showCoachModeBanner(ov.student);
+    showCoachBanner(ov.student);
     renderNav();renderDays();updateChart();
     openPD();
-    showToast('در حال ویرایش برنامه «'+ov.student.displayName+'»','info',4000);
+    showToast('در حال ویرایش «'+ov.student.displayName+'»','info',4000);
   }catch(e){showToast('خطا: '+e.message,'warn',5000)}
 }
-function showCoachModeBanner(student){
-  let b=document.getElementById('coachBanner');
-  if(!b){b=document.createElement('div');b.id='coachBanner';
-    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:12px;font-weight:700;box-shadow:0 4px 12px rgba(245,158,11,.4)';
-    document.body.appendChild(b)}
+function showCoachBanner(student){
+  const old=document.getElementById('coachBanner');if(old)old.remove();
+  const b=document.createElement('div');b.id='coachBanner';b.className='coach-banner';
   b.innerHTML='<span style="font-size:1.2rem">👨‍🏫</span>'+
     '<span style="flex:1;font-size:.88rem">حالت مربی — ویرایش شاگرد: <strong>'+esc(student.displayName)+'</strong></span>'+
-    '<button style="background:rgba(255,255,255,.2);color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:800" onclick="exitCoachMode()">🚪 خروج از حالت مربی</button>';
+    '<button onclick="exitCoachMode()">🚪 خروج از حالت مربی</button>';
+  document.body.insertBefore(b,document.body.firstChild);
   document.body.style.paddingTop='50px';
 }
 async function exitCoachMode(){
@@ -2169,73 +2115,114 @@ async function exitCoachMode(){
 }
 
 /* ============ ADMIN ============ */
-function openAP(){document.getElementById('abd').classList.add('open');document.getElementById('ap').classList.add('open');switchAT('pending');renderAPPending();renderAP()}
+function openAP(){
+  document.getElementById('abd').classList.add('open');
+  document.getElementById('ap').classList.add('open');
+  switchAT('pending');
+  renderAPPending();
+  renderAP();
+}
 function closeAP(){document.getElementById('abd').classList.remove('open');document.getElementById('ap').classList.remove('open')}
-function switchAT(t){document.querySelectorAll('.dtab[data-at]').forEach(x=>x.classList.toggle('active',x.dataset.at===t));
+function switchAT(t){
+  document.querySelectorAll('.dtab[data-at]').forEach(x=>x.classList.toggle('active',x.dataset.at===t));
   document.getElementById('at-pending').classList.toggle('active',t==='pending');
   document.getElementById('at-users').classList.toggle('active',t==='users');
   document.getElementById('at-audit').classList.toggle('active',t==='audit');
-  if(t==='audit')renderAudit();if(t==='pending')renderAPPending()}
-async function renderAPPending(){const el=document.getElementById('apPending');if(!el)return;
+  if(t==='audit')renderAudit();
+  if(t==='pending')renderAPPending();
+}
+async function renderAPPending(){
+  const el=document.getElementById('apPending');if(!el)return;
   el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">⏳</div><div>بارگذاری...</div></div>';
-  try{const list=await apiCall('GET','/api/admin/pending-coaches');
+  try{
+    const list=await apiCall('GET','/api/admin/pending-coaches');
     if(!list.length){el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">✅</div><div>درخواستی وجود ندارد</div></div>';return}
-    el.innerHTML='<div class="sect2">⏳ درخواست‌های تأیید مربی ('+list.length+')</div>'+
-      list.map(u=>'<div class="ucard" style="cursor:default">'+
+    el.innerHTML='<div class="sect2">⏳ درخواست تأیید مربی ('+list.length+')</div>'+
+      list.map(u=>'<div><div class="ucard" style="cursor:default">'+
         '<div class="uav-l" style="background:'+u.color+'">'+u.emoji+'</div>'+
         '<div class="uin"><div class="un">'+esc(u.displayName)+'</div>'+
-        '<div class="um">@'+esc(u.username)+' · '+new Date(u.createdAt).toLocaleDateString('fa-IR')+'</div></div>'+
-        '</div><div class="approve-row"><button class="btn success" onclick="approveCoach(\''+u.id+'\')">✅ تأیید</button>'+
-        '<button class="btn danger" onclick="rejectCoach(\''+u.id+'\')">❌ رد</button></div>').join('')
-  }catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا</div></div>'}}
-async function approveCoach(id){try{await apiCall('POST','/api/admin/approve/'+id);showToast('✅ تأیید شد','success');renderAPPending();renderAP()}catch(e){showToast('خطا','warn')}}
-async function rejectCoach(id){if(!confirm('رد شود؟'))return;try{await apiCall('POST','/api/admin/reject/'+id);showToast('رد شد','info');renderAPPending();renderAP()}catch(e){showToast('خطا','warn')}}
-async function renderAP(){const el=document.getElementById('apList');if(!el)return;
+        '<div class="um">@'+esc(u.username)+' · '+new Date(u.createdAt).toLocaleDateString('fa-IR')+'</div></div></div>'+
+        '<div class="approve-row"><button class="btn success" onclick="approveCoach(\''+u.id+'\')">✅ تأیید</button>'+
+        '<button class="btn danger" onclick="rejectCoach(\''+u.id+'\')">❌ رد</button></div></div>').join('')
+  }catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'}
+}
+async function approveCoach(id){
+  try{await apiCall('POST','/api/admin/approve/'+id);showToast('✅ تأیید شد','success');renderAPPending();renderAP()}
+  catch(e){showToast('خطا: '+e.message,'warn')}
+}
+async function rejectCoach(id){
+  if(!confirm('رد شود؟'))return;
+  try{await apiCall('POST','/api/admin/reject/'+id);showToast('رد شد','info');renderAPPending();renderAP()}
+  catch(e){showToast('خطا: '+e.message,'warn')}
+}
+async function renderAP(){
+  const el=document.getElementById('apList');if(!el)return;
   el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">⏳</div><div>بارگذاری...</div></div>';
   try{apUsersCache=await apiCall('GET','/api/users');apCoachesCache=apUsersCache.filter(u=>u.role==='coach'||u.role==='admin');renderAPList()}
-  catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا</div></div>'}}
-function renderAPList(){const el=document.getElementById('apList');if(!el)return;
+  catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'}
+}
+function renderAPList(){
+  const el=document.getElementById('apList');if(!el)return;
   const rc={admin:'#f59e0b',coach:'#3b82f6',student:'#10b981'};
   const rl={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'};
   const by={admin:[],coach:[],student:[]};
-  apUsersCache.forEach(u=>by[u.role]&&by[u.role].push(u));
+  apUsersCache.forEach(u=>{if(by[u.role])by[u.role].push(u)});
   let h='';
-  ['admin','coach','student'].forEach(r=>{const list=by[r];if(!list.length)return;
+  ['admin','coach','student'].forEach(r=>{
+    const list=by[r];if(!list.length)return;
     h+='<div class="sect2" style="color:'+rc[r]+'">'+rl[r]+' ('+list.length+')</div>';
-    h+=list.map(u=>{const coach=u.coachId?apUsersCache.find(c=>c.id===u.coachId):null;
+    h+=list.map(u=>{
+      const coach=u.coachId?apUsersCache.find(c=>c.id===u.coachId):null;
       const cl=coach?' — مربی: '+esc(coach.displayName):'';
       const st=u.active?'':' <span style="color:var(--ar);font-size:.7rem">(غیرفعال)</span>';
       const pend=u.approvalStatus==='pending'?' <span style="color:var(--aa);font-size:.7rem">(در انتظار)</span>':'';
+      const rej=u.approvalStatus==='rejected'?' <span style="color:var(--ar);font-size:.7rem">(رد شده)</span>':'';
       return'<div class="ucard" style="cursor:default;margin-bottom:8px"><div class="uav-l" style="background:'+u.color+'">'+u.emoji+'</div>'+
-        '<div class="uin"><div class="un">'+esc(u.displayName)+st+pend+'</div><div class="um">@'+esc(u.username)+cl+'</div></div>'+
-        '<div class="uactions"><button class="uabtn" onclick="delUserAP(\''+u.id+'\')">🗑️</button>'+
-        '<button class="uabtn" onclick="toggleUserAP(\''+u.id+'\')">'+(u.active?'🚫':'✅')+'</button>'+
-        '<button class="uabtn" onclick="resetPwdAP(\''+u.id+'\')">🔑</button></div></div>'}).join('')});
-  el.innerHTML=h||'<div style="text-align:center;padding:20px;color:var(--tm)">هیچ کاربری نیست</div>'}
-async function delUserAP(id){const u=apUsersCache.find(x=>x.id===id);if(!u)return;
+        '<div class="uin"><div class="un">'+esc(u.displayName)+st+pend+rej+'</div><div class="um">@'+esc(u.username)+cl+'</div></div>'+
+        '<div class="uactions">'+
+        '<button class="uabtn" onclick="resetPwdAP(\''+u.id+'\')" title="بازنشانی رمز">🔑</button>'+
+        '<button class="uabtn" onclick="toggleUserAP(\''+u.id+'\')" title="'+(u.active?'غیرفعال':'فعال')+'">'+(u.active?'🚫':'✅')+'</button>'+
+        '<button class="uabtn del" onclick="delUserAP(\''+u.id+'\')" title="حذف">🗑️</button></div></div>'}).join('')
+  });
+  el.innerHTML=h||'<div style="text-align:center;padding:20px;color:var(--tm)">هیچ کاربری نیست</div>'
+}
+async function delUserAP(id){
+  const u=apUsersCache.find(x=>x.id===id);if(!u)return;
   if(!confirm('حذف «'+u.displayName+'»؟'))return;
   const pw=await reqAPW('برای حذف رمز خود را وارد کنید');if(!pw)return;
   try{await apiCall('DELETE','/api/users/'+id,{adminPassword:pw});showToast('حذف شد','success');renderAP()}
-  catch(e){showToast(e.data&&e.data.error==='wrong_password'?'رمز اشتباه':'خطا','warn')}}
-async function toggleUserAP(id){const u=apUsersCache.find(x=>x.id===id);if(!u)return;
+  catch(e){showToast(e.data&&e.data.error==='wrong_password'?'رمز اشتباه':'خطا: '+e.message,'warn')}
+}
+async function toggleUserAP(id){
+  const u=apUsersCache.find(x=>x.id===id);if(!u)return;
   if(!confirm((u.active?'غیرفعال':'فعال')+' شود؟'))return;
-  try{await apiCall('PUT','/api/users/'+id,{active:!u.active});showToast('انجام شد','success');renderAP()}catch(e){showToast('خطا','warn')}}
-async function resetPwdAP(id){const u=apUsersCache.find(x=>x.id===id);if(!u)return;
+  try{await apiCall('PUT','/api/users/'+id,{active:!u.active});showToast('انجام شد','success');renderAP()}
+  catch(e){showToast('خطا: '+e.message,'warn')}
+}
+async function resetPwdAP(id){
+  const u=apUsersCache.find(x=>x.id===id);if(!u)return;
   const np=prompt('رمز جدید (حداقل ۶):');if(!np)return;
   if(np.length<6){showToast('حداقل ۶','warn');return}
-  try{await apiCall('PUT','/api/users/'+id,{password:np});showToast('بازنشانی ✓','success')}catch(e){showToast('خطا','warn')}}
-function showAUF(){document.getElementById('auU').value='';document.getElementById('auN').value='';document.getElementById('auP').value='';
+  try{await apiCall('PUT','/api/users/'+id,{password:np});showToast('بازنشانی ✓','success')}
+  catch(e){showToast('خطا: '+e.message,'warn')}
+}
+function showAUF(){
+  document.getElementById('auU').value='';document.getElementById('auN').value='';document.getElementById('auP').value='';
   document.getElementById('auR').value='student';
   const c=document.getElementById('auC');c.innerHTML='<option value="">— بدون —</option>'+apCoachesCache.map(x=>'<option value="'+x.id+'">'+x.emoji+' '+esc(x.displayName)+'</option>').join('');
   updACoachRow();
-  document.getElementById('aubd').classList.add('open');document.getElementById('aud').classList.add('open')}
+  document.getElementById('aubd').classList.add('open');document.getElementById('aud').classList.add('open')
+}
 function updACoachRow(){const r=document.getElementById('auR').value;document.getElementById('auCoachRow').style.display=r==='student'?'block':'none'}
 function closeAUF(){document.getElementById('aubd').classList.remove('open');document.getElementById('aud').classList.remove('open')}
-async function saveAUF(){const u=document.getElementById('auU').value.trim(),n=document.getElementById('auN').value.trim(),p=document.getElementById('auP').value,r=document.getElementById('auR').value,c=document.getElementById('auC').value||null;
-  if(!u||!n||!p){showToast('همه فیلدها را پر کنید','warn');return}
+async function saveAUF(){
+  const u=document.getElementById('auU').value.trim(),n=document.getElementById('auN').value.trim(),p=document.getElementById('auP').value,r=document.getElementById('auR').value,c=document.getElementById('auC').value||null;
+  if(!u||!n||!p){showToast('همه فیلدها را پر کن','warn');return}
   if(p.length<6){showToast('رمز حداقل ۶','warn');return}
   try{await apiCall('POST','/api/users',{username:u,displayName:n,password:p,role:r,coachId:r==='student'?c:null});
-    showToast('ساخته شد ✓','success');closeAUF();renderAP()}catch(e){showToast(e.data&&e.data.error==='username_taken'?'تکراری':'خطا: '+(e.data?e.data.error:e.message),'warn',5000)}}
+    showToast('ساخته شد ✓','success');closeAUF();renderAP()}
+  catch(e){showToast(e.data&&e.data.error==='username_taken'?'تکراری':'خطا: '+e.message,'warn',5000)}
+}
 function reqAPW(title){return new Promise(res=>{apPwdResolve=res;
   document.getElementById('apwT').textContent=title||'رمز را وارد کنید';
   document.getElementById('apwIn').value='';
@@ -2246,9 +2233,11 @@ function closeAPW(){document.getElementById('apwbd').classList.remove('open');do
 function submitAPW(){const p=document.getElementById('apwIn').value;if(!p)return;
   document.getElementById('apwbd').classList.remove('open');document.getElementById('apwd').classList.remove('open');
   if(apPwdResolve){apPwdResolve(p);apPwdResolve=null}}
-async function renderAudit(){const el=document.getElementById('apAudit');if(!el)return;
+async function renderAudit(){
+  const el=document.getElementById('apAudit');if(!el)return;
   el.innerHTML='<div class="empty" style="padding:30px"><div class="ic">⏳</div><div>بارگذاری...</div></div>';
-  try{const rows=await apiCall('GET','/api/admin/audit');
+  try{
+    const rows=await apiCall('GET','/api/admin/audit');
     if(!rows.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--tm)">فعالیتی نیست</div>';return}
     const labels={login_success:'✅ ورود',login_failed:'❌ ورود ناموفق',user_created:'➕ ساخت',user_updated:'✏️ ویرایش',user_deleted:'🗑️ حذف',password_changed:'🔑 تغییر رمز',user_registered:'✨ ثبت‌نام',coach_approved:'✅ تأیید مربی',coach_rejected:'❌ رد مربی'};
     el.innerHTML=rows.map(r=>{const actor=apUsersCache.find(x=>x.id===r.actor_id);const an=actor?actor.displayName:(r.actor_id||'سیستم');
@@ -2256,7 +2245,8 @@ async function renderAudit(){const el=document.getElementById('apAudit');if(!el)
         '<div style="display:flex;justify-content:space-between;margin-bottom:4px"><strong>'+(labels[r.action]||r.action)+'</strong>'+
         '<span style="color:var(--tm);font-size:.7rem">'+new Date(r.created_at).toLocaleString('fa-IR')+'</span></div>'+
         '<div style="color:var(--t2)">'+esc(an)+'</div></div>'}).join('')
-  }catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا</div></div>'}}
+  }catch(e){el.innerHTML='<div class="empty"><div class="ic">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'}
+}
 
 /* ============ GUIDE ============ */
 function renderGuide(){const el=document.getElementById('guideContent');if(!el)return;
@@ -2280,7 +2270,6 @@ function renderGuide(){const el=document.getElementById('guideContent');if(!el)r
   const t=localStorage.getItem('profit-theme')||'dark';
   document.documentElement.setAttribute('data-theme',t);
   const tb=document.getElementById('thBtn');if(tb){const b=tb.querySelector('.bico');if(b)b.textContent=t==='light'?'☀️':'🌙'}
-  const mi=document.getElementById('mthI');if(mi)mi.textContent=t==='light'?'☀️':'🌙';
   loadSettings();renderGuide();loadNut();
   const exC=document.getElementById('exC');
   if(exC)exC.innerHTML=Object.keys(CATEGORIES).map(k=>'<option value="'+k+'">'+CATEGORIES[k].emoji+' '+CATEGORIES[k].name+'</option>').join('');
