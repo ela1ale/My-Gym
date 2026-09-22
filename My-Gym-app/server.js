@@ -1,7 +1,5 @@
 /* ============================================================
-   ProFit Server v4
-   - Approval system for coaches
-   - Role-based access
+   ProFit Server v4 — Complete
    ============================================================ */
 const express = require('express');
 const path = require('path');
@@ -41,7 +39,7 @@ async function initSchema() {
     updated_at BIGINT NOT NULL
   );`);
 
-  // Add column if missing (for existing databases)
+  // Self-healing columns
   try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS approval_status TEXT DEFAULT 'approved'`); } catch(e){}
   try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS coach_id TEXT`); } catch(e){}
   try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS active INTEGER DEFAULT 1`); } catch(e){}
@@ -420,14 +418,12 @@ app.post('/api/users/:id/data/:key', auth, async (req, res) => {
   res.json({ ok: true });
 });
 
-/* ============ COACH ============ */
-/* ================= COACH ================= */
+/* ============ COACH (also works for admin) ============ */
 app.get('/api/coach/students', auth, requireRole('coach','admin'), async (req, res) => {
   let rows;
   if (req.user.role === 'coach') {
     rows = (await query('SELECT * FROM users WHERE coach_id = $1 ORDER BY display_name', [req.user.id])).rows;
   } else {
-    // Admin: filter by coachId if given, otherwise show all students
     const cid = req.query.coachId;
     if (cid) {
       rows = (await query("SELECT * FROM users WHERE coach_id = $1 AND role='student' ORDER BY display_name", [cid])).rows;
@@ -475,7 +471,7 @@ app.get('/api/coach/students/:id/overview', auth, requireRole('coach','admin'), 
   if (req.user.role === 'coach' && target.coach_id !== req.user.id)
     return res.status(403).json({ error: 'not_own_student' });
 
-  const keys = ['state','history','program','nutrition','body','settings'];
+  const keys = ['workout','history','program','body','permissions','nutritionProfile'];
   const data = {};
   for (const k of keys) {
     const r = await query('SELECT value FROM user_data WHERE user_id=$1 AND key=$2', [target.id, k]);
@@ -530,21 +526,23 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'server_error', message: err.message });
 });
 
+/* ============ WIPE DB (optional) ============ */
+async function wipeIfRequested() {
+  if (process.env.WIPE_DB === 'true') {
+    console.log('⚠️  WIPE_DB=true — wiping database');
+    await query('DELETE FROM user_data');
+    await query('DELETE FROM coach_notes');
+    await query('DELETE FROM audit_log');
+    await query("DELETE FROM users WHERE role != 'admin'");
+    console.log('✅ Database wiped (admin preserved)');
+  }
+}
+
 /* ============ START ============ */
 (async () => {
   try {
     await initSchema();
-    
-    // WIPE_DB flag — برای ریست کامل دیتابیس
-    if (process.env.WIPE_DB === 'true') {
-      console.log('⚠️  WIPE_DB=true — wiping database');
-      await query('DELETE FROM user_data');
-      await query('DELETE FROM coach_notes');
-      await query('DELETE FROM audit_log');
-      await query("DELETE FROM users WHERE role != 'admin'");
-      console.log('✅ Database wiped (admin preserved)');
-    }
-    
+    await wipeIfRequested();
     await bootstrapAdmin();
     app.listen(PORT, () => {
       console.log('\n🚀 ProFit running on port ' + PORT);
