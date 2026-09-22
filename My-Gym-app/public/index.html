@@ -228,26 +228,64 @@ const state = {
 };
 
 /* API */
+/* API with auto-retry for server wake-up */
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+let wakingToastShown = false;
+function showWakingToast() {
+  if (wakingToastShown) return;
+  wakingToastShown = true;
+  const c = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast info';
+  el.id = 'wakingToast';
+  el.innerHTML = '<span class="spinner"></span><span>سرور در حال بیدار شدن... چند ثانیه صبر کنید</span>';
+  c.appendChild(el);
+}
+function hideWakingToast() {
+  wakingToastShown = false;
+  const t = document.getElementById('wakingToast');
+  if (t) t.remove();
+}
+
 async function api(method, path, body, silent) {
   const headers = { 'Content-Type': 'application/json' };
   if (state.token) headers['Authorization'] = 'Bearer ' + state.token;
-  const res = await fetch(path, { method, headers, body: body ? JSON.stringify(body) : undefined });
-  let data = null;
-  const text = await res.text();
-  if (text) { try { data = JSON.parse(text); } catch { data = text; } }
-  if (!res.ok) {
-    const err = new Error((data && data.error) || ('HTTP ' + res.status));
-    err.status = res.status;
-    err.data = data;
-    if (res.status === 401 && !silent && state.token) {
-      state.token = null;
-      state.user = null;
-      localStorage.removeItem('profit-jwt');
-      setTimeout(() => location.reload(), 800);
+  const maxRetries = 3;
+  let lastError;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const res = await fetch(path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+      let data = null;
+      const text = await res.text();
+      if (text) { try { data = JSON.parse(text); } catch { data = text; } }
+      hideWakingToast();
+      if (!res.ok) {
+        const err = new Error((data && data.error) || ('HTTP ' + res.status));
+        err.status = res.status;
+        err.data = data;
+        if (res.status === 401 && !silent && state.token) {
+          state.token = null;
+          state.user = null;
+          localStorage.removeItem('profit-jwt');
+          setTimeout(() => location.reload(), 800);
+        }
+        throw err;
+      }
+      return data;
+    } catch (e) {
+      lastError = e;
+      const isNetworkError = !e.status;
+      if (!isNetworkError || attempt === maxRetries - 1) {
+        hideWakingToast();
+        throw e;
+      }
+      if (attempt === 0) showWakingToast();
+      await sleep(2000 * (attempt + 1));
     }
-    throw err;
   }
-  return data;
+  hideWakingToast();
+  throw lastError;
 }
 
 /* TOAST */
@@ -610,7 +648,7 @@ async function createUser() {
     renderAdminUsers();
   } catch (e) {
     const msg = e.data && e.data.error;
-    if (msg === 'username_taken') toast('نام کاربری تکراری', 'error');
+    if (msg === 'username_taken') toast('این نام کاربری گرفته شده — اگر همین الان ساختی، لیست رو چک کن', 'error');
     else if (msg === 'invalid_username') toast('نام کاربری نامعتبر', 'error');
     else toast('خطا: ' + (msg || e.message), 'error');
   }
@@ -660,7 +698,7 @@ async function createStudent() {
     renderCoachPanel();
   } catch (e) {
     const msg = e.data && e.data.error;
-    if (msg === 'username_taken') toast('نام کاربری تکراری', 'error');
+    if (msg === 'username_taken') toast('این نام کاربری گرفته شده — اگر همین الان ساختی، لیست رو چک کن', 'error');
     else if (msg === 'invalid_username') toast('نام کاربری نامعتبر', 'error');
     else if (msg === 'forbidden') toast('دسترسی ندارید', 'error');
     else toast('خطا: ' + (msg || e.message), 'error');
@@ -701,6 +739,13 @@ document.addEventListener('keydown', e => {
     else if (!document.getElementById('registerView').classList.contains('hidden')) doRegister();
   }
 });
+setInterval(() => {
+  if (state.token) {
+    fetch('/api/auth/me', {
+      headers: { 'Authorization': 'Bearer ' + state.token }
+    }).catch(() => {});
+  }
+}, 4 * 60 * 1000);
 
 boot();
 </script>
