@@ -1,16 +1,12 @@
 /* ============================================================
-   ProFit Extras v1.0 — Polish + Guide + Export
-   این فایل بعد از اسکریپت اصلی لود می‌شود و آن را تقویت می‌کند
+   ProFit Extras v1.2 — Polish + Guide + Export + Charts
    ============================================================ */
 (function() {
 'use strict';
 
 /* ============================================================
-   PART 1: POLISH — Custom Confirm (Named Function Only)
+   PART 1: POLISH — Custom Confirm (Named Function)
    ============================================================ */
-// Note: نمیتونیم window.confirm رو override کنیم چون کد اصلی ازش
-// به صورت synchronous استفاده میکنه. پس یه تابع جدید میذاریم.
-
 window.askConfirm = function(message, title) {
   return new Promise((resolve) => {
     let modal = document.getElementById('askConfirmModal');
@@ -53,18 +49,12 @@ window.askConfirm = function(message, title) {
   });
 };
 
-// Note: For existing code that used confirm() synchronously, we need
-// to convert to async. We patch functions that use it.
-// Existing code will work if the await keyword is added — but for backwards
-// compat, keep _originalConfirm as fallback for critical paths.
-
 /* ============================================================
    PART 2: POLISH — Toast with Actions
    ============================================================ */
-
-const _originalToast = window.toast;
 window.toastWithAction = function(msg, actionLabel, actionFn, type = 'info') {
   const c = document.getElementById('toasts');
+  if (!c) return;
   const el = document.createElement('div');
   el.className = 'toast ' + type;
   el.style.cssText = 'pointer-events:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap';
@@ -89,14 +79,13 @@ window.toastWithAction = function(msg, actionLabel, actionFn, type = 'info') {
 /* ============================================================
    PART 3: POLISH — Offline Detection
    ============================================================ */
-
 let offlineBanner = null;
 function checkOnline() {
   if (!navigator.onLine) {
     if (!offlineBanner) {
       offlineBanner = document.createElement('div');
       offlineBanner.style.cssText = 'position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9998;background:linear-gradient(135deg,#f43f5e,#be123c);color:#fff;padding:8px 16px;border-radius:20px;font-size:.78rem;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.4);display:flex;align-items:center;gap:6px;pointer-events:none';
-      offlineBanner.innerHTML = '<span>📡</span><span>اتصال اینترنت قطع است — تغییرات بعداً ذخیره می‌شوند</span>';
+      offlineBanner.innerHTML = '<span>📡</span><span>اتصال اینترنت قطع است</span>';
       document.body.appendChild(offlineBanner);
     }
   } else if (offlineBanner) {
@@ -111,7 +100,6 @@ checkOnline();
 /* ============================================================
    PART 4: POLISH — Autosave Indicator
    ============================================================ */
-
 let autosaveTimer = null;
 let autosaveIndicator = null;
 function showAutosaveIndicator(text = 'در حال ذخیره...', done = false) {
@@ -134,12 +122,10 @@ window.showAutosaveIndicator = showAutosaveIndicator;
 /* ============================================================
    PART 5: EXPORT — Full Backup & Restore
    ============================================================ */
-
-// Export all data for a user (self or via coach/admin)
 async function exportUserData(userId, username) {
   try {
     showAutosaveIndicator('در حال آماده‌سازی بکاپ...');
-    const d = await api('GET', '/api/users/' + userId + '/data');
+    const d = await window.api('GET', '/api/users/' + userId + '/data');
 
     const backup = {
       _meta: {
@@ -162,15 +148,14 @@ async function exportUserData(userId, username) {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     showAutosaveIndicator('بکاپ دانلود شد', true);
-    if (window.toast) toast('بکاپ دانلود شد ✓');
+    if (window.toast) window.toast('بکاپ دانلود شد ✓');
   } catch (e) {
     console.error('export error:', e);
-    if (window.toast) toast('خطا در export: ' + e.message, 'error');
+    if (window.toast) window.toast('خطا در export: ' + e.message, 'error');
   }
 }
 window.exportUserData = exportUserData;
 
-// Import user data (restore from backup)
 async function importUserData(userId) {
   return new Promise((resolve) => {
     const input = document.createElement('input');
@@ -185,13 +170,13 @@ async function importUserData(userId) {
         const backup = JSON.parse(text);
 
         if (!backup._meta || backup._meta.type !== 'profit-user-backup') {
-          toast('فایل بکاپ معتبر نیست', 'error');
+          window.toast('فایل بکاپ معتبر نیست', 'error');
           resolve(false);
           return;
         }
 
         const fields = Object.keys(backup.data || {});
-        const ok = await confirm(
+        const ok = window.confirm(
           'این بکاپ شامل ' + fields.length + ' بخش داده است:\n' +
           fields.slice(0, 8).map(f => '• ' + f).join('\n') +
           (fields.length > 8 ? '\n... و ' + (fields.length - 8) + ' مورد دیگر' : '') +
@@ -202,18 +187,17 @@ async function importUserData(userId) {
         showAutosaveIndicator('در حال بازیابی...');
         let count = 0;
         for (const key of fields) {
-          await api('POST', '/api/users/' + userId + '/data/' + key, { value: backup.data[key] });
+          await window.api('POST', '/api/users/' + userId + '/data/' + key, { value: backup.data[key] });
           count++;
         }
         showAutosaveIndicator('بازیابی کامل شد', true);
-        toast('✓ ' + count + ' بخش بازیابی شد', 'success');
+        window.toast('✓ ' + count + ' بخش بازیابی شد', 'success');
 
-        // Reload page to see new data
         setTimeout(() => location.reload(), 1200);
         resolve(true);
       } catch (err) {
         console.error('import error:', err);
-        toast('خطا: ' + err.message, 'error');
+        window.toast('خطا: ' + err.message, 'error');
         resolve(false);
       }
     };
@@ -223,16 +207,14 @@ async function importUserData(userId) {
 window.importUserData = importUserData;
 
 /* ============================================================
-   PART 6: EXPORT — CSV Workout Logs
+   PART 6: EXPORT — CSV Helpers
    ============================================================ */
-
 function downloadCSV(filename, rows) {
   const csv = rows.map(r => r.map(cell => {
     const s = String(cell == null ? '' : cell);
     return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
   }).join(',')).join('\n');
 
-  // BOM for Excel UTF-8
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -246,25 +228,22 @@ function downloadCSV(filename, rows) {
 
 async function exportWorkoutCSV() {
   try {
-    const userId = state.user.id;
-    const d = await api('GET', '/api/users/' + userId + '/data');
+    const userId = window.state.user.id;
+    const d = await window.api('GET', '/api/users/' + userId + '/data');
     const workout = d.workout || { logs: {}, completed: {} };
     const history = d.history || {};
     const program = d.program || { days: [] };
 
-    // Build map of exKey -> exercise name
     const exNameMap = {};
     (program.days || []).forEach(day => {
       (day.exercises || []).forEach((ex, i) => {
-        const def = (window.PRO_DATA?.exercises || []).find(e => e.id === ex.exId) || {};
+        const def = (window.DB?.exercises || []).find(e => e.id === ex.exId) || {};
         exNameMap[i] = def.name || ex.exId;
       });
     });
 
-    // Header
     const rows = [['تاریخ', 'شماره حرکت', 'نام حرکت', 'ست', 'وزنه (kg)', 'تکرار', 'حجم (kg)', 'انجام‌شده']];
 
-    // Sort keys by date then index
     const allKeys = new Set([...Object.keys(workout.logs || {}), ...Object.keys(workout.completed || {})]);
     const sortedKeys = Array.from(allKeys).sort();
 
@@ -297,7 +276,6 @@ async function exportWorkoutCSV() {
       }
     });
 
-    // Add summary rows
     rows.push([]);
     rows.push(['--- خلاصه تاریخچه ---']);
     rows.push(['تاریخ', 'جلسات', 'حجم کل (kg)']);
@@ -307,22 +285,18 @@ async function exportWorkoutCSV() {
 
     const filename = 'workout-log-' + new Date().toISOString().slice(0,10) + '.csv';
     downloadCSV(filename, rows);
-    toast('CSV دانلود شد ✓');
+    window.toast('CSV دانلود شد ✓');
   } catch (e) {
     console.error('CSV error:', e);
-    toast('خطا: ' + e.message, 'error');
+    window.toast('خطا: ' + e.message, 'error');
   }
 }
 window.exportWorkoutCSV = exportWorkoutCSV;
 
-/* ============================================================
-   PART 7: EXPORT — Nutrition CSV
-   ============================================================ */
-
 async function exportNutritionCSV() {
   try {
-    const userId = state.user.id;
-    const d = await api('GET', '/api/users/' + userId + '/data');
+    const userId = window.state.user.id;
+    const d = await window.api('GET', '/api/users/' + userId + '/data');
     const nutrition = d.nutrition || {};
     const profile = nutrition.profile || {};
     const targets = nutrition.targets || {};
@@ -353,7 +327,7 @@ async function exportNutritionCSV() {
     rows.push(['--- برنامه غذایی ---']);
     rows.push(['وعده', 'غذا', 'مقدار', 'واحد', 'کالری', 'پروتئین', 'کرب', 'چربی']);
 
-    const mealDefs = window.PRO_NUTRITION?.meals || [];
+    const mealDefs = window.NUT?.meals || [];
     mealDefs.forEach(meal => {
       const items = meals[meal.key] || [];
       if (items.length === 0) {
@@ -361,7 +335,7 @@ async function exportNutritionCSV() {
         return;
       }
       items.forEach(it => {
-        const food = (window.PRO_NUTRITION?.foods || []).find(f => f.id === it.foodId);
+        const food = (window.NUT?.foods || []).find(f => f.id === it.foodId);
         if (!food) return;
         const unit = (food.units && food.units[it.unitIdx || 0]) || { n: 'گرم', g: 1 };
         const grams = (it.qty || 0) * unit.g;
@@ -390,26 +364,22 @@ async function exportNutritionCSV() {
 
     const filename = 'nutrition-plan-' + new Date().toISOString().slice(0,10) + '.csv';
     downloadCSV(filename, rows);
-    toast('CSV تغذیه دانلود شد ✓');
+    window.toast('CSV تغذیه دانلود شد ✓');
   } catch (e) {
     console.error('Nutrition CSV error:', e);
-    toast('خطا: ' + e.message, 'error');
+    window.toast('خطا: ' + e.message, 'error');
   }
 }
 window.exportNutritionCSV = exportNutritionCSV;
 
-/* ============================================================
-   PART 8: EXPORT — Body Measurements CSV
-   ============================================================ */
-
 async function exportBodyCSV() {
   try {
-    const userId = state.user.id;
-    const d = await api('GET', '/api/users/' + userId + '/data');
+    const userId = window.state.user.id;
+    const d = await window.api('GET', '/api/users/' + userId + '/data');
     const body = d.body || [];
 
     if (body.length === 0) {
-      toast('داده‌ای برای export نیست', 'warn');
+      window.toast('داده‌ای برای export نیست', 'warn');
       return;
     }
 
@@ -429,7 +399,7 @@ async function exportBodyCSV() {
     const header = ['تاریخ', ...metrics.map(m => m.name)];
     const rows = [header];
 
-    body.sort((a, b) => a.date.localeCompare(b.date)).forEach(e => {
+    body.slice().sort((a, b) => a.date.localeCompare(b.date)).forEach(e => {
       const row = [e.date];
       metrics.forEach(m => row.push(e[m.key] != null ? e[m.key] : ''));
       rows.push(row);
@@ -437,29 +407,183 @@ async function exportBodyCSV() {
 
     const filename = 'body-measurements-' + new Date().toISOString().slice(0,10) + '.csv';
     downloadCSV(filename, rows);
-    toast('CSV اندازه‌های بدن دانلود شد ✓');
+    window.toast('CSV اندازه‌های بدن دانلود شد ✓');
   } catch (e) {
     console.error('Body CSV error:', e);
-    toast('خطا: ' + e.message, 'error');
+    window.toast('خطا: ' + e.message, 'error');
   }
 }
 window.exportBodyCSV = exportBodyCSV;
 
 /* ============================================================
-   PART 9: EXPORT — Print / PDF Report
+   PART 7: CHART HELPERS — Line & Bar SVG
    ============================================================ */
 
+function generateLineChartSVG(data, labels, opts = {}) {
+  const width = opts.width || 480;
+  const height = opts.height || 180;
+  const padding = { top: 20, right: 20, bottom: 30, left: 45 };
+  const chartW = width - padding.left - padding.right;
+  const chartH = height - padding.top - padding.bottom;
+  const color = opts.color || '#10b981';
+  const unit = opts.unit || '';
+
+  if (!data || data.length === 0) return '<div style="text-align:center;color:#94a3b8;padding:20px;font-size:12px">داده‌ای نیست</div>';
+  if (data.length === 1) {
+    return '<div style="text-align:center;padding:20px;font-size:13px;color:#475569">یک داده: <b>' + data[0] + unit + '</b></div>';
+  }
+
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
+  const realMin = min - range * 0.1;
+  const realMax = max + range * 0.1;
+  const realRange = realMax - realMin;
+
+  const points = data.map((v, i) => {
+    const x = padding.left + (i / (data.length - 1)) * chartW;
+    const y = padding.top + chartH - ((v - realMin) / realRange) * chartH;
+    return { x, y, v };
+  });
+
+  const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+
+  let grid = '';
+  for (let i = 0; i <= 4; i++) {
+    const y = padding.top + (i / 4) * chartH;
+    const val = realMax - (i / 4) * realRange;
+    grid += '<line x1="' + padding.left + '" y1="' + y + '" x2="' + (width - padding.right) + '" y2="' + y + '" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="' + (i === 4 || i === 0 ? '' : '3,3') + '"/>';
+    grid += '<text x="' + (padding.left - 5) + '" y="' + (y + 4) + '" text-anchor="end" font-size="9" fill="#94a3b8">' + val.toFixed(1) + '</text>';
+  }
+
+  const step = Math.max(1, Math.ceil(labels.length / 6));
+  let xLabels = '';
+  labels.forEach((l, i) => {
+    if (i % step !== 0 && i !== labels.length - 1) return;
+    const x = padding.left + (i / (labels.length - 1)) * chartW;
+    xLabels += '<text x="' + x + '" y="' + (height - 10) + '" text-anchor="middle" font-size="8" fill="#94a3b8">' + l + '</text>';
+  });
+
+  let dots = '';
+  points.forEach((p, i) => {
+    if (i % step === 0 || i === points.length - 1) {
+      dots += '<circle cx="' + p.x + '" cy="' + p.y + '" r="3" fill="' + color + '" stroke="#fff" stroke-width="1.5"/>';
+    }
+  });
+
+  const areaPath = pathD + ' L' + points[points.length - 1].x.toFixed(1) + ',' + (padding.top + chartH) + ' L' + points[0].x.toFixed(1) + ',' + (padding.top + chartH) + ' Z';
+  const gradientId = 'grad_' + Math.random().toString(36).slice(2, 8);
+
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '" style="display:block;background:#fafbfc;border-radius:6px;border:1px solid #e2e8f0">' +
+    '<defs><linearGradient id="' + gradientId + '" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="' + color + '" stop-opacity="0.25"/>' +
+      '<stop offset="100%" stop-color="' + color + '" stop-opacity="0"/>' +
+    '</linearGradient></defs>' +
+    grid +
+    '<path d="' + areaPath + '" fill="url(#' + gradientId + ')" stroke="none"/>' +
+    '<path d="' + pathD + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+    dots + xLabels +
+  '</svg>';
+}
+
+function generateBarChartSVG(data, labels, opts = {}) {
+  const width = opts.width || 480;
+  const height = opts.height || 200;
+  const padding = { top: 20, right: 15, bottom: 40, left: 50 };
+  const chartW = width - padding.left - padding.right;
+  const chartH = height - padding.top - padding.bottom;
+  const color = opts.color || '#3b82f6';
+  const color2 = opts.color2 || '#a855f7';
+  const unit = opts.unit || '';
+  const dualSeries = opts.dualSeries || false;
+
+  if (!data || data.length === 0) return '<div style="text-align:center;color:#94a3b8;padding:20px;font-size:12px">داده‌ای نیست</div>';
+
+  const allVals = dualSeries ? [...data, ...(opts.data2 || [])] : data;
+  const max = Math.max(...allVals, 1);
+  const realMax = max * 1.15;
+
+  const barCount = data.length;
+  const groupW = chartW / barCount;
+  const barW = dualSeries ? (groupW * 0.35) : (groupW * 0.6);
+  const gap = dualSeries ? (groupW * 0.08) : 0;
+
+  // Grid lines
+  let grid = '';
+  for (let i = 0; i <= 4; i++) {
+    const y = padding.top + (i / 4) * chartH;
+    const val = realMax - (i / 4) * realMax;
+    grid += '<line x1="' + padding.left + '" y1="' + y + '" x2="' + (width - padding.right) + '" y2="' + y + '" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="' + (i === 0 || i === 4 ? '' : '3,3') + '"/>';
+    grid += '<text x="' + (padding.left - 5) + '" y="' + (y + 4) + '" text-anchor="end" font-size="9" fill="#94a3b8">' + Math.round(val).toLocaleString('fa-IR') + '</text>';
+  }
+
+  let bars = '';
+  data.forEach((v, i) => {
+    const groupX = padding.left + i * groupW;
+
+    if (dualSeries) {
+      const data2 = opts.data2 || [];
+      const v2 = data2[i] || 0;
+
+      // Bar 1 (volume)
+      const h1 = (v / realMax) * chartH;
+      const x1 = groupX + groupW / 2 - barW - gap / 2;
+      const y1 = padding.top + chartH - h1;
+      bars += '<rect x="' + x1 + '" y="' + y1 + '" width="' + barW + '" height="' + h1 + '" rx="3" fill="' + color + '" opacity="0.85"/>';
+      if (v > 0) {
+        bars += '<text x="' + (x1 + barW / 2) + '" y="' + (y1 - 4) + '" text-anchor="middle" font-size="8" fill="#475569" font-weight="700">' + Math.round(v).toLocaleString('fa-IR') + '</text>';
+      }
+
+      // Bar 2 (sessions)
+      const h2 = (v2 / realMax) * chartH;
+      const x2 = groupX + groupW / 2 + gap / 2;
+      const y2 = padding.top + chartH - h2;
+      bars += '<rect x="' + x2 + '" y="' + y2 + '" width="' + barW + '" height="' + h2 + '" rx="3" fill="' + color2 + '" opacity="0.85"/>';
+      if (v2 > 0) {
+        bars += '<text x="' + (x2 + barW / 2) + '" y="' + (y2 - 4) + '" text-anchor="middle" font-size="8" fill="#475569" font-weight="700">' + v2 + '</text>';
+      }
+    } else {
+      const h = (v / realMax) * chartH;
+      const x = groupX + (groupW - barW) / 2;
+      const y = padding.top + chartH - h;
+      const gid = 'bargrad_' + Math.random().toString(36).slice(2, 8);
+      bars += '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="' + color + '"/>' +
+        '<stop offset="100%" stop-color="' + color2 + '"/>' +
+      '</linearGradient></defs>';
+      bars += '<rect x="' + x + '" y="' + y + '" width="' + barW + '" height="' + h + '" rx="4" fill="url(#' + gid + ')" opacity="0.9"/>';
+      if (v > 0) {
+        bars += '<text x="' + (x + barW / 2) + '" y="' + (y - 5) + '" text-anchor="middle" font-size="9" fill="#475569" font-weight="800">' + Math.round(v).toLocaleString('fa-IR') + '</text>';
+      }
+    }
+  });
+
+  // X labels
+  let xLabels = '';
+  labels.forEach((l, i) => {
+    const x = padding.left + i * groupW + groupW / 2;
+    xLabels += '<text x="' + x + '" y="' + (height - 12) + '" text-anchor="middle" font-size="8" fill="#64748b" font-weight="600">' + l + '</text>';
+  });
+
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '" style="display:block;background:#fafbfc;border-radius:6px;border:1px solid #e2e8f0">' +
+    grid + bars + xLabels +
+  '</svg>';
+}
+
+/* ============================================================
+   PART 8: PRINT / PDF REPORT — کامل با نمودارها
+   ============================================================ */
 async function printReport() {
   try {
-    const userId = state.user.id;
-    const d = await api('GET', '/api/users/' + userId + '/data');
+    const userId = window.state.user.id;
+    const d = await window.api('GET', '/api/users/' + userId + '/data');
     const program = d.program || { days: [] };
-    const workout = d.workout || {};
     const history = d.history || {};
     const nutrition = d.nutrition || {};
     const body = d.body || [];
+    const workout = d.workout || { logs: {}, completed: {} };
 
-    // Compute weekly stats
+    // ============ Weekly stats ============
     const now = Date.now();
     let sessions7 = 0, volume7 = 0;
     Object.keys(history).forEach(k => {
@@ -470,11 +594,219 @@ async function printReport() {
       }
     });
 
-    const u = state.user;
+    // ============ Weekly Volume/Sessions Chart Data (last 12 weeks) ============
+    const weeks = [];
+    const weekLabels = [];
+    const weekVolumes = [];
+    const weekSessions = [];
+
+    for (let w = 11; w >= 0; w--) {
+      const weekStart = new Date();
+      weekStart.setDate(weekStart.getDate() - (weekStart.getDay() + 1) % 7);
+      weekStart.setHours(0,0,0,0);
+      weekStart.setDate(weekStart.getDate() - w * 7);
+
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      weekEnd.setHours(23,59,59,999);
+
+      let vol = 0, sess = 0;
+      for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+        const d2 = new Date(weekStart);
+        d2.setDate(d2.getDate() + dayOffset);
+        const k = d2.getFullYear() + '-' + String(d2.getMonth()+1).padStart(2,'0') + '-' + String(d2.getDate()).padStart(2,'0');
+        const h = history[k];
+        if (h) {
+          if ((h.completed || 0) > 0) sess++;
+          vol += h.volume || 0;
+        }
+      }
+
+      weeks.push({ start: weekStart, vol, sess });
+      weekLabels.push(weekStart.getDate() + '/' + (weekStart.getMonth() + 1));
+      weekVolumes.push(Math.round(vol));
+      weekSessions.push(sess);
+    }
+
+    const totalVolume12w = weekVolumes.reduce((s, v) => s + v, 0);
+    const totalSessions12w = weekSessions.reduce((s, v) => s + v, 0);
+    const avgVolume = Math.round(totalVolume12w / 12);
+    const avgSessions = (totalSessions12w / 12).toFixed(1);
+
+    const u = window.state.user;
     const roles = { admin: 'مدیر', coach: 'مربی', student: 'شاگرد' };
 
-    const html = `
-<!DOCTYPE html>
+    // ============ Nutrition tables ============
+    const meals = nutrition.meals || {};
+    const mealDefs = window.NUT?.meals || [];
+    const foods = window.NUT?.foods || [];
+
+    let nutritionTableHTML = '';
+    let mealTotalsGlobal = { cal: 0, prot: 0, carb: 0, fat: 0 };
+
+    if (mealDefs.length) {
+      nutritionTableHTML = mealDefs.map(meal => {
+        const items = meals[meal.key] || [];
+        let mTot = { cal: 0, prot: 0, carb: 0, fat: 0 };
+
+        let rows = '';
+        if (items.length === 0) {
+          rows = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;font-size:.72rem;padding:8px">— بدون غذا —</td></tr>';
+        } else {
+          rows = items.map(it => {
+            const food = foods.find(f => f.id === it.foodId);
+            if (!food) return '';
+            const unit = (food.units && food.units[it.unitIdx || 0]) || { n: 'گرم', g: 1 };
+            const grams = (it.qty || 0) * unit.g;
+            const k = grams / 100;
+            const cal = Math.round((food.cal || 0) * k);
+            const prot = Math.round((food.prot || 0) * k * 10) / 10;
+            const carb = Math.round((food.carb || 0) * k * 10) / 10;
+            const fat = Math.round((food.fat || 0) * k * 10) / 10;
+            mTot.cal += cal; mTot.prot += prot; mTot.carb += carb; mTot.fat += fat;
+            return '<tr>' +
+              '<td style="font-size:.72rem">' + (food.emoji || '') + ' ' + food.name + '</td>' +
+              '<td style="text-align:center;font-size:.72rem">' + it.qty + ' ' + unit.n + '</td>' +
+              '<td style="text-align:center;font-size:.72rem;color:#3b82f6;font-weight:700">' + cal + '</td>' +
+              '<td style="text-align:center;font-size:.72rem">' + prot + '</td>' +
+              '<td style="text-align:center;font-size:.72rem">' + carb + '</td>' +
+              '<td style="text-align:center;font-size:.72rem">' + fat + '</td>' +
+            '</tr>';
+          }).join('');
+        }
+
+        mealTotalsGlobal.cal += mTot.cal;
+        mealTotalsGlobal.prot += mTot.prot;
+        mealTotalsGlobal.carb += mTot.carb;
+        mealTotalsGlobal.fat += mTot.fat;
+
+        return '<div class="day-block">' +
+          '<h3>' + (meal.emoji || '🍽️') + ' ' + meal.name + ' — ' + Math.round(mTot.cal) + ' kcal</h3>' +
+          '<table><thead><tr>' +
+            '<th style="text-align:right">غذا</th>' +
+            '<th style="text-align:center;width:80px">مقدار</th>' +
+            '<th style="text-align:center;width:60px">کالری</th>' +
+            '<th style="text-align:center;width:50px">پروتئین</th>' +
+            '<th style="text-align:center;width:50px">کرب</th>' +
+            '<th style="text-align:center;width:50px">چربی</th>' +
+          '</tr></thead><tbody>' + rows + '</tbody></table>' +
+        '</div>';
+      }).join('');
+    }
+
+    // ============ Supplements ============
+    const supplements = nutrition.supplements || [];
+    let supplementsHTML = '';
+    if (supplements.length) {
+      supplementsHTML = '<table><thead><tr>' +
+        '<th style="text-align:right">مکمل</th>' +
+        '<th style="text-align:center;width:90px">دوز</th>' +
+        '<th style="text-align:center;width:100px">زمان</th>' +
+        '<th style="text-align:center;width:60px">وضعیت</th>' +
+      '</tr></thead><tbody>' +
+      supplements.map(s => '<tr>' +
+        '<td style="font-weight:700;font-size:.75rem">' + s.name + '</td>' +
+        '<td style="text-align:center;font-size:.72rem;color:#f59e0b;font-weight:700">' + (s.dose || '—') + '</td>' +
+        '<td style="text-align:center;font-size:.72rem">' + (s.timing || '—') + '</td>' +
+        '<td style="text-align:center;font-size:.72rem;color:' + (s.enabled ? '#10b981' : '#94a3b8') + ';font-weight:700">' + (s.enabled ? '✓ فعال' : 'غیرفعال') + '</td>' +
+      '</tr>').join('') +
+      '</tbody></table>';
+    }
+
+    // ============ Body measurements ============
+    const bodySorted = body.slice().sort((a, b) => a.date.localeCompare(b.date));
+
+    let bodyChartHTML = '';
+    let bodyTableHTML = '';
+
+    if (bodySorted.length > 0) {
+      const weightData = bodySorted.filter(e => e.weight != null);
+      if (weightData.length > 0) {
+        const wData = weightData.map(e => e.weight);
+        const wLabels = weightData.map(e => e.date.slice(5));
+        const firstW = wData[0], lastW = wData[wData.length - 1];
+        const diffW = lastW - firstW;
+        const diffColor = diffW > 0 ? '#f43f5e' : (diffW < 0 ? '#10b981' : '#94a3b8');
+
+        bodyChartHTML += '<div style="margin-bottom:16px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+            '<div style="font-weight:800;font-size:.82rem;color:#1e293b">⚖️ روند وزن (kg)</div>' +
+            '<div style="font-size:.72rem;font-weight:800;color:' + diffColor + '">' +
+              (diffW > 0 ? '+' : '') + diffW.toFixed(1) + ' kg در ' + weightData.length + ' ثبت' +
+            '</div>' +
+          '</div>' +
+          generateLineChartSVG(wData, wLabels, { color: '#3b82f6', unit: ' kg' }) +
+        '</div>';
+      }
+
+      const waistData = bodySorted.filter(e => e.waist != null);
+      if (waistData.length >= 2) {
+        const data = waistData.map(e => e.waist);
+        const labels = waistData.map(e => e.date.slice(5));
+        bodyChartHTML += '<div style="margin-bottom:16px">' +
+          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">👖 روند دور کمر (cm)</div>' +
+          generateLineChartSVG(data, labels, { color: '#a855f7', unit: ' cm' }) +
+        '</div>';
+      }
+
+      const chestData = bodySorted.filter(e => e.chest != null);
+      if (chestData.length >= 2) {
+        const data = chestData.map(e => e.chest);
+        const labels = chestData.map(e => e.date.slice(5));
+        bodyChartHTML += '<div style="margin-bottom:16px">' +
+          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">💪 روند دور سینه (cm)</div>' +
+          generateLineChartSVG(data, labels, { color: '#06b6d4', unit: ' cm' }) +
+        '</div>';
+      }
+
+      const armData = bodySorted.filter(e => e.arm != null);
+      if (armData.length >= 2) {
+        const data = armData.map(e => e.arm);
+        const labels = armData.map(e => e.date.slice(5));
+        bodyChartHTML += '<div style="margin-bottom:16px">' +
+          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">💪 روند دور بازو (cm)</div>' +
+          generateLineChartSVG(data, labels, { color: '#f43f5e', unit: ' cm' }) +
+        '</div>';
+      }
+
+      const fatData = bodySorted.filter(e => e.bodyfat != null);
+      if (fatData.length >= 2) {
+        const data = fatData.map(e => e.bodyfat);
+        const labels = fatData.map(e => e.date.slice(5));
+        bodyChartHTML += '<div style="margin-bottom:16px">' +
+          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">🔥 روند درصد چربی (%)</div>' +
+          generateLineChartSVG(data, labels, { color: '#f59e0b', unit: ' %' }) +
+        '</div>';
+      }
+
+      const metrics = [
+        { key: 'weight', name: 'وزن' },
+        { key: 'bodyfat', name: 'چربی' },
+        { key: 'neck', name: 'گردن' },
+        { key: 'chest', name: 'سینه' },
+        { key: 'waist', name: 'کمر' },
+        { key: 'hip', name: 'باسن' },
+        { key: 'arm', name: 'بازو' },
+        { key: 'forearm', name: 'ساعد' },
+        { key: 'thigh', name: 'ران' },
+        { key: 'calf', name: 'ساق' }
+      ];
+
+      const recent = bodySorted.slice(-15).reverse();
+
+      bodyTableHTML = '<table><thead><tr>' +
+        '<th style="text-align:right">تاریخ</th>' +
+        metrics.map(m => '<th style="text-align:center">' + m.name + '</th>').join('') +
+      '</tr></thead><tbody>' +
+      recent.map(e => '<tr>' +
+        '<td style="font-size:.7rem;font-weight:700">' + e.date + '</td>' +
+        metrics.map(m => '<td style="text-align:center;font-size:.7rem">' + (e[m.key] != null ? e[m.key] : '—') + '</td>').join('') +
+      '</tr>').join('') +
+      '</tbody></table>';
+    }
+
+    // ============ Build HTML ============
+    const html = `<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -482,129 +814,238 @@ async function printReport() {
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-  body { padding: 20px; background: #fff; color: #0f172a; line-height: 1.7; }
-  .header { text-align: center; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 2px solid #3b82f6; }
-  .header h1 { font-size: 1.6rem; color: #3b82f6; margin-bottom: 6px; }
-  .header .sub { font-size: .8rem; color: #64748b; }
-  .section { margin-bottom: 24px; page-break-inside: avoid; }
-  .section h2 { font-size: 1rem; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; color: #1e293b; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .stat { padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
-  .stat .lbl { font-size: .7rem; color: #64748b; font-weight: 600; }
-  .stat .val { font-size: 1.2rem; font-weight: 800; color: #3b82f6; margin-top: 4px; }
-  table { width: 100%; border-collapse: collapse; font-size: .78rem; margin-bottom: 12px; }
-  th { background: #f1f5f9; padding: 8px; text-align: right; font-weight: 700; color: #475569; }
-  td { padding: 6px 8px; border-bottom: 1px solid #f1f5f9; }
-  .day-block { margin-bottom: 14px; page-break-inside: avoid; }
-  .day-block h3 { font-size: .9rem; color: #1e293b; margin-bottom: 6px; padding-right: 8px; border-right: 3px solid #3b82f6; }
-  .footer { text-align: center; padding-top: 20px; margin-top: 30px; border-top: 1px solid #e2e8f0; font-size: .7rem; color: #94a3b8; }
+  body { padding: 24px; background: #fff; color: #0f172a; line-height: 1.7; max-width: 850px; margin: 0 auto; }
+  .header { text-align: center; padding-bottom: 22px; margin-bottom: 24px; border-bottom: 3px solid #3b82f6; }
+  .header h1 { font-size: 1.7rem; color: #3b82f6; margin-bottom: 8px; }
+  .header .sub { font-size: .82rem; color: #64748b; }
+  .section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section h2 { font-size: 1.05rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .stat { padding: 14px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; }
+  .stat .lbl { font-size: .7rem; color: #64748b; font-weight: 700; }
+  .stat .val { font-size: 1.3rem; font-weight: 900; color: #3b82f6; margin-top: 6px; }
+  .stat.green .val { color: #10b981; }
+  .stat.orange .val { color: #f59e0b; }
+  .stat.purple .val { color: #a855f7; }
+  .stat.red .val { color: #f43f5e; }
+  .chart-box { background: #fafbfc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 16px; }
+  .chart-box h4 { font-size: .82rem; color: #1e293b; margin-bottom: 8px; font-weight: 800; }
+  table { width: 100%; border-collapse: collapse; font-size: .78rem; margin-bottom: 14px; }
+  th { background: #f1f5f9; padding: 8px 6px; text-align: right; font-weight: 800; color: #475569; font-size: .72rem; }
+  td { padding: 7px 6px; border-bottom: 1px solid #f1f5f9; }
+  tbody tr:hover { background: #fafbfc; }
+  .day-block { margin-bottom: 18px; page-break-inside: avoid; background: #fafbfc; padding: 12px; border-radius: 10px; border: 1px solid #f1f5f9; }
+  .day-block h3 { font-size: .88rem; color: #1e293b; margin-bottom: 8px; padding-right: 10px; border-right: 4px solid #3b82f6; font-weight: 800; }
+  .macro-summary { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
+  .macro-box { text-align: center; padding: 10px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0; }
+  .macro-box .mb-lbl { font-size: .62rem; color: #64748b; font-weight: 700; }
+  .macro-box .mb-val { font-size: 1.05rem; font-weight: 900; margin-top: 3px; }
+  .macro-box.cal .mb-val { color: #10b981; }
+  .macro-box.prot .mb-val { color: #f43f5e; }
+  .macro-box.carb .mb-val { color: #3b82f6; }
+  .macro-box.fat .mb-val { color: #f59e0b; }
+  .legend { display: flex; gap: 16px; justify-content: center; font-size: .72rem; margin-top: 8px; }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .footer { text-align: center; padding-top: 24px; margin-top: 40px; border-top: 1px solid #e2e8f0; font-size: .72rem; color: #94a3b8; }
+  .page-break { page-break-before: always; }
   @media print {
-    body { padding: 12px; }
-    .no-print { display: none; }
+    body { padding: 12px; max-width: 100%; }
+    .no-print { display: none !important; }
+    .section { page-break-inside: avoid; }
+    .day-block { page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+    .chart-box { page-break-inside: avoid; }
+    .grid, .grid2, .grid4 { page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .grid4 { grid-template-columns: 1fr 1fr; }
+    .macro-summary { grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🏋️ گزارش ProFit</h1>
-    <div class="sub">${u.displayName} — @${u.username} — ${roles[u.role] || u.role}</div>
-    <div class="sub" style="margin-top:4px">تاریخ: ${new Date().toLocaleDateString('fa-IR')}</div>
+
+<div class="header">
+  <h1>🏋️ گزارش کامل ProFit</h1>
+  <div class="sub"><b>${u.displayName}</b> — @${u.username} — ${roles[u.role] || u.role}</div>
+  <div class="sub" style="margin-top:6px">تاریخ گزارش: ${new Date().toLocaleDateString('fa-IR')} — ساعت ${new Date().toLocaleTimeString('fa-IR', {hour:'2-digit',minute:'2-digit'})}</div>
+</div>
+
+<!-- ============ WEEKLY STATS ============ -->
+<div class="section">
+  <h2>📊 خلاصه عملکرد هفتگی</h2>
+  <div class="grid">
+    <div class="stat green"><div class="lbl">جلسات این هفته</div><div class="val">${sessions7}</div></div>
+    <div class="stat"><div class="lbl">حجم کل (kg)</div><div class="val">${Math.round(volume7).toLocaleString('fa-IR')}</div></div>
+    <div class="stat purple"><div class="lbl">روزهای برنامه</div><div class="val">${(program.days || []).length}</div></div>
+  </div>
+</div>
+
+<!-- ============ WORKOUT VOLUME CHART ============ -->
+${weekVolumes.some(v => v > 0) ? `
+<div class="section">
+  <h2>💪 نمودار حجم تمرین (۱۲ هفته اخیر)</h2>
+  <div class="grid4">
+    <div class="stat"><div class="lbl">حجم کل ۱۲ هفته</div><div class="val">${totalVolume12w.toLocaleString('fa-IR')}</div></div>
+    <div class="stat green"><div class="lbl">میانگین هفتگی</div><div class="val">${avgVolume.toLocaleString('fa-IR')}</div></div>
+    <div class="stat orange"><div class="lbl">جلسات ۱۲ هفته</div><div class="val">${totalSessions12w}</div></div>
+    <div class="stat purple"><div class="lbl">میانگین جلسه/هفته</div><div class="val">${avgSessions}</div></div>
   </div>
 
-  <div class="section">
-    <h2>📊 آمار این هفته</h2>
-    <div class="grid">
-      <div class="stat"><div class="lbl">جلسات</div><div class="val">${sessions7}</div></div>
-      <div class="stat"><div class="lbl">حجم کل (kg)</div><div class="val">${Math.round(volume7).toLocaleString('fa-IR')}</div></div>
-      <div class="stat"><div class="lbl">روزهای برنامه</div><div class="val">${(program.days || []).length}</div></div>
-    </div>
+  <div class="chart-box">
+    <h4>📊 حجم تمرین هفتگی (kg)</h4>
+    ${generateBarChartSVG(weekVolumes, weekLabels, { color: '#3b82f6', color2: '#a855f7', unit: ' kg' })}
   </div>
 
-  ${(program.days && program.days.length) ? `
-  <div class="section">
-    <h2>🗓️ برنامه تمرینی</h2>
-    ${program.days.map(day => `
-      <div class="day-block">
-        <h3>${day.icon || '💪'} ${day.name} — ${day.focus || ''}</h3>
-        <table>
-          <thead><tr><th>#</th><th>حرکت</th><th>ست</th><th>تکرار</th><th>RPE</th></tr></thead>
-          <tbody>
-            ${(day.exercises || []).map((ex, i) => {
-              const def = (window.PRO_DATA?.exercises || []).find(e => e.id === ex.exId) || {};
-              return '<tr><td>' + (i + 1) + '</td><td>' + (def.name || ex.exId) + '</td><td>' + (ex.sets || 3) + '</td><td>' + (ex.reps || '—') + '</td><td>' + (ex.rpe || '—') + '</td></tr>';
-            }).join('')}
-          </tbody>
-        </table>
-      </div>
-    `).join('')}
-  </div>` : ''}
-
-  ${(nutrition.targets) ? `
-  <div class="section">
-    <h2>🥗 اهداف تغذیه</h2>
-    <div class="grid">
-      <div class="stat"><div class="lbl">BMR</div><div class="val">${(nutrition.targets.bmr || 0).toLocaleString('fa-IR')}</div></div>
-      <div class="stat"><div class="lbl">TDEE</div><div class="val">${(nutrition.targets.tdee || 0).toLocaleString('fa-IR')}</div></div>
-      <div class="stat"><div class="lbl">کالری هدف</div><div class="val">${(nutrition.targets.calories || 0).toLocaleString('fa-IR')}</div></div>
-    </div>
-    <table>
-      <thead><tr><th>پروتئین</th><th>کربوهیدرات</th><th>چربی</th></tr></thead>
-      <tbody><tr>
-        <td>${nutrition.targets.protein || 0} g</td>
-        <td>${nutrition.targets.carbs || 0} g</td>
-        <td>${nutrition.targets.fat || 0} g</td>
-      </tr></tbody>
-    </table>
-  </div>` : ''}
-
-  ${(body.length) ? `
-  <div class="section">
-    <h2>📏 آخرین اندازه‌های بدن</h2>
-    <table>
-      <thead><tr><th>تاریخ</th><th>وزن</th><th>چربی</th><th>کمر</th><th>بازو</th></tr></thead>
-      <tbody>
-        ${body.slice(-10).reverse().map(e => `
-          <tr>
-            <td>${e.date}</td>
-            <td>${e.weight != null ? e.weight + ' kg' : '—'}</td>
-            <td>${e.bodyfat != null ? e.bodyfat + '%' : '—'}</td>
-            <td>${e.waist != null ? e.waist + ' cm' : '—'}</td>
-            <td>${e.arm != null ? e.arm + ' cm' : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  </div>` : ''}
-
-  <div class="footer">
-    گزارش تولیدشده توسط ProFit — ${new Date().toLocaleString('fa-IR')}
+  <div class="chart-box">
+    <h4>🎯 جلسات هفتگی</h4>
+    ${generateBarChartSVG(weekSessions, weekLabels, { color: '#10b981', color2: '#059669', unit: '' })}
   </div>
 
-  <div class="no-print" style="position:fixed;bottom:20px;left:20px;display:flex;gap:8px">
-    <button onclick="window.print()" style="padding:10px 20px;border-radius:10px;border:none;background:#3b82f6;color:#fff;font-family:inherit;font-weight:800;font-size:.85rem;cursor:pointer;box-shadow:0 8px 20px rgba(59,130,246,.4)">🖨️ چاپ / ذخیره PDF</button>
-    <button onclick="window.close()" style="padding:10px 20px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-family:inherit;font-weight:800;font-size:.85rem;cursor:pointer">بستن</button>
+  <table>
+    <thead><tr>
+      <th style="text-align:right">هفته</th>
+      <th style="text-align:center">بازه</th>
+      <th style="text-align:center">جلسات</th>
+      <th style="text-align:center">حجم (kg)</th>
+    </tr></thead>
+    <tbody>
+      ${weeks.map((w, i) => {
+        const endDate = new Date(w.start);
+        endDate.setDate(endDate.getDate() + 6);
+        return '<tr>' +
+          '<td style="font-size:.72rem;font-weight:700">هفته ' + (12 - i) + '</td>' +
+          '<td style="text-align:center;font-size:.7rem;color:#64748b">' + w.start.getDate() + '/' + (w.start.getMonth()+1) + ' — ' + endDate.getDate() + '/' + (endDate.getMonth()+1) + '</td>' +
+          '<td style="text-align:center;font-weight:700;color:#3b82f6">' + w.sess + '</td>' +
+          '<td style="text-align:center;font-weight:700;color:#10b981">' + w.vol.toLocaleString('fa-IR') + '</td>' +
+        '</tr>';
+      }).join('')}
+    </tbody>
+  </table>
+</div>` : ''}
+
+<!-- ============ PROGRAM ============ -->
+${(program.days && program.days.length) ? `
+<div class="section">
+  <h2>🗓️ برنامه تمرینی</h2>
+  ${program.days.map(day => {
+    const totalEx = (day.exercises || []).length;
+    return `<div class="day-block">
+      <h3>${day.icon || '💪'} ${day.name} — ${day.focus || ''} (${totalEx} حرکت)</h3>
+      <table>
+        <thead><tr>
+          <th style="width:30px;text-align:center">#</th>
+          <th style="text-align:right">حرکت</th>
+          <th style="text-align:center;width:50px">ست</th>
+          <th style="text-align:center;width:70px">تکرار</th>
+          <th style="text-align:center;width:50px">RPE</th>
+        </tr></thead>
+        <tbody>
+          ${(day.exercises || []).map((ex, i) => {
+            const def = (window.DB?.exercises || []).find(e => e.id === ex.exId) || {};
+            return '<tr>' +
+              '<td style="text-align:center;color:#94a3b8;font-weight:700">' + (i + 1) + '</td>' +
+              '<td style="font-weight:700">' + (def.name || ex.exId) + '</td>' +
+              '<td style="text-align:center;color:#3b82f6;font-weight:700">' + (ex.sets || 3) + '</td>' +
+              '<td style="text-align:center">' + (ex.reps || '—') + '</td>' +
+              '<td style="text-align:center;color:#f59e0b;font-weight:700">' + (ex.rpe || '—') + '</td>' +
+            '</tr>';
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  }).join('')}
+</div>` : ''}
+
+<!-- ============ NUTRITION TARGETS ============ -->
+${(nutrition.targets) ? `
+<div class="section">
+  <h2>🎯 اهداف تغذیه</h2>
+  <div class="grid">
+    <div class="stat"><div class="lbl">BMR (سوخت پایه)</div><div class="val">${(nutrition.targets.bmr || 0).toLocaleString('fa-IR')}</div></div>
+    <div class="stat"><div class="lbl">TDEE (سوخت کل)</div><div class="val">${(nutrition.targets.tdee || 0).toLocaleString('fa-IR')}</div></div>
+    <div class="stat green"><div class="lbl">کالری هدف</div><div class="val">${(nutrition.targets.calories || 0).toLocaleString('fa-IR')}</div></div>
   </div>
-  <script>
-    window.PRO_DATA = ${JSON.stringify(window.PRO_DATA || {})};
-  <\/script>
+  <div class="macro-summary">
+    <div class="macro-box prot"><div class="mb-lbl">پروتئین</div><div class="mb-val">${nutrition.targets.protein || 0}g</div></div>
+    <div class="macro-box carb"><div class="mb-lbl">کربوهیدرات</div><div class="mb-val">${nutrition.targets.carbs || 0}g</div></div>
+    <div class="macro-box fat"><div class="mb-lbl">چربی</div><div class="mb-val">${nutrition.targets.fat || 0}g</div></div>
+    <div class="macro-box cal"><div class="mb-lbl">جمع کل</div><div class="mb-val">${((nutrition.targets.protein||0)*4 + (nutrition.targets.carbs||0)*4 + (nutrition.targets.fat||0)*9).toLocaleString('fa-IR')}</div></div>
+  </div>
+</div>` : ''}
+
+<!-- ============ FULL MEAL PLAN ============ -->
+${mealDefs.length ? `
+<div class="section">
+  <h2>🍽️ برنامه غذایی روزانه</h2>
+  ${nutritionTableHTML}
+  <div class="macro-summary" style="margin-top:18px;background:#f0fdf4;padding:12px;border-radius:10px;border:1px solid #bbf7d0">
+    <div class="macro-box cal"><div class="mb-lbl">کالری امروز</div><div class="mb-val">${Math.round(mealTotalsGlobal.cal).toLocaleString('fa-IR')}</div></div>
+    <div class="macro-box prot"><div class="mb-lbl">پروتئین</div><div class="mb-val">${mealTotalsGlobal.prot.toFixed(1)}g</div></div>
+    <div class="macro-box carb"><div class="mb-lbl">کربوهیدرات</div><div class="mb-val">${mealTotalsGlobal.carb.toFixed(1)}g</div></div>
+    <div class="macro-box fat"><div class="mb-lbl">چربی</div><div class="mb-val">${mealTotalsGlobal.fat.toFixed(1)}g</div></div>
+  </div>
+</div>` : ''}
+
+<!-- ============ SUPPLEMENTS ============ -->
+${supplements.length ? `
+<div class="section page-break">
+  <h2>💊 مکمل‌های تجویزشده</h2>
+  <div style="font-size:.75rem;color:#64748b;margin-bottom:12px;padding:8px 12px;background:#fef3c7;border-radius:8px;border-right:4px solid #f59e0b">
+    ⚠️ قبل از مصرف هر مکمل با پزشک یا متخصص تغذیه مشورت کن.
+  </div>
+  ${supplementsHTML}
+</div>` : ''}
+
+<!-- ============ BODY CHARTS ============ -->
+${bodyChartHTML ? `
+<div class="section page-break">
+  <h2>📈 نمودارهای پیشرفت — وزن و اندازه‌ها</h2>
+  ${bodyChartHTML}
+</div>` : ''}
+
+<!-- ============ BODY TABLE ============ -->
+${bodyTableHTML ? `
+<div class="section">
+  <h2>📏 جدول کامل اندازه‌های بدن (۱۵ ثبت آخر)</h2>
+  ${bodyTableHTML}
+</div>` : ''}
+
+<div class="footer">
+  <div>گزارش تولیدشده توسط <b>ProFit</b> — ${new Date().toLocaleString('fa-IR')}</div>
+  <div style="margin-top:4px">این گزارش اطلاعات شخصی است و محرمانه می‌باشد.</div>
+</div>
+
+<div class="no-print" style="position:fixed;bottom:20px;left:20px;display:flex;gap:8px;z-index:1000">
+  <button onclick="window.print()" style="padding:12px 24px;border-radius:12px;border:none;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 8px 24px rgba(59,130,246,.4)">
+    🖨️ چاپ / ذخیره PDF
+  </button>
+  <button onclick="window.close()" style="padding:12px 24px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer">
+    بستن
+  </button>
+</div>
+
 </body>
 </html>`;
 
     const w = window.open('', '_blank');
-    if (!w) { toast('پاپ‌آپ بلاک شده — اجازه بده', 'warn'); return; }
+    if (!w) { window.toast('پاپ‌آپ بلاک شده — اجازه بده', 'warn'); return; }
     w.document.write(html);
     w.document.close();
   } catch (e) {
     console.error('Print error:', e);
-    toast('خطا: ' + e.message, 'error');
+    window.toast('خطا: ' + e.message, 'error');
   }
 }
 window.printReport = printReport;
 
 /* ============================================================
-   PART 10: EXPORT DRAWER UI
+   PART 9: EXPORT DRAWER UI
    ============================================================ */
-
 function openExportDrawer() {
   let drawer = document.getElementById('exportDrawer');
   let backdrop = document.getElementById('exportBackdrop');
@@ -613,7 +1054,7 @@ function openExportDrawer() {
     backdrop = document.createElement('div');
     backdrop.id = 'exportBackdrop';
     backdrop.className = 'backdrop';
-    backdrop.onclick = () => closeDrawer('exportDrawer');
+    backdrop.onclick = () => window.closeDrawer('exportDrawer');
     document.body.appendChild(backdrop);
 
     drawer = document.createElement('div');
@@ -629,7 +1070,7 @@ function openExportDrawer() {
   }
 
   renderExportBody();
-  openDrawer('exportDrawer');
+  window.openDrawer('exportDrawer');
 }
 window.openExportDrawer = openExportDrawer;
 
@@ -684,7 +1125,7 @@ function renderExportBody() {
       <span style="font-size:1.2rem">📄</span>
       <div style="flex:1;text-align:right">
         <div style="font-weight:800">گزارش کامل</div>
-        <div style="font-size:.68rem;opacity:.9;font-weight:500">شامل برنامه، تغذیه و آمار</div>
+        <div style="font-size:.68rem;opacity:.9;font-weight:500">شامل حجم تمرین، تغذیه، مکمل و نمودارها</div>
       </div>
     </button>
 
@@ -704,7 +1145,7 @@ function renderExportBody() {
 async function exportAllUsersBackup() {
   try {
     showAutosaveIndicator('در حال آماده‌سازی...');
-    const allUsers = await api('GET', '/api/users');
+    const allUsers = await window.api('GET', '/api/users');
     const backup = {
       _meta: { type: 'profit-db-backup', version: '1.0', exportedAt: new Date().toISOString(), count: allUsers.length },
       users: []
@@ -712,7 +1153,7 @@ async function exportAllUsersBackup() {
 
     for (const u of allUsers) {
       try {
-        const d = await api('GET', '/api/users/' + u.id + '/data');
+        const d = await window.api('GET', '/api/users/' + u.id + '/data');
         backup.users.push({ user: u, data: d });
       } catch (e) {
         backup.users.push({ user: u, data: null, error: e.message });
@@ -729,17 +1170,16 @@ async function exportAllUsersBackup() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     showAutosaveIndicator('آماده شد', true);
-    toast('بکاپ کامل دانلود شد ✓');
+    window.toast('بکاپ کامل دانلود شد ✓');
   } catch (e) {
-    toast('خطا: ' + e.message, 'error');
+    window.toast('خطا: ' + e.message, 'error');
   }
 }
 window.exportAllUsersBackup = exportAllUsersBackup;
 
 /* ============================================================
-   PART 11: GUIDE — Help Drawer
+   PART 10: GUIDE — Help Drawer
    ============================================================ */
-
 const HELP_CONTENT = {
   student: {
     icon: '🎓',
@@ -748,41 +1188,32 @@ const HELP_CONTENT = {
       {
         title: '🚀 شروع سریع',
         items: [
-          { q: 'چطور برنامه بسازم؟', a: 'به تب «برنامه» برو. سه گزینه داری: <b>هوشمند</b> (با سؤال جواب)، <b>دستی</b> (خودت طراحی کن) یا <b>ارجاع به مربی</b> (حرفه‌ای برنامه‌ت رو می‌نویسه).' },
-          { q: 'تفاوت هوشمند و دستی چیه؟', a: '<b>هوشمند</b>: با چند سؤال، برنامه آماده بهت می‌ده. <b>دستی</b>: خودت روز، حرکت، ست و تکرار رو انتخاب می‌کنی. برای شروع، هوشمند راحت‌تره.' },
-          { q: 'چطور به مربی وصل شم؟', a: 'تب «برنامه» → «ارجاع به مربی». می‌تونی یه مربی خاص انتخاب کنی یا بذاری مدیر برات انتخاب کنه. بعد از تأیید، مربی برنامه‌ت رو می‌نویسه.' }
+          { q: 'چطور برنامه بسازم؟', a: 'به تب «برنامه» برو. سه گزینه داری: <b>هوشمند</b> (با سؤال جواب)، <b>دستی</b> (خودت طراحی کن) یا <b>ارجاع به مربی</b>.' },
+          { q: 'تفاوت هوشمند و دستی چیه؟', a: '<b>هوشمند</b>: با چند سؤال، برنامه آماده بهت می‌ده. <b>دستی</b>: خودت روز، حرکت، ست و تکرار رو انتخاب می‌کنی.' },
+          { q: 'چطور به مربی وصل شم؟', a: 'تب «برنامه» → «ارجاع به مربی». می‌تونی یه مربی خاص انتخاب کنی یا بذاری مدیر برات انتخاب کنه.' }
         ]
       },
       {
         title: '💪 تمرین کردن',
         items: [
-          { q: 'چطور یه حرکت رو انجام‌شده علامت بزنم؟', a: 'تیک سبز کنار هر حرکت رو بزن. کارت خودش کوچیک می‌شه.' },
-          { q: 'وزنه و تکرار رو چطور وارد کنم؟', a: 'توی جدول هر حرکت، ستون «وزنه» و «تکرار» رو پر کن. دکمه ⤴ روی هر ست، از ست قبلی کپی می‌کنه.' },
-          { q: 'تایمر ست چیه؟', a: 'دکمه ▶ کنار هر ست، زمان استراحت رو می‌شماره. دکمه ⏸ توقف می‌کنه.' },
-          { q: 'گیف‌ها رو کجا ببینم؟', a: 'روی هر کارت حرکت کلیک کن تا باز بشه. گیف متحرک نحوه انجام رو نشون می‌ده.' }
+          { q: 'چطور یه حرکت رو انجام‌شده علامت بزنم؟', a: 'تیک سبز کنار هر حرکت رو بزن.' },
+          { q: 'وزنه و تکرار رو چطور وارد کنم؟', a: 'توی جدول هر حرکت، ستون «وزنه» و «تکرار» رو پر کن. دکمه ⤴ از ست قبلی کپی می‌کنه.' },
+          { q: 'تایمر ست چیه؟', a: 'دکمه ▶ کنار هر ست، زمان استراحت رو می‌شماره.' }
         ]
       },
       {
         title: '🥗 تغذیه',
         items: [
-          { q: 'چطور کالری روزانم رو حساب کنم؟', a: 'تب «تغذیه» → تب «محاسبه». اطلاعات بدنی رو پر کن و «محاسبه» رو بزن. BMR، TDEE و اهداف درشت‌مغذی نشون داده می‌شه.' },
-          { q: 'چطور غذا اضافه کنم؟', a: 'تب «غذاها» → روی وعده بزن تا باز شه → «افزودن غذا» → از لیست انتخاب کن.' },
-          { q: 'مکمل‌ها رو چطور عوض کنم؟', a: 'تب «مکمل‌ها» → دکمه «بازتولید پیشنهادها». بر اساس هدف جدید، پیشنهادها آپدیت می‌شن.' }
-        ]
-      },
-      {
-        title: '📊 پیشرفت و بدن',
-        items: [
-          { q: 'چطور اندازه‌هام رو ثبت کنم؟', a: 'تب «بدن». هر روز می‌تونی وزن، چربی، دور کمر و... رو وارد کنی. نمودار تغییرات خودکار ساخته می‌شه.' },
-          { q: 'نمودار پیشرفت از کجا میاد؟', a: 'تب «پیشرفت». از داده‌های تمرین و اندازه‌ها ساخته می‌شه.' }
+          { q: 'چطور کالری روزانم رو حساب کنم؟', a: 'تب «تغذیه» → تب «محاسبه». اطلاعات بدنی رو پر کن و «محاسبه» رو بزن.' },
+          { q: 'چطور غذا اضافه کنم؟', a: 'تب «غذاها» → روی وعده بزن تا باز شه → «افزودن غذا».' }
         ]
       },
       {
         title: '📤 خروجی گرفتن',
         items: [
-          { q: 'چطور بکاپ بگیرم؟', a: 'روی آیکن 👤 بالا → «خروجی و بکاپ» → «دانلود بکاپ کامل». یه فایل JSON شامل همه داده‌هات می‌گیری.' },
-          { q: 'چطور داده‌ها رو به Excel ببرم؟', a: 'توی بخش خروجی، دکمه «CSV» رو بزن. فایل با Excel باز می‌شه.' },
-          { q: 'گزارش چاپی چیه؟', a: 'دکمه «گزارش کامل» → یه صفحه باز می‌شه که می‌تونی چاپ کنی یا PDF ذخیره کنی. مناسب برای نشون دادن به مربی.' }
+          { q: 'چطور بکاپ بگیرم؟', a: 'روی آیکن 👤 بالا → «خروجی و بکاپ» → «دانلود بکاپ کامل».' },
+          { q: 'چطور داده‌ها رو به Excel ببرم؟', a: 'توی بخش خروجی، دکمه «CSV» رو بزن.' },
+          { q: 'گزارش چاپی چیه؟', a: 'دکمه «گزارش کامل» → یه صفحه باز می‌شه با همه نمودارها و جدول‌ها.' }
         ]
       }
     ]
@@ -794,24 +1225,22 @@ const HELP_CONTENT = {
       {
         title: '👥 مدیریت شاگردان',
         items: [
-          { q: 'چطور شاگرد اضافه کنم؟', a: 'پنل مربی → «افزودن شاگرد» → اطلاعات رو پر کن. شاگرد بلافاصله فعال می‌شه.' },
-          { q: 'شاگردانم کجان؟', a: 'پنل مربی، لیست همه شاگردان با آمار این هفته. روی هر شاگرد بزن تا جزئیات کامل ببینی.' }
+          { q: 'چطور شاگرد اضافه کنم؟', a: 'پنل مربی → «افزودن شاگرد».' },
+          { q: 'شاگردانم کجان؟', a: 'پنل مربی، لیست همه شاگردان با آمار.' }
         ]
       },
       {
         title: '📨 درخواست‌های برنامه',
         items: [
-          { q: 'درخواست شاگرد کجا میاد؟', a: 'توی پنل مربی، بالای صفحه، بخش نارنجی «درخواست‌های برنامه». اگه شاگردی شما رو انتخاب کرده یا درخواست آزاده، اینجا نشون داده می‌شه.' },
-          { q: 'چطور درخواست رو قبول کنم؟', a: 'روی «✓ قبول می‌کنم» بزن. شاگرد به لیست شاگردانت اضافه می‌شه و می‌تونی برنامه‌اش رو بنویسی.' },
-          { q: 'اگه نمی‌خوام قبول کنم؟', a: 'کاری نکن. درخواست باقی می‌مونه و اگه شاگرد شما رو انتخاب نکرده باشه، مربی دیگه‌ای می‌تونه قبولش کنه.' }
+          { q: 'درخواست شاگرد کجا میاد؟', a: 'توی پنل مربی، بالای صفحه، بخش نارنجی.' },
+          { q: 'چطور درخواست رو قبول کنم؟', a: 'روی «✓ قبول می‌کنم» بزن.' }
         ]
       },
       {
         title: '✏️ نوشتن برنامه',
         items: [
-          { q: 'چطور برنامه بنویسم؟', a: 'پنل مربی → روی شاگرد بزن → «ویرایش برنامه». روز اضافه کن، حرکت بذار، ست و تکرار تنظیم کن.' },
-          { q: 'می‌تونم به شاگرد اجازه ویرایش بدم؟', a: 'بله. توی جزئیات شاگرد، دکمه «دادن اجازه ویرایش برنامه» رو بزن.' },
-          { q: 'می‌تونم تغذیه‌اش رو هم تنظیم کنم؟', a: 'بله. توی جزئیات شاگرد → «ویرایش تغذیه». کامل می‌تونی تغییر بدی.' }
+          { q: 'چطور برنامه بنویسم؟', a: 'پنل مربی → روی شاگرد بزن → «ویرایش برنامه».' },
+          { q: 'اجازه ویرایش چیه؟', a: 'توی جزئیات شاگرد، می‌تونی بهش اجازه ویرایش بدی.' }
         ]
       }
     ]
@@ -823,30 +1252,27 @@ const HELP_CONTENT = {
       {
         title: '⏳ تأیید مربی',
         items: [
-          { q: 'چطور مربی تأیید کنم؟', a: 'پنل مدیر → تب «مربیان» → روی ✅ بزن. بعد از تأیید، مربی می‌تونه وارد شه.' },
-          { q: 'اگه مربی اشتباه ثبت‌نام کرد؟', a: 'توی تب «کاربران» می‌تونی نقش رو عوض کنی، غیرفعال کنی یا حذف کنی.' }
+          { q: 'چطور مربی تأیید کنم؟', a: 'پنل مدیر → تب «مربیان» → روی ✅ بزن.' }
         ]
       },
       {
         title: '📨 درخواست‌های برنامه',
         items: [
-          { q: 'درخواست‌ها کجان؟', a: 'تب «درخواست برنامه» توی پنل مدیر. اگه badge قرمز داری یعنی درخواست جدید هست.' },
-          { q: 'چطور به مربی تخصیص بدم؟', a: 'از dropdown مربی انتخاب کن → «✅ تخصیص». اگه شاگرد مربی خاصی رو انتخاب کرده، خودکار انتخاب می‌شه.' },
-          { q: 'اگه رد کنم چی می‌شه؟', a: 'روی ❌ بزن. درخواست برای شاگرد رد شده علامت می‌خوره و می‌تونه دوباره درخواست بده.' }
+          { q: 'درخواست‌ها کجان؟', a: 'تب «درخواست برنامه» توی پنل مدیر.' },
+          { q: 'چطور تخصیص بدم؟', a: 'از dropdown مربی انتخاب کن → «✅ تخصیص».' }
         ]
       },
       {
         title: '👥 مدیریت کاربران',
         items: [
-          { q: 'چطور کاربر بسازم؟', a: 'تب «کاربران» → «افزودن کاربر». می‌تونی نقش شاگرد، مربی یا مدیر بدی.' },
-          { q: 'چطور رمز کاربر رو عوض کنم؟', a: 'روی 🔑 بزن و رمز جدید بذار.' },
-          { q: 'غیرفعال کردن کاربر چطوره؟', a: 'روی 🚫 بزن. کاربر نمی‌تونه وارد شه ولی داده‌هاش حفظ می‌شه.' }
+          { q: 'چطور کاربر بسازم؟', a: 'تب «کاربران» → «افزودن کاربر».' },
+          { q: 'تغییر رمز؟', a: 'روی 🔑 بزن.' }
         ]
       },
       {
         title: '📤 خروجی گرفتن',
         items: [
-          { q: 'چطور بکاپ کل بگیرم؟', a: 'روی آیکن 👤 → «خروجی و بکاپ» → «بکاپ همه کاربران». یه فایل JSON از همه چی.' }
+          { q: 'بکاپ کل؟', a: 'آیکن 👤 → «خروجی و بکاپ» → «بکاپ همه کاربران».' }
         ]
       }
     ]
@@ -861,7 +1287,7 @@ function openHelpDrawer() {
     backdrop = document.createElement('div');
     backdrop.id = 'helpBackdrop';
     backdrop.className = 'backdrop';
-    backdrop.onclick = () => closeDrawer('helpDrawer');
+    backdrop.onclick = () => window.closeDrawer('helpDrawer');
     document.body.appendChild(backdrop);
 
     drawer = document.createElement('div');
@@ -877,7 +1303,7 @@ function openHelpDrawer() {
   }
 
   renderHelpBody();
-  openDrawer('helpDrawer');
+  window.openDrawer('helpDrawer');
 }
 window.openHelpDrawer = openHelpDrawer;
 
@@ -892,7 +1318,7 @@ function renderHelpBody() {
     <div style="text-align:center;padding:14px 0 18px">
       <div style="font-size:2.5rem;margin-bottom:6px">${content.icon}</div>
       <div style="font-weight:900;font-size:1.05rem">${content.title}</div>
-      <div style="font-size:.72rem;color:var(--tx2);margin-top:4px">${content.sections.reduce((s, x) => s + x.items.length, 0)} راهنما برای نقش شما</div>
+      <div style="font-size:.72rem;color:var(--tx2);margin-top:4px">${content.sections.reduce((s, x) => s + x.items.length, 0)} راهنما</div>
     </div>
     ${content.sections.map((sec, si) => `
       <div style="margin-bottom:14px">
@@ -916,12 +1342,11 @@ function renderHelpBody() {
     `).join('')}
     <div style="margin-top:20px;padding:14px;background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(168,85,247,.05));border-radius:12px;border:1px solid rgba(59,130,246,.2)">
       <div style="font-weight:800;font-size:.85rem;margin-bottom:6px">💡 نکته</div>
-      <div style="font-size:.74rem;color:var(--tx2);line-height:1.8">اگه سؤالی داری که اینجا نیست، از طریق <b>خروجی و بکاپ</b> یه گزارش PDF بگیر و برای مربی‌ات بفرست.</div>
+      <div style="font-size:.74rem;color:var(--tx2);line-height:1.8">اگه سؤالی داری که اینجا نیست، از «خروجی و بکاپ» یه گزارش PDF بگیر و برای مربی‌ات بفرست.</div>
     </div>
   `;
 
-  // Auto-open first section
-  setTimeout(() => toggleHelpSection(0), 100);
+  setTimeout(() => window.toggleHelpSection(0), 100);
 }
 
 window.toggleHelpSection = function(si) {
@@ -941,9 +1366,8 @@ window.toggleHelpItem = function(headerEl) {
 };
 
 /* ============================================================
-   PART 12: GUIDE — First-time Hints
+   PART 11: GUIDE — First-time Hints
    ============================================================ */
-
 function showFirstTimeHints() {
   const u = window.state?.user;
   if (!u) return;
@@ -952,12 +1376,10 @@ function showFirstTimeHints() {
   if (localStorage.getItem(key)) return;
   localStorage.setItem(key, '1');
 
-  // Wait for main content to be ready
   setTimeout(() => {
     const toolbar = document.getElementById('toolbar');
     if (!toolbar) return;
 
-    // Add a hint button if not exists
     if (!document.getElementById('hintBtn')) {
       const btn = document.createElement('button');
       btn.id = 'hintBtn';
@@ -967,7 +1389,6 @@ function showFirstTimeHints() {
       btn.onclick = () => { openHelpDrawer(); btn.remove(); };
       toolbar.appendChild(btn);
 
-      // Add CSS for pulse
       if (!document.getElementById('pulseStyle')) {
         const s = document.createElement('style');
         s.id = 'pulseStyle';
@@ -975,27 +1396,22 @@ function showFirstTimeHints() {
         document.head.appendChild(s);
       }
 
-      // Auto remove after 30s
       setTimeout(() => { if (btn.parentElement) btn.remove(); }, 30000);
     }
   }, 2000);
 }
 
 /* ============================================================
-   PART 13: POLISH — Keyboard Shortcuts
+   PART 12: POLISH — Keyboard Shortcuts
    ============================================================ */
-
 document.addEventListener('keydown', (e) => {
-  // Ignore if typing in input/textarea
   const t = e.target.tagName;
   if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT') return;
 
-  // Ctrl+H = Help
   if (e.ctrlKey && e.key === 'h') {
     e.preventDefault();
     openHelpDrawer();
   }
-  // Ctrl+E = Export
   if (e.ctrlKey && e.key === 'e') {
     e.preventDefault();
     openExportDrawer();
@@ -1003,70 +1419,63 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ============================================================
-   PART 14: INIT
+   PART 13: INIT — Add toolbar buttons
    ============================================================ */
+function addToolbarButtons() {
+  const tb = document.getElementById('toolbar');
+  if (!tb) return;
 
-// Enhance toolbar when it renders
-const _originalRenderToolbar = window.renderToolbar;
-if (typeof _originalRenderToolbar === 'function') {
-  window.renderToolbar = function() {
-    _originalRenderToolbar.apply(this, arguments);
-    // Add help & export buttons
-    const tb = document.getElementById('toolbar');
-    if (tb && !document.getElementById('helpToolbarBtn')) {
-      const helpBtn = document.createElement('button');
-      helpBtn.id = 'helpToolbarBtn';
-      helpBtn.className = 'btn';
-      helpBtn.innerHTML = '<span>❓</span> راهنما';
-      helpBtn.onclick = () => openHelpDrawer();
-      tb.appendChild(helpBtn);
+  if (!document.getElementById('helpToolbarBtn')) {
+    const helpBtn = document.createElement('button');
+    helpBtn.id = 'helpToolbarBtn';
+    helpBtn.className = 'btn';
+    helpBtn.innerHTML = '<span>❓</span> راهنما';
+    helpBtn.onclick = () => openHelpDrawer();
+    tb.appendChild(helpBtn);
+  }
 
-      const expBtn = document.createElement('button');
-      expBtn.id = 'expToolbarBtn';
-      expBtn.className = 'btn';
-      expBtn.innerHTML = '<span>📤</span> خروجی';
-      expBtn.onclick = () => openExportDrawer();
-      tb.appendChild(expBtn);
-    }
-  };
+  if (!document.getElementById('expToolbarBtn')) {
+    const expBtn = document.createElement('button');
+    expBtn.id = 'expToolbarBtn';
+    expBtn.className = 'btn';
+    expBtn.innerHTML = '<span>📤</span> خروجی';
+    expBtn.onclick = () => openExportDrawer();
+    tb.appendChild(expBtn);
+  }
 }
 
-// Override renderUserDrawer to add Export button
-const _originalRenderUserDrawer = window.renderUserDrawer;
-if (typeof _originalRenderUserDrawer === 'function') {
-  window.renderUserDrawer = function() {
-    _originalRenderUserDrawer.apply(this, arguments);
-    const el = document.getElementById('userDrawerBody');
-    if (el && !document.getElementById('userExportBtn')) {
-      const btn = document.createElement('button');
-      btn.id = 'userExportBtn';
-      btn.className = 'btn full';
-      btn.style.marginBottom = '8px';
-      btn.innerHTML = '📤 خروجی و بکاپ';
-      btn.onclick = () => { closeDrawer('userDrawer'); setTimeout(() => openExportDrawer(), 300); };
-      const refBtn = el.querySelector('.btn.danger') || el.querySelector('button.btn');
-      if (refBtn) refBtn.parentElement.insertBefore(btn, refBtn);
+const observer = new MutationObserver(() => { addToolbarButtons(); });
+const _watchStart = setInterval(() => {
+  const tb = document.getElementById('toolbar');
+  if (tb) {
+    observer.observe(tb, { childList: true, subtree: false });
+    clearInterval(_watchStart);
+    setTimeout(addToolbarButtons, 500);
+  }
+}, 300);
 
-      const helpBtn = document.createElement('button');
-      helpBtn.className = 'btn full';
-      helpBtn.style.marginBottom = '8px';
-      helpBtn.innerHTML = '📚 راهنما';
-      helpBtn.onclick = () => { closeDrawer('userDrawer'); setTimeout(() => openHelpDrawer(), 300); };
-      if (refBtn) refBtn.parentElement.insertBefore(helpBtn, refBtn);
-    }
-  };
-}
+const _patchToolbar = setInterval(() => {
+  if (typeof window.renderToolbar === 'function' && !window.renderToolbar._patched) {
+    const _orig = window.renderToolbar;
+    window.renderToolbar = function() {
+      _orig.apply(this, arguments);
+      setTimeout(addToolbarButtons, 10);
+    };
+    window.renderToolbar._patched = true;
+    clearInterval(_patchToolbar);
+  }
+}, 200);
 
-// Boot check
+/* ============================================================
+   BOOT
+   ============================================================ */
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(showFirstTimeHints, 1500);
-  });
+  document.addEventListener('DOMContentLoaded', () => setTimeout(showFirstTimeHints, 1500));
 } else {
   setTimeout(showFirstTimeHints, 1500);
 }
 
-console.log('✨ ProFit Extras loaded — Export, Help & Polish ready');
-console.log('   Shortcuts: Ctrl+H (Help) · Ctrl+E (Export)');
+console.log('✨ ProFit Extras v1.2 loaded');
+console.log('   Shortcuts: Ctrl+H (راهنما) · Ctrl+E (خروجی)');
 
 })();
