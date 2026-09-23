@@ -1,5 +1,5 @@
 /* ============================================================
-   ProFit Server v4.2 — Complete (Fixed + Coach Requests)
+  ProFit Server v4.2 — Complete (Fixed + Coach Requests)
    ============================================================ */
 require('dotenv').config();
 require('express-async-errors');
