@@ -1,21 +1,21 @@
 /* ============================================================
-   ProFit Server v4.1 — Complete (Fixed & Optimized)
+   ProFit Server v4.2 — Complete (Fixed + Coach Requests)
    ============================================================ */
-
-require('express-async-errors'); // ← همه async errors رو می‌گیره (npm install express-async-errors)
+require('dotenv').config();
+require('express-async-errors');
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const rateLimit = require('express-rate-limit'); // ← npm install express-rate-limit
+const rateLimit = require('express-rate-limit');
+const compression = require('compression');
+const helmet = require('helmet');
 const { Pool } = require('pg');
 
 const PORT = process.env.PORT || 3000;
 
-/* ============ ENV SAFETY ============ */
 if (!process.env.JWT_SECRET) {
   console.error('❌ FATAL: JWT_SECRET environment variable is required!');
-  console.error('   Set it in your env: JWT_SECRET=<long-random-string>');
   process.exit(1);
 }
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -23,16 +23,38 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'admin123';
 if (!process.env.ADMIN_PASSWORD) {
-  console.warn('⚠️  Using default admin password (admin123). Set ADMIN_PASSWORD in production!');
-}
-if (!process.env.DATABASE_URL) {
-  console.warn('⚠️  DATABASE_URL is not set. Using default pg connection.');
+  console.warn('⚠️  Using default admin password. Set ADMIN_PASSWORD!');
 }
 
 const app = express();
-app.set('trust proxy', 1); // برای rate-limit وقتی پشت proxy/CDN هستی
+app.set('trust proxy', 1);
+
+/* ============ SECURITY & SPEED ============ */
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: 'cross-origin' }
+}));
+
+app.use(compression({
+  level: 6,
+  threshold: 1024
+}));
+
 app.use(express.json({ limit: '10mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '7d',
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('index.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+    }
+  }
+}));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -42,8 +64,7 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000
 });
 const query = (t, p) => pool.query(t, p);
-
-pool.on('error', (err) => console.error('🔥 Unexpected pool error:', err.message));
+pool.on('error', (err) => console.error('🔥 Pool error:', err.message));
 
 /* ============ RATE LIMITERS ============ */
 const loginLimiter = rateLimit({
@@ -51,7 +72,7 @@ const loginLimiter = rateLimit({
   max: 15,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'too_many_attempts', message: 'تعداد تلاش‌ها زیاد است. بعداً امتحان کن.' }
+  message: { error: 'too_many_attempts' }
 });
 const registerLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
@@ -78,8 +99,7 @@ async function initSchema() {
     updated_at BIGINT NOT NULL
   );`);
 
-  // Self-healing for legacy DBs
-  const tryAlter = async (sql) => { try { await query(sql); } catch(e) { /* ignore */ } };
+  const tryAlter = async (sql) => { try { await query(sql); } catch(e) {} };
   await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS approval_status TEXT DEFAULT 'approved'`);
   await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS coach_id TEXT`);
   await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS active INTEGER DEFAULT 1`);
@@ -103,6 +123,7 @@ async function initSchema() {
   );`);
   await query(`CREATE INDEX IF NOT EXISTS idx_user_data_user ON user_data(user_id);`);
   await query(`CREATE INDEX IF NOT EXISTS idx_user_data_user_key ON user_data(user_id, key);`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_user_data_key ON user_data(key);`);
 
   await query(`CREATE TABLE IF NOT EXISTS coach_notes (
     id SERIAL PRIMARY KEY,
@@ -124,24 +145,21 @@ async function initSchema() {
     created_at BIGINT NOT NULL
   );`);
   await query(`CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_log(created_at DESC);`);
-  await query(`CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_log(actor_id);`);
 
   console.log('✅ Schema ready');
 }
 
-/* ============ BOOTSTRAP ADMIN ============ */
 async function bootstrapAdmin() {
   const r = await query("SELECT id FROM users WHERE role='admin' LIMIT 1");
   if (r.rows.length > 0) return;
   const id = 'u_admin_' + Date.now();
   const now = Date.now();
-  const hash = bcrypt.hashSync(ADMIN_PASS, 10);
   await query(
     `INSERT INTO users (id, username, display_name, password_hash, role, emoji, color, active, approval_status, created_at, updated_at)
      VALUES ($1,$2,$3,$4,'admin','👑','#f59e0b',1,'approved',$5,$6)`,
-    [id, ADMIN_USER, 'مدیر سیستم', hash, now, now]
+    [id, ADMIN_USER, 'مدیر سیستم', bcrypt.hashSync(ADMIN_PASS, 10), now, now]
   );
-  console.log('👑 Admin created: ' + ADMIN_USER + ' / ' + ADMIN_PASS);
+  console.log('👑 Admin created: ' + ADMIN_USER);
 }
 
 /* ============ HELPERS ============ */
@@ -177,7 +195,6 @@ async function auth(req, res, next) {
     const r = await query('SELECT * FROM users WHERE id = $1', [payload.id]);
     if (r.rows.length === 0) return res.status(401).json({ error: 'invalid_user' });
     const u = r.rows[0];
-    // 401 برای توکن نامعتبر، 403 برای وضعیت حساب
     if (!u.active) return res.status(403).json({ error: 'inactive' });
     if (u.approval_status === 'pending') return res.status(403).json({ error: 'pending_approval' });
     if (u.approval_status === 'rejected') return res.status(403).json({ error: 'rejected' });
@@ -196,7 +213,7 @@ const canAccess = (a, t) =>
 
 /* ============ HEALTH ============ */
 app.get('/health', (req, res) => res.json({ ok: true, uptime: process.uptime() }));
-app.get('/api/version', (req, res) => res.json({ version: '4.1' }));
+app.get('/api/version', (req, res) => res.json({ version: '4.2' }));
 
 /* ============ REGISTER ============ */
 app.post('/api/auth/register', registerLimiter, async (req, res) => {
@@ -210,16 +227,14 @@ app.post('/api/auth/register', registerLimiter, async (req, res) => {
 
   const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
   const now = Date.now();
-  const hash = bcrypt.hashSync(password, 10);
 
   try {
     await query(
       `INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, approval_status, created_at, updated_at)
        VALUES ($1,$2,$3,$4,$5,NULL,'💪','#3b82f6',1,$6,$7,$8)`,
-      [id, username, displayName, hash, role, approvalStatus, now, now]
+      [id, username, displayName, bcrypt.hashSync(password, 10), role, approvalStatus, now, now]
     );
   } catch (e) {
-    // race-safe: unique violation → username_taken
     if (e.code === '23505') return res.status(409).json({ error: 'username_taken' });
     console.error('register error:', e);
     return res.status(500).json({ error: 'db_error', message: e.message });
@@ -229,13 +244,8 @@ app.post('/api/auth/register', registerLimiter, async (req, res) => {
   const u = await query('SELECT * FROM users WHERE id = $1', [id]);
 
   if (role === 'coach') {
-    return res.json({
-      pending: true,
-      message: 'حساب مربی ساخته شد. منتظر تأیید مدیر باشید.',
-      user: publicUser(u.rows[0])
-    });
+    return res.json({ pending: true, message: 'منتظر تأیید مدیر باشید.', user: publicUser(u.rows[0]) });
   }
-
   const token = jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '30d' });
   res.json({ token, user: publicUser(u.rows[0]) });
 });
@@ -252,12 +262,10 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
     await log(null, 'login_failed', null, { username, reason: 'no_user' });
     return res.status(401).json({ error: 'invalid_credentials' });
   }
-
   if (!bcrypt.compareSync(password, user.password_hash)) {
     await log(user.id, 'login_failed', user.id, { reason: 'wrong_password' });
     return res.status(401).json({ error: 'invalid_credentials' });
   }
-
   if (user.approval_status === 'pending') return res.status(403).json({ error: 'pending_approval' });
   if (user.approval_status === 'rejected') return res.status(403).json({ error: 'rejected' });
   if (!user.active) return res.status(403).json({ error: 'inactive' });
@@ -269,7 +277,6 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
 
 app.get('/api/auth/me', auth, (req, res) => res.json(publicUser(req.user)));
 
-/* Change own password (requires old password) */
 app.post('/api/auth/change-password', auth, async (req, res) => {
   const { oldPassword, newPassword } = req.body || {};
   if (!newPassword || newPassword.length < 6) return res.status(400).json({ error: 'password_too_short' });
@@ -278,6 +285,138 @@ app.post('/api/auth/change-password', auth, async (req, res) => {
   await query('UPDATE users SET password_hash = $1, updated_at = $2 WHERE id = $3',
     [bcrypt.hashSync(newPassword, 10), Date.now(), req.user.id]);
   await log(req.user.id, 'password_changed', req.user.id, {});
+  res.json({ ok: true });
+});
+
+/* ============ COACHES LIST (for students to pick) ============ */
+app.get('/api/coaches', auth, async (req, res) => {
+  const r = await query(
+    `SELECT id, display_name, username, emoji, color FROM users
+     WHERE role = 'coach' AND active = 1 AND approval_status = 'approved'
+     ORDER BY display_name`
+  );
+  res.json(r.rows.map(u => ({
+    id: u.id,
+    displayName: u.display_name,
+    username: u.username,
+    emoji: u.emoji || '👨‍🏫',
+    color: u.color || '#3b82f6'
+  })));
+});
+
+/* ============ COACH REQUESTS ============ */
+// List pending coach requests (admin: all, coach: those assigned to them OR for them)
+app.get('/api/coach-requests', auth, requireRole('coach','admin'), async (req, res) => {
+  const r = await query(
+    `SELECT ud.user_id, ud.value, u.display_name, u.username, u.emoji, u.color, u.coach_id, ud.updated_at
+     FROM user_data ud
+     JOIN users u ON u.id = ud.user_id
+     WHERE ud.key = 'coachRequest'
+     ORDER BY ud.updated_at DESC`
+  );
+  const requests = [];
+  for (const row of r.rows) {
+    try {
+      const rd = JSON.parse(row.value);
+      if (!rd || rd.status !== 'pending') continue;
+      // Coach sees only requests that prefer them, or requests to unassigned students
+      if (req.user.role === 'coach') {
+        const prefersMe = rd.coachId === req.user.id;
+        const unassigned = !row.coach_id;
+        if (!prefersMe && !unassigned) continue;
+      }
+      requests.push({
+        studentId: row.user_id,
+        studentName: row.display_name,
+        studentUsername: row.username,
+        studentEmoji: row.emoji,
+        studentColor: row.color,
+        currentCoachId: row.coach_id,
+        preferredCoachId: rd.coachId || null,
+        coachName: rd.coachName || null,
+        note: rd.note || null,
+        date: rd.date,
+        requestedAt: Number(row.updated_at)
+      });
+    } catch {}
+  }
+  res.json(requests);
+});
+
+// Admin assigns a request to a coach
+app.post('/api/coach-requests/:userId/assign', auth, requireRole('admin'), async (req, res) => {
+  const { coachId } = req.body || {};
+  if (!coachId) return res.status(400).json({ error: 'coach_id_required' });
+
+  const c = await query(
+    "SELECT id FROM users WHERE id = $1 AND role IN ('coach','admin') AND active = 1",
+    [coachId]
+  );
+  if (c.rows.length === 0) return res.status(400).json({ error: 'invalid_coach' });
+
+  await query('UPDATE users SET coach_id = $1, updated_at = $2 WHERE id = $3',
+    [coachId, Date.now(), req.params.userId]);
+
+  const r = await query('SELECT value FROM user_data WHERE user_id = $1 AND key = $2',
+    [req.params.userId, 'coachRequest']);
+  if (r.rows[0]) {
+    try {
+      const rd = JSON.parse(r.rows[0].value);
+      rd.status = 'assigned';
+      rd.assignedCoachId = coachId;
+      rd.assignedAt = new Date().toISOString();
+      await query(
+        `UPDATE user_data SET value = $1, updated_at = $2 WHERE user_id = $3 AND key = 'coachRequest'`,
+        [JSON.stringify(rd), Date.now(), req.params.userId]
+      );
+    } catch {}
+  }
+
+  await log(req.user.id, 'coach_request_assigned', req.params.userId, { coachId });
+  res.json({ ok: true });
+});
+
+// Coach claims an unassigned request
+app.post('/api/coach-requests/:userId/claim', auth, requireRole('coach'), async (req, res) => {
+  const coachId = req.user.id;
+
+  await query('UPDATE users SET coach_id = $1, updated_at = $2 WHERE id = $3',
+    [coachId, Date.now(), req.params.userId]);
+
+  const r = await query('SELECT value FROM user_data WHERE user_id = $1 AND key = $2',
+    [req.params.userId, 'coachRequest']);
+  if (r.rows[0]) {
+    try {
+      const rd = JSON.parse(r.rows[0].value);
+      rd.status = 'assigned';
+      rd.assignedCoachId = coachId;
+      rd.assignedAt = new Date().toISOString();
+      await query(
+        `UPDATE user_data SET value = $1, updated_at = $2 WHERE user_id = $3 AND key = 'coachRequest'`,
+        [JSON.stringify(rd), Date.now(), req.params.userId]
+      );
+    } catch {}
+  }
+
+  await log(req.user.id, 'coach_request_claimed', req.params.userId, {});
+  res.json({ ok: true });
+});
+
+// Admin rejects a request
+app.post('/api/coach-requests/:userId/reject', auth, requireRole('admin'), async (req, res) => {
+  const r = await query('SELECT value FROM user_data WHERE user_id = $1 AND key = $2',
+    [req.params.userId, 'coachRequest']);
+  if (!r.rows[0]) return res.status(404).json({ error: 'not_found' });
+  try {
+    const rd = JSON.parse(r.rows[0].value);
+    rd.status = 'rejected';
+    rd.rejectedAt = new Date().toISOString();
+    await query(
+      `UPDATE user_data SET value = $1, updated_at = $2 WHERE user_id = $3 AND key = 'coachRequest'`,
+      [JSON.stringify(rd), Date.now(), req.params.userId]
+    );
+  } catch {}
+  await log(req.user.id, 'coach_request_rejected', req.params.userId, {});
   res.json({ ok: true });
 });
 
@@ -296,7 +435,6 @@ app.get('/api/users', auth, async (req, res) => {
 
 app.post('/api/users', auth, async (req, res) => {
   const { username, password, displayName, role = 'student', emoji = '💪', color = '#3b82f6', coachId } = req.body || {};
-
   if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
   if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
   if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
@@ -368,24 +506,18 @@ app.put('/api/users/:id', auth, async (req, res) => {
   }
   if (approvalStatus != null) {
     if (!isAdmin) return res.status(403).json({ error: 'only_admin_can_approve' });
-    if (!['approved','pending','rejected'].includes(approvalStatus))
-      return res.status(400).json({ error: 'invalid_status' });
+    if (!['approved','pending','rejected'].includes(approvalStatus)) return res.status(400).json({ error: 'invalid_status' });
     sets.push(`approval_status = $${i++}`); vals.push(approvalStatus);
   }
 
-  /* ===== FIXED: password change logic ===== */
   if (password) {
-    // هرکسی می‌تونه رمز خودشو عوض کنه. ادمین و مربیِ صاحبِ شاگرد هم می‌تونن reset کنن.
     const canReset = isAdmin || ownStudent || isSelf;
     if (!canReset) return res.status(403).json({ error: 'forbidden_password_reset' });
     if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
-
-    // اگه خود کاربر داره رمز خودش رو عوض می‌کنه (نه ادمین)، رمز قدیمی الزامیست
     if (isSelf && !isAdmin && !ownStudent) {
       if (!bcrypt.compareSync(oldPassword || '', target.password_hash))
         return res.status(401).json({ error: 'wrong_password' });
     }
-
     sets.push(`password_hash = $${i++}`);
     vals.push(bcrypt.hashSync(password, 10));
   }
@@ -417,7 +549,6 @@ app.delete('/api/users/:id', auth, requireRole('admin'), async (req, res) => {
     if (parseInt(c.rows[0].c) <= 1) return res.status(400).json({ error: 'last_admin' });
   }
 
-  // Transaction برای اتمیک بودن حذف
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -440,9 +571,7 @@ app.delete('/api/users/:id', auth, requireRole('admin'), async (req, res) => {
 
 /* ============ ADMIN APPROVAL ============ */
 app.get('/api/admin/pending-coaches', auth, requireRole('admin'), async (req, res) => {
-  const r = await query(
-    "SELECT * FROM users WHERE role='coach' AND approval_status='pending' ORDER BY created_at DESC"
-  );
+  const r = await query("SELECT * FROM users WHERE role='coach' AND approval_status='pending' ORDER BY created_at DESC");
   res.json(r.rows.map(publicUser));
 });
 
@@ -490,7 +619,7 @@ app.post('/api/users/:id/data/:key', auth, async (req, res) => {
   res.json({ ok: true });
 });
 
-/* ============ COACH (also works for admin) ============ */
+/* ============ COACH ============ */
 app.get('/api/coach/students', auth, requireRole('coach','admin'), async (req, res) => {
   let rows;
   if (req.user.role === 'coach') {
@@ -503,10 +632,8 @@ app.get('/api/coach/students', auth, requireRole('coach','admin'), async (req, r
       rows = (await query("SELECT * FROM users WHERE role='student' ORDER BY display_name")).rows;
     }
   }
-
   if (rows.length === 0) return res.json([]);
 
-  // ← OPTIMIZATION: batch fetch user_data به‌جای N+1
   const ids = rows.map(r => r.id);
   const dataR = await query(
     `SELECT user_id, key, value FROM user_data
@@ -522,37 +649,24 @@ app.get('/api/coach/students', auth, requireRole('coach','admin'), async (req, r
   const now = Date.now();
   const out = rows.map(s => {
     const du = dataByUser[s.id] || {};
-    const workout = du.workout;
-    const hist = du.history;
-
-    const completedCount = workout?.completed
-      ? Object.values(workout.completed).filter(Boolean).length
-      : 0;
-
+    const workout = du.workout, hist = du.history;
+    const completedCount = workout?.completed ? Object.values(workout.completed).filter(Boolean).length : 0;
     let volume = 0;
     Object.values(workout?.logs || {}).forEach(a => {
       Object.values(a || {}).forEach(l => {
         if (l?.weight && l?.reps) volume += l.weight * l.reps;
       });
     });
-
     let s7 = 0, v7 = 0;
-    if (hist) {
-      Object.keys(hist).forEach(k => {
-        const t = new Date(k).getTime();
-        if (now - t < 7 * 86400000) {
-          if ((hist[k].completed || 0) > 0) s7++;
-          v7 += hist[k].volume || 0;
-        }
-      });
-    }
-
-    return {
-      ...publicUser(s),
-      stats: { completedCount, volume: Math.round(volume), sessions7: s7, volume7: Math.round(v7) }
-    };
+    if (hist) Object.keys(hist).forEach(k => {
+      const t = new Date(k).getTime();
+      if (now - t < 7*86400000) {
+        if ((hist[k].completed || 0) > 0) s7++;
+        v7 += hist[k].volume || 0;
+      }
+    });
+    return { ...publicUser(s), stats: { completedCount, volume: Math.round(volume), sessions7: s7, volume7: Math.round(v7) } };
   });
-
   res.json(out);
 });
 
@@ -563,16 +677,13 @@ app.get('/api/coach/students/:id/overview', auth, requireRole('coach','admin'), 
   if (req.user.role === 'coach' && target.coach_id !== req.user.id)
     return res.status(403).json({ error: 'not_own_student' });
 
-  // ← FIXED: 'nutritionProfile' → 'nutrition' + coachRequest
   const keys = ['workout','history','program','body','permissions','nutrition','coachRequest'];
-
-  // ← OPTIMIZATION: یک کوئری به‌جای حلقه
   const dataR = await query(
     'SELECT key, value FROM user_data WHERE user_id = $1 AND key = ANY($2::text[])',
     [target.id, keys]
   );
   const data = {};
-  keys.forEach(k => data[k] = null); // پیش‌فرض
+  keys.forEach(k => data[k] = null);
   dataR.rows.forEach(row => {
     try { data[row.key] = JSON.parse(row.value); } catch { data[row.key] = null; }
   });
@@ -606,8 +717,7 @@ app.delete('/api/coach/notes/:id', auth, requireRole('coach','admin'), async (re
   const nr = await query('SELECT * FROM coach_notes WHERE id = $1', [req.params.id]);
   if (nr.rows.length === 0) return res.status(404).json({ error: 'not_found' });
   const note = nr.rows[0];
-  if (req.user.role === 'coach' && note.coach_id !== req.user.id)
-    return res.status(403).json({ error: 'forbidden' });
+  if (req.user.role === 'coach' && note.coach_id !== req.user.id) return res.status(403).json({ error: 'forbidden' });
   await query('DELETE FROM coach_notes WHERE id = $1', [req.params.id]);
   res.json({ ok: true });
 });
@@ -621,14 +731,13 @@ app.get('/api/admin/audit', auth, requireRole('admin'), async (req, res) => {
 /* ============ SPA FALLBACK ============ */
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
-/* ============ ERROR HANDLER ============ */
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err);
   if (res.headersSent) return next(err);
   res.status(500).json({ error: 'server_error', message: err.message });
 });
 
-/* ============ WIPE DB (optional) ============ */
+/* ============ WIPE ============ */
 async function wipeIfRequested() {
   if (process.env.WIPE_DB === 'true') {
     console.log('⚠️  WIPE_DB=true — wiping database');
@@ -636,21 +745,21 @@ async function wipeIfRequested() {
     await query('DELETE FROM coach_notes');
     await query('DELETE FROM audit_log');
     await query("DELETE FROM users WHERE role != 'admin'");
-    console.log('✅ Database wiped (admin preserved)');
+    console.log('✅ Wiped (admin preserved)');
   }
 }
 
-/* ============ GRACEFUL SHUTDOWN ============ */
+/* ============ SHUTDOWN ============ */
 let isShuttingDown = false;
 async function shutdown(signal) {
   if (isShuttingDown) return;
   isShuttingDown = true;
-  console.log(`\n🛑 ${signal} received, shutting down...`);
-  try { await pool.end(); } catch (e) { console.error('pool end error:', e.message); }
+  console.log(`\n🛑 ${signal}, shutting down...`);
+  try { await pool.end(); } catch (e) {}
   process.exit(0);
 }
 process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT',  () => shutdown('SIGINT'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('unhandledRejection', (err) => console.error('🔥 Unhandled rejection:', err));
 process.on('uncaughtException', (err) => console.error('🔥 Uncaught exception:', err));
 
@@ -661,8 +770,7 @@ process.on('uncaughtException', (err) => console.error('🔥 Uncaught exception:
     await wipeIfRequested();
     await bootstrapAdmin();
     app.listen(PORT, () => {
-      console.log('\n🚀 ProFit running on port ' + PORT);
-      console.log('📊 Database ready\n');
+      console.log('\n🚀 ProFit running on port ' + PORT + '\n');
     });
   } catch(e) {
     console.error('❌ Startup failed:', e);
