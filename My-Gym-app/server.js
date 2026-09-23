@@ -1,6 +1,7 @@
 /* ============================================================
    ProFit Server v4.1 — Complete (Fixed & Optimized)
    ============================================================ */
+require('dotenv').config();
 require('express-async-errors'); // ← همه async errors رو می‌گیره (npm install express-async-errors)
 const express = require('express');
 const path = require('path');
