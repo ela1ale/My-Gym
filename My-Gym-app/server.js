@@ -1,26 +1,64 @@
 /* ============================================================
-   ProFit Server v4 — Complete
+   ProFit Server v4.1 — Complete (Fixed & Optimized)
    ============================================================ */
+require('express-async-errors'); // ← همه async errors رو می‌گیره (npm install express-async-errors)
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit'); // ← npm install express-rate-limit
 const { Pool } = require('pg');
 
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'change-me-' + Math.random().toString(36);
+
+/* ============ ENV SAFETY ============ */
+if (!process.env.JWT_SECRET) {
+  console.error('❌ FATAL: JWT_SECRET environment variable is required!');
+  console.error('   Set it in your env: JWT_SECRET=<long-random-string>');
+  process.exit(1);
+}
+const JWT_SECRET = process.env.JWT_SECRET;
+
 const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'admin123';
+if (!process.env.ADMIN_PASSWORD) {
+  console.warn('⚠️  Using default admin password (admin123). Set ADMIN_PASSWORD in production!');
+}
+if (!process.env.DATABASE_URL) {
+  console.warn('⚠️  DATABASE_URL is not set. Using default pg connection.');
+}
 
 const app = express();
+app.set('trust proxy', 1); // برای rate-limit وقتی پشت proxy/CDN هستی
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000
 });
 const query = (t, p) => pool.query(t, p);
+
+pool.on('error', (err) => console.error('🔥 Unexpected pool error:', err.message));
+
+/* ============ RATE LIMITERS ============ */
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 15,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'too_many_attempts', message: 'تعداد تلاش‌ها زیاد است. بعداً امتحان کن.' }
+});
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'too_many_registrations' }
+});
 
 /* ============ SCHEMA ============ */
 async function initSchema() {
@@ -39,16 +77,17 @@ async function initSchema() {
     updated_at BIGINT NOT NULL
   );`);
 
-  // Self-healing columns
-  try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS approval_status TEXT DEFAULT 'approved'`); } catch(e){}
-  try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS coach_id TEXT`); } catch(e){}
-  try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS active INTEGER DEFAULT 1`); } catch(e){}
-  try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS emoji TEXT DEFAULT '💪'`); } catch(e){}
-  try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS color TEXT DEFAULT '#3b82f6'`); } catch(e){}
-  try { await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS updated_at BIGINT`); } catch(e){}
-  try { await query(`UPDATE users SET approval_status='approved' WHERE approval_status IS NULL`); } catch(e){}
-  try { await query(`UPDATE users SET active=1 WHERE active IS NULL`); } catch(e){}
-  try { await query(`UPDATE users SET updated_at=created_at WHERE updated_at IS NULL`); } catch(e){}
+  // Self-healing for legacy DBs
+  const tryAlter = async (sql) => { try { await query(sql); } catch(e) { /* ignore */ } };
+  await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS approval_status TEXT DEFAULT 'approved'`);
+  await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS coach_id TEXT`);
+  await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS active INTEGER DEFAULT 1`);
+  await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS emoji TEXT DEFAULT '💪'`);
+  await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS color TEXT DEFAULT '#3b82f6'`);
+  await tryAlter(`ALTER TABLE users ADD COLUMN IF NOT EXISTS updated_at BIGINT`);
+  await tryAlter(`UPDATE users SET approval_status='approved' WHERE approval_status IS NULL`);
+  await tryAlter(`UPDATE users SET active=1 WHERE active IS NULL`);
+  await tryAlter(`UPDATE users SET updated_at=created_at WHERE updated_at IS NULL`);
 
   await query(`CREATE INDEX IF NOT EXISTS idx_users_coach ON users(coach_id);`);
   await query(`CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);`);
@@ -61,6 +100,8 @@ async function initSchema() {
     updated_at BIGINT NOT NULL,
     PRIMARY KEY (user_id, key)
   );`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_user_data_user ON user_data(user_id);`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_user_data_user_key ON user_data(user_id, key);`);
 
   await query(`CREATE TABLE IF NOT EXISTS coach_notes (
     id SERIAL PRIMARY KEY,
@@ -70,6 +111,8 @@ async function initSchema() {
     type TEXT DEFAULT 'general',
     created_at BIGINT NOT NULL
   );`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_coach_notes_student ON coach_notes(student_id);`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_coach_notes_coach ON coach_notes(coach_id);`);
 
   await query(`CREATE TABLE IF NOT EXISTS audit_log (
     id SERIAL PRIMARY KEY,
@@ -79,6 +122,8 @@ async function initSchema() {
     details TEXT,
     created_at BIGINT NOT NULL
   );`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_log(created_at DESC);`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_log(actor_id);`);
 
   console.log('✅ Schema ready');
 }
@@ -131,9 +176,10 @@ async function auth(req, res, next) {
     const r = await query('SELECT * FROM users WHERE id = $1', [payload.id]);
     if (r.rows.length === 0) return res.status(401).json({ error: 'invalid_user' });
     const u = r.rows[0];
-    if (!u.active) return res.status(401).json({ error: 'inactive' });
-    if (u.approval_status === 'pending') return res.status(401).json({ error: 'pending_approval' });
-    if (u.approval_status === 'rejected') return res.status(401).json({ error: 'rejected' });
+    // 401 برای توکن نامعتبر، 403 برای وضعیت حساب
+    if (!u.active) return res.status(403).json({ error: 'inactive' });
+    if (u.approval_status === 'pending') return res.status(403).json({ error: 'pending_approval' });
+    if (u.approval_status === 'rejected') return res.status(403).json({ error: 'rejected' });
     req.user = u;
     next();
   } catch (e) {
@@ -147,15 +193,16 @@ const requireRole = (...roles) => (req, res, next) =>
 const canAccess = (a, t) =>
   a.id === t.id || a.role === 'admin' || (a.role === 'coach' && t.coach_id === a.id);
 
+/* ============ HEALTH ============ */
+app.get('/health', (req, res) => res.json({ ok: true, uptime: process.uptime() }));
+app.get('/api/version', (req, res) => res.json({ version: '4.1' }));
+
 /* ============ REGISTER ============ */
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', registerLimiter, async (req, res) => {
   const { username, password, displayName, requestedRole = 'student' } = req.body || {};
   if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
   if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
   if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
-
-  const existing = await query('SELECT id FROM users WHERE username = $1', [username]);
-  if (existing.rows.length > 0) return res.status(409).json({ error: 'username_taken' });
 
   const role = requestedRole === 'coach' ? 'coach' : 'student';
   const approvalStatus = role === 'coach' ? 'pending' : 'approved';
@@ -171,7 +218,9 @@ app.post('/api/auth/register', async (req, res) => {
       [id, username, displayName, hash, role, approvalStatus, now, now]
     );
   } catch (e) {
-    console.error('register error:', e.message);
+    // race-safe: unique violation → username_taken
+    if (e.code === '23505') return res.status(409).json({ error: 'username_taken' });
+    console.error('register error:', e);
     return res.status(500).json({ error: 'db_error', message: e.message });
   }
 
@@ -191,7 +240,7 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 /* ============ LOGIN ============ */
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', loginLimiter, async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) return res.status(400).json({ error: 'missing_fields' });
 
@@ -219,11 +268,12 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/auth/me', auth, (req, res) => res.json(publicUser(req.user)));
 
+/* Change own password (requires old password) */
 app.post('/api/auth/change-password', auth, async (req, res) => {
   const { oldPassword, newPassword } = req.body || {};
   if (!newPassword || newPassword.length < 6) return res.status(400).json({ error: 'password_too_short' });
   if (!bcrypt.compareSync(oldPassword || '', req.user.password_hash))
-    return res.status(401).json({ error: 'wrong_old_password' });
+    return res.status(401).json({ error: 'wrong_password' });
   await query('UPDATE users SET password_hash = $1, updated_at = $2 WHERE id = $3',
     [bcrypt.hashSync(newPassword, 10), Date.now(), req.user.id]);
   await log(req.user.id, 'password_changed', req.user.id, {});
@@ -251,7 +301,8 @@ app.post('/api/users', auth, async (req, res) => {
   if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
 
   if (req.user.role === 'student') return res.status(403).json({ error: 'forbidden' });
-  if (req.user.role === 'coach' && role !== 'student') return res.status(403).json({ error: 'coach_can_only_create_students' });
+  if (req.user.role === 'coach' && role !== 'student')
+    return res.status(403).json({ error: 'coach_can_only_create_students' });
 
   let effectiveCoachId = null;
   if (req.user.role === 'coach') {
@@ -261,9 +312,6 @@ app.post('/api/users', auth, async (req, res) => {
     if (c.rows.length === 0) return res.status(400).json({ error: 'invalid_coach' });
     effectiveCoachId = coachId;
   }
-
-  const ex = await query('SELECT id FROM users WHERE username = $1', [username]);
-  if (ex.rows.length > 0) return res.status(409).json({ error: 'username_taken' });
 
   const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
   const now = Date.now();
@@ -276,7 +324,8 @@ app.post('/api/users', auth, async (req, res) => {
       [id, username, displayName, bcrypt.hashSync(password, 10), role, effectiveCoachId, emoji, color, approvalStatus, now, now]
     );
   } catch (e) {
-    console.error('create user error:', e.message);
+    if (e.code === '23505') return res.status(409).json({ error: 'username_taken' });
+    console.error('create user error:', e);
     return res.status(500).json({ error: 'db_error', message: e.message });
   }
 
@@ -295,7 +344,7 @@ app.put('/api/users/:id', auth, async (req, res) => {
   const ownStudent = req.user.role === 'coach' && target.coach_id === req.user.id;
   if (!isSelf && !isAdmin && !ownStudent) return res.status(403).json({ error: 'forbidden' });
 
-  const { displayName, emoji, color, password, active, coachId, role, approvalStatus } = req.body || {};
+  const { displayName, emoji, color, password, oldPassword, active, coachId, role, approvalStatus } = req.body || {};
   const sets = [], vals = [];
   let i = 1;
 
@@ -318,13 +367,26 @@ app.put('/api/users/:id', auth, async (req, res) => {
   }
   if (approvalStatus != null) {
     if (!isAdmin) return res.status(403).json({ error: 'only_admin_can_approve' });
-    if (!['approved','pending','rejected'].includes(approvalStatus)) return res.status(400).json({ error: 'invalid_status' });
+    if (!['approved','pending','rejected'].includes(approvalStatus))
+      return res.status(400).json({ error: 'invalid_status' });
     sets.push(`approval_status = $${i++}`); vals.push(approvalStatus);
   }
+
+  /* ===== FIXED: password change logic ===== */
   if (password) {
-    if (!isAdmin && !ownStudent) return res.status(403).json({ error: 'forbidden_password_reset' });
+    // هرکسی می‌تونه رمز خودشو عوض کنه. ادمین و مربیِ صاحبِ شاگرد هم می‌تونن reset کنن.
+    const canReset = isAdmin || ownStudent || isSelf;
+    if (!canReset) return res.status(403).json({ error: 'forbidden_password_reset' });
     if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
-    sets.push(`password_hash = $${i++}`); vals.push(bcrypt.hashSync(password, 10));
+
+    // اگه خود کاربر داره رمز خودش رو عوض می‌کنه (نه ادمین)، رمز قدیمی الزامیست
+    if (isSelf && !isAdmin && !ownStudent) {
+      if (!bcrypt.compareSync(oldPassword || '', target.password_hash))
+        return res.status(401).json({ error: 'wrong_password' });
+    }
+
+    sets.push(`password_hash = $${i++}`);
+    vals.push(bcrypt.hashSync(password, 10));
   }
 
   if (!sets.length) return res.json(publicUser(target));
@@ -333,7 +395,7 @@ app.put('/api/users/:id', auth, async (req, res) => {
   vals.push(target.id);
 
   await query(`UPDATE users SET ${sets.join(', ')} WHERE id = $${i}`, vals);
-  await log(req.user.id, 'user_updated', target.id, { fields: Object.keys(req.body) });
+  await log(req.user.id, 'user_updated', target.id, { fields: Object.keys(req.body || {}) });
   const nr = await query('SELECT * FROM users WHERE id = $1', [target.id]);
   res.json(publicUser(nr.rows[0]));
 });
@@ -354,10 +416,22 @@ app.delete('/api/users/:id', auth, requireRole('admin'), async (req, res) => {
     if (parseInt(c.rows[0].c) <= 1) return res.status(400).json({ error: 'last_admin' });
   }
 
-  await query('DELETE FROM user_data WHERE user_id = $1', [target.id]);
-  await query('DELETE FROM coach_notes WHERE coach_id = $1 OR student_id = $1', [target.id]);
-  await query('UPDATE users SET coach_id = NULL WHERE coach_id = $1', [target.id]);
-  await query('DELETE FROM users WHERE id = $1', [target.id]);
+  // Transaction برای اتمیک بودن حذف
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM user_data WHERE user_id = $1', [target.id]);
+    await client.query('DELETE FROM coach_notes WHERE coach_id = $1 OR student_id = $1', [target.id]);
+    await client.query('UPDATE users SET coach_id = NULL WHERE coach_id = $1', [target.id]);
+    await client.query('DELETE FROM users WHERE id = $1', [target.id]);
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    console.error('delete user transaction failed:', e);
+    return res.status(500).json({ error: 'db_error', message: e.message });
+  } finally {
+    client.release();
+  }
 
   await log(req.user.id, 'user_deleted', target.id, { username: target.username });
   res.json({ ok: true });
@@ -365,13 +439,10 @@ app.delete('/api/users/:id', auth, requireRole('admin'), async (req, res) => {
 
 /* ============ ADMIN APPROVAL ============ */
 app.get('/api/admin/pending-coaches', auth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await query("SELECT * FROM users WHERE role='coach' AND approval_status='pending' ORDER BY created_at DESC");
-    res.json(r.rows.map(publicUser));
-  } catch (e) {
-    console.error('pending-coaches error:', e.message);
-    res.status(500).json({ error: 'db_error', message: e.message });
-  }
+  const r = await query(
+    "SELECT * FROM users WHERE role='coach' AND approval_status='pending' ORDER BY created_at DESC"
+  );
+  res.json(r.rows.map(publicUser));
 });
 
 app.post('/api/admin/approve/:id', auth, requireRole('admin'), async (req, res) => {
@@ -432,35 +503,55 @@ app.get('/api/coach/students', auth, requireRole('coach','admin'), async (req, r
     }
   }
 
-  const now = Date.now();
-  const out = [];
-  for (const s of rows) {
-    const stR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='workout'", [s.id]);
-    const hiR = await query("SELECT value FROM user_data WHERE user_id=$1 AND key='history'", [s.id]);
-    let workout = null, hist = null;
-    try { workout = stR.rows[0] ? JSON.parse(stR.rows[0].value) : null; } catch {}
-    try { hist = hiR.rows[0] ? JSON.parse(hiR.rows[0].value) : null; } catch {}
+  if (rows.length === 0) return res.json([]);
 
-    const completedCount = workout?.completed ? Object.values(workout.completed).filter(Boolean).length : 0;
+  // ← OPTIMIZATION: batch fetch user_data به‌جای N+1
+  const ids = rows.map(r => r.id);
+  const dataR = await query(
+    `SELECT user_id, key, value FROM user_data
+     WHERE user_id = ANY($1::text[]) AND key IN ('workout','history')`,
+    [ids]
+  );
+  const dataByUser = {};
+  dataR.rows.forEach(r => {
+    dataByUser[r.user_id] = dataByUser[r.user_id] || {};
+    try { dataByUser[r.user_id][r.key] = JSON.parse(r.value); } catch {}
+  });
+
+  const now = Date.now();
+  const out = rows.map(s => {
+    const du = dataByUser[s.id] || {};
+    const workout = du.workout;
+    const hist = du.history;
+
+    const completedCount = workout?.completed
+      ? Object.values(workout.completed).filter(Boolean).length
+      : 0;
+
     let volume = 0;
-    Object.values(workout?.logs || {}).forEach(a => Object.values(a || {}).forEach(l => {
-      if (l?.weight && l?.reps) volume += l.weight * l.reps;
-    }));
+    Object.values(workout?.logs || {}).forEach(a => {
+      Object.values(a || {}).forEach(l => {
+        if (l?.weight && l?.reps) volume += l.weight * l.reps;
+      });
+    });
 
     let s7 = 0, v7 = 0;
-    if (hist) Object.keys(hist).forEach(k => {
-      const t = new Date(k).getTime();
-      if (now - t < 7*86400000) {
-        if ((hist[k].completed || 0) > 0) s7++;
-        v7 += hist[k].volume || 0;
-      }
-    });
+    if (hist) {
+      Object.keys(hist).forEach(k => {
+        const t = new Date(k).getTime();
+        if (now - t < 7 * 86400000) {
+          if ((hist[k].completed || 0) > 0) s7++;
+          v7 += hist[k].volume || 0;
+        }
+      });
+    }
 
-    out.push({
+    return {
       ...publicUser(s),
       stats: { completedCount, volume: Math.round(volume), sessions7: s7, volume7: Math.round(v7) }
-    });
-  }
+    };
+  });
+
   res.json(out);
 });
 
@@ -471,12 +562,19 @@ app.get('/api/coach/students/:id/overview', auth, requireRole('coach','admin'), 
   if (req.user.role === 'coach' && target.coach_id !== req.user.id)
     return res.status(403).json({ error: 'not_own_student' });
 
-  const keys = ['workout','history','program','body','permissions','nutritionProfile'];
+  // ← FIXED: 'nutritionProfile' → 'nutrition' + coachRequest
+  const keys = ['workout','history','program','body','permissions','nutrition','coachRequest'];
+
+  // ← OPTIMIZATION: یک کوئری به‌جای حلقه
+  const dataR = await query(
+    'SELECT key, value FROM user_data WHERE user_id = $1 AND key = ANY($2::text[])',
+    [target.id, keys]
+  );
   const data = {};
-  for (const k of keys) {
-    const r = await query('SELECT value FROM user_data WHERE user_id=$1 AND key=$2', [target.id, k]);
-    try { data[k] = r.rows[0] ? JSON.parse(r.rows[0].value) : null; } catch { data[k] = null; }
-  }
+  keys.forEach(k => data[k] = null); // پیش‌فرض
+  dataR.rows.forEach(row => {
+    try { data[row.key] = JSON.parse(row.value); } catch { data[row.key] = null; }
+  });
 
   const nr = await query('SELECT * FROM coach_notes WHERE student_id=$1 ORDER BY created_at DESC', [target.id]);
   res.json({
@@ -507,7 +605,8 @@ app.delete('/api/coach/notes/:id', auth, requireRole('coach','admin'), async (re
   const nr = await query('SELECT * FROM coach_notes WHERE id = $1', [req.params.id]);
   if (nr.rows.length === 0) return res.status(404).json({ error: 'not_found' });
   const note = nr.rows[0];
-  if (req.user.role === 'coach' && note.coach_id !== req.user.id) return res.status(403).json({ error: 'forbidden' });
+  if (req.user.role === 'coach' && note.coach_id !== req.user.id)
+    return res.status(403).json({ error: 'forbidden' });
   await query('DELETE FROM coach_notes WHERE id = $1', [req.params.id]);
   res.json({ ok: true });
 });
@@ -521,8 +620,10 @@ app.get('/api/admin/audit', auth, requireRole('admin'), async (req, res) => {
 /* ============ SPA FALLBACK ============ */
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
+/* ============ ERROR HANDLER ============ */
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err);
+  if (res.headersSent) return next(err);
   res.status(500).json({ error: 'server_error', message: err.message });
 });
 
@@ -537,6 +638,20 @@ async function wipeIfRequested() {
     console.log('✅ Database wiped (admin preserved)');
   }
 }
+
+/* ============ GRACEFUL SHUTDOWN ============ */
+let isShuttingDown = false;
+async function shutdown(signal) {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  console.log(`\n🛑 ${signal} received, shutting down...`);
+  try { await pool.end(); } catch (e) { console.error('pool end error:', e.message); }
+  process.exit(0);
+}
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT',  () => shutdown('SIGINT'));
+process.on('unhandledRejection', (err) => console.error('🔥 Unhandled rejection:', err));
+process.on('uncaughtException', (err) => console.error('🔥 Uncaught exception:', err));
 
 /* ============ START ============ */
 (async () => {
