@@ -736,7 +736,61 @@ app.get('/api/admin/audit', auth, requireRole('admin'), async (req, res) => {
   const r = await query('SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 300');
   res.json(r.rows.map(row => ({ ...row, created_at: Number(row.created_at) })));
 });
+/* ============ EXPORT — Full User Data (JSON) ============ */
+app.get('/api/export/self', auth, async (req, res) => {
+  try {
+    const r = await query('SELECT key, value FROM user_data WHERE user_id = $1', [req.user.id]);
+    const data = {};
+    r.rows.forEach(x => { try { data[x.key] = JSON.parse(x.value); } catch {} });
 
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="profit-backup-' + req.user.username + '.json"');
+    res.json({
+      _meta: {
+        type: 'profit-user-backup',
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        userId: req.user.id,
+        username: req.user.username
+      },
+      data: data
+    });
+  } catch (e) {
+    console.error('export/self error:', e);
+    res.status(500).json({ error: 'server_error', message: e.message });
+  }
+});
+
+app.get('/api/export/user/:id', auth, async (req, res) => {
+  try {
+    const tr = await query('SELECT * FROM users WHERE id = $1', [req.params.id]);
+    if (tr.rows.length === 0) return res.status(404).json({ error: 'not_found' });
+    const target = tr.rows[0];
+
+    if (!canAccess(req.user, target)) return res.status(403).json({ error: 'forbidden' });
+
+    const r = await query('SELECT key, value FROM user_data WHERE user_id = $1', [target.id]);
+    const data = {};
+    r.rows.forEach(x => { try { data[x.key] = JSON.parse(x.value); } catch {} });
+
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="profit-backup-' + target.username + '.json"');
+    res.json({
+      _meta: {
+        type: 'profit-user-backup',
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        userId: target.id,
+        username: target.username,
+        exportedBy: req.user.username
+      },
+      data: data
+    });
+  } catch (e) {
+    console.error('export/user error:', e);
+    res.status(500).json({ error: 'server_error', message: e.message });
+  }
+});
 /* ============ SPA FALLBACK ============ */
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
