@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.min.js"></script>
 <script src="assets/exercises.js"></script>
+<script src="assets/foods.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Vazirmatn',sans-serif;-webkit-tap-highlight-color:transparent}
 :root{--bg:#0a0e1a;--bg2:#111827;--card:#1a2233;--card2:#222d42;--card3:#2d3850;--bd:rgba(148,163,184,.15);--tx:#f1f5f9;--tx2:#94a3b8;--tm:#64748b;--bl:#3b82f6;--gr:#10b981;--rd:#f43f5e;--am:#f59e0b;--pu:#a855f7;--cy:#06b6d4}
@@ -15,8 +16,6 @@ html,body{background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidde
 body{padding:10px;padding-bottom:90px}
 .hidden{display:none!important}
 .container{max-width:900px;margin:0 auto}
-
-/* ============ BUTTONS ============ */
 .btn{padding:10px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;font-family:inherit;font-weight:700;font-size:.86rem;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;white-space:nowrap;user-select:none}
 .btn:active{transform:scale(.97)}
 .btn:hover{border-color:var(--bl)}
@@ -28,27 +27,17 @@ body{padding:10px;padding-bottom:90px}
 .btn.sm{padding:6px 12px;font-size:.76rem;border-radius:8px}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 .btn.full{width:100%}
-
-/* ============ INPUTS ============ */
 input,select,textarea{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-size:.9rem;font-weight:600;outline:none;transition:border-color .15s}
 input:focus,select:focus{border-color:var(--bl);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
 label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bottom:5px}
-
-/* ============ CARDS ============ */
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px}
 .card h2{font-size:.98rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-
-/* ============ HEADER ============ */
 .header{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
 .header h1{font-size:1rem;font-weight:900;flex:1;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .user-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:30px;background:var(--card2);border:1px solid var(--bd);cursor:pointer;font-family:inherit;color:var(--tx);font-weight:700;font-size:.8rem}
 .user-chip .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#fff}
-
-/* ============ TOOLBAR ============ */
 .toolbar{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px;margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
 .toolbar .btn{padding:7px 12px;font-size:.76rem}
-
-/* ============ AUTH ============ */
 .auth-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);display:flex;align-items:center;justify-content:center;padding:16px;z-index:1000;overflow-y:auto}
 .auth-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:26px 22px;max-width:420px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.5);margin:auto}
 .auth-logo{font-size:3rem;text-align:center;margin-bottom:6px}
@@ -62,8 +51,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .role-btn[data-role=student].selected{background:linear-gradient(135deg,#10b981,#059669)}
 .role-btn[data-role=coach].selected{background:linear-gradient(135deg,#3b82f6,#a855f7)}
 .role-btn .ric{font-size:1.4rem}
-
-/* ============ DRAWER ============ */
 .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;opacity:0;pointer-events:none;transition:opacity .25s}
 .backdrop.open{opacity:1;pointer-events:auto}
 .drawer{position:fixed;top:0;bottom:0;width:520px;max-width:100vw;background:var(--card);z-index:101;display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.4,0,.2,1)}
@@ -79,17 +66,15 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .tab{padding:10px 14px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
 .tab.active{color:var(--bl);border-bottom-color:var(--bl)}
 .drawer-body{flex:1;overflow-y:auto;padding:12px 14px;-webkit-overflow-scrolling:touch}
-
-/* ============ USER ITEM ============ */
 .u-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);margin-bottom:6px;transition:all .15s}
 .u-item.clickable{cursor:pointer}
-.u-item.clickable:hover{border-color:var(--bl);transform:translateX(-2px)}
+.u-item.clickable:hover{border-color:var(--bl)}
 .u-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;color:#fff;font-weight:700}
 .u-info{flex:1;min-width:0}
 .u-name{font-weight:800;font-size:.86rem;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .u-meta{font-size:.66rem;color:var(--tm)}
 .u-actions{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap}
-.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-family:inherit;transition:all .15s}
+.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-family:inherit}
 .icon-btn:hover{background:var(--bl);color:#fff;border-color:var(--bl)}
 .icon-btn.del:hover{background:var(--rd);border-color:var(--rd)}
 .icon-btn.approve:hover{background:var(--gr);border-color:var(--gr)}
@@ -103,8 +88,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .badge.rejected{background:rgba(244,63,94,.2);color:#fda4af}
 .badge.inactive{background:rgba(100,116,139,.25);color:#94a3b8}
 .badge.active{background:rgba(16,185,129,.2);color:#34d399}
-
-/* ============ TOASTS ============ */
 .toasts{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none;max-width:92vw}
 .toast{padding:10px 16px;border-radius:12px;font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);animation:slideIn .25s ease;pointer-events:auto;max-width:100%}
 .toast.success{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
@@ -112,26 +95,20 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .toast.info{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
 .toast.warn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
 @keyframes slideIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-
-/* ============ EMPTY / SPINNER ============ */
 .empty{text-align:center;padding:28px 16px;color:var(--tm)}
 .empty .icon{font-size:2.5rem;margin-bottom:10px}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ============ WIZARD ============ */
 .wizard-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);z-index:2000;display:flex;align-items:center;justify-content:center;padding:14px;overflow-y:auto}
 .wizard-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:24px 20px;max-width:500px;width:100%;margin:auto;max-height:95vh;overflow-y:auto}
 .wizard-card h2{text-align:center;font-size:1.2rem;font-weight:900;margin-bottom:4px;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .wizard-card .wsub{text-align:center;font-size:.8rem;color:var(--tx2);margin-bottom:18px}
 .wstep{display:none}.wstep.active{display:block}
 .wdpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.wdchip{padding:8px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .15s}
+.wdchip{padding:8px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.78rem;cursor:pointer}
 .wdchip.sel{background:linear-gradient(135deg,var(--bl),var(--pu));color:#fff;border-color:transparent}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-
-/* ============ PROGRAM VIEW ============ */
 .prog-header{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:10px}
 .prog-actions{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
 .prog-actions .btn{flex:1;min-width:130px;justify-content:center;font-size:.8rem}
@@ -140,19 +117,13 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .week-progress .wp-top strong{color:var(--gr)}
 .wp-track{height:8px;background:rgba(148,163,184,.15);border-radius:4px;overflow:hidden}
 .wp-fill{height:100%;background:linear-gradient(90deg,var(--bl),var(--pu));transition:width .5s;border-radius:4px}
-
-/* Day tabs */
 .day-tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;margin-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .day-tabs::-webkit-scrollbar{display:none}
-.day-tab{padding:9px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.78rem;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;display:flex;align-items:center;gap:5px;position:relative}
-.day-tab:hover{border-color:var(--bl);color:var(--tx)}
+.day-tab{padding:9px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.78rem;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:5px;position:relative}
 .day-tab.active{background:linear-gradient(135deg,var(--bl),var(--pu));color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(59,130,246,.3)}
 .day-tab.is-today::before{content:'★';color:var(--am);font-size:.9rem}
 .day-tab.active.is-today::before{color:#fff}
 .day-tab .dt-count{background:rgba(255,255,255,.2);padding:1px 6px;border-radius:10px;font-size:.65rem}
-.day-tab.active .dt-count{background:rgba(255,255,255,.3)}
-
-/* Selected day header */
 .day-info-card{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));border:1px solid rgba(59,130,246,.25);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
 .day-info-card .dic-icon{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--bl),var(--pu));display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;flex-shrink:0}
 .day-info-card .dic-info{flex:1;min-width:0}
@@ -161,14 +132,11 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .day-info-card .dic-prog{text-align:left;flex-shrink:0}
 .day-info-card .dic-prog .dp-num{font-size:1.2rem;font-weight:900;color:var(--gr)}
 .day-info-card .dic-prog .dp-lbl{font-size:.62rem;color:var(--tm)}
-
-/* Exercise card */
 .ex-card{background:var(--card2);border:1px solid var(--bd);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all .25s}
 .ex-card.done{border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.05),rgba(16,185,129,.02))}
 .ex-card.done.minimized{padding:8px 12px}
 .ex-card.done.minimized .ex-body{display:none}
-.ex-header{display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;transition:background .15s;user-select:none}
-.ex-header:active{background:rgba(148,163,184,.05)}
+.ex-header{display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;user-select:none}
 .chk-btn{width:32px;height:32px;border-radius:9px;border:2px solid var(--tm);background:transparent;color:transparent;cursor:pointer;font-size:.85rem;font-weight:900;font-family:inherit;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .chk-btn.on{background:var(--gr);border-color:var(--gr);color:#fff;transform:scale(1.05)}
 .ex-num{width:26px;height:26px;border-radius:7px;background:var(--bl);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0}
@@ -187,14 +155,8 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .ex-img-holder img.f1{z-index:1}
 .ex-img-holder img.f2{z-index:2;animation:imgSwap 1.8s infinite}
 @keyframes imgSwap{0%,45%{opacity:0}55%,100%{opacity:1}}
-.ex-tips{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:8px 10px;font-size:.72rem;color:var(--tx2);margin-bottom:10px;line-height:1.7}
-.ex-tips strong{color:var(--bl)}
-
-/* Sets */
 .set-table{width:100%;border-collapse:collapse}
-.set-table th{background:rgba(148,163,184,.06);color:var(--tm);font-size:.66rem;padding:6px 4px;text-align:center;font-weight:700;border-radius:6px 6px 0 0}
-.set-table th:first-child{border-radius:0 6px 0 0}
-.set-table th:last-child{border-radius:6px 0 0 0}
+.set-table th{background:rgba(148,163,184,.06);color:var(--tm);font-size:.66rem;padding:6px 4px;text-align:center;font-weight:700}
 .set-table td{padding:5px 3px;text-align:center;border-bottom:1px solid var(--bd)}
 .set-table tr:last-child td{border-bottom:none}
 .set-table .sn{font-weight:800;color:var(--tx2);font-size:.8rem}
@@ -202,11 +164,9 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .set-table .si:focus{border-color:var(--bl)}
 .set-table .st{font-size:.75rem;font-weight:800;color:var(--tx2);direction:ltr;padding:7px 4px;border-radius:8px;background:rgba(148,163,184,.06);min-width:50px}
 .set-table .st.run{color:var(--am);background:rgba(245,158,11,.12)}
-.set-table .sb{width:32px;height:32px;border-radius:8px;border:none;background:var(--gr);color:#fff;cursor:pointer;font-size:.82rem;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
+.set-table .sb{width:32px;height:32px;border-radius:8px;border:none;background:var(--gr);color:#fff;cursor:pointer;font-size:.82rem;font-family:inherit;display:inline-flex;align-items:center;justify-content:center}
 .set-table .sb.run{background:var(--am);color:#000}
 .set-table .sb.dn{background:rgba(148,163,184,.2);color:var(--tx2)}
-
-/* Editor */
 .editor-day{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px}
 .editor-day-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
 .editor-day-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--bl),var(--pu));display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;flex-shrink:0}
@@ -221,29 +181,17 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .prog-table input{width:100%;padding:5px 4px;text-align:center;font-size:.78rem;border-radius:6px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-weight:700;outline:none}
 .prog-table input:focus{border-color:var(--bl)}
 .prog-table tr:last-child td{border-bottom:none}
-
-/* Body metrics */
 .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .metric-input{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
 .metric-input label{font-size:.65rem;color:var(--tx2);margin:0;display:flex;align-items:center;gap:4px}
 .metric-input input{border:none;background:transparent;padding:2px 0;font-size:1rem;font-weight:800;color:var(--tx)}
 .metric-input input:focus{box-shadow:none;border:none}
-
-/* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);z-index:90;display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.35);gap:2px}
 .bn-item{flex:1;padding:7px 4px;border-radius:10px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.62rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .15s;min-width:0}
 .bn-item .ic{font-size:1.25rem;line-height:1}
 .bn-item.active{color:var(--bl);background:rgba(59,130,246,.1)}
-.bn-item:active{transform:scale(.94)}
-
-/* Chart */
 .chart-box{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:8px;margin-bottom:10px;min-height:200px}
-.chart-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
-
-/* Section title */
 .sh{font-size:.7rem;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 8px;padding-bottom:4px;border-bottom:1px dashed var(--bd);display:flex;align-items:center;justify-content:space-between}
-
-/* Toggle switch */
 .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd)}
 .toggle-row:last-child{border-bottom:none}
 .toggle-lbl{font-size:.84rem;font-weight:700;flex:1}
@@ -253,11 +201,70 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .ts .sl::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s}
 .ts input:checked+.sl{background:var(--gr)}
 .ts input:checked+.sl::before{transform:translateX(20px)}
-
-/* Sticky actions */
 .sticky-bottom{position:sticky;bottom:0;background:var(--card);padding-top:10px;margin-top:10px;border-top:1px solid var(--bd);display:flex;gap:6px}
 .sticky-bottom .btn{flex:1;justify-content:center}
-
+/* Nutrition specifics */
+.nut-summary{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(5,150,105,.04));border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px;margin-bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ns-item{text-align:center}
+.ns-val{font-size:1.05rem;font-weight:900;color:var(--gr)}
+.ns-lbl{font-size:.62rem;color:var(--tm);font-weight:700;margin-top:2px}
+.calc-result{background:var(--card2);border-radius:10px;padding:12px;text-align:center;margin-bottom:8px}
+.calc-result .crv{font-size:1.5rem;font-weight:900;color:var(--bl)}
+.calc-result .crl{font-size:.68rem;color:var(--tm);margin-top:2px}
+.calc-result.hl{background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(5,150,105,.06));border:1px solid rgba(16,185,129,.3)}
+.calc-result.hl .crv{color:var(--gr)}
+.macros-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.macro-lbl{font-size:.74rem;font-weight:800;color:var(--tx2);min-width:52px}
+.macro-track{flex:1;height:10px;border-radius:6px;background:rgba(148,163,184,.12);overflow:hidden}
+.macro-fill{height:100%;border-radius:6px;transition:width .5s}
+.macro-fill.prot{background:linear-gradient(90deg,#f43f5e,#ec4899)}
+.macro-fill.carb{background:linear-gradient(90deg,#3b82f6,#06b6d4)}
+.macro-fill.fat{background:linear-gradient(90deg,#f59e0b,#eab308)}
+.macro-val{font-size:.74rem;font-weight:800;min-width:44px;text-align:left;direction:ltr}
+.meal-sec{background:var(--card2);border:1px solid var(--bd);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.meal-head{padding:10px 12px;background:linear-gradient(135deg,rgba(148,163,184,.08),rgba(148,163,184,.02));display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer}
+.mh-l{display:flex;align-items:center;gap:8px}
+.mh-ic{font-size:1.15rem}
+.mh-nm{font-weight:800;font-size:.85rem}
+.mh-tg{font-size:.66rem;color:var(--tm);font-weight:700}
+.mh-total{font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:6px;flex-shrink:0}
+.mh-total.ok{background:rgba(16,185,129,.15);color:var(--gr)}
+.mh-total.over{background:rgba(244,63,94,.15);color:var(--rd)}
+.mh-total.under{background:rgba(245,158,11,.15);color:var(--am)}
+.meal-items{padding:8px 10px;display:none}
+.meal-items.open{display:block}
+.meal-item{display:grid;grid-template-columns:26px minmax(70px,1fr) 80px 52px 24px;gap:6px;align-items:center;padding:6px 2px;border-bottom:1px solid var(--bd);font-size:.76rem}
+.meal-item:last-child{border-bottom:none}
+.mi-emoji{font-size:1rem;text-align:center}
+.mi-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.mi-qty-wrap{display:flex;gap:3px;align-items:center}
+.mi-qty{width:42px;padding:4px;text-align:center;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-family:inherit;font-weight:700;font-size:.72rem}
+.mi-unit{flex:1;padding:4px 2px;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-family:inherit;font-weight:700;font-size:.66rem;cursor:pointer}
+.mi-kcal{font-size:.7rem;font-weight:800;color:var(--gr);text-align:center;direction:ltr}
+.mi-del{background:none;border:none;color:var(--rd);cursor:pointer;font-size:.85rem;padding:2px;border-radius:6px;font-family:inherit}
+.meal-actions{display:flex;gap:6px;padding:8px 10px;background:rgba(148,163,184,.03);border-top:1px solid var(--bd)}
+.meal-actions .btn{flex:1;padding:6px 10px;font-size:.72rem;border-radius:8px}
+.food-search{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-size:.82rem;outline:none;margin-bottom:10px}
+.food-cats{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.food-cat{padding:5px 10px;border-radius:20px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.72rem;cursor:pointer}
+.food-cat.active{background:linear-gradient(135deg,var(--bl),var(--pu));color:#fff;border-color:transparent}
+.food-list{max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+.food-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);cursor:pointer}
+.food-item:hover{border-color:var(--gr)}
+.food-item .fi-emoji{font-size:1.2rem;flex-shrink:0}
+.food-item .fi-info{flex:1;min-width:0}
+.food-item .fi-name{font-weight:800;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.food-item .fi-macros{font-size:.62rem;color:var(--tm);margin-top:2px;direction:ltr;text-align:left}
+.food-item .fi-kcal{font-size:.72rem;font-weight:900;color:var(--gr);direction:ltr;text-align:center;flex-shrink:0}
+.supp-card{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start}
+.supp-card.on{border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.01))}
+.supp-toggle{width:22px;height:22px;border-radius:6px;border:2px solid var(--tm);background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:transparent;font-size:.7rem;font-weight:900;font-family:inherit;margin-top:2px}
+.supp-toggle.on{background:var(--gr);border-color:var(--gr);color:#fff}
+.supp-info{flex:1;min-width:0}
+.supp-name{font-weight:800;font-size:.86rem;margin-bottom:3px}
+.supp-row{font-size:.72rem;color:var(--tx2);margin-top:2px;line-height:1.6}
+.supp-row strong{color:var(--am);font-weight:800}
+.macro-donut{height:220px}
 @media(max-width:600px){
   body{padding:8px;padding-bottom:88px}
   .drawer{width:100vw}
@@ -271,20 +278,21 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   .prog-table input{font-size:.72rem;padding:4px 2px}
   .set-table .si{font-size:.78rem;padding:6px 3px}
   .set-table .st{font-size:.7rem;min-width:45px;padding:6px 2px}
+  .meal-item{grid-template-columns:22px 1fr 68px 46px 20px;gap:3px;font-size:.7rem}
+  .mi-qty{width:36px;font-size:.7rem}
 }
 </style>
 </head>
 <body>
 <div class="toasts" id="toasts"></div>
 
-<!-- AUTH -->
 <div class="auth-screen" id="authScreen">
   <div class="auth-card" id="loginView">
     <div class="auth-logo">🏋️</div>
     <div class="auth-title">ProFit</div>
     <div class="auth-sub">برای ادامه وارد شوید</div>
     <div class="form-row"><label>نام کاربری</label><input type="text" id="loginUser" dir="ltr" autocomplete="username"></div>
-    <div class="form-row"><label>رمز عبور</label><input type="password" id="loginPass" dir="ltr" autocomplete="current-password"></div>
+    <div class="form-row"><label>رمز عبور</label><input type="password" id="loginPass" dir="ltr" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="btn primary full" onclick="doLogin()" id="loginBtn">ورود</button>
     <div class="auth-err" id="loginErr"></div>
     <div style="height:1px;background:var(--bd);margin:14px 0"></div>
@@ -320,7 +328,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   </div>
 </div>
 
-<!-- MAIN -->
 <div id="mainApp" class="hidden">
   <div class="container">
     <div class="header">
@@ -335,16 +342,15 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav hidden" id="bottomNav">
   <button class="bn-item" data-view="home" onclick="switchView('home')"><span class="ic">🏠</span>خانه</button>
   <button class="bn-item" data-view="program" onclick="switchView('program')"><span class="ic">📅</span>برنامه</button>
+  <button class="bn-item" data-view="nutrition" onclick="switchView('nutrition')"><span class="ic">🥗</span>تغذیه</button>
   <button class="bn-item" data-view="progress" onclick="switchView('progress')"><span class="ic">📊</span>پیشرفت</button>
   <button class="bn-item" data-view="body" onclick="switchView('body')"><span class="ic">📏</span>بدن</button>
   <button class="bn-item" data-view="settings" onclick="switchView('settings')"><span class="ic">⚙️</span>تنظیمات</button>
 </div>
 
-<!-- DRAWERS -->
 <div class="backdrop" id="userBackdrop" onclick="closeDrawer('userDrawer')"></div>
 <div class="drawer left" id="userDrawer">
   <div class="drawer-header"><h2>👤 حساب کاربری</h2><button class="close-btn" onclick="closeDrawer('userDrawer')">✕</button></div>
@@ -403,6 +409,12 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   <div class="drawer-body" id="exercisePickerBody"></div>
 </div>
 
+<div class="backdrop" id="foodPickerBackdrop" onclick="closeDrawer('foodPickerDrawer')"></div>
+<div class="drawer right" id="foodPickerDrawer" style="width:600px;z-index:104">
+  <div class="drawer-header"><h2 id="foodPickerTitle">🍎 افزودن غذا</h2><button class="close-btn" onclick="closeDrawer('foodPickerDrawer')">✕</button></div>
+  <div class="drawer-body" id="foodPickerBody"></div>
+</div>
+
 <div class="backdrop" id="createStudentBackdrop" onclick="closeDrawer('createStudentDrawer')"></div>
 <div class="drawer right" id="createStudentDrawer" style="z-index:102">
   <div class="drawer-header"><h2>➕ شاگرد جدید</h2><button class="close-btn" onclick="closeDrawer('createStudentDrawer')">✕</button></div>
@@ -414,7 +426,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   </div>
 </div>
 
-<!-- WIZARD -->
 <div class="wizard-overlay hidden" id="wizardOverlay">
   <div class="wizard-card">
     <div id="wizStep1" class="wstep active">
@@ -463,1581 +474,1503 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 
 <script>
 /* ==========================================================
-   ProFit v2 — Phase 2 Final
+   ProFit v2 — Phase 3 Complete
    ========================================================== */
-
 const DB = window.PRO_DATA || { categories:{}, exercises:[], splits:{}, templates:{}, volumeByLevel:{}, animations:{} };
+const NUT = window.PRO_NUTRITION || { categories:{}, foods:[], supplements:{}, meals:[], bmrFormulas:{} };
 const IMG_MAP = window.PRO_IMG_MAP || {};
 const IMG_URL = window.getExerciseImageUrl || function(){ return null; };
 
 const BODY_METRICS = [
-  { key:'weight',   name:'وزن',      unit:'kg', emoji:'⚖️' },
-  { key:'bodyfat',  name:'چربی',    unit:'%',  emoji:'🔥' },
-  { key:'neck',     name:'گردن',     unit:'cm', emoji:'👤' },
-  { key:'chest',    name:'سینه',     unit:'cm', emoji:'💪' },
-  { key:'waist',    name:'کمر',      unit:'cm', emoji:'👖' },
-  { key:'hip',      name:'باسن',     unit:'cm', emoji:'🍑' },
-  { key:'arm',      name:'بازو',     unit:'cm', emoji:'💪' },
-  { key:'forearm',  name:'ساعد',     unit:'cm', emoji:'🦾' },
-  { key:'thigh',    name:'ران',      unit:'cm', emoji:'🦵' },
-  { key:'calf',     name:'ساق',      unit:'cm', emoji:'🦿' }
+  { key:'weight', name:'وزن', unit:'kg', emoji:'⚖️' },
+  { key:'bodyfat', name:'چربی', unit:'%', emoji:'🔥' },
+  { key:'neck', name:'گردن', unit:'cm', emoji:'👤' },
+  { key:'chest', name:'سینه', unit:'cm', emoji:'💪' },
+  { key:'waist', name:'کمر', unit:'cm', emoji:'👖' },
+  { key:'hip', name:'باسن', unit:'cm', emoji:'🍑' },
+  { key:'arm', name:'بازو', unit:'cm', emoji:'💪' },
+  { key:'forearm', name:'ساعد', unit:'cm', emoji:'🦾' },
+  { key:'thigh', name:'ران', unit:'cm', emoji:'🦵' },
+  { key:'calf', name:'ساق', unit:'cm', emoji:'🦿' }
 ];
 
 const state = {
   token: localStorage.getItem('profit-jwt') || null,
-  user: null,
-  users: [],
-  pending: [],
-  audit: [],
-  students: [],
-  currentStudent: null,
-  currentStudentData: null,
-  program: { days: [] },
-  programOwnerId: null,
-  history: {},
-  workout: { completed: {}, logs: {}, sets: {} },
-  body: [],
+  user: null, users: [], pending: [], audit: [], students: [],
+  currentStudent: null, currentStudentData: null,
+  program: { days: [] }, programOwnerId: null,
+  history: {}, workout: { completed:{}, logs:{}, sets:{} }, body: [],
+  nutrition: { profile:{ gender:'male', age:30, weight:75, height:175, activity:1.55, goal:'maintain', bodyfat:20, formula:'mifflin' }, targets:null, meals:{ breakfast:[], snack1:[], lunch:[], snack2:[], dinner:[] }, supplements:[], suppGoalUsed:null },
   permissions: { canEditProgram: false },
-  currentView: 'home',
-  adminTab: 'pending',
-  registerRole: 'student',
-  editingProgramFor: null,
-  pendingAddExerciseDay: null,
-  bodyChartMetric: 'weight',
-  progressChartType: 'volume',
-  selectedDayKey: null,
+  currentView: 'home', adminTab: 'pending', registerRole: 'student',
+  editingProgramFor: null, pendingAddExerciseDay: null,
+  bodyChartMetric: 'weight', progressChartType: 'volume', selectedDayKey: null,
+  foodPickerTarget: null, foodPickerCat: 'all', foodPickerSearch: '',
+  nutritionOwnerId: null, editingSuppIdx: null,
   charts: {}
 };
 
 /* ============ API ============ */
-function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 let wakingShown = false;
-function showWaking(){
-  if(wakingShown) return; wakingShown = true;
+function showWaking(){ if(wakingShown) return; wakingShown = true;
   const c = document.getElementById('toasts');
-  const el = document.createElement('div'); el.className = 'toast info'; el.id = 'wakingToast';
-  el.innerHTML = '<span class="spinner"></span><span>سرور در حال بیدار شدن...</span>';
+  const el = document.createElement('div'); el.className='toast info'; el.id='wakingToast';
+  el.innerHTML='<span class="spinner"></span><span>سرور در حال بیدار شدن...</span>';
   c.appendChild(el);
 }
-function hideWaking(){ wakingShown = false; const t = document.getElementById('wakingToast'); if(t) t.remove(); }
+function hideWaking(){ wakingShown=false; const t=document.getElementById('wakingToast'); if(t) t.remove(); }
 
 async function api(method, path, body, silent){
-  const headers = { 'Content-Type': 'application/json' };
-  if(state.token) headers['Authorization'] = 'Bearer ' + state.token;
-  const maxRetries = 3; let lastErr;
-  for(let attempt = 0; attempt < maxRetries; attempt++){
+  const headers = { 'Content-Type':'application/json' };
+  if(state.token) headers['Authorization']='Bearer '+state.token;
+  const maxRetries=3; let lastErr;
+  for(let a=0;a<maxRetries;a++){
     try{
-      const res = await fetch(path, { method, headers, body: body ? JSON.stringify(body) : undefined });
-      let data = null;
-      const text = await res.text();
-      if(text){ try { data = JSON.parse(text); } catch { data = text; } }
+      const res=await fetch(path,{method,headers,body:body?JSON.stringify(body):undefined});
+      let data=null; const text=await res.text();
+      if(text){ try{ data=JSON.parse(text); }catch{ data=text; } }
       hideWaking();
       if(!res.ok){
-        const err = new Error((data && data.error) || ('HTTP ' + res.status));
-        err.status = res.status; err.data = data;
-        if(res.status === 401 && !silent && state.token){
-          localStorage.removeItem('profit-jwt'); state.token = null;
-          setTimeout(() => location.reload(), 800);
-        }
+        const err=new Error((data&&data.error)||('HTTP '+res.status));
+        err.status=res.status; err.data=data;
+        if(res.status===401&&!silent&&state.token){ localStorage.removeItem('profit-jwt'); state.token=null; setTimeout(()=>location.reload(),800); }
         throw err;
       }
       return data;
-    } catch(e){
-      lastErr = e;
-      if(e.status || attempt === maxRetries - 1){ hideWaking(); throw e; }
-      if(attempt === 0) showWaking();
-      await sleep(1500 * (attempt + 1));
+    }catch(e){
+      lastErr=e;
+      if(e.status||a===maxRetries-1){ hideWaking(); throw e; }
+      if(a===0) showWaking();
+      await sleep(1500*(a+1));
     }
   }
   hideWaking(); throw lastErr;
 }
-
-/* ============ TOAST ============ */
-function toast(msg, type){
-  type = type || 'success';
-  const c = document.getElementById('toasts');
-  const el = document.createElement('div');
-  el.className = 'toast ' + type;
-  const icons = { success:'✅', error:'❌', info:'ℹ️', warn:'⚠️' };
-  el.innerHTML = '<span>' + (icons[type] || '✅') + '</span><span>' + msg + '</span>';
-  c.appendChild(el);
-  setTimeout(() => el.remove(), 3500);
+function toast(msg,type){
+  type=type||'success';
+  const c=document.getElementById('toasts');
+  const el=document.createElement('div');
+  el.className='toast '+type;
+  const ic={success:'✅',error:'❌',info:'ℹ️',warn:'⚠️'};
+  el.innerHTML='<span>'+(ic[type]||'✅')+'</span><span>'+msg+'</span>';
+  c.appendChild(el); setTimeout(()=>el.remove(),3500);
 }
-
-/* ============ HELPERS ============ */
-function esc(s){ const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
-function fN(n){ if(n === null || n === undefined || isNaN(n)) return '—'; return Number(n).toLocaleString('fa-IR'); }
-function todayKey(){ const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
-function todayWeekday(){ return new Date().getDay(); }
-function weekdayName(jsd){ return ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'][jsd]; }
-function formatTime(sec){ sec = Math.max(0, Math.floor(sec)); const m = Math.floor(sec/60), s = sec % 60; return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0'); }
-function themeMode(){ return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
-function weekdayOrder(){
-  const o = { 6:0, 0:1, 1:2, 2:3, 3:4, 4:5, 5:6 };
-  return o;
-}
-function sortDays(){
-  if(!state.program.days) return;
-  const o = weekdayOrder();
-  state.program.days.sort((a,b) => (o[a.weekday] ?? 99) - (o[b.weekday] ?? 99));
-}
+const esc=s=>{ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; };
+const fN=n=>{ if(n==null||isNaN(n)) return '—'; return Number(n).toLocaleString('fa-IR'); };
+const todayKey=()=>{ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const todayWeekday=()=>new Date().getDay();
+const weekdayName=j=>['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'][j];
+const formatTime=s=>{ s=Math.max(0,Math.floor(s)); return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); };
+const themeMode=()=>document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';
+const weekdayOrder=()=>({ 6:0, 0:1, 1:2, 2:3, 3:4, 4:5, 5:6 });
+function sortDays(){ if(!state.program.days) return; const o=weekdayOrder(); state.program.days.sort((a,b)=>(o[a.weekday]??99)-(o[b.weekday]??99)); }
 
 /* ============ AUTH ============ */
 function showRegister(){ document.getElementById('loginView').classList.add('hidden'); document.getElementById('registerView').classList.remove('hidden'); document.getElementById('pendingView').classList.add('hidden'); }
 function showLogin(){ document.getElementById('loginView').classList.remove('hidden'); document.getElementById('registerView').classList.add('hidden'); document.getElementById('pendingView').classList.add('hidden'); }
 function showPending(){ document.getElementById('loginView').classList.add('hidden'); document.getElementById('registerView').classList.add('hidden'); document.getElementById('pendingView').classList.remove('hidden'); }
-function pickRole(role){
-  state.registerRole = role;
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.toggle('selected', b.dataset.role === role));
-  document.getElementById('roleHint').textContent = role === 'coach' ? '⚠️ حساب مربی نیاز به تأیید مدیر دارد' : 'حساب شاگرد بلافاصله فعال می‌شود';
-}
+function pickRole(r){ state.registerRole=r; document.querySelectorAll('.role-btn').forEach(b=>b.classList.toggle('selected',b.dataset.role===r)); document.getElementById('roleHint').textContent=r==='coach'?'⚠️ حساب مربی نیاز به تأیید مدیر دارد':'حساب شاگرد بلافاصله فعال می‌شود'; }
 async function doLogin(){
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value;
-  const err = document.getElementById('loginErr'), btn = document.getElementById('loginBtn');
-  err.textContent = '';
-  if(!u || !p){ err.textContent = 'نام و رمز را وارد کنید'; return; }
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> ورود...';
+  const u=document.getElementById('loginUser').value.trim(), p=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginErr'), btn=document.getElementById('loginBtn');
+  err.textContent='';
+  if(!u||!p){ err.textContent='نام و رمز را وارد کنید'; return; }
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> ورود...';
   try{
-    const r = await api('POST', '/api/auth/login', { username: u, password: p }, true);
-    state.token = r.token; state.user = r.user;
-    localStorage.setItem('profit-jwt', r.token);
+    const r=await api('POST','/api/auth/login',{username:u,password:p},true);
+    state.token=r.token; state.user=r.user; localStorage.setItem('profit-jwt',r.token);
     await bootAfterLogin();
-  } catch(e){
-    const m = e.data && e.data.error;
-    if(m === 'pending_approval'){ showPending(); return; }
-    if(m === 'invalid_credentials') err.textContent = 'نام کاربری یا رمز اشتباه';
-    else if(m === 'rejected') err.textContent = 'حساب شما رد شده است';
-    else if(m === 'inactive') err.textContent = 'حساب غیرفعال است';
-    else err.textContent = 'خطا: ' + (m || e.message);
-  } finally { btn.disabled = false; btn.textContent = 'ورود'; }
+  }catch(e){
+    const m=e.data&&e.data.error;
+    if(m==='pending_approval'){ showPending(); return; }
+    if(m==='invalid_credentials') err.textContent='نام کاربری یا رمز اشتباه';
+    else if(m==='rejected') err.textContent='حساب شما رد شده است';
+    else if(m==='inactive') err.textContent='حساب غیرفعال است';
+    else err.textContent='خطا: '+(m||e.message);
+  }finally{ btn.disabled=false; btn.textContent='ورود'; }
 }
 async function doRegister(){
-  const u = document.getElementById('regUser').value.trim();
-  const n = document.getElementById('regName').value.trim();
-  const p = document.getElementById('regPass').value;
-  const err = document.getElementById('regErr'), btn = document.getElementById('regBtn');
-  err.textContent = '';
-  if(!u || !n || !p){ err.textContent = 'همه فیلدها را پر کنید'; return; }
-  if(!/^[a-zA-Z0-9_.-]+$/.test(u)){ err.textContent = 'نام کاربری فقط انگلیسی، عدد، _ . -'; return; }
-  if(u.length < 3){ err.textContent = 'نام کاربری حداقل ۳ کاراکتر'; return; }
-  if(p.length < 6){ err.textContent = 'رمز حداقل ۶ کاراکتر'; return; }
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> در حال ایجاد...';
+  const u=document.getElementById('regUser').value.trim(), n=document.getElementById('regName').value.trim(), p=document.getElementById('regPass').value;
+  const err=document.getElementById('regErr'), btn=document.getElementById('regBtn');
+  err.textContent='';
+  if(!u||!n||!p){ err.textContent='همه فیلدها را پر کنید'; return; }
+  if(!/^[a-zA-Z0-9_.-]+$/.test(u)){ err.textContent='نام کاربری فقط انگلیسی، عدد، _ . -'; return; }
+  if(u.length<3){ err.textContent='نام کاربری حداقل ۳'; return; }
+  if(p.length<6){ err.textContent='رمز حداقل ۶'; return; }
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> در حال ایجاد...';
   try{
-    const r = await api('POST', '/api/auth/register', { username: u, displayName: n, password: p, requestedRole: state.registerRole }, true);
+    const r=await api('POST','/api/auth/register',{username:u,displayName:n,password:p,requestedRole:state.registerRole},true);
     if(r.pending){ showPending(); return; }
-    state.token = r.token; state.user = r.user;
-    localStorage.setItem('profit-jwt', r.token);
+    state.token=r.token; state.user=r.user; localStorage.setItem('profit-jwt',r.token);
     await bootAfterLogin();
-  } catch(e){
-    const m = e.data && e.data.error;
-    if(m === 'username_taken') err.textContent = 'این نام کاربری گرفته شده';
-    else if(m === 'invalid_username') err.textContent = 'نام کاربری نامعتبر';
-    else if(m === 'password_too_short') err.textContent = 'رمز کوتاه است';
-    else err.textContent = 'خطا: ' + (m || e.message);
-  } finally { btn.disabled = false; btn.textContent = '✅ ایجاد حساب'; }
+  }catch(e){
+    const m=e.data&&e.data.error;
+    if(m==='username_taken') err.textContent='این نام کاربری گرفته شده';
+    else if(m==='invalid_username') err.textContent='نام کاربری نامعتبر';
+    else if(m==='password_too_short') err.textContent='رمز کوتاه است';
+    else err.textContent='خطا: '+(m||e.message);
+  }finally{ btn.disabled=false; btn.textContent='✅ ایجاد حساب'; }
 }
-async function doLogout(){
-  if(!confirm('خروج از حساب؟')) return;
-  localStorage.removeItem('profit-jwt'); state.token = null; state.user = null;
-  location.reload();
-}
+async function doLogout(){ if(!confirm('خروج؟')) return; localStorage.removeItem('profit-jwt'); state.token=null; state.user=null; location.reload(); }
 
 /* ============ DRAWERS ============ */
 function openDrawer(id){
-  const d = document.getElementById(id);
-  if(!d) return;
+  const d=document.getElementById(id); if(!d) return;
   d.classList.add('open');
-  const b = document.getElementById(id.replace('Drawer', 'Backdrop'));
+  const b=document.getElementById(id.replace('Drawer','Backdrop'));
   if(b) b.classList.add('open');
-  if(id === 'userDrawer') renderUserDrawer();
-  if(id === 'adminDrawer') renderAdminAll();
-  if(id === 'coachDrawer') renderCoachPanel();
+  if(id==='userDrawer') renderUserDrawer();
+  if(id==='adminDrawer') renderAdminAll();
+  if(id==='coachDrawer') renderCoachPanel();
 }
 function closeDrawer(id){
-  const d = document.getElementById(id);
-  if(d) d.classList.remove('open');
-  const b = document.getElementById(id.replace('Drawer', 'Backdrop'));
-  if(b) b.classList.remove('open');
+  const d=document.getElementById(id); if(d) d.classList.remove('open');
+  const b=document.getElementById(id.replace('Drawer','Backdrop')); if(b) b.classList.remove('open');
 }
-function closeAllDrawers(){
-  document.querySelectorAll('.drawer.open, .backdrop.open').forEach(el => el.classList.remove('open'));
-}
+function closeAllDrawers(){ document.querySelectorAll('.drawer.open, .backdrop.open').forEach(el=>el.classList.remove('open')); }
 
 /* ============ BOOT ============ */
 async function bootAfterLogin(){
   document.getElementById('authScreen').classList.add('hidden');
   document.getElementById('mainApp').classList.remove('hidden');
   document.getElementById('bottomNav').classList.remove('hidden');
-  const u = state.user;
-  document.getElementById('userAvatar').textContent = u.emoji || '💪';
-  document.getElementById('userAvatar').style.background = u.color || '#3b82f6';
-  document.getElementById('userName').textContent = u.displayName;
-
+  const u=state.user;
+  document.getElementById('userAvatar').textContent=u.emoji||'💪';
+  document.getElementById('userAvatar').style.background=u.color||'#3b82f6';
+  document.getElementById('userName').textContent=u.displayName;
   try{
-    const d = await api('GET', '/api/users/' + u.id + '/data');
-    if(d.workout) state.workout = d.workout;
-    if(d.history) state.history = d.history;
-    if(d.body) state.body = d.body;
-    if(d.program && d.program.days) state.program = d.program;
-    if(d.permissions) state.permissions = d.permissions;
-  } catch(e){}
-
-  // auto select today's day
-  const todayJsd = todayWeekday();
-  const todayDay = state.program.days.find(d => d.weekday === todayJsd);
-  if(todayDay) state.selectedDayKey = todayDay.id || todayDay.weekday;
-  else if(state.program.days.length > 0) state.selectedDayKey = state.program.days[0].id || state.program.days[0].weekday;
-
-  if(u.role === 'student'){
-    const done = localStorage.getItem('profit-onboarded-' + u.id);
-    if(!done && (!state.program.days || !state.program.days.length)){
-      openWizard(); return;
+    const d=await api('GET','/api/users/'+u.id+'/data');
+    if(d.workout) state.workout=d.workout;
+    if(d.history) state.history=d.history;
+    if(d.body) state.body=d.body;
+    if(d.program&&d.program.days) state.program=d.program;
+    if(d.permissions) state.permissions=d.permissions;
+    if(d.nutrition){
+      state.nutrition={...state.nutrition,...d.nutrition};
+      if(!state.nutrition.meals) state.nutrition.meals={ breakfast:[], snack1:[], lunch:[], snack2:[], dinner:[] };
+      if(!state.nutrition.supplements) state.nutrition.supplements=[];
     }
+  }catch(e){}
+  const tj=todayWeekday();
+  const td=state.program.days.find(d=>d.weekday===tj);
+  if(td) state.selectedDayKey=td.id||td.weekday;
+  else if(state.program.days.length>0) state.selectedDayKey=state.program.days[0].id||state.program.days[0].weekday;
+  if(u.role==='student'){
+    const done=localStorage.getItem('profit-onboarded-'+u.id);
+    if(!done&&(!state.program.days||!state.program.days.length)){ openWizard(); return; }
   }
   renderToolbar(); renderView();
 }
-
 async function saveWorkoutState(){ try{ await api('POST','/api/users/'+state.user.id+'/data/workout',{value:state.workout}); }catch(e){} }
 async function saveHistory(){ try{ await api('POST','/api/users/'+state.user.id+'/data/history',{value:state.history}); }catch(e){} }
 async function saveBody(){ try{ await api('POST','/api/users/'+state.user.id+'/data/body',{value:state.body}); }catch(e){} }
+async function saveNutrition(){
+  const targetId = state.nutritionOwnerId || state.user.id;
+  try{ await api('POST','/api/users/'+targetId+'/data/nutrition',{value:state.nutrition}); }catch(e){}
+}
 
 /* ============ TOOLBAR ============ */
 function renderToolbar(){
-  const u = state.user;
-  const tb = document.getElementById('toolbar');
-  let html = '';
-  if(u.role === 'admin') html += '<button class="btn admin" onclick="openDrawer(\'adminDrawer\')"><span>👑</span> مدیر</button>';
-  if(u.role === 'admin' || u.role === 'coach') html += '<button class="btn coach" onclick="openDrawer(\'coachDrawer\')"><span>👨‍🏫</span> مربی</button>';
-  html += '<button class="btn" onclick="switchView(\'program\')"><span>📅</span> برنامه</button>';
-  html += '<button class="btn" onclick="switchView(\'progress\')"><span>📊</span> پیشرفت</button>';
-  tb.innerHTML = html;
+  const u=state.user; const tb=document.getElementById('toolbar');
+  let h='';
+  if(u.role==='admin') h+='<button class="btn admin" onclick="openDrawer(\'adminDrawer\')"><span>👑</span> مدیر</button>';
+  if(u.role==='admin'||u.role==='coach') h+='<button class="btn coach" onclick="openDrawer(\'coachDrawer\')"><span>👨‍🏫</span> مربی</button>';
+  h+='<button class="btn" onclick="switchView(\'program\')"><span>📅</span> برنامه</button>';
+  h+='<button class="btn" onclick="switchView(\'nutrition\')"><span>🥗</span> تغذیه</button>';
+  tb.innerHTML=h;
 }
-
-/* ============ VIEW ============ */
-function switchView(view){
-  state.currentView = view;
-  renderView();
-}
+function switchView(v){ state.currentView=v; renderView(); }
 function renderView(){
-  const c = document.getElementById('contentArea');
-  const v = state.currentView;
-  if(v === 'home') renderHome(c);
-  else if(v === 'program') renderProgramView(c);
-  else if(v === 'progress') renderProgressView(c);
-  else if(v === 'body') renderBodyView(c);
-  else if(v === 'settings') renderSettingsView(c);
-  document.querySelectorAll('.bn-item').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+  const c=document.getElementById('contentArea');
+  const v=state.currentView;
+  if(v==='home') renderHome(c);
+  else if(v==='program') renderProgramView(c);
+  else if(v==='nutrition') renderNutritionView(c);
+  else if(v==='progress') renderProgressView(c);
+  else if(v==='body') renderBodyView(c);
+  else if(v==='settings') renderSettingsView(c);
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
 }
 
 /* ============ HOME ============ */
 function renderHome(c){
-  const u = state.user;
-  const todayJsd = todayWeekday();
-  const todayDay = state.program.days.find(d => d.weekday === todayJsd);
-  const roles = { admin: '👑 مدیر', coach: '👨‍🏫 مربی', student: '🎓 شاگرد' };
-
-  let html = '<div class="card"><h2>👋 سلام ' + esc(u.displayName) + '</h2>' +
-    '<div style="font-size:.8rem;color:var(--tx2);line-height:1.9">' +
-    'نقش: <span class="badge ' + u.role + '">' + roles[u.role] + '</span><br>@' + esc(u.username) +
-    '</div></div>';
-
-  if(todayDay){
-    const exs = todayDay.exercises || [];
-    const total = exs.length;
-    const done = exs.filter((_, i) => state.workout.completed[todayKey() + ':' + i]).length;
-    const pct = total ? Math.round(done/total*100) : 0;
-    html += '<div class="card"><h2>📅 امروز — ' + esc(todayDay.name) + '</h2>' +
-      '<div style="font-size:.8rem;color:var(--tx2);margin-bottom:10px">' + esc(todayDay.focus || '') + '</div>' +
-      '<div class="week-progress" style="margin-bottom:10px"><div class="wp-top"><span>پیشرفت امروز</span><strong>' + fN(done) + '/' + fN(total) + '</strong></div>' +
-      '<div class="wp-track"><div class="wp-fill" style="width:' + pct + '%"></div></div></div>' +
-      '<button class="btn primary full" onclick="state.selectedDayKey=\'' + (todayDay.id || todayDay.weekday) + '\';switchView(\'program\')">مشاهده تمرین امروز</button></div>';
+  const u=state.user; const tj=todayWeekday();
+  const td=state.program.days.find(d=>d.weekday===tj);
+  const roles={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'};
+  let h='<div class="card"><h2>👋 سلام '+esc(u.displayName)+'</h2>'+
+    '<div style="font-size:.8rem;color:var(--tx2);line-height:1.9">نقش: <span class="badge '+u.role+'">'+roles[u.role]+'</span><br>@'+esc(u.username)+'</div></div>';
+  if(td){
+    const exs=td.exercises||[]; const total=exs.length;
+    const done=exs.filter((_,i)=>state.workout.completed[todayKey()+':'+i]).length;
+    const pct=total?Math.round(done/total*100):0;
+    h+='<div class="card"><h2>📅 امروز — '+esc(td.name)+'</h2>'+
+      '<div style="font-size:.8rem;color:var(--tx2);margin-bottom:10px">'+esc(td.focus||'')+'</div>'+
+      '<div class="week-progress" style="margin-bottom:10px"><div class="wp-top"><span>پیشرفت امروز</span><strong>'+fN(done)+'/'+fN(total)+'</strong></div>'+
+      '<div class="wp-track"><div class="wp-fill" style="width:'+pct+'%"></div></div></div>'+
+      '<button class="btn primary full" onclick="state.selectedDayKey=\''+(td.id||td.weekday)+'\';switchView(\'program\')">مشاهده تمرین امروز</button></div>';
   } else {
-    html += '<div class="card"><h2>☕ امروز</h2><div style="color:var(--tx2);font-size:.82rem;line-height:1.8">امروز روز استراحت است یا برنامه‌ای تنظیم نشده.</div></div>';
+    h+='<div class="card"><h2>☕ امروز</h2><div style="color:var(--tx2);font-size:.82rem">امروز روز استراحت است یا برنامه‌ای تنظیم نشده.</div></div>';
   }
-
-  const ws = getWeekStats();
-  html += '<div class="card"><h2>📊 این هفته</h2>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center">' +
-    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--bl)">' + fN(ws.sessions) + '</div><div style="font-size:.68rem;color:var(--tm);margin-top:2px">جلسات</div></div>' +
-    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--gr)">' + fN(ws.volume) + '</div><div style="font-size:.68rem;color:var(--tm);margin-top:2px">حجم (kg)</div></div>' +
+  const ws=getWeekStats();
+  h+='<div class="card"><h2>📊 این هفته</h2>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center">'+
+    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--bl)">'+fN(ws.sessions)+'</div><div style="font-size:.68rem;color:var(--tm)">جلسات</div></div>'+
+    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--gr)">'+fN(ws.volume)+'</div><div style="font-size:.68rem;color:var(--tm)">حجم (kg)</div></div>'+
     '</div></div>';
-
-  if(u.role === 'admin' || u.role === 'coach'){
-    html += '<div class="card"><h2>🚀 دسترسی سریع</h2>' +
-      '<button class="btn coach full" style="margin-bottom:8px" onclick="openDrawer(\'coachDrawer\')">👨‍🏫 پنل مربی</button>' +
-      (u.role === 'admin' ? '<button class="btn admin full" onclick="openDrawer(\'adminDrawer\')">👑 پنل مدیر</button>' : '') +
+  if(u.role==='admin'||u.role==='coach'){
+    h+='<div class="card"><h2>🚀 دسترسی سریع</h2>'+
+      '<button class="btn coach full" style="margin-bottom:8px" onclick="openDrawer(\'coachDrawer\')">👨‍🏫 پنل مربی</button>'+
+      (u.role==='admin'?'<button class="btn admin full" onclick="openDrawer(\'adminDrawer\')">👑 پنل مدیر</button>':'')+
     '</div>';
   }
-  c.innerHTML = html;
+  c.innerHTML=h;
 }
-
 function getWeekStats(){
-  const today = new Date();
-  const diff = (today.getDay() + 1) % 7;
-  const start = new Date(today); start.setDate(today.getDate() - diff); start.setHours(0,0,0,0);
-  let sessions = 0, volume = 0;
-  for(let i = 0; i < 7; i++){
-    const d = new Date(start); d.setDate(start.getDate() + i);
-    const k = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    const h = state.history[k];
-    if(h){ if(h.completed > 0) sessions++; volume += h.volume || 0; }
+  const today=new Date(); const diff=(today.getDay()+1)%7;
+  const start=new Date(today); start.setDate(today.getDate()-diff); start.setHours(0,0,0,0);
+  let sessions=0, volume=0;
+  for(let i=0;i<7;i++){
+    const d=new Date(start); d.setDate(start.getDate()+i);
+    const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const h=state.history[k]; if(h){ if(h.completed>0) sessions++; volume+=h.volume||0; }
   }
   return { sessions, volume: Math.round(volume) };
 }
 
-/* ============ PROGRAM VIEW (with tabs) ============ */
+/* ============ PROGRAM VIEW ============ */
 function renderProgramView(c){
-  const canEdit = state.user.role !== 'student' || state.permissions.canEditProgram;
-  const days = state.program.days || [];
-
+  const canEdit=state.user.role!=='student'||state.permissions.canEditProgram;
+  const days=state.program.days||[];
   if(!days.length){
-    let html = '<div class="card"><div class="empty"><div class="icon">📭</div><div style="font-weight:700;margin-bottom:6px">هنوز برنامه‌ای نداری</div>';
-    if(state.user.role === 'student'){
-      html += '<button class="btn primary" style="margin-top:12px" onclick="openWizard()">🎯 ساخت برنامه هوشمند</button>';
-      if(canEdit){
-        html += '<button class="btn" style="margin-top:8px" onclick="openProgramEditor(\'' + state.user.id + '\')">✏️ ساخت دستی برنامه</button>';
-      } else {
-        html += '<div style="font-size:.74rem;color:var(--tm);margin-top:14px">برای ویرایش دستی، از مدیر یا مربی خود اجازه بگیرید</div>';
-      }
+    let h='<div class="card"><div class="empty"><div class="icon">📭</div><div style="font-weight:700;margin-bottom:6px">هنوز برنامه‌ای نداری</div>';
+    if(state.user.role==='student'){
+      h+='<button class="btn primary" style="margin-top:12px" onclick="openWizard()">🎯 ساخت برنامه هوشمند</button>';
+      if(canEdit) h+='<button class="btn" style="margin-top:8px" onclick="openProgramEditor(\''+state.user.id+'\')">✏️ ساخت دستی برنامه</button>';
     } else {
-      html += '<button class="btn primary" style="margin-top:12px" onclick="openProgramEditor(\'' + state.user.id + '\')">✏️ ویرایش برنامه</button>';
+      h+='<button class="btn primary" style="margin-top:12px" onclick="openProgramEditor(\''+state.user.id+'\')">✏️ ویرایش برنامه</button>';
     }
-    html += '</div></div>';
-    c.innerHTML = html;
-    return;
+    h+='</div></div>'; c.innerHTML=h; return;
   }
-
-  // Ensure selected day
-  const todayJsd = todayWeekday();
-  let selectedKey = state.selectedDayKey;
-  let selectedDay = days.find(d => (d.id || d.weekday) === selectedKey);
-  if(!selectedDay){
-    selectedDay = days.find(d => d.weekday === todayJsd) || days[0];
-    state.selectedDayKey = selectedDay.id || selectedDay.weekday;
-  }
-
-  // Compute week stats
-  let totalEx = 0, totalDone = 0;
-  days.forEach((day, dayIdx) => {
-    const exs = day.exercises || [];
-    exs.forEach((_, i) => {
-      totalEx++;
-      if(state.workout.completed[todayKey() + ':' + i]) totalDone++;
-    });
-  });
-  const weekPct = totalEx ? Math.round(totalDone/totalEx*100) : 0;
-
-  let html = '<div class="prog-header">';
-  html += '<div class="prog-actions">';
-  if(canEdit){
-    html += '<button class="btn primary" onclick="openProgramEditor(\'' + state.user.id + '\')">✏️ ویرایش برنامه</button>';
-  }
-  if(state.user.role === 'student'){
-    html += '<button class="btn" onclick="openWizard()">🎯 برنامه هوشمند</button>';
-  }
-  html += '</div>';
-  html += '<div class="week-progress"><div class="wp-top"><span>📊 پیشرفت این هفته</span><strong>' + fN(totalDone) + '/' + fN(totalEx) + ' حرکت</strong></div>' +
-    '<div class="wp-track"><div class="wp-fill" style="width:' + weekPct + '%"></div></div></div>';
-  html += '</div>';
-
-  // Day tabs
+  const tj=todayWeekday();
+  let sk=state.selectedDayKey;
+  let sd=days.find(d=>(d.id||d.weekday)===sk);
+  if(!sd){ sd=days.find(d=>d.weekday===tj)||days[0]; state.selectedDayKey=sd.id||sd.weekday; }
+  let totalEx=0,totalDone=0;
+  days.forEach(day=>{ (day.exercises||[]).forEach((_,i)=>{ totalEx++; if(state.workout.completed[todayKey()+':'+i]) totalDone++; }); });
+  const wp=totalEx?Math.round(totalDone/totalEx*100):0;
+  let h='<div class="prog-header"><div class="prog-actions">';
+  if(canEdit) h+='<button class="btn primary" onclick="openProgramEditor(\''+state.user.id+'\')">✏️ ویرایش برنامه</button>';
+  if(state.user.role==='student') h+='<button class="btn" onclick="openWizard()">🎯 برنامه هوشمند</button>';
+  h+='</div><div class="week-progress"><div class="wp-top"><span>📊 پیشرفت این هفته</span><strong>'+fN(totalDone)+'/'+fN(totalEx)+'</strong></div>'+
+    '<div class="wp-track"><div class="wp-fill" style="width:'+wp+'%"></div></div></div></div>';
   sortDays();
-  html += '<div class="day-tabs">';
-  days.forEach(day => {
-    const isToday = day.weekday === todayJsd;
-    const exs = day.exercises || [];
-    const key = day.id || day.weekday;
-    const isActive = key === state.selectedDayKey;
-    html += '<button class="day-tab ' + (isActive ? 'active' : '') + ' ' + (isToday ? 'is-today' : '') + '" onclick="selectDay(\'' + key + '\')">' +
-      (day.icon || '💪') + ' ' + esc(day.name.replace('روز ', '')) +
-      '<span class="dt-count">' + exs.length + '</span>' +
-    '</button>';
+  h+='<div class="day-tabs">';
+  days.forEach(day=>{
+    const isT=day.weekday===tj; const exs=day.exercises||[];
+    const k=day.id||day.weekday; const isA=k===state.selectedDayKey;
+    h+='<button class="day-tab '+(isA?'active':'')+' '+(isT?'is-today':'')+'" onclick="selectDay(\''+k+'\')">'+
+      (day.icon||'💪')+' '+esc(day.name.replace('روز ',''))+'<span class="dt-count">'+exs.length+'</span></button>';
   });
-  html += '</div>';
-
-  // Selected day info
-  const exs = selectedDay.exercises || [];
-  const done = exs.filter((_, i) => state.workout.completed[todayKey() + ':' + i]).length;
-  html += '<div class="day-info-card">' +
-    '<div class="dic-icon">' + (selectedDay.icon || '💪') + '</div>' +
-    '<div class="dic-info">' +
-      '<div class="dic-name">' + esc(selectedDay.name) + '</div>' +
-      '<div class="dic-focus">' + esc(selectedDay.focus || '—') + ' · ' + weekdayName(selectedDay.weekday) + '</div>' +
-    '</div>' +
-    '<div class="dic-prog">' +
-      '<div class="dp-num">' + fN(done) + '/' + fN(exs.length) + '</div>' +
-      '<div class="dp-lbl">انجام‌شده</div>' +
-    '</div>' +
+  h+='</div>';
+  const exs=sd.exercises||[];
+  const done=exs.filter((_,i)=>state.workout.completed[todayKey()+':'+i]).length;
+  h+='<div class="day-info-card">'+
+    '<div class="dic-icon">'+(sd.icon||'💪')+'</div>'+
+    '<div class="dic-info"><div class="dic-name">'+esc(sd.name)+'</div>'+
+    '<div class="dic-focus">'+esc(sd.focus||'—')+' · '+weekdayName(sd.weekday)+'</div></div>'+
+    '<div class="dic-prog"><div class="dp-num">'+fN(done)+'/'+fN(exs.length)+'</div><div class="dp-lbl">انجام‌شده</div></div>'+
   '</div>';
-
-  if(exs.length === 0){
-    html += '<div class="empty" style="padding:20px"><div class="icon">📝</div><div style="font-size:.82rem">هنوز حرکتی برای این روز نیست</div>';
-    if(canEdit){
-      html += '<button class="btn primary" style="margin-top:12px" onclick="openProgramEditor(\'' + state.user.id + '\')">➕ افزودن حرکت</button>';
-    }
-    html += '</div>';
+  if(exs.length===0){
+    h+='<div class="empty" style="padding:20px"><div class="icon">📝</div><div style="font-size:.82rem">هنوز حرکتی برای این روز نیست</div>';
+    if(canEdit) h+='<button class="btn primary" style="margin-top:12px" onclick="openProgramEditor(\''+state.user.id+'\')">➕ افزودن حرکت</button>';
+    h+='</div>';
   } else {
-    const dayIdx = days.indexOf(selectedDay);
-    html += exs.map((ex, i) => renderExerciseCard(ex, dayIdx, i)).join('');
+    const di=days.indexOf(sd);
+    h+=exs.map((ex,i)=>renderExerciseCard(ex,di,i)).join('');
   }
-
-  c.innerHTML = html;
+  c.innerHTML=h;
 }
-
-function selectDay(key){
-  state.selectedDayKey = key;
-  renderView();
-}
-
-function renderExerciseCard(ex, dayIdx, exIdx){
-  const key = todayKey() + ':' + exIdx;
-  const isDone = !!state.workout.completed[key];
-  const logs = state.workout.logs[key] || {};
-  const sets = ex.sets || 3;
-  const def = DB.exercises.find(e => e.id === ex.exId) || {};
-  const imgName = IMG_MAP[ex.exId];
-  const img1 = imgName ? IMG_URL(imgName, 0) : null;
-  const img2 = imgName ? IMG_URL(imgName, 1) : null;
-  const anim = (DB.animations && DB.animations[def.anim]) || '';
-
-  let maxW = 0, totalVol = 0;
-  Object.values(logs).forEach(l => {
-    if(l.weight && l.reps){ totalVol += l.weight * l.reps; if(l.weight > maxW) maxW = l.weight; }
-  });
-  const summary = isDone && maxW > 0 ? '✓ بیشترین: ' + fN(maxW) + 'kg · حجم: ' + fN(Math.round(totalVol)) + 'kg' : '';
-
-  let setsHtml = '<div style="margin-bottom:8px"><table class="set-table"><thead><tr><th style="width:32px">ست</th><th>وزنه</th><th>تکرار</th><th style="width:60px">زمان</th><th style="width:36px"></th></tr></thead><tbody>';
-  for(let i = 0; i < sets; i++){
-    const log = logs[i] || {};
-    const stKey = key + ':' + i;
-    const st = state.workout.sets[stKey];
-    const elapsed = st ? (st.running ? Math.floor((Date.now() - st.startedAt)/1000) + (st.elapsed||0) : (st.elapsed||0)) : 0;
-    setsHtml += '<tr>' +
-      '<td class="sn">' + fN(i+1) + '</td>' +
-      '<td><input class="si" type="number" step="0.5" min="0" placeholder="—" value="' + (log.weight != null ? log.weight : '') + '" onchange="updSet(\'' + key + '\',' + i + ',\'weight\',this.value)"></td>' +
-      '<td><input class="si" type="number" min="0" placeholder="—" value="' + (log.reps != null ? log.reps : '') + '" onchange="updSet(\'' + key + '\',' + i + ',\'reps\',this.value)"></td>' +
-      '<td class="st ' + (st && st.running ? 'run' : '') + '">' + formatTime(elapsed) + '</td>' +
-      '<td><button class="sb ' + (st && st.running ? 'run' : (st && st.elapsed > 0 ? 'dn' : '')) + '" onclick="event.stopPropagation();toggleSetTimer(\'' + key + '\',' + i + ')">' + (st && st.running ? '⏸' : '▶') + '</button></td>' +
+function selectDay(k){ state.selectedDayKey=k; renderView(); }
+function renderExerciseCard(ex,dayIdx,exIdx){
+  const key=todayKey()+':'+exIdx;
+  const isDone=!!state.workout.completed[key];
+  const logs=state.workout.logs[key]||{};
+  const sets=ex.sets||3;
+  const def=DB.exercises.find(e=>e.id===ex.exId)||{};
+  const imgName=IMG_MAP[ex.exId];
+  const img1=imgName?IMG_URL(imgName,0):null;
+  const img2=imgName?IMG_URL(imgName,1):null;
+  const anim=(DB.animations&&DB.animations[def.anim])||'';
+  let maxW=0,totalVol=0;
+  Object.values(logs).forEach(l=>{ if(l.weight&&l.reps){ totalVol+=l.weight*l.reps; if(l.weight>maxW) maxW=l.weight; } });
+  const summary=isDone&&maxW>0?'✓ بیشترین: '+fN(maxW)+'kg · حجم: '+fN(Math.round(totalVol))+'kg':'';
+  let setsHtml='<table class="set-table"><thead><tr><th style="width:32px">ست</th><th>وزنه</th><th>تکرار</th><th style="width:60px">زمان</th><th style="width:36px"></th></tr></thead><tbody>';
+  for(let i=0;i<sets;i++){
+    const log=logs[i]||{};
+    const stKey=key+':'+i;
+    const st=state.workout.sets[stKey];
+    const elapsed=st?(st.running?Math.floor((Date.now()-st.startedAt)/1000)+(st.elapsed||0):(st.elapsed||0)):0;
+    setsHtml+='<tr>'+
+      '<td class="sn">'+fN(i+1)+'</td>'+
+      '<td><input class="si" type="number" step="0.5" min="0" placeholder="—" value="'+(log.weight!=null?log.weight:'')+'" onchange="updSet(\''+key+'\','+i+',\'weight\',this.value)"></td>'+
+      '<td><input class="si" type="number" min="0" placeholder="—" value="'+(log.reps!=null?log.reps:'')+'" onchange="updSet(\''+key+'\','+i+',\'reps\',this.value)"></td>'+
+      '<td class="st '+(st&&st.running?'run':'')+'">'+formatTime(elapsed)+'</td>'+
+      '<td><button class="sb '+(st&&st.running?'run':(st&&st.elapsed>0?'dn':''))+'" onclick="event.stopPropagation();toggleSetTimer(\''+key+'\','+i+')">'+(st&&st.running?'⏸':'▶')+'</button></td>'+
     '</tr>';
   }
-  setsHtml += '</tbody></table></div>';
-
+  setsHtml+='</tbody></table>';
   let visual;
   if(img1){
-    visual = '<div class="ex-img-holder">' +
-      '<img class="f1" src="' + img1 + '" loading="lazy" onerror="this.style.display=\'none\'">' +
-      '<img class="f2" src="' + img2 + '" loading="lazy" onerror="this.style.display=\'none\'">' +
-    '</div>';
-  } else if(anim){
-    visual = anim;
-  } else {
-    visual = '<div style="color:var(--tm);font-size:2rem">🏋️</div>';
-  }
-
-  const cat = DB.categories[def.cat] || {};
-
-  return '<div class="ex-card ' + (isDone ? 'done minimized' : '') + '" data-exkey="' + key + '">' +
-    '<div class="ex-header" onclick="toggleCardCollapse(\'' + key + '\')">' +
-      '<button class="chk-btn ' + (isDone ? 'on' : '') + '" onclick="event.stopPropagation();toggleDone(\'' + key + '\')">' + (isDone ? '✓' : '') + '</button>' +
-      '<div class="ex-num">' + fN(exIdx+1) + '</div>' +
-      '<div class="ex-title">' +
-        '<div class="ex-name">' + esc(def.name || ex.exId) + '</div>' +
-        '<div class="ex-info">' +
-          '<span>' + fN(sets) + ' ست</span>' +
-          '<span>' + esc(ex.reps || '۸-۱۲') + '</span>' +
-          '<span>RPE ' + esc(ex.rpe || '۸') + '</span>' +
-          (cat.name ? '<span>' + cat.emoji + ' ' + cat.name + '</span>' : '') +
-        '</div>' +
-        (summary ? '<div class="ex-summary">' + summary + '</div>' : '') +
-      '</div>' +
-      '<div class="expand-ic">' + (isDone ? '▶' : '▼') + '</div>' +
-    '</div>' +
-    '<div class="ex-body">' +
-      '<div class="ex-anim">' + visual + '</div>' +
-      setsHtml +
-    '</div>' +
+    visual='<div class="ex-img-holder"><img class="f1" src="'+img1+'" loading="lazy" onerror="this.style.display=\'none\'"><img class="f2" src="'+img2+'" loading="lazy" onerror="this.style.display=\'none\'"></div>';
+  } else if(anim){ visual=anim; }
+  else { visual='<div style="color:var(--tm);font-size:2rem">🏋️</div>'; }
+  const cat=DB.categories[def.cat]||{};
+  return '<div class="ex-card '+(isDone?'done minimized':'')+'" data-exkey="'+key+'">'+
+    '<div class="ex-header" onclick="toggleCardCollapse(\''+key+'\')">'+
+      '<button class="chk-btn '+(isDone?'on':'')+'" onclick="event.stopPropagation();toggleDone(\''+key+'\')">'+(isDone?'✓':'')+'</button>'+
+      '<div class="ex-num">'+fN(exIdx+1)+'</div>'+
+      '<div class="ex-title"><div class="ex-name">'+esc(def.name||ex.exId)+'</div>'+
+        '<div class="ex-info"><span>'+fN(sets)+' ست</span><span>'+esc(ex.reps||'۸-۱۲')+'</span><span>RPE '+esc(ex.rpe||'۸')+'</span>'+(cat.name?'<span>'+cat.emoji+' '+cat.name+'</span>':'')+'</div>'+
+        (summary?'<div class="ex-summary">'+summary+'</div>':'')+
+      '</div>'+
+      '<div class="expand-ic">'+(isDone?'▶':'▼')+'</div>'+
+    '</div>'+
+    '<div class="ex-body"><div class="ex-anim">'+visual+'</div>'+setsHtml+'</div>'+
   '</div>';
 }
-
 function toggleCardCollapse(key){
-  const card = document.querySelector('[data-exkey="' + key + '"]');
-  if(!card) return;
+  const card=document.querySelector('[data-exkey="'+key+'"]'); if(!card) return;
   card.classList.toggle('minimized');
-  const ic = card.querySelector('.expand-ic');
-  if(ic) ic.textContent = card.classList.contains('minimized') ? '▶' : '▼';
+  const ic=card.querySelector('.expand-ic'); if(ic) ic.textContent=card.classList.contains('minimized')?'▶':'▼';
 }
-
 function toggleDone(key){
-  state.workout.completed[key] = !state.workout.completed[key];
-  saveWorkoutState();
-  logTodayStats();
-  renderView();
+  state.workout.completed[key]=!state.workout.completed[key];
+  saveWorkoutState(); logTodayStats(); renderView();
 }
-
-function updSet(key, idx, field, val){
-  if(!state.workout.logs[key]) state.workout.logs[key] = {};
-  if(!state.workout.logs[key][idx]) state.workout.logs[key][idx] = {};
-  state.workout.logs[key][idx][field] = val === '' ? null : Number(val);
-  saveWorkoutState();
-  logTodayStats();
+function updSet(key,idx,field,val){
+  if(!state.workout.logs[key]) state.workout.logs[key]={};
+  if(!state.workout.logs[key][idx]) state.workout.logs[key][idx]={};
+  state.workout.logs[key][idx][field]=val===''?null:Number(val);
+  saveWorkoutState(); logTodayStats();
 }
-
-function toggleSetTimer(key, idx){
-  const stKey = key + ':' + idx;
-  let st = state.workout.sets[stKey];
-  if(st && st.running){
-    st.elapsed = Math.floor((Date.now() - st.startedAt)/1000) + (st.elapsed||0);
-    st.running = false;
-    saveWorkoutState(); renderView(); return;
-  }
-  Object.keys(state.workout.sets).forEach(k => {
-    if(k.startsWith(key + ':') && k !== stKey && state.workout.sets[k].running){
-      const s = state.workout.sets[k];
-      s.elapsed = Math.floor((Date.now() - s.startedAt)/1000) + (s.elapsed||0);
-      s.running = false;
+function toggleSetTimer(key,idx){
+  const stKey=key+':'+idx; let st=state.workout.sets[stKey];
+  if(st&&st.running){ st.elapsed=Math.floor((Date.now()-st.startedAt)/1000)+(st.elapsed||0); st.running=false; saveWorkoutState(); renderView(); return; }
+  Object.keys(state.workout.sets).forEach(k=>{
+    if(k.startsWith(key+':')&&k!==stKey&&state.workout.sets[k].running){
+      const s=state.workout.sets[k]; s.elapsed=Math.floor((Date.now()-s.startedAt)/1000)+(s.elapsed||0); s.running=false;
     }
   });
-  if(st && st.elapsed > 0){ st.startedAt = Date.now(); st.running = true; }
-  else { state.workout.sets[stKey] = { startedAt: Date.now(), elapsed: 0, running: true }; }
+  if(st&&st.elapsed>0){ st.startedAt=Date.now(); st.running=true; }
+  else { state.workout.sets[stKey]={ startedAt:Date.now(), elapsed:0, running:true }; }
   saveWorkoutState(); renderView(); startTicker();
 }
-
-let tickerInterval = null;
+let tickerInterval=null;
 function startTicker(){
   if(tickerInterval) return;
-  tickerInterval = setInterval(() => {
-    const anyRunning = Object.values(state.workout.sets).some(s => s.running);
-    if(anyRunning) renderView();
-    else { clearInterval(tickerInterval); tickerInterval = null; }
-  }, 1000);
+  tickerInterval=setInterval(()=>{
+    const anyRun=Object.values(state.workout.sets).some(s=>s.running);
+    if(anyRun) renderView(); else { clearInterval(tickerInterval); tickerInterval=null; }
+  },1000);
 }
-
 function logTodayStats(){
-  const key = todayKey();
-  let completed = 0, volume = 0;
-  const prefix = key + ':';
-  Object.keys(state.workout.completed).forEach(k => { if(k.startsWith(prefix) && state.workout.completed[k]) completed++; });
-  Object.keys(state.workout.logs).forEach(k => {
+  const key=todayKey(); let completed=0, volume=0;
+  const prefix=key+':';
+  Object.keys(state.workout.completed).forEach(k=>{ if(k.startsWith(prefix)&&state.workout.completed[k]) completed++; });
+  Object.keys(state.workout.logs).forEach(k=>{
     if(!k.startsWith(prefix)) return;
-    Object.values(state.workout.logs[k]).forEach(l => { if(l.weight && l.reps) volume += l.weight * l.reps; });
+    Object.values(state.workout.logs[k]).forEach(l=>{ if(l.weight&&l.reps) volume+=l.weight*l.reps; });
   });
-  if(completed === 0 && volume === 0) return;
-  state.history[key] = { completed, volume: Math.round(volume) };
+  if(completed===0&&volume===0) return;
+  state.history[key]={ completed, volume:Math.round(volume) };
   saveHistory();
 }
 
-/* ============ MANUAL PROGRAM EDITING ============ */
-function renderEditorDay(day, di){
-  const exs = day.exercises || [];
-  let rowsHtml;
-  if(exs.length === 0){
-    rowsHtml = '<tr><td colspan="5" style="text-align:center;color:var(--tm);padding:14px;font-size:.78rem">هنوز حرکتی ندارد — روی «➕ افزودن حرکت» بزن</td></tr>';
-  } else {
-    rowsHtml = exs.map((ex, ei) => {
-      const def = DB.exercises.find(e => e.id === ex.exId) || {};
-      const cat = DB.categories[def.cat] || {};
-      return '<tr>' +
-        '<td><div style="font-weight:700;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">' + esc(def.name || ex.exId) + '</div>' +
-        '<div style="font-size:.6rem;color:var(--tm)">' + (cat.emoji||'') + ' ' + (cat.name||'') + '</div></td>' +
-        '<td><input type="number" value="' + (ex.sets || 3) + '" min="1" max="10" onchange="updateExField(' + di + ',' + ei + ',\'sets\',this.value)"></td>' +
-        '<td><input type="text" value="' + esc(ex.reps || '۸-۱۲') + '" onchange="updateExField(' + di + ',' + ei + ',\'reps\',this.value)"></td>' +
-        '<td><input type="text" value="' + esc(ex.rpe || '۸') + '" onchange="updateExField(' + di + ',' + ei + ',\'rpe\',this.value)"></td>' +
-        '<td style="text-align:center"><button class="icon-btn del" onclick="removeExerciseFromDay(' + di + ',' + ei + ')" style="width:26px;height:26px;font-size:.7rem">✕</button></td>' +
-      '</tr>';
-    }).join('');
+/* ============ NUTRITION VIEW ============ */
+function renderNutritionView(c){
+  const owner = state.nutritionOwnerId || state.user.id;
+  const isOwnerSelf = owner === state.user.id;
+  const n = state.nutrition;
+  const t = n.targets;
+  let h='';
+  if(!isOwnerSelf){
+    const stu = state.students.find(s=>s.id===owner);
+    h+='<div class="card" style="background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));border-color:rgba(59,130,246,.3)">'+
+      '<div style="display:flex;align-items:center;gap:10px"><div style="font-size:1.5rem">🥗</div>'+
+      '<div style="flex:1"><div style="font-weight:800">ویرایش تغذیه: '+esc(stu?.displayName||'')+'</div>'+
+      '<div style="font-size:.7rem;color:var(--tx2);margin-top:2px">تغییرات روی حساب شاگرد ذخیره می‌شود</div></div>'+
+      '<button class="btn" onclick="exitNutritionOwner()">← بازگشت</button></div></div>';
   }
-
-  return '<div class="editor-day">' +
-    '<div class="editor-day-header">' +
-      '<div class="editor-day-icon">' + (day.icon||'💪') + '</div>' +
-      '<div class="editor-day-info">' +
-        '<div class="editor-day-name">' + esc(day.name) + '</div>' +
-        '<div class="editor-day-focus">' + weekdayName(day.weekday) + ' · ' + esc(day.focus || '—') + ' · ' + exs.length + ' حرکت</div>' +
-      '</div>' +
-      '<button class="icon-btn" onclick="openEditDayDrawer(' + di + ')" title="ویرایش">✏️</button>' +
-      '<button class="icon-btn del" onclick="deleteDay(' + di + ')" title="حذف">🗑️</button>' +
-    '</div>' +
-    '<table class="prog-table">' +
-    '<thead><tr><th>حرکت</th><th style="width:50px">ست</th><th style="width:70px">تکرار</th><th style="width:50px">RPE</th><th style="width:30px"></th></tr></thead>' +
-    '<tbody>' + rowsHtml + '</tbody>' +
-    '</table>' +
-    '<div style="display:flex;gap:6px;margin-top:10px">' +
-      '<button class="btn primary" style="flex:1;justify-content:center;font-size:.76rem" onclick="openExercisePickerForDay(' + di + ')">➕ افزودن حرکت</button>' +
-      (exs.length ? '<button class="btn danger" style="font-size:.72rem;padding:6px 10px" onclick="clearDay(' + di + ')">🗑️</button>' : '') +
-    '</div>' +
-  '</div>';
-}
-
-function renderProgramEditor(){
-  const el = document.getElementById('programEditorBody');
-  if(!el) return;
-  const stu = state.currentStudent;
-  document.getElementById('programEditorTitle').textContent = '🗓️ ویرایش برنامه' + (stu ? ' — ' + stu.displayName : '');
-
-  let html = '<div style="display:flex;gap:8px;margin-bottom:12px">' +
-    '<button class="btn primary" style="flex:1;justify-content:center" onclick="openAddDayDrawer()">➕ روز جدید</button>' +
-    '<button class="btn success" style="flex:1;justify-content:center" onclick="saveProgramAndClose()">💾 ذخیره و بستن</button>' +
-  '</div>';
-
-  if(!state.program.days || !state.program.days.length){
-    html += '<div class="empty"><div class="icon">📭</div><div>هنوز روزی ندارد</div>' +
-      '<div style="font-size:.74rem;color:var(--tm);margin-top:10px">روی «افزودن روز جدید» بزن</div></div>';
-    el.innerHTML = html;
-    return;
-  }
-
-  sortDays();
-  html += state.program.days.map((day, di) => renderEditorDay(day, di)).join('');
-  el.innerHTML = html;
-}
-
-function updateExField(di, ei, field, val){
-  const ex = state.program.days[di] && state.program.days[di].exercises[ei];
-  if(!ex) return;
-  if(field === 'sets') ex.sets = Math.max(1, Math.min(10, parseInt(val) || 3));
-  else ex[field] = val;
-  autoSaveProgram();
-}
-
-function clearDay(di){
-  if(!confirm('تمام حرکات این روز پاک شوند؟')) return;
-  state.program.days[di].exercises = [];
-  autoSaveProgram();
-  renderProgramEditor();
-}
-
-function deleteDay(di){
-  const day = state.program.days[di];
-  if(!day) return;
-  if(!confirm('روز «' + (day.name || '') + '» حذف شود؟')) return;
-  state.program.days.splice(di, 1);
-  autoSaveProgram();
-  renderProgramEditor();
-}
-
-function removeExerciseFromDay(di, ei){
-  state.program.days[di].exercises.splice(ei, 1);
-  autoSaveProgram();
-  renderProgramEditor();
-}
-
-function autoSaveProgram(){
-  const targetId = state.programOwnerId || state.user.id;
-  api('POST', '/api/users/' + targetId + '/data/program', { value: state.program }).catch(() => {});
-}
-
-function saveProgramAndClose(){
-  const targetId = state.programOwnerId || state.user.id;
-  api('POST', '/api/users/' + targetId + '/data/program', { value: state.program })
-    .then(() => {
-      toast('برنامه ذخیره شد ✓');
-      closeDrawer('programEditorDrawer');
-      state.programOwnerId = null;
-      state.editingProgramFor = null;
-      state.currentStudent = null;
-      if(targetId === state.user.id){
-        api('GET', '/api/users/' + state.user.id + '/data').then(d => {
-          if(d.program) state.program = d.program;
-          renderView();
-        }).catch(() => renderView());
-      } else {
-        renderView();
-      }
-    }).catch(e => toast('خطا: ' + e.message, 'error'));
-}
-
-/* ============ DAY DRAWER ============ */
-let dayDrawerMode = 'add';
-let dayDrawerEditIndex = -1;
-
-function openAddDayDrawer(){
-  if(!state.programOwnerId) state.programOwnerId = state.user.id;
-  dayDrawerMode = 'add';
-  dayDrawerEditIndex = -1;
-  showDayDrawerForm({ name: '', focus: '', icon: '💪', weekday: null });
-}
-
-function openEditDayDrawer(di){
-  dayDrawerMode = 'edit';
-  dayDrawerEditIndex = di;
-  showDayDrawerForm(state.program.days[di]);
-}
-
-function showDayDrawerForm(day){
-  let backdrop = document.getElementById('dayFormBackdrop');
-  if(!backdrop){
-    backdrop = document.createElement('div');
-    backdrop.id = 'dayFormBackdrop';
-    backdrop.className = 'backdrop';
-    backdrop.style.zIndex = '104';
-    backdrop.onclick = () => closeDrawer('dayFormDrawer');
-    document.body.appendChild(backdrop);
-  }
-  let drawer = document.getElementById('dayFormDrawer');
-  if(!drawer){
-    drawer = document.createElement('div');
-    drawer.id = 'dayFormDrawer';
-    drawer.className = 'drawer right';
-    drawer.style.zIndex = '105';
-    drawer.style.width = '420px';
-    drawer.innerHTML =
-      '<div class="drawer-header"><h2 id="dayFormTitle">➕ روز جدید</h2><button class="close-btn" onclick="closeDrawer(\'dayFormDrawer\')">✕</button></div>' +
-      '<div class="drawer-body" id="dayFormBody"></div>';
-    document.body.appendChild(drawer);
-  }
-
-  const initialWd = day.weekday != null ? day.weekday : null;
-  const todayJs = todayWeekday();
-  const wdHtml = [6,0,1,2,3,4,5].map(jsd => {
-    const isSel = initialWd === jsd;
-    const isUsed = state.program.days.some((d, i) => d.weekday === jsd && i !== dayDrawerEditIndex);
-    const disabled = isUsed && !isSel;
-    const todayBadge = jsd === todayJs ? ' ⭐' : '';
-    return '<button type="button" class="wdchip ' + (isSel ? 'sel' : '') + '" ' +
-      (disabled ? 'disabled style="opacity:.3;cursor:not-allowed"' : '') +
-      ' onclick="pickDayWD(' + jsd + ',this)">' +
-      weekdayName(jsd) + todayBadge + '</button>';
-  }).join('');
-
-  document.getElementById('dayFormTitle').textContent = dayDrawerMode === 'add' ? '➕ روز جدید' : '✏️ ویرایش روز';
-  document.getElementById('dayFormBody').innerHTML =
-    '<div class="form-row"><label>روز هفته *</label><div class="wdpick" id="dayFormWD">' + wdHtml + '</div></div>' +
-    '<div class="form-row"><label>نام روز</label><input type="text" id="dayFormName" value="' + esc(day.name || '') + '" placeholder="روز شنبه"></div>' +
-    '<div class="form-row"><label>تمرکز (اختیاری)</label><input type="text" id="dayFormFocus" value="' + esc(day.focus || '') + '" placeholder="بالاتنه قدرتی"></div>' +
-    '<div class="form-row"><label>آیکن</label><input type="text" id="dayFormIcon" value="' + esc(day.icon || '💪') + '" maxlength="4" style="text-align:center;font-size:1.4rem"></div>' +
-    '<div style="display:flex;gap:8px;margin-top:16px">' +
-      '<button class="btn" style="flex:1;justify-content:center" onclick="closeDrawer(\'dayFormDrawer\')">لغو</button>' +
-      '<button class="btn primary" style="flex:1;justify-content:center" onclick="saveDayForm()">💾 ذخیره</button>' +
+  h+='<div class="card"><h2>🧮 محاسبه کالری روزانه</h2>';
+  const p=n.profile||{};
+  h+='<div class="grid2">'+
+    '<div class="form-row"><label>جنسیت</label><select id="nutGender"><option value="male" '+(p.gender==='male'?'selected':'')+'>👨 مرد</option><option value="female" '+(p.gender==='female'?'selected':'')+'>👩 زن</option></select></div>'+
+    '<div class="form-row"><label>سن</label><input type="number" id="nutAge" value="'+(p.age||30)+'"></div>'+
+  '</div>'+
+  '<div class="grid2">'+
+    '<div class="form-row"><label>وزن (kg)</label><input type="number" id="nutWeight" step="0.5" value="'+(p.weight||75)+'"></div>'+
+    '<div class="form-row"><label>قد (cm)</label><input type="number" id="nutHeight" value="'+(p.height||175)+'"></div>'+
+  '</div>'+
+  '<div class="grid2">'+
+    '<div class="form-row"><label>درصد چربی (اختیاری)</label><input type="number" id="nutBodyfat" step="0.5" value="'+(p.bodyfat||20)+'"></div>'+
+    '<div class="form-row"><label>سطح فعالیت</label><select id="nutActivity">'+
+      '<option value="1.2" '+(p.activity==1.2?'selected':'')+'>🛋️ کم‌تحرک</option>'+
+      '<option value="1.375" '+(p.activity==1.375?'selected':'')+'>🚶 سبک</option>'+
+      '<option value="1.55" '+(p.activity==1.55?'selected':'')+'>🏃 متوسط</option>'+
+      '<option value="1.725" '+(p.activity==1.725?'selected':'')+'>💪 بالا</option>'+
+      '<option value="1.9" '+(p.activity==1.9?'selected':'')+'>🔥 خیلی بالا</option>'+
+    '</select></div>'+
+  '</div>'+
+  '<div class="grid2">'+
+    '<div class="form-row"><label>🎯 هدف</label><select id="nutGoal">'+
+      '<option value="lose" '+(p.goal==='lose'?'selected':'')+'>📉 کاهش وزن</option>'+
+      '<option value="cut" '+(p.goal==='cut'?'selected':'')+'>✂️ خشک کردن</option>'+
+      '<option value="maintain" '+(p.goal==='maintain'?'selected':'')+'>⚖️ حفظ وزن</option>'+
+      '<option value="gain" '+(p.goal==='gain'?'selected':'')+'>💪 عضله‌سازی</option>'+
+      '<option value="bulk" '+(p.goal==='bulk'?'selected':'')+'>🏋️ افزایش حجم</option>'+
+    '</select></div>'+
+    '<div class="form-row"><label>فرمول BMR</label><select id="nutFormula">'+
+      Object.keys(NUT.bmrFormulas).map(k=>'<option value="'+k+'" '+(p.formula===k?'selected':'')+'>'+NUT.bmrFormulas[k].name+'</option>').join('')+
+    '</select></div>'+
+  '</div>'+
+  '<button class="btn primary full" onclick="calculateNutrition()">🧮 محاسبه</button></div>';
+  if(t){
+    h+='<div class="card"><h2>🎯 اهداف روزانه</h2>';
+    h+='<div class="grid2" style="margin-bottom:8px">'+
+      '<div class="calc-result"><div class="crv">'+fN(t.bmr)+'</div><div class="crl">BMR</div></div>'+
+      '<div class="calc-result"><div class="crv">'+fN(t.tdee)+'</div><div class="crl">TDEE</div></div>'+
+    '</div>'+
+    '<div class="calc-result hl" style="margin-bottom:12px"><div class="crv">'+fN(t.calories)+'</div><div class="crl">کالری هدف روزانه</div></div>'+
+    '<div class="macros-row"><span class="macro-lbl">پروتئین</span><div class="macro-track"><div class="macro-fill prot" style="width:'+Math.min(100,t.protein*4/t.calories*100)+'%"></div></div><span class="macro-val">'+fN(t.protein)+'g</span></div>'+
+    '<div class="macros-row"><span class="macro-lbl">کربوهیدرات</span><div class="macro-track"><div class="macro-fill carb" style="width:'+Math.min(100,t.carbs*4/t.calories*100)+'%"></div></div><span class="macro-val">'+fN(t.carbs)+'g</span></div>'+
+    '<div class="macros-row"><span class="macro-lbl">چربی</span><div class="macro-track"><div class="macro-fill fat" style="width:'+Math.min(100,t.fat*9/t.calories*100)+'%"></div></div><span class="macro-val">'+fN(t.fat)+'g</span></div>'+
     '</div>';
-
-  drawer.dataset.selectedWd = initialWd != null ? String(initialWd) : '';
-  openDrawer('dayFormDrawer');
-}
-
-function pickDayWD(jsd, btn){
-  const parent = btn.parentElement;
-  parent.querySelectorAll('.wdchip').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  document.getElementById('dayFormDrawer').dataset.selectedWd = String(jsd);
-  const nameInput = document.getElementById('dayFormName');
-  if(!nameInput.value.trim() || nameInput.value.trim().startsWith('روز ')){
-    nameInput.value = 'روز ' + weekdayName(jsd);
-  }
-}
-
-async function saveDayForm(){
-  const drawer = document.getElementById('dayFormDrawer');
-  const wdStr = drawer.dataset.selectedWd;
-  const name = document.getElementById('dayFormName').value.trim();
-  const focus = document.getElementById('dayFormFocus').value.trim();
-  const icon = document.getElementById('dayFormIcon').value.trim() || '💪';
-
-  if(!name){ toast('نام روز را وارد کنید', 'error'); return; }
-  if(wdStr === ''){ toast('روز هفته را انتخاب کنید', 'error'); return; }
-  const wd = parseInt(wdStr);
-
-  const dup = state.program.days.findIndex((d, i) => d.weekday === wd && i !== dayDrawerEditIndex);
-  if(dup !== -1){ toast('این روز قبلاً برنامه دارد', 'warn'); return; }
-
-  const isNew = dayDrawerMode === 'add';
-
-  if(isNew){
-    state.program.days.push({
-      id: 'day_' + Date.now(),
-      weekday: wd,
-      name: name,
-      focus: focus,
-      icon: icon,
-      exercises: []
-    });
-  } else {
-    const d = state.program.days[dayDrawerEditIndex];
-    d.weekday = wd;
-    d.name = name;
-    d.focus = focus;
-    d.icon = icon;
-  }
-
-  closeDrawer('dayFormDrawer');
-  autoSaveProgram();
-  renderProgramEditor();
-
-  if(isNew){
-    sortDays();
-    const newIdx = state.program.days.findIndex(d => d.weekday === wd);
-    if(newIdx !== -1){
-      toast('روز اضافه شد — حالا حرکات اضافه کن');
-      setTimeout(() => openExercisePickerForDay(newIdx), 250);
-    }
-  } else {
-    toast('ذخیره شد ✓');
-  }
-}
-
-/* ============ EXERCISE PICKER ============ */
-let pickerCat = 'all';
-let pickerSearch = '';
-
-function openExercisePickerForDay(dayIdx){
-  if(!state.programOwnerId) state.programOwnerId = state.user.id;
-  state.pendingAddExerciseDay = dayIdx;
-  pickerCat = 'all';
-  pickerSearch = '';
-  renderExercisePicker();
-  openDrawer('exercisePickerDrawer');
-}
-
-function renderExercisePicker(){
-  const el = document.getElementById('exercisePickerBody');
-  if(!el) return;
-  const di = state.pendingAddExerciseDay;
-  if(di === null || di === undefined) return;
-  const day = state.program.days[di];
-  if(!day){ el.innerHTML = '<div class="empty">روز پیدا نشد</div>'; return; }
-  const exs_ = day.exercises || [];
-
-  let html = '<div style="background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));padding:12px;border-radius:10px;margin-bottom:12px;font-size:.85rem">' +
-    '<strong>' + (day.icon || '💪') + ' ' + esc(day.name) + '</strong>' +
-    '<div style="font-size:.7rem;color:var(--tx2);margin-top:3px">' + exs_.length + ' حرکت — می‌تونی چند تا پشت سر هم اضافه کنی</div>' +
-  '</div>';
-
-  html += '<input type="text" id="pickerSearchInput" placeholder="جستجوی حرکت..." value="' + esc(pickerSearch) + '" oninput="pickerSearch=this.value;renderExercisePicker()" style="margin-bottom:10px">';
-
-  html += '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px">';
-  html += '<button class="btn sm" style="' + (pickerCat === 'all' ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="pickerCat=\'all\';renderExercisePicker()">🌐 همه</button>';
-  Object.keys(DB.categories).forEach(k => {
-    const c = DB.categories[k];
-    html += '<button class="btn sm" style="' + (pickerCat === k ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="pickerCat=\'' + k + '\';renderExercisePicker()">' + c.emoji + ' ' + c.name + '</button>';
-  });
-  html += '</div>';
-
-  let exs = DB.exercises;
-  if(pickerCat !== 'all') exs = exs.filter(e => e.cat === pickerCat);
-  if(pickerSearch){
-    const t = pickerSearch.toLowerCase();
-    exs = exs.filter(e => e.name.toLowerCase().includes(t) || (e.en || '').toLowerCase().includes(t));
-  }
-  const alreadyIn = new Set(exs_.map(e => e.exId));
-
-  html += '<div style="font-size:.72rem;color:var(--tm);margin-bottom:6px">' + exs.length + ' حرکت موجود</div>';
-
-  if(exs.length === 0){
-    html += '<div class="empty" style="padding:20px"><div class="icon">🔍</div><div>یافت نشد</div></div>';
-  } else {
-    html += '<div>';
-    html += exs.slice(0, 200).map(e => {
-      const isIn = alreadyIn.has(e.id);
-      return '<div class="u-item clickable" style="' +
-        (isIn ? 'border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.01))' : '') +
-        '" onclick="quickAddExercise(\'' + e.id + '\')">' +
-        '<div class="u-avatar" style="background:var(--card2);color:var(--tx)">' + ((DB.categories[e.cat] || {}).emoji || '🏋️') + '</div>' +
-        '<div class="u-info"><div class="u-name">' + esc(e.name) +
-        (isIn ? ' <span style="font-size:.6rem;color:var(--gr);font-weight:800">✓ اضافه شد</span>' : '') +
-        '</div>' +
-        '<div class="u-meta">' + esc(e.en || '') + ' · ' + ((DB.categories[e.cat] || {}).name || '') + '</div></div>' +
-        '<div style="color:' + (isIn ? 'var(--gr)' : 'var(--bl)') + ';font-size:1.3rem;font-weight:900">' + (isIn ? '↻' : '+') + '</div>' +
+    h+='<div class="card"><h2>📊 توزیع درشت‌مغذی‌ها</h2><div class="chart-box macro-donut"><div id="chartMacros"></div></div></div>';
+    h+='<div class="card"><h2>🍽️ برنامه غذایی روزانه</h2>';
+    const dayTotals = getDayNutritionTotals();
+    h+='<div class="nut-summary">'+
+      '<div class="ns-item"><div class="ns-val">'+fN(dayTotals.cal)+'</div><div class="ns-lbl">کالری</div></div>'+
+      '<div class="ns-item"><div class="ns-val">'+fN(Math.round(dayTotals.prot))+'g</div><div class="ns-lbl">پروتئین</div></div>'+
+      '<div class="ns-item"><div class="ns-val">'+fN(Math.round(dayTotals.carb))+'g</div><div class="ns-lbl">کرب</div></div>'+
+      '<div class="ns-item"><div class="ns-val">'+fN(Math.round(dayTotals.fat))+'g</div><div class="ns-lbl">چربی</div></div>'+
+    '</div>';
+    if(NUT.meals.length){
+      h+='<div style="display:flex;gap:6px;margin-bottom:10px">'+
+        '<button class="btn success" style="flex:1;justify-content:center;font-size:.78rem" onclick="generateSampleMeals()">✨ تولید نمونه</button>'+
+        '<button class="btn danger" style="font-size:.72rem" onclick="clearAllMeals()">🗑️</button>'+
       '</div>';
-    }).join('');
-    html += '</div>';
-  }
-
-  html += '<div class="sticky-bottom">' +
-    '<button class="btn success full" onclick="closeDrawer(\'exercisePickerDrawer\')">✓ تمام — بازگشت</button>' +
-  '</div>';
-
-  el.innerHTML = html;
-}
-
-function quickAddExercise(exId){
-  const di = state.pendingAddExerciseDay;
-  if(di === null || di === undefined) return;
-  const def = DB.exercises.find(e => e.id === exId);
-  if(!def) return;
-
-  const vol = DB.volumeByLevel.intermediate;
-  if(!state.program.days[di].exercises) state.program.days[di].exercises = [];
-
-  const existIdx = state.program.days[di].exercises.findIndex(e => e.exId === exId);
-  if(existIdx !== -1){
-    state.program.days[di].exercises.splice(existIdx, 1);
-    toast('حذف شد', 'info');
-  } else {
-    state.program.days[di].exercises.push({
-      exId: exId,
-      sets: def.type === 'comp' ? vol.sets : Math.max(3, vol.sets - 1),
-      reps: def.type === 'comp' ? vol.repsCompound : vol.repsIsolation,
-      rpe: '۸'
+    }
+    NUT.meals.forEach(meal=>{
+      const items = n.meals[meal.key] || [];
+      const mt = Math.round(t.calories*meal.pct);
+      const tt = calcMealTotals(meal.key);
+      const d = tt.cal - mt;
+      const st = items.length===0?'under':(Math.abs(d)<mt*0.1?'ok':(d>0?'over':'under'));
+      h+='<div class="meal-sec">'+
+        '<div class="meal-head" onclick="toggleMealItems(\''+meal.key+'\')">'+
+          '<div class="mh-l"><span class="mh-ic">'+meal.emoji+'</span>'+
+            '<div><div class="mh-nm">'+meal.name+'</div><div class="mh-tg">هدف: '+fN(mt)+' kcal</div></div></div>'+
+          '<span class="mh-total '+st+'">'+fN(tt.cal)+' kcal</span>'+
+        '</div>'+
+        '<div class="meal-items" id="meal-items-'+meal.key+'">';
+      if(items.length===0){
+        h+='<div style="text-align:center;padding:12px;color:var(--tm);font-size:.76rem">هنوز غذایی اضافه نشده</div>';
+      } else {
+        items.forEach((it, idx)=>{
+          const f = getFoodById(it.foodId); if(!f) return;
+          const m = getItemMacros(it);
+          const uIdx = it.unitIdx || 0;
+          const uOpts = (f.units||[{n:'گرم',g:1}]).map((u,i)=>'<option value="'+i+'" '+(i===uIdx?'selected':'')+'>'+u.n+'</option>').join('');
+          h+='<div class="meal-item">'+
+            '<div class="mi-emoji">'+f.emoji+'</div>'+
+            '<div class="mi-name" title="'+esc(f.name)+'">'+esc(f.name)+'</div>'+
+            '<div class="mi-qty-wrap">'+
+              '<input class="mi-qty" type="number" value="'+it.qty+'" step="0.5" min="0.1" onchange="updateFoodQty(\''+meal.key+'\','+idx+',this.value)">'+
+              '<select class="mi-unit" onchange="updateFoodUnit(\''+meal.key+'\','+idx+',this.value)">'+uOpts+'</select>'+
+            '</div>'+
+            '<div class="mi-kcal">'+fN(Math.round(m.cal))+'</div>'+
+            '<button class="mi-del" onclick="removeFoodFromMeal(\''+meal.key+'\','+idx+')">✕</button>'+
+          '</div>';
+        });
+      }
+      h+='</div>'+
+        '<div class="meal-actions">'+
+          '<button class="btn" onclick="openFoodPicker(\''+meal.key+'\')">➕ افزودن غذا</button>'+
+          (items.length?'<button class="btn danger" onclick="clearMeal(\''+meal.key+'\')">🗑️ پاک کردن</button>':'')+
+        '</div>'+
+      '</div>';
     });
-    toast('✓ ' + def.name);
-  }
-  autoSaveProgram();
-  renderExercisePicker();
-  renderProgramEditor();
-}
-
-async function openProgramEditor(studentId){
-  state.editingProgramFor = studentId;
-  state.programOwnerId = studentId;
-  try{
-    const d = await api('GET', '/api/users/' + studentId + '/data');
-    state.program = d.program && d.program.days ? d.program : { days: [] };
-  } catch(e){ state.program = { days: [] }; }
-
-  if(studentId === state.user.id){
-    state.currentStudent = null;
+    h+='</div>';
+    h+='<div class="card"><h2>💊 مکمل‌ها</h2>';
+    const goal = p.goal||'maintain';
+    const gk = goal==='cut'?'cut':goal==='lose'?'lose':goal==='gain'?'gain':goal==='bulk'?'bulk':'maintain';
+    if(!n.supplements.length||n.suppGoalUsed!==gk){
+      const recs = NUT.supplements[gk]||NUT.supplements.maintain;
+      n.supplements = recs.map((s,i)=>({ id:'sup_'+Date.now()+'_'+i, name:s.name, dose:s.dose, timing:s.timing, note:s.note, enabled:true, custom:false }));
+      n.suppGoalUsed = gk;
+      saveNutrition();
+    }
+    h+='<div style="font-size:.72rem;color:var(--tm);margin-bottom:10px;text-align:center">هدف: <strong style="color:var(--gr)">'+({lose:'کاهش وزن',cut:'خشک',maintain:'حفظ',gain:'عضله',bulk:'حجم'})[goal]+'</strong></div>';
+    n.supplements.forEach((s,i)=>{
+      h+='<div class="supp-card '+(s.enabled?'on':'')+'">'+
+        '<button class="supp-toggle '+(s.enabled?'on':'')+'" onclick="toggleSupp('+i+')">'+(s.enabled?'✓':'')+'</button>'+
+        '<div class="supp-info"><div class="supp-name">'+esc(s.name)+(s.custom?' <span style="font-size:.6rem;color:var(--am);font-weight:800">سفارشی</span>':'')+'</div>'+
+        '<div class="supp-row">📏 <strong>'+esc(s.dose||'—')+'</strong></div>'+
+        '<div class="supp-row">🕐 <strong>'+esc(s.timing||'—')+'</strong></div>'+
+        (s.note?'<div class="supp-row">💡 '+esc(s.note)+'</div>':'')+
+        '</div>'+
+        '<div style="display:flex;flex-direction:column;gap:4px"><button class="icon-btn del" onclick="removeSupp('+i+')" style="width:26px;height:26px;font-size:.7rem">✕</button></div>'+
+      '</div>';
+    });
+    h+='<button class="btn full" style="margin-top:6px" onclick="regenerateSupplements()">🔄 بازتولید پیشنهادها</button>';
+    h+='</div>';
   } else {
-    const s = state.students.find(x => x.id === studentId);
-    if(s) state.currentStudent = s;
+    h+='<div class="card"><div class="empty"><div class="icon">🧮</div><div style="font-size:.82rem">اطلاعات بدنی را پر کن و «محاسبه» رو بزن</div></div></div>';
   }
-  renderProgramEditor();
-  openDrawer('programEditorDrawer');
+  c.innerHTML=h;
+  if(t) drawMacrosChart(t);
+}
+function toggleMealItems(key){
+  const el=document.getElementById('meal-items-'+key);
+  if(el) el.classList.toggle('open');
+}
+function getFoodById(id){ return NUT.foods.find(f=>f.id===id)||null; }
+function getFoodUnit(food, idx){
+  if(!food.units||!food.units.length) return { n:'گرم', g:1 };
+  const i = (idx!=null&&idx>=0&&idx<food.units.length)?idx:0;
+  return food.units[i];
+}
+function getItemGrams(it){ const f=getFoodById(it.foodId); if(!f) return 0; return it.qty*getFoodUnit(f,it.unitIdx||0).g; }
+function getItemMacros(it){
+  const f=getFoodById(it.foodId); if(!f) return { cal:0, prot:0, carb:0, fat:0, grams:0 };
+  const g=getItemGrams(it); const k=g/100;
+  return { cal:f.cal*k, prot:f.prot*k, carb:f.carb*k, fat:f.fat*k, grams:g };
+}
+function calcMealTotals(mk){
+  const items=state.nutrition.meals[mk]||[];
+  let cal=0,prot=0,carb=0,fat=0;
+  items.forEach(it=>{ const m=getItemMacros(it); cal+=m.cal; prot+=m.prot; carb+=m.carb; fat+=m.fat; });
+  return { cal:Math.round(cal), prot:Math.round(prot*10)/10, carb:Math.round(carb*10)/10, fat:Math.round(fat*10)/10 };
+}
+function getDayNutritionTotals(){
+  let cal=0,prot=0,carb=0,fat=0;
+  NUT.meals.forEach(m=>{ const t=calcMealTotals(m.key); cal+=t.cal; prot+=t.prot; carb+=t.carb; fat+=t.fat; });
+  return { cal, prot, carb, fat };
+}
+function calculateNutrition(){
+  const p={
+    gender:document.getElementById('nutGender').value,
+    age:parseInt(document.getElementById('nutAge').value)||30,
+    weight:parseFloat(document.getElementById('nutWeight').value)||75,
+    height:parseFloat(document.getElementById('nutHeight').value)||175,
+    bodyfat:parseFloat(document.getElementById('nutBodyfat').value)||20,
+    activity:parseFloat(document.getElementById('nutActivity').value)||1.55,
+    goal:document.getElementById('nutGoal').value||'maintain',
+    formula:document.getElementById('nutFormula').value||'mifflin'
+  };
+  state.nutrition.profile=p;
+  const f=NUT.bmrFormulas[p.formula];
+  const bmr = p.gender==='male' ? f.male(p) : f.female(p);
+  const tdee = bmr*p.activity;
+  let cal=tdee;
+  if(p.goal==='lose') cal*=0.80;
+  else if(p.goal==='cut') cal*=0.85;
+  else if(p.goal==='gain') cal*=1.15;
+  else if(p.goal==='bulk') cal*=1.20;
+  const ppk = (p.goal==='lose'||p.goal==='cut') ? 2.2 : ((p.goal==='gain'||p.goal==='bulk') ? 2.0 : 1.8);
+  const prot = Math.round(p.weight*ppk); const pcal = prot*4;
+  let fp = 0.25;
+  if(p.goal==='lose') fp=0.30;
+  if(p.goal==='bulk') fp=0.22;
+  const fat = Math.round(cal*fp/9); const fcal = fat*9;
+  const carb = Math.max(0, Math.round((cal-pcal-fcal)/4));
+  state.nutrition.targets={ bmr:Math.round(bmr), tdee:Math.round(tdee), calories:Math.round(cal), protein:prot, carbs:carb, fat:fat };
+  saveNutrition();
+  toast('محاسبه شد ✓');
+  renderView();
+}
+function updateFoodQty(mk, idx, v){
+  const q = Math.max(0.1, Math.min(2000, parseFloat(v)||100));
+  if(!state.nutrition.meals[mk]||!state.nutrition.meals[mk][idx]) return;
+  state.nutrition.meals[mk][idx].qty = q;
+  saveNutrition(); renderView();
+}
+function updateFoodUnit(mk, idx, v){
+  const u = parseInt(v)||0;
+  if(!state.nutrition.meals[mk]||!state.nutrition.meals[mk][idx]) return;
+  state.nutrition.meals[mk][idx].unitIdx = u;
+  saveNutrition(); renderView();
+}
+function removeFoodFromMeal(mk, idx){
+  if(!state.nutrition.meals[mk]) return;
+  state.nutrition.meals[mk].splice(idx, 1);
+  saveNutrition(); renderView();
+}
+function clearMeal(mk){
+  if(!confirm('این وعده پاک شود؟')) return;
+  state.nutrition.meals[mk] = [];
+  saveNutrition(); renderView();
+}
+function clearAllMeals(){
+  if(!confirm('کل برنامه غذایی پاک شود؟')) return;
+  NUT.meals.forEach(m=>{ state.nutrition.meals[m.key] = []; });
+  saveNutrition(); renderView();
+}
+function toggleSupp(i){
+  const s=state.nutrition.supplements[i]; if(!s) return;
+  s.enabled = !s.enabled; saveNutrition(); renderView();
+}
+function removeSupp(i){
+  const s=state.nutrition.supplements[i]; if(!s) return;
+  if(!confirm('حذف شود؟')) return;
+  state.nutrition.supplements.splice(i, 1);
+  saveNutrition(); renderView();
+}
+function regenerateSupplements(){
+  if(!confirm('پیشنهادها بر اساس هدف فعلی بازتولید شوند؟ (مکمل‌های سفارشی حفظ می‌شوند)')) return;
+  const customs = state.nutrition.supplements.filter(s=>s.custom);
+  const goal = state.nutrition.profile.goal;
+  const gk = goal==='cut'?'cut':goal==='lose'?'lose':goal==='gain'?'gain':goal==='bulk'?'bulk':'maintain';
+  const recs = NUT.supplements[gk]||NUT.supplements.maintain;
+  state.nutrition.supplements = [
+    ...recs.map((s,i)=>({ id:'sup_'+Date.now()+'_'+i, name:s.name, dose:s.dose, timing:s.timing, note:s.note, enabled:true, custom:false })),
+    ...customs
+  ];
+  state.nutrition.suppGoalUsed = gk;
+  saveNutrition(); renderView();
+  toast('بازتولید شد ✓');
+}
+function drawMacrosChart(t){
+  const el = document.getElementById('chartMacros'); if(!el) return;
+  if(state.charts.macros){ state.charts.macros.destroy(); state.charts.macros = null; }
+  const opts = {
+    chart: { type:'donut', height:220, fontFamily:'Vazirmatn', toolbar:{show:false} },
+    series: [ t.protein*4, t.carbs*4, t.fat*9 ],
+    labels: ['پروتئین','کربوهیدرات','چربی'],
+    colors: ['#f43f5e', '#3b82f6', '#f59e0b'],
+    legend: { position:'bottom', labels:{ colors:'#94a3b8' } },
+    plotOptions: { pie: { donut: { labels: { show:true, total:{ show:true, label:'کالری', formatter:()=>t.calories+' kcal', color:'#10b981' }, value:{ color:'#f1f5f9' } } } } },
+    dataLabels: { enabled:false },
+    theme: { mode: themeMode() }
+  };
+  state.charts.macros = new ApexCharts(el, opts);
+  state.charts.macros.render();
+}
+/* Food Picker */
+function openFoodPicker(mealKey){
+  state.foodPickerTarget = mealKey;
+  state.foodPickerCat = 'all';
+  state.foodPickerSearch = '';
+  renderFoodPicker();
+  openDrawer('foodPickerDrawer');
+}
+function renderFoodPicker(){
+  const el=document.getElementById('foodPickerBody'); if(!el) return;
+  const meal = NUT.meals.find(m=>m.key===state.foodPickerTarget);
+  document.getElementById('foodPickerTitle').textContent = '🍎 افزودن به ' + (meal?meal.name:'');
+  let h='<input type="text" class="food-search" placeholder="جستجو..." value="'+esc(state.foodPickerSearch)+'" oninput="state.foodPickerSearch=this.value;renderFoodPicker()">';
+  h+='<div class="food-cats">';
+  h+='<button class="food-cat '+(state.foodPickerCat==='all'?'active':'')+'" onclick="state.foodPickerCat=\'all\';renderFoodPicker()">🌐 همه</button>';
+  Object.keys(NUT.categories).forEach(k=>{
+    const c=NUT.categories[k];
+    h+='<button class="food-cat '+(state.foodPickerCat===k?'active':'')+'" onclick="state.foodPickerCat=\''+k+'\';renderFoodPicker()">'+c.emoji+' '+c.name+'</button>';
+  });
+  h+='</div>';
+  let foods = NUT.foods;
+  if(state.foodPickerCat!=='all') foods = foods.filter(f=>f.cat===state.foodPickerCat);
+  if(state.foodPickerSearch){
+    const t=state.foodPickerSearch.toLowerCase();
+    foods = foods.filter(f=>f.name.toLowerCase().includes(t)||(f.en||'').toLowerCase().includes(t));
+  }
+  h+='<div style="font-size:.7rem;color:var(--tm);margin-bottom:6px">'+foods.length+' غذا</div>';
+  h+='<div class="food-list">';
+  if(!foods.length){
+    h+='<div class="empty" style="padding:20px"><div class="icon">🔍</div><div>یافت نشد</div></div>';
+  } else {
+    foods.forEach(f=>{
+      h+='<div class="food-item" onclick="quickAddFood(\''+f.id+'\')">'+
+        '<div class="fi-emoji">'+f.emoji+'</div>'+
+        '<div class="fi-info"><div class="fi-name">'+esc(f.name)+'</div>'+
+        '<div class="fi-macros">P:'+f.prot+' C:'+f.carb+' F:'+f.fat+'</div></div>'+
+        '<div class="fi-kcal">'+f.cal+'<br><span style="font-size:.6rem;color:var(--tm)">kcal</span></div>'+
+      '</div>';
+    });
+  }
+  h+='</div>';
+  h+='<div class="sticky-bottom"><button class="btn success full" onclick="closeDrawer(\'foodPickerDrawer\')">✓ تمام</button></div>';
+  el.innerHTML=h;
+}
+function quickAddFood(foodId){
+  const mk = state.foodPickerTarget; if(!mk) return;
+  const f = getFoodById(foodId); if(!f) return;
+  if(!state.nutrition.meals[mk]) state.nutrition.meals[mk] = [];
+  const def = pickDefaultFoodEntry(f);
+  state.nutrition.meals[mk].push({ foodId:foodId, qty:def.qty, unitIdx:def.unitIdx });
+  saveNutrition();
+  const uName = getFoodUnit(f, def.unitIdx).n;
+  toast('✓ '+f.name+' — '+fN(def.qty)+' '+uName);
+  renderFoodPicker();
+  renderNutritionView(document.getElementById('contentArea'));
+}
+function pickDefaultFoodEntry(food){
+  const units = food.units||[{n:'گرم',g:1}];
+  if(units.length<=1) return { qty:defaultGramsForCat(food.cat), unitIdx:0 };
+  const pri1=['عدد متوسط'],pri2=['عدد','برش','پرس','سیخ','کاسه','لیوان','قوطی','فنجان','استکان','فیله'],pri3=['اسکوپ','حبه','مربع','دسته','ساقه','بلال','مکعب'],pri4=['ق.غ','ق.چ'],pri5=['مشت','پیمانه','کفگیر'];
+  for(const list of [pri1,pri2,pri3,pri4,pri5]){
+    for(let i=0;i<units.length;i++){
+      if(list.some(kw=>units[i].n.includes(kw))){
+        let qty=1; if(units[i].n.includes('مکعب')) qty=2;
+        return { qty, unitIdx:i };
+      }
+    }
+  }
+  return { qty:defaultGramsForCat(food.cat), unitIdx:0 };
+}
+function defaultGramsForCat(cat){
+  return { protein:150, carb:100, fat:15, nut:15, dairy:200, fruit:120, veg:100, iranian:200, drink:240, sweet:30, fastfood:150 }[cat]||100;
+}
+function generateSampleMeals(){
+  const t = state.nutrition.targets; if(!t){ toast('ابتدا کالری را محاسبه کن','warn'); return; }
+  const tmp = {
+    breakfast: { p:'egg_whole', c:'oat', f:'almond', fr:'banana' },
+    snack1: { f:'almond', fr:'apple' },
+    lunch: { p:'chicken_breast', c:'rice_white', f:'olive_oil', v:'broccoli' },
+    snack2: { p:'yogurt_low', f:'walnut' },
+    dinner: { p:'salmon', c:'sweet_potato', f:'olive_oil', v:'spinach' }
+  };
+  NUT.meals.forEach(meal=>{
+    const tp=tmp[meal.key]; if(!tp) return;
+    const mc=t.calories*meal.pct, mp=t.protein*meal.pct, mcar=t.carbs*meal.pct, mf=t.fat*meal.pct;
+    const arr=[];
+    if(tp.p){ const f=getFoodById(tp.p); if(f&&f.prot>0){ const g=Math.max(30,Math.min(350,Math.round(mp*0.8*100/f.prot))); const e={ foodId:f.id, qty:g, unitIdx:0 }; if(f.id==='egg_whole'){ e.qty=Math.max(1,Math.round(g/50)); e.unitIdx=2; } arr.push(e); } }
+    if(tp.c){ const f=getFoodById(tp.c); if(f&&f.carb>0){ const g=Math.max(20,Math.min(400,Math.round(mcar*0.8*100/f.carb))); arr.push({ foodId:f.id, qty:g, unitIdx:0 }); } }
+    if(tp.f){ const f=getFoodById(tp.f); if(f&&f.fat>0){ const g=Math.max(4,Math.min(80,Math.round(mf*0.6*100/f.fat))); arr.push({ foodId:f.id, qty:g, unitIdx:0 }); } }
+    if(tp.v) arr.push({ foodId:tp.v, qty:120, unitIdx:0 });
+    if(tp.fr) arr.push({ foodId:tp.fr, qty:100, unitIdx:0 });
+    state.nutrition.meals[meal.key] = arr;
+  });
+  saveNutrition(); renderView();
+  toast('نمونه ساخته شد ✓');
+}
+function exitNutritionOwner(){
+  state.nutritionOwnerId = null;
+  const target = state.user.id;
+  loadNutritionFor(target);
+}
+async function loadNutritionFor(userId){
+  try{
+    const d = await api('GET','/api/users/'+userId+'/data');
+    state.nutrition = d.nutrition && d.nutrition.profile ? d.nutrition : { profile:{ gender:'male', age:30, weight:75, height:175, activity:1.55, goal:'maintain', bodyfat:20, formula:'mifflin' }, targets:null, meals:{ breakfast:[], snack1:[], lunch:[], snack2:[], dinner:[] }, supplements:[], suppGoalUsed:null };
+    if(!state.nutrition.meals) state.nutrition.meals = { breakfast:[], snack1:[], lunch:[], snack2:[], dinner:[] };
+    if(!state.nutrition.supplements) state.nutrition.supplements = [];
+    state.nutritionOwnerId = userId === state.user.id ? null : userId;
+    renderView();
+  }catch(e){ toast('خطا','warn'); }
 }
 
 /* ============ PROGRESS VIEW ============ */
 function renderProgressView(c){
-  const chartTypes = [
+  const types=[
     { k:'volume', name:'📊 حجم هفتگی' },
     { k:'sessions', name:'✅ جلسات' },
     { k:'muscles', name:'🎯 تعادل عضلات' },
     { k:'monthly', name:'📈 روند ماهانه' }
   ];
-  let html = '<div class="card"><h2>📊 نمودار پیشرفت</h2>' +
-    '<div class="chart-tabs">' +
-    chartTypes.map(t => '<button class="btn sm" style="' + (state.progressChartType === t.k ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="state.progressChartType=\'' + t.k + '\';renderView()">' + t.name + '</button>').join('') +
-    '</div>' +
-    '<div class="chart-box"><div id="chartMain"></div></div></div>';
-  c.innerHTML = html;
-  drawProgressChart();
+  let h='<div class="card"><h2>📊 نمودار پیشرفت</h2><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px">'+
+    types.map(t=>'<button class="btn sm" style="'+(state.progressChartType===t.k?'background:var(--bl);color:#fff;border-color:var(--bl)':'')+'" onclick="state.progressChartType=\''+t.k+'\';renderView()">'+t.name+'</button>').join('')+
+    '</div><div class="chart-box"><div id="chartMain"></div></div></div>';
+  c.innerHTML=h; drawProgressChart();
 }
 function drawProgressChart(){
-  const el = document.getElementById('chartMain');
-  if(!el) return;
-  if(state.charts.main){ state.charts.main.destroy(); state.charts.main = null; }
-  const t = state.progressChartType;
-  let opts;
-  if(t === 'volume' || t === 'sessions'){
-    const days = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
-    const today = new Date();
-    const diff = (today.getDay() + 1) % 7;
-    const start = new Date(today); start.setDate(today.getDate() - diff);
-    const labels = [], data = [];
-    const map = { 6:0, 0:1, 1:2, 2:3, 3:4, 4:5, 5:6 };
-    for(let i = 0; i < 7; i++){
-      const d = new Date(start); d.setDate(start.getDate() + i);
-      const k = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-      labels.push(days[map[d.getDay()]]);
-      const h = state.history[k];
-      data.push(h ? (t === 'volume' ? h.volume : h.completed) : 0);
+  const el=document.getElementById('chartMain'); if(!el) return;
+  if(state.charts.main){ state.charts.main.destroy(); state.charts.main=null; }
+  const t=state.progressChartType; let opts;
+  if(t==='volume'||t==='sessions'){
+    const dn=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+    const today=new Date(); const diff=(today.getDay()+1)%7;
+    const start=new Date(today); start.setDate(today.getDate()-diff);
+    const labels=[],data=[];
+    const map={6:0,0:1,1:2,2:3,3:4,4:5,5:6};
+    for(let i=0;i<7;i++){
+      const d=new Date(start); d.setDate(start.getDate()+i);
+      const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      labels.push(dn[map[d.getDay()]]);
+      const hh=state.history[k];
+      data.push(hh?(t==='volume'?hh.volume:hh.completed):0);
     }
-    opts = {
-      chart: { type:'bar', height:220, toolbar:{show:false}, fontFamily:'Vazirmatn' },
-      series: [{ name: t === 'volume' ? 'حجم' : 'ست‌ها', data }],
-      xaxis: { categories: labels, labels: { style: { colors:'#94a3b8', fontSize:'10px' } } },
-      yaxis: { labels: { style: { colors:'#94a3b8' } } },
-      plotOptions: { bar: { borderRadius:8, columnWidth:'55%' } },
-      colors: [t === 'volume' ? '#3b82f6' : '#10b981'],
-      dataLabels: { enabled:false },
-      grid: { borderColor:'rgba(148,163,184,.15)' },
-      theme: { mode: themeMode() }
-    };
-  } else if(t === 'muscles'){
-    const cats = {};
-    state.program.days.forEach(day => {
-      (day.exercises || []).forEach(ex => {
-        const def = DB.exercises.find(e => e.id === ex.exId);
-        if(!def) return;
-        cats[def.cat] = (cats[def.cat] || 0) + 1;
-      });
-    });
-    const labels = [], data = [];
-    Object.keys(DB.categories).forEach(k => {
-      if(cats[k]){ labels.push(DB.categories[k].name); data.push(cats[k]); }
-    });
-    if(!labels.length){
-      el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--tm)">هنوز برنامه‌ای برای تحلیل نیست</div>';
-      return;
-    }
-    opts = {
-      chart: { type:'radar', height:260, toolbar:{show:false}, fontFamily:'Vazirmatn' },
-      series: [{ name:'تعداد حرکات', data }],
-      labels, colors: ['#a855f7'], stroke:{width:2}, fill:{opacity:.3}, markers:{size:4},
-      yaxis:{show:false}, theme:{ mode: themeMode() }
-    };
-  } else if(t === 'monthly'){
-    const today = new Date();
-    const labels = [], data = [];
-    for(let i = 5; i >= 0; i--){
-      const m = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      const monthKey = m.getFullYear() + '-' + String(m.getMonth()+1).padStart(2,'0');
-      let vol = 0;
-      Object.keys(state.history).forEach(k => {
-        if(k.startsWith(monthKey)) vol += state.history[k].volume || 0;
-      });
+    opts={ chart:{type:'bar',height:220,toolbar:{show:false},fontFamily:'Vazirmatn'}, series:[{name:t==='volume'?'حجم':'ست‌ها',data}], xaxis:{categories:labels}, plotOptions:{bar:{borderRadius:8,columnWidth:'55%'}}, colors:[t==='volume'?'#3b82f6':'#10b981'], dataLabels:{enabled:false}, theme:{mode:themeMode()} };
+  } else if(t==='muscles'){
+    const cats={};
+    state.program.days.forEach(day=>{ (day.exercises||[]).forEach(ex=>{ const def=DB.exercises.find(e=>e.id===ex.exId); if(!def) return; cats[def.cat]=(cats[def.cat]||0)+1; }); });
+    const labels=[],data=[];
+    Object.keys(DB.categories).forEach(k=>{ if(cats[k]){ labels.push(DB.categories[k].name); data.push(cats[k]); } });
+    if(!labels.length){ el.innerHTML='<div style="text-align:center;padding:30px;color:var(--tm)">هنوز برنامه‌ای نیست</div>'; return; }
+    opts={ chart:{type:'radar',height:260,toolbar:{show:false},fontFamily:'Vazirmatn'}, series:[{name:'تعداد',data}], labels, colors:['#a855f7'], stroke:{width:2}, fill:{opacity:0.3}, markers:{size:4}, yaxis:{show:false}, theme:{mode:themeMode()} };
+  } else if(t==='monthly'){
+    const today=new Date(); const labels=[],data=[];
+    for(let i=5;i>=0;i--){
+      const m=new Date(today.getFullYear(),today.getMonth()-i,1);
+      const mk=m.getFullYear()+'-'+String(m.getMonth()+1).padStart(2,'0');
+      let vol=0; Object.keys(state.history).forEach(k=>{ if(k.startsWith(mk)) vol+=state.history[k].volume||0; });
       labels.push(['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'][m.getMonth()]);
       data.push(vol);
     }
-    opts = {
-      chart: { type:'line', height:220, toolbar:{show:false}, fontFamily:'Vazirmatn' },
-      series: [{ name:'حجم ماهانه', data }],
-      xaxis: { categories: labels },
-      stroke: { curve:'smooth', width:3 },
-      colors: ['#f59e0b'], markers:{size:5},
-      theme: { mode: themeMode() }
-    };
+    opts={ chart:{type:'line',height:220,toolbar:{show:false},fontFamily:'Vazirmatn'}, series:[{name:'حجم',data}], xaxis:{categories:labels}, stroke:{curve:'smooth',width:3}, colors:['#f59e0b'], markers:{size:5}, theme:{mode:themeMode()} };
   }
-  state.charts.main = new ApexCharts(el, opts);
+  state.charts.main=new ApexCharts(el,opts);
   state.charts.main.render();
 }
 
 /* ============ BODY VIEW ============ */
 function renderBodyView(c){
-  const b = state.body;
-  const today = b.find(e => e.date === todayKey()) || {};
-  let html = '<div class="card"><h2>📏 ثبت اندازه‌های بدن</h2>' +
-    '<div class="metric-grid">' +
-    BODY_METRICS.map(m => '<div class="metric-input"><label>' + m.emoji + ' ' + m.name + ' (' + m.unit + ')</label><input type="number" step="0.1" id="bm_' + m.key + '" placeholder="—" value="' + (today[m.key] != null ? today[m.key] : '') + '"></div>').join('') +
-    '</div>' +
-    '<button class="btn primary full" style="margin-top:8px" onclick="addBodyEntry()">💾 ثبت امروز</button>' +
-  '</div>';
-
-  html += '<div class="card"><h2>📊 نمودار تغییرات</h2>' +
-    '<div class="form-row"><label>انتخاب متریک</label><select onchange="state.bodyChartMetric=this.value;renderView()">' +
-    BODY_METRICS.map(m => '<option value="' + m.key + '" ' + (state.bodyChartMetric === m.key ? 'selected' : '') + '>' + m.emoji + ' ' + m.name + ' (' + m.unit + ')</option>').join('') +
-    '</select></div>' +
-    '<div class="chart-box"><div id="chartBody"></div></div>' +
-    '<div id="bodyStats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px"></div>' +
-  '</div>';
-
-  html += '<div class="card"><h2>📋 تاریخچه ثبت‌ها</h2>';
-  if(!b.length) html += '<div class="empty"><div class="icon">📏</div><div>هنوز ثبتی نداری</div></div>';
+  const b=state.body;
+  const today=b.find(e=>e.date===todayKey())||{};
+  let h='<div class="card"><h2>📏 ثبت اندازه‌های بدن</h2><div class="metric-grid">'+
+    BODY_METRICS.map(m=>'<div class="metric-input"><label>'+m.emoji+' '+m.name+' ('+m.unit+')</label><input type="number" step="0.1" id="bm_'+m.key+'" placeholder="—" value="'+(today[m.key]!=null?today[m.key]:'')+'"></div>').join('')+
+  '</div>'+
+  '<button class="btn primary full" style="margin-top:8px" onclick="addBodyEntry()">💾 ثبت امروز</button></div>';
+  h+='<div class="card"><h2>📊 نمودار تغییرات</h2><div class="form-row"><label>انتخاب متریک</label><select onchange="state.bodyChartMetric=this.value;renderView()">'+
+    BODY_METRICS.map(m=>'<option value="'+m.key+'" '+(state.bodyChartMetric===m.key?'selected':'')+'>'+m.emoji+' '+m.name+' ('+m.unit+')</option>').join('')+
+  '</select></div><div class="chart-box"><div id="chartBody"></div></div>'+
+  '<div id="bodyStats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px"></div></div>';
+  h+='<div class="card"><h2>📋 تاریخچه</h2>';
+  if(!b.length) h+='<div class="empty"><div class="icon">📏</div><div>هنوز ثبتی نداری</div></div>';
   else {
-    html += b.slice().reverse().slice(0, 30).map((e) => {
-      const idx = b.indexOf(e);
-      const parts = BODY_METRICS.filter(m => e[m.key] != null).map(m => m.emoji + ' <strong>' + fN(e[m.key]) + m.unit + '</strong>').join(' · ');
-      return '<div class="u-item"><div style="flex:1">' +
-        '<div style="font-size:.78rem;font-weight:700">📅 ' + e.date + '</div>' +
-        '<div style="font-size:.68rem;color:var(--tx2);margin-top:3px;line-height:1.7">' + parts + '</div></div>' +
-        '<button class="icon-btn del" onclick="deleteBodyEntry(' + idx + ')">🗑️</button>' +
-      '</div>';
+    h+=b.slice().reverse().slice(0,30).map(e=>{
+      const idx=b.indexOf(e);
+      const parts=BODY_METRICS.filter(m=>e[m.key]!=null).map(m=>m.emoji+' <strong>'+fN(e[m.key])+m.unit+'</strong>').join(' · ');
+      return '<div class="u-item"><div style="flex:1"><div style="font-size:.78rem;font-weight:700">📅 '+e.date+'</div>'+
+        '<div style="font-size:.66rem;color:var(--tx2);margin-top:3px;line-height:1.7">'+parts+'</div></div>'+
+        '<button class="icon-btn del" onclick="deleteBodyEntry('+idx+')">🗑️</button></div>';
     }).join('');
   }
-  html += '</div>';
-  c.innerHTML = html;
-  drawBodyChart();
+  h+='</div>';
+  c.innerHTML=h; drawBodyChart();
 }
 function drawBodyChart(){
-  const el = document.getElementById('chartBody');
-  if(!el) return;
-  if(state.charts.body){ state.charts.body.destroy(); state.charts.body = null; }
-  const mk = state.bodyChartMetric;
-  const m = BODY_METRICS.find(x => x.key === mk);
-  const filtered = state.body.filter(e => e[mk] != null);
-  if(filtered.length < 2){
-    el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--tm);font-size:.8rem">برای نمودار حداقل ۲ ثبت لازم است</div>';
-    const s = document.getElementById('bodyStats'); if(s) s.innerHTML = '';
+  const el=document.getElementById('chartBody'); if(!el) return;
+  if(state.charts.body){ state.charts.body.destroy(); state.charts.body=null; }
+  const mk=state.bodyChartMetric;
+  const m=BODY_METRICS.find(x=>x.key===mk);
+  const filtered=state.body.filter(e=>e[mk]!=null);
+  if(filtered.length<2){
+    el.innerHTML='<div style="text-align:center;padding:30px;color:var(--tm);font-size:.8rem">برای نمودار حداقل ۲ ثبت لازم است</div>';
+    const s=document.getElementById('bodyStats'); if(s) s.innerHTML='';
     return;
   }
-  const labels = filtered.map(e => e.date.slice(5));
-  const data = filtered.map(e => e[mk]);
-  const opts = {
-    chart: { type:'line', height:220, toolbar:{show:false}, fontFamily:'Vazirmatn' },
-    series: [{ name: m.name + ' (' + m.unit + ')', data }],
-    xaxis: { categories: labels, labels: { style: { colors:'#94a3b8', fontSize:'10px' } } },
-    stroke: { curve:'smooth', width:3 },
-    colors: ['#10b981'],
-    markers: { size:5 },
-    theme: { mode: themeMode() }
+  const opts={
+    chart:{type:'line',height:220,toolbar:{show:false},fontFamily:'Vazirmatn'},
+    series:[{ name:m.name+' ('+m.unit+')', data:filtered.map(e=>e[mk]) }],
+    xaxis:{categories:filtered.map(e=>e.date.slice(5))},
+    stroke:{curve:'smooth',width:3}, colors:['#10b981'], markers:{size:5},
+    theme:{mode:themeMode()}
   };
-  state.charts.body = new ApexCharts(el, opts);
+  state.charts.body=new ApexCharts(el,opts);
   state.charts.body.render();
-
-  const first = data[0], last = data[data.length - 1];
-  const diff = last - first;
-  const min = Math.min(...data), max = Math.max(...data);
-  const dc = diff > 0 ? 'var(--rd)' : (diff < 0 ? 'var(--gr)' : 'var(--tm)');
-  const statsEl = document.getElementById('bodyStats');
-  if(statsEl) statsEl.innerHTML =
-    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:' + dc + '">' + (diff>0?'+':'') + fN(Math.round(diff*10)/10) + m.unit + '</div><div style="font-size:.6rem;color:var(--tm)">تغییر</div></div>' +
-    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">' + fN(min) + '</div><div style="font-size:.6rem;color:var(--tm)">کمینه</div></div>' +
-    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">' + fN(max) + '</div><div style="font-size:.6rem;color:var(--tm)">بیشینه</div></div>';
+  const data=filtered.map(e=>e[mk]);
+  const first=data[0], last=data[data.length-1]; const diff=last-first;
+  const min=Math.min(...data), max=Math.max(...data);
+  const dc=diff>0?'var(--rd)':(diff<0?'var(--gr)':'var(--tm)');
+  const statsEl=document.getElementById('bodyStats');
+  if(statsEl) statsEl.innerHTML='<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:'+dc+'">'+(diff>0?'+':'')+fN(Math.round(diff*10)/10)+m.unit+'</div><div style="font-size:.6rem;color:var(--tm)">تغییر</div></div>'+
+    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">'+fN(min)+'</div><div style="font-size:.6rem;color:var(--tm)">کمینه</div></div>'+
+    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">'+fN(max)+'</div><div style="font-size:.6rem;color:var(--tm)">بیشینه</div></div>';
 }
 async function addBodyEntry(){
-  const entry = { date: todayKey() };
-  let hasAny = false;
-  BODY_METRICS.forEach(m => {
-    const v = document.getElementById('bm_' + m.key).value;
-    entry[m.key] = v === '' ? null : (Number(v) || null);
-    if(entry[m.key] != null) hasAny = true;
-  });
-  if(!hasAny){ toast('حداقل یک مقدار وارد کنید', 'error'); return; }
-  const existing = state.body.findIndex(e => e.date === entry.date);
-  if(existing >= 0) state.body[existing] = entry;
-  else state.body.push(entry);
-  state.body.sort((a,b) => a.date.localeCompare(b.date));
-  await saveBody();
-  toast('ثبت شد ✓');
-  renderView();
+  const e={ date:todayKey() }; let hasAny=false;
+  BODY_METRICS.forEach(m=>{ const v=document.getElementById('bm_'+m.key).value; e[m.key]=v===''?null:(Number(v)||null); if(e[m.key]!=null) hasAny=true; });
+  if(!hasAny){ toast('حداقل یک مقدار','error'); return; }
+  const ex=state.body.findIndex(x=>x.date===e.date);
+  if(ex>=0) state.body[ex]=e; else state.body.push(e);
+  state.body.sort((a,b)=>a.date.localeCompare(b.date));
+  await saveBody(); toast('ثبت شد ✓'); renderView();
 }
 async function deleteBodyEntry(idx){
   if(!confirm('حذف شود؟')) return;
-  state.body.splice(idx, 1);
-  await saveBody();
-  renderView();
+  state.body.splice(idx,1);
+  await saveBody(); renderView();
 }
 
-/* ============ SETTINGS VIEW ============ */
+/* ============ SETTINGS ============ */
 function renderSettingsView(c){
-  const u = state.user;
-  c.innerHTML = '<div class="card"><h2>👤 حساب من</h2>' +
-    '<div style="font-size:.82rem;line-height:1.9;color:var(--tx2)">' +
-    'نام: <strong style="color:var(--tx)">' + esc(u.displayName) + '</strong><br>' +
-    'نام کاربری: <strong style="color:var(--tx)" dir="ltr">' + esc(u.username) + '</strong><br>' +
-    'نقش: <strong style="color:var(--tx)">' + ({admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'})[u.role] + '</strong>' +
-    (u.role === 'student' ? '<br>اجازه ویرایش برنامه: <strong style="color:' + (state.permissions.canEditProgram ? 'var(--gr)' : 'var(--rd)') + '">' + (state.permissions.canEditProgram ? '✅ دارد' : '❌ ندارد') + '</strong>' : '') +
-    '</div></div>' +
-    '<div class="card"><h2>⚙️ امکانات</h2>' +
-    '<button class="btn full" style="margin-bottom:8px" onclick="openDrawer(\'userDrawer\')">👤 تنظیمات حساب</button>' +
-    (u.role === 'student' ? '<button class="btn full" style="margin-bottom:8px" onclick="openWizard()">🎯 بازسازی برنامه هوشمند</button>' : '') +
-    '<button class="btn danger full" onclick="doLogout()">🚪 خروج از حساب</button>' +
-    '</div>';
+  const u=state.user;
+  c.innerHTML='<div class="card"><h2>👤 حساب من</h2><div style="font-size:.82rem;line-height:1.9;color:var(--tx2)">'+
+    'نام: <strong style="color:var(--tx)">'+esc(u.displayName)+'</strong><br>'+
+    'نام کاربری: <strong style="color:var(--tx)" dir="ltr">'+esc(u.username)+'</strong><br>'+
+    'نقش: <strong style="color:var(--tx)">'+({admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'})[u.role]+'</strong>'+
+    (u.role==='student'?'<br>اجازه ویرایش برنامه: <strong style="color:'+(state.permissions.canEditProgram?'var(--gr)':'var(--rd)')+'">'+(state.permissions.canEditProgram?'✅ دارد':'❌ ندارد')+'</strong>':'')+
+    '</div></div>'+
+    '<div class="card"><h2>⚙️ امکانات</h2>'+
+    '<button class="btn full" style="margin-bottom:8px" onclick="openDrawer(\'userDrawer\')">👤 تنظیمات حساب</button>'+
+    (u.role==='student'?'<button class="btn full" style="margin-bottom:8px" onclick="openWizard()">🎯 بازسازی برنامه هوشمند</button>':'')+
+    '<button class="btn danger full" onclick="doLogout()">🚪 خروج از حساب</button></div>';
 }
-
-/* ============ USER DRAWER ============ */
 function renderUserDrawer(){
-  const u = state.user;
-  const roles = { admin: '👑 مدیر', coach: '👨‍🏫 مربی', student: '🎓 شاگرد' };
-  document.getElementById('userDrawerBody').innerHTML =
-    '<div class="u-item" style="cursor:default">' +
-    '<div class="u-avatar" style="background:' + u.color + '">' + u.emoji + '</div>' +
-    '<div class="u-info"><div class="u-name">' + esc(u.displayName) + '</div>' +
-    '<div class="u-meta">@' + esc(u.username) + ' · ' + roles[u.role] + '</div></div></div>' +
-    '<div style="margin-top:14px"></div>' +
+  const u=state.user;
+  const roles={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'};
+  document.getElementById('userDrawerBody').innerHTML='<div class="u-item" style="cursor:default">'+
+    '<div class="u-avatar" style="background:'+u.color+'">'+u.emoji+'</div>'+
+    '<div class="u-info"><div class="u-name">'+esc(u.displayName)+'</div>'+
+    '<div class="u-meta">@'+esc(u.username)+' · '+roles[u.role]+'</div></div></div>'+
+    '<div style="margin-top:14px"></div>'+
     '<button class="btn danger full" onclick="doLogout()">🚪 خروج</button>';
 }
 
 /* ============ ADMIN ============ */
 function renderAdminAll(){ renderAdminPending(); renderAdminUsers(); renderAdminAudit(); renderAdminSystem(); }
 function switchAdminTab(t){
-  state.adminTab = t;
-  document.querySelectorAll('[data-atab]').forEach(b => b.classList.toggle('active', b.dataset.atab === t));
-  ['pending','users','audit','system'].forEach(x => {
-    const el = document.getElementById('admin' + x.charAt(0).toUpperCase() + x.slice(1) + 'Body');
-    if(el) el.classList.toggle('hidden', x !== t);
+  state.adminTab=t;
+  document.querySelectorAll('[data-atab]').forEach(b=>b.classList.toggle('active',b.dataset.atab===t));
+  ['pending','users','audit','system'].forEach(x=>{
+    const el=document.getElementById('admin'+x.charAt(0).toUpperCase()+x.slice(1)+'Body');
+    if(el) el.classList.toggle('hidden',x!==t);
   });
 }
 async function renderAdminPending(){
-  const el = document.getElementById('adminPendingBody');
-  if(!el) return;
-  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  const el=document.getElementById('adminPendingBody'); if(!el) return;
+  el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
   try{
-    state.pending = await api('GET', '/api/admin/pending-coaches');
-    if(!state.pending.length){ el.innerHTML = '<div class="empty"><div class="icon">✅</div><div>درخواستی وجود ندارد</div></div>'; return; }
-    el.innerHTML = state.pending.map(u =>
-      '<div class="u-item">' +
-      '<div class="u-avatar" style="background:' + u.color + '">' + u.emoji + '</div>' +
-      '<div class="u-info"><div class="u-name">' + esc(u.displayName) + '</div>' +
-      '<div class="u-meta">@' + esc(u.username) + ' · ' + new Date(u.createdAt).toLocaleDateString('fa-IR') + '</div></div>' +
-      '<div class="u-actions">' +
-      '<button class="icon-btn approve" onclick="approveCoach(\'' + u.id + '\')">✅</button>' +
-      '<button class="icon-btn reject" onclick="rejectCoach(\'' + u.id + '\')">❌</button>' +
-      '</div></div>').join('');
-  } catch(e){ el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: ' + esc(e.message) + '</div></div>'; }
+    state.pending=await api('GET','/api/admin/pending-coaches');
+    if(!state.pending.length){ el.innerHTML='<div class="empty"><div class="icon">✅</div><div>درخواستی نیست</div></div>'; return; }
+    el.innerHTML=state.pending.map(u=>'<div class="u-item"><div class="u-avatar" style="background:'+u.color+'">'+u.emoji+'</div>'+
+      '<div class="u-info"><div class="u-name">'+esc(u.displayName)+'</div>'+
+      '<div class="u-meta">@'+esc(u.username)+' · '+new Date(u.createdAt).toLocaleDateString('fa-IR')+'</div></div>'+
+      '<div class="u-actions"><button class="icon-btn approve" onclick="approveCoach(\''+u.id+'\')">✅</button>'+
+      '<button class="icon-btn reject" onclick="rejectCoach(\''+u.id+'\')">❌</button></div></div>').join('');
+  }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
 async function renderAdminUsers(){
-  const el = document.getElementById('adminUsersBody');
-  if(!el) return;
-  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  const el=document.getElementById('adminUsersBody'); if(!el) return;
+  el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
   try{
-    state.users = await api('GET', '/api/users');
-    const groups = { admin: [], coach: [], student: [] };
-    state.users.forEach(u => { if(groups[u.role]) groups[u.role].push(u); });
-    let html = '<button class="btn primary full" style="margin-bottom:12px" onclick="openCreateUser()">➕ افزودن کاربر</button>';
-    const order = ['admin','coach','student'];
-    const rl = { admin:'👑 مدیران', coach:'👨‍🏫 مربیان', student:'🎓 شاگردان' };
-    const rc = { admin:'#f59e0b', coach:'#3b82f6', student:'#10b981' };
-    order.forEach(r => {
-      const list = groups[r];
-      if(!list.length) return;
-      html += '<div style="font-size:.7rem;font-weight:800;color:' + rc[r] + ';margin:12px 0 6px">' + rl[r] + ' (' + list.length + ')</div>';
-      html += list.map(u => {
-        const coach = u.coachId ? state.users.find(c => c.id === u.coachId) : null;
-        const badges = [];
+    state.users=await api('GET','/api/users');
+    const groups={admin:[],coach:[],student:[]};
+    state.users.forEach(u=>{ if(groups[u.role]) groups[u.role].push(u); });
+    let h='<button class="btn primary full" style="margin-bottom:12px" onclick="openCreateUser()">➕ افزودن کاربر</button>';
+    const order=['admin','coach','student'];
+    const rl={admin:'👑 مدیران',coach:'👨‍🏫 مربیان',student:'🎓 شاگردان'};
+    const rc={admin:'#f59e0b',coach:'#3b82f6',student:'#10b981'};
+    order.forEach(r=>{
+      const list=groups[r]; if(!list.length) return;
+      h+='<div style="font-size:.7rem;font-weight:800;color:'+rc[r]+';margin:12px 0 6px">'+rl[r]+' ('+list.length+')</div>';
+      h+=list.map(u=>{
+        const coach=u.coachId?state.users.find(c=>c.id===u.coachId):null;
+        const badges=[];
         if(!u.active) badges.push('<span class="badge inactive">غیرفعال</span>');
-        if(u.approvalStatus === 'pending') badges.push('<span class="badge pending">در انتظار</span>');
-        if(u.approvalStatus === 'rejected') badges.push('<span class="badge rejected">رد شده</span>');
-        const grantBtn = (r === 'student')
-          ? '<button class="icon-btn grant" onclick="toggleProgramPermission(\'' + u.id + '\')" title="اجازه ویرایش برنامه">🔒</button>'
-          : '';
-        return '<div class="u-item">' +
-          '<div class="u-avatar" style="background:' + u.color + '">' + u.emoji + '</div>' +
-          '<div class="u-info"><div class="u-name">' + esc(u.displayName) + ' ' + badges.join('') + '</div>' +
-          '<div class="u-meta">@' + esc(u.username) + (coach ? ' · 👨‍🏫 ' + esc(coach.displayName) : '') + '</div></div>' +
-          '<div class="u-actions">' +
-            grantBtn +
-            '<button class="icon-btn" onclick="adminResetPassword(\'' + u.id + '\')" title="بازنشانی">🔑</button>' +
-            '<button class="icon-btn" onclick="adminToggleActive(\'' + u.id + '\')">' + (u.active ? '🚫' : '✅') + '</button>' +
-            '<button class="icon-btn del" onclick="adminDeleteUser(\'' + u.id + '\')" title="حذف">🗑️</button>' +
-          '</div>' +
-        '</div>';
+        if(u.approvalStatus==='pending') badges.push('<span class="badge pending">در انتظار</span>');
+        if(u.approvalStatus==='rejected') badges.push('<span class="badge rejected">رد شده</span>');
+        const grantBtn = (r==='student') ? '<button class="icon-btn grant" onclick="toggleProgramPermission(\''+u.id+'\')">🔒</button>' : '';
+        return '<div class="u-item"><div class="u-avatar" style="background:'+u.color+'">'+u.emoji+'</div>'+
+          '<div class="u-info"><div class="u-name">'+esc(u.displayName)+' '+badges.join('')+'</div>'+
+          '<div class="u-meta">@'+esc(u.username)+(coach?' · 👨‍🏫 '+esc(coach.displayName):'')+'</div></div>'+
+          '<div class="u-actions">'+grantBtn+
+            '<button class="icon-btn" onclick="adminResetPassword(\''+u.id+'\')">🔑</button>'+
+            '<button class="icon-btn" onclick="adminToggleActive(\''+u.id+'\')">'+(u.active?'🚫':'✅')+'</button>'+
+            '<button class="icon-btn del" onclick="adminDeleteUser(\''+u.id+'\')">🗑️</button>'+
+          '</div></div>';
       }).join('');
     });
-    el.innerHTML = html;
-  } catch(e){ el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: ' + esc(e.message) + '</div></div>'; }
+    el.innerHTML=h;
+  }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
 async function toggleProgramPermission(userId){
   try{
-    const d = await api('GET', '/api/users/' + userId + '/data');
-    const cur = d.permissions && d.permissions.canEditProgram;
-    const msg = cur ? 'گرفتن اجازه ویرایش برنامه؟' : 'دادن اجازه ویرایش برنامه؟';
-    if(!confirm(msg)) return;
-    await api('POST', '/api/users/' + userId + '/data/permissions', { value: { canEditProgram: !cur } });
-    toast('انجام شد ✓');
-    renderAdminUsers();
-  } catch(e){ toast('خطا: ' + e.message, 'error'); }
+    const d=await api('GET','/api/users/'+userId+'/data');
+    const cur=d.permissions&&d.permissions.canEditProgram;
+    if(!confirm(cur?'گرفتن اجازه ویرایش برنامه؟':'دادن اجازه ویرایش برنامه؟')) return;
+    await api('POST','/api/users/'+userId+'/data/permissions',{value:{canEditProgram:!cur}});
+    toast('انجام شد ✓'); renderAdminUsers();
+  }catch(e){ toast('خطا: '+e.message,'error'); }
 }
 async function renderAdminAudit(){
-  const el = document.getElementById('adminAuditBody');
-  if(!el) return;
-  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  const el=document.getElementById('adminAuditBody'); if(!el) return;
+  el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
   try{
-    state.audit = await api('GET', '/api/admin/audit');
-    if(!state.audit.length){ el.innerHTML = '<div class="empty"><div class="icon">📜</div><div>فعالیتی نیست</div></div>'; return; }
-    const labels = {
-      login_success:'✅ ورود', login_failed:'❌ ورود ناموفق',
-      user_created:'➕ ساخت', user_updated:'✏️ ویرایش',
-      user_deleted:'🗑️ حذف', password_changed:'🔑 تغییر رمز',
-      user_registered:'✨ ثبت‌نام', coach_approved:'✅ تأیید مربی', coach_rejected:'❌ رد مربی'
-    };
-    el.innerHTML = state.audit.map(r => {
-      const actor = state.users.find(x => x.id === r.actor_id);
-      const an = actor ? actor.displayName : (r.actor_id || 'سیستم');
-      return '<div style="padding:8px 10px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;margin-bottom:5px;font-size:.74rem">' +
-        '<div style="display:flex;justify-content:space-between;margin-bottom:2px"><strong>' + (labels[r.action] || r.action) + '</strong>' +
-        '<span style="color:var(--tm);font-size:.62rem">' + new Date(r.created_at).toLocaleString('fa-IR') + '</span></div>' +
-        '<div style="color:var(--tx2);font-size:.68rem">' + esc(an) + '</div></div>';
+    state.audit=await api('GET','/api/admin/audit');
+    if(!state.audit.length){ el.innerHTML='<div class="empty"><div class="icon">📜</div><div>فعالیتی نیست</div></div>'; return; }
+    const labels={login_success:'✅ ورود',login_failed:'❌ ورود ناموفق',user_created:'➕ ساخت',user_updated:'✏️ ویرایش',user_deleted:'🗑️ حذف',password_changed:'🔑 تغییر رمز',user_registered:'✨ ثبت‌نام',coach_approved:'✅ تأیید مربی',coach_rejected:'❌ رد مربی'};
+    el.innerHTML=state.audit.map(r=>{
+      const actor=state.users.find(x=>x.id===r.actor_id);
+      const an=actor?actor.displayName:(r.actor_id||'سیستم');
+      return '<div style="padding:8px 10px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;margin-bottom:5px;font-size:.74rem">'+
+        '<div style="display:flex;justify-content:space-between"><strong>'+(labels[r.action]||r.action)+'</strong>'+
+        '<span style="color:var(--tm);font-size:.62rem">'+new Date(r.created_at).toLocaleString('fa-IR')+'</span></div>'+
+        '<div style="color:var(--tx2);font-size:.68rem;margin-top:2px">'+esc(an)+'</div></div>';
     }).join('');
-  } catch(e){ el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: ' + esc(e.message) + '</div></div>'; }
+  }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
 function renderAdminSystem(){
-  const el = document.getElementById('adminSystemBody');
-  if(!el) return;
-  const currentTheme = themeMode();
-  const coachPanelEnabled = localStorage.getItem('profit-coach-panel-enabled') !== 'false';
-  const studentPanelEnabled = localStorage.getItem('profit-student-panel-enabled') !== 'false';
-  el.innerHTML = '<div class="card"><h2>🎨 نمایش</h2>' +
-    '<div class="toggle-row"><div class="toggle-lbl">حالت روشن</div>' +
-    '<label class="ts"><input type="checkbox" ' + (currentTheme === 'light' ? 'checked' : '') + ' onchange="toggleTheme()"><span class="sl"></span></label></div></div>' +
-    '<div class="card"><h2>👥 دسترسی پنل‌ها</h2>' +
-    '<div class="toggle-row"><div class="toggle-lbl">پنل مربی فعال</div>' +
-    '<label class="ts"><input type="checkbox" ' + (coachPanelEnabled ? 'checked' : '') + ' onchange="toggleCoachPanel()"><span class="sl"></span></label></div>' +
-    '<div class="toggle-row"><div class="toggle-lbl">صفحه شاگرد فعال</div>' +
-    '<label class="ts"><input type="checkbox" ' + (studentPanelEnabled ? 'checked' : '') + ' onchange="toggleStudentPanel()"><span class="sl"></span></label></div></div>' +
-    '<div class="card"><h2>ℹ️ سیستم</h2><div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">' +
-    'کاربران: <strong>' + fN(state.users.length) + '</strong><br>' +
-    'در انتظار: <strong>' + fN(state.pending.length) + '</strong><br>' +
-    'بانک حرکات: <strong>' + fN(DB.exercises.length) + '</strong><br>' +
-    'نسخه: <strong>2.2</strong></div></div>';
+  const el=document.getElementById('adminSystemBody'); if(!el) return;
+  const t=themeMode();
+  const cp=localStorage.getItem('profit-coach-panel-enabled')!=='false';
+  const sp=localStorage.getItem('profit-student-panel-enabled')!=='false';
+  el.innerHTML='<div class="card"><h2>🎨 نمایش</h2>'+
+    '<div class="toggle-row"><div class="toggle-lbl">حالت روشن</div>'+
+    '<label class="ts"><input type="checkbox" '+(t==='light'?'checked':'')+' onchange="toggleTheme()"><span class="sl"></span></label></div></div>'+
+    '<div class="card"><h2>👥 پنل‌ها</h2>'+
+    '<div class="toggle-row"><div class="toggle-lbl">پنل مربی</div>'+
+    '<label class="ts"><input type="checkbox" '+(cp?'checked':'')+' onchange="toggleCoachPanel()"><span class="sl"></span></label></div>'+
+    '<div class="toggle-row"><div class="toggle-lbl">صفحه شاگرد</div>'+
+    '<label class="ts"><input type="checkbox" '+(sp?'checked':'')+' onchange="toggleStudentPanel()"><span class="sl"></span></label></div></div>'+
+    '<div class="card"><h2>ℹ️ سیستم</h2><div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">'+
+    'کاربران: <strong>'+fN(state.users.length)+'</strong><br>'+
+    'در انتظار: <strong>'+fN(state.pending.length)+'</strong><br>'+
+    'حرکات: <strong>'+fN(DB.exercises.length)+'</strong><br>'+
+    'غذاها: <strong>'+fN(NUT.foods.length)+'</strong><br>'+
+    'نسخه: <strong>3.0</strong></div></div>';
 }
 function toggleTheme(){
-  const cur = themeMode();
-  const next = cur === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('profit-theme', next);
-  renderView();
+  const cur=themeMode(); const next=cur==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',next);
+  localStorage.setItem('profit-theme',next); renderView();
 }
 function toggleCoachPanel(){
-  const cur = localStorage.getItem('profit-coach-panel-enabled') !== 'false';
-  localStorage.setItem('profit-coach-panel-enabled', cur ? 'false' : 'true');
+  const cur=localStorage.getItem('profit-coach-panel-enabled')!=='false';
+  localStorage.setItem('profit-coach-panel-enabled',cur?'false':'true');
   renderToolbar(); renderAdminSystem();
 }
 function toggleStudentPanel(){
-  const cur = localStorage.getItem('profit-student-panel-enabled') !== 'false';
-  localStorage.setItem('profit-student-panel-enabled', cur ? 'false' : 'true');
+  const cur=localStorage.getItem('profit-student-panel-enabled')!=='false';
+  localStorage.setItem('profit-student-panel-enabled',cur?'false':'true');
   renderAdminSystem();
 }
 async function approveCoach(id){
   if(!confirm('تأیید شود؟')) return;
-  try{ await api('POST', '/api/admin/approve/' + id); toast('تأیید شد ✓'); renderAdminPending(); renderAdminUsers(); }
-  catch(e){ toast('خطا: ' + e.message, 'error'); }
+  try{ await api('POST','/api/admin/approve/'+id); toast('تأیید شد ✓'); renderAdminPending(); renderAdminUsers(); }
+  catch(e){ toast('خطا: '+e.message,'error'); }
 }
 async function rejectCoach(id){
   if(!confirm('رد شود؟')) return;
-  try{ await api('POST', '/api/admin/reject/' + id); toast('رد شد', 'info'); renderAdminPending(); renderAdminUsers(); }
-  catch(e){ toast('خطا: ' + e.message, 'error'); }
+  try{ await api('POST','/api/admin/reject/'+id); toast('رد شد','info'); renderAdminPending(); renderAdminUsers(); }
+  catch(e){ toast('خطا: '+e.message,'error'); }
 }
 async function adminDeleteUser(id){
-  const u = state.users.find(x => x.id === id);
-  if(!u) return;
-  if(!confirm('حذف «' + u.displayName + '»؟')) return;
-  const pw = prompt('رمز خود (مدیر):');
-  if(!pw) return;
-  try{ await api('DELETE', '/api/users/' + id, { adminPassword: pw }); toast('حذف شد'); renderAdminUsers(); renderAdminPending(); }
-  catch(e){ toast(e.data && e.data.error === 'wrong_password' ? 'رمز اشتباه' : 'خطا: ' + e.message, 'error'); }
+  const u=state.users.find(x=>x.id===id); if(!u) return;
+  if(!confirm('حذف «'+u.displayName+'»؟')) return;
+  const pw=prompt('رمز خود (مدیر):'); if(!pw) return;
+  try{ await api('DELETE','/api/users/'+id,{adminPassword:pw}); toast('حذف شد'); renderAdminUsers(); renderAdminPending(); }
+  catch(e){ toast(e.data&&e.data.error==='wrong_password'?'رمز اشتباه':'خطا: '+e.message,'error'); }
 }
 async function adminToggleActive(id){
-  const u = state.users.find(x => x.id === id);
-  if(!u) return;
-  if(!confirm((u.active ? 'غیرفعال' : 'فعال') + ' شود؟')) return;
-  try{ await api('PUT', '/api/users/' + id, { active: !u.active }); toast('انجام شد'); renderAdminUsers(); }
-  catch(e){ toast('خطا: ' + e.message, 'error'); }
+  const u=state.users.find(x=>x.id===id); if(!u) return;
+  if(!confirm((u.active?'غیرفعال':'فعال')+' شود؟')) return;
+  try{ await api('PUT','/api/users/'+id,{active:!u.active}); toast('انجام شد'); renderAdminUsers(); }
+  catch(e){ toast('خطا: '+e.message,'error'); }
 }
 async function adminResetPassword(id){
-  const u = state.users.find(x => x.id === id);
-  if(!u) return;
-  const np = prompt('رمز جدید:');
-  if(!np) return;
-  if(np.length < 6){ toast('حداقل ۶', 'error'); return; }
-  try{ await api('PUT', '/api/users/' + id, { password: np }); toast('تغییر کرد'); }
-  catch(e){ toast('خطا: ' + e.message, 'error'); }
+  const u=state.users.find(x=>x.id===id); if(!u) return;
+  const np=prompt('رمز جدید:'); if(!np) return;
+  if(np.length<6){ toast('حداقل ۶','error'); return; }
+  try{ await api('PUT','/api/users/'+id,{password:np}); toast('تغییر کرد'); }
+  catch(e){ toast('خطا: '+e.message,'error'); }
 }
 function openCreateUser(){
-  document.getElementById('newUserRole').value = 'student';
-  document.getElementById('newUserUsername').value = '';
-  document.getElementById('newUserDisplayName').value = '';
-  document.getElementById('newUserPassword').value = '';
+  document.getElementById('newUserRole').value='student';
+  document.getElementById('newUserUsername').value='';
+  document.getElementById('newUserDisplayName').value='';
+  document.getElementById('newUserPassword').value='';
   onNewUserRoleChange();
-  const coaches = state.users.filter(u => u.role === 'coach' || u.role === 'admin');
-  document.getElementById('newUserCoachId').innerHTML = '<option value="">— بدون —</option>' + coaches.map(c => '<option value="' + c.id + '">' + c.emoji + ' ' + esc(c.displayName) + '</option>').join('');
+  const coaches=state.users.filter(u=>u.role==='coach'||u.role==='admin');
+  document.getElementById('newUserCoachId').innerHTML='<option value="">— بدون —</option>'+coaches.map(c=>'<option value="'+c.id+'">'+c.emoji+' '+esc(c.displayName)+'</option>').join('');
   openDrawer('createUserDrawer');
 }
 function onNewUserRoleChange(){
-  document.getElementById('newUserCoachRow').style.display = document.getElementById('newUserRole').value === 'student' ? 'block' : 'none';
+  document.getElementById('newUserCoachRow').style.display=document.getElementById('newUserRole').value==='student'?'block':'none';
 }
 async function submitCreateUser(){
-  const username = document.getElementById('newUserUsername').value.trim();
-  const displayName = document.getElementById('newUserDisplayName').value.trim();
-  const password = document.getElementById('newUserPassword').value;
-  const role = document.getElementById('newUserRole').value;
-  const coachId = document.getElementById('newUserCoachId').value || null;
-  if(!username || !displayName || !password){ toast('همه فیلدها را پر کنید', 'error'); return; }
-  if(!/^[a-zA-Z0-9_.-]+$/.test(username)){ toast('نام کاربری نامعتبر', 'error'); return; }
-  if(password.length < 6){ toast('رمز حداقل ۶', 'error'); return; }
+  const username=document.getElementById('newUserUsername').value.trim();
+  const displayName=document.getElementById('newUserDisplayName').value.trim();
+  const password=document.getElementById('newUserPassword').value;
+  const role=document.getElementById('newUserRole').value;
+  const coachId=document.getElementById('newUserCoachId').value||null;
+  if(!username||!displayName||!password){ toast('همه فیلدها','error'); return; }
+  if(!/^[a-zA-Z0-9_.-]+$/.test(username)){ toast('نام کاربری نامعتبر','error'); return; }
+  if(password.length<6){ toast('رمز حداقل ۶','error'); return; }
   try{
-    await api('POST', '/api/users', { username, displayName, password, role, coachId: role === 'student' ? coachId : null });
-    toast('ساخته شد ✓');
-    closeDrawer('createUserDrawer');
-    renderAdminUsers();
-  } catch(e){ toast('خطا: ' + (e.data?.error || e.message), 'error'); }
+    await api('POST','/api/users',{username,displayName,password,role,coachId:role==='student'?coachId:null});
+    toast('ساخته شد ✓'); closeDrawer('createUserDrawer'); renderAdminUsers();
+  }catch(e){ toast('خطا: '+(e.data?.error||e.message),'error'); }
 }
 
 /* ============ COACH ============ */
 async function renderCoachPanel(){
-  const el = document.getElementById('coachBody');
-  if(!el) return;
-  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  const el=document.getElementById('coachBody'); if(!el) return;
+  el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
   try{
-    state.students = await api('GET', '/api/coach/students');
-    let html = '<button class="btn primary full" style="margin-bottom:14px" onclick="openCreateStudent()">➕ افزودن شاگرد</button>';
+    state.students=await api('GET','/api/coach/students');
+    let h='<button class="btn primary full" style="margin-bottom:14px" onclick="openCreateStudent()">➕ افزودن شاگرد</button>';
     if(!state.students.length){
-      html += '<div class="empty"><div class="icon">👥</div><div>هنوز شاگردی نداری</div></div>';
+      h+='<div class="empty"><div class="icon">👥</div><div>هنوز شاگردی نداری</div></div>';
     } else {
-      html += '<div style="font-weight:800;margin-bottom:10px">👥 ' + state.students.length + ' شاگرد</div>';
-      html += state.students.map(s =>
-        '<div class="u-item clickable" onclick="openStudentDetail(\'' + s.id + '\')">' +
-        '<div class="u-avatar" style="background:' + s.color + '">' + s.emoji + '</div>' +
-        '<div class="u-info"><div class="u-name">' + esc(s.displayName) + '</div>' +
-        '<div class="u-meta">@' + esc(s.username) + ' · ' + fN(s.stats?.sessions7 || 0) + ' جلسه این هفته</div></div>' +
-        '<div style="color:var(--tx2);font-size:1.2rem">‹</div>' +
-        '</div>').join('');
+      h+='<div style="font-weight:800;margin-bottom:10px">👥 '+state.students.length+' شاگرد</div>';
+      h+=state.students.map(s=>'<div class="u-item clickable" onclick="openStudentDetail(\''+s.id+'\')">'+
+        '<div class="u-avatar" style="background:'+s.color+'">'+s.emoji+'</div>'+
+        '<div class="u-info"><div class="u-name">'+esc(s.displayName)+'</div>'+
+        '<div class="u-meta">@'+esc(s.username)+' · '+fN(s.stats?.sessions7||0)+' جلسه این هفته</div></div>'+
+        '<div style="color:var(--tx2);font-size:1.2rem">‹</div></div>').join('');
     }
-    el.innerHTML = html;
-  } catch(e){ el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: ' + esc(e.message) + '</div></div>'; }
+    el.innerHTML=h;
+  }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
 function openCreateStudent(){
-  document.getElementById('newStudentUsername').value = '';
-  document.getElementById('newStudentDisplayName').value = '';
-  document.getElementById('newStudentPassword').value = '';
+  document.getElementById('newStudentUsername').value='';
+  document.getElementById('newStudentDisplayName').value='';
+  document.getElementById('newStudentPassword').value='';
   openDrawer('createStudentDrawer');
 }
 async function submitCreateStudent(){
-  const username = document.getElementById('newStudentUsername').value.trim();
-  const displayName = document.getElementById('newStudentDisplayName').value.trim();
-  const password = document.getElementById('newStudentPassword').value;
-  if(!username || !displayName || !password){ toast('همه فیلدها را پر کنید', 'error'); return; }
-  if(!/^[a-zA-Z0-9_.-]+$/.test(username)){ toast('نام کاربری نامعتبر', 'error'); return; }
-  if(password.length < 6){ toast('رمز حداقل ۶', 'error'); return; }
+  const username=document.getElementById('newStudentUsername').value.trim();
+  const displayName=document.getElementById('newStudentDisplayName').value.trim();
+  const password=document.getElementById('newStudentPassword').value;
+  if(!username||!displayName||!password){ toast('همه فیلدها','error'); return; }
+  if(!/^[a-zA-Z0-9_.-]+$/.test(username)){ toast('نام کاربری نامعتبر','error'); return; }
+  if(password.length<6){ toast('رمز حداقل ۶','error'); return; }
   try{
-    await api('POST', '/api/users', { username, displayName, password, role: 'student' });
-    toast('شاگرد ساخته شد ✓');
-    closeDrawer('createStudentDrawer');
-    renderCoachPanel();
-  } catch(e){ toast('خطا: ' + (e.data?.error || e.message), 'error'); }
+    await api('POST','/api/users',{username,displayName,password,role:'student'});
+    toast('شاگرد ساخته شد ✓'); closeDrawer('createStudentDrawer'); renderCoachPanel();
+  }catch(e){ toast('خطا: '+(e.data?.error||e.message),'error'); }
 }
 async function openStudentDetail(id){
-  const stu = state.students.find(x => x.id === id);
-  if(!stu) return;
-  state.currentStudent = stu;
-  document.getElementById('studentDetailTitle').textContent = '👤 ' + stu.displayName;
-  const el = document.getElementById('studentDetailBody');
-  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  const stu=state.students.find(x=>x.id===id); if(!stu) return;
+  state.currentStudent=stu;
+  document.getElementById('studentDetailTitle').textContent='👤 '+stu.displayName;
+  const el=document.getElementById('studentDetailBody');
+  el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
   openDrawer('studentDetailDrawer');
   try{
-    const ov = await api('GET', '/api/coach/students/' + id + '/overview');
-    state.currentStudentData = ov.data || {};
-    const data = ov.data || {};
-    const prog = data.program || { days: [] };
-    const hist = data.history || {};
-    const perms = data.permissions || { canEditProgram: false };
-    let s7 = 0, v7 = 0;
-    const now = Date.now();
-    Object.keys(hist).forEach(k => {
-      const t = new Date(k).getTime();
-      if(now - t < 7 * 86400000){ if(hist[k].completed > 0) s7++; v7 += hist[k].volume || 0; }
+    const ov=await api('GET','/api/coach/students/'+id+'/overview');
+    state.currentStudentData=ov.data||{};
+    const data=ov.data||{};
+    const prog=data.program||{days:[]};
+    const hist=data.history||{};
+    const perms=data.permissions||{canEditProgram:false};
+    let s7=0,v7=0;
+    const now=Date.now();
+    Object.keys(hist).forEach(k=>{
+      const t=new Date(k).getTime();
+      if(now-t<7*86400000){ if(hist[k].completed>0) s7++; v7+=hist[k].volume||0; }
     });
-    el.innerHTML =
-      '<button class="btn coach full" style="margin-bottom:8px" onclick="openProgramEditor(\'' + stu.id + '\')">🗓️ ویرایش برنامه شاگرد</button>' +
-      '<button class="btn ' + (perms.canEditProgram ? 'success' : 'primary') + ' full" style="margin-bottom:12px" onclick="coachTogglePermission(\'' + stu.id + '\',' + !!perms.canEditProgram + ')">' +
-        (perms.canEditProgram ? '🔓 لغو اجازه ویرایش برنامه' : '🔐 دادن اجازه ویرایش برنامه') +
-      '</button>' +
-      '<div class="sh">📊 آمار این هفته</div>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">' +
-      '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--bl)">' + fN(s7) + '</div><div style="font-size:.68rem;color:var(--tm)">جلسات</div></div>' +
-      '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--gr)">' + fN(v7) + '</div><div style="font-size:.68rem;color:var(--tm)">حجم (kg)</div></div>' +
-      '</div>' +
-      '<div class="sh">🗓️ برنامه (' + (prog.days || []).length + ' روز)</div>' +
-      (prog.days && prog.days.length
-        ? prog.days.map(d => '<div style="padding:8px 12px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.8rem"><strong>' + d.icon + ' ' + esc(d.name) + '</strong> · ' + ((d.exercises||[]).length) + ' حرکت</div>').join('')
-        : '<div style="text-align:center;color:var(--tm);padding:14px;font-size:.8rem">برنامه‌ای ندارد</div>') +
-      (ov.notes && ov.notes.length ? '<div class="sh">📝 یادداشت‌ها</div>' + ov.notes.map(n =>
-        '<div style="padding:10px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.78rem">' +
-        '<div style="font-size:.62rem;color:var(--ag);margin-bottom:4px">' + new Date(n.created_at).toLocaleDateString('fa-IR') + '</div>' +
-        esc(n.content) + '</div>').join('') : '');
-  } catch(e){ el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: ' + esc(e.message) + '</div></div>'; }
+    el.innerHTML=
+      '<button class="btn coach full" style="margin-bottom:8px" onclick="openProgramEditor(\''+stu.id+'\')">🗓️ ویرایش برنامه</button>'+
+      '<button class="btn primary full" style="margin-bottom:8px" onclick="openNutritionForStudent(\''+stu.id+'\')">🥗 ویرایش تغذیه</button>'+
+      '<button class="btn '+(perms.canEditProgram?'success':'primary')+' full" style="margin-bottom:12px" onclick="coachTogglePermission(\''+stu.id+'\','+!!perms.canEditProgram+')">'+
+        (perms.canEditProgram?'🔓 لغو اجازه ویرایش برنامه':'🔐 دادن اجازه ویرایش برنامه')+
+      '</button>'+
+      '<div class="sh">📊 آمار این هفته</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">'+
+      '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--bl)">'+fN(s7)+'</div><div style="font-size:.68rem;color:var(--tm)">جلسات</div></div>'+
+      '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--gr)">'+fN(v7)+'</div><div style="font-size:.68rem;color:var(--tm)">حجم (kg)</div></div>'+
+      '</div>'+
+      '<div class="sh">🗓️ برنامه ('+(prog.days||[]).length+' روز)</div>'+
+      (prog.days&&prog.days.length?prog.days.map(d=>'<div style="padding:8px 12px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.8rem"><strong>'+d.icon+' '+esc(d.name)+'</strong> · '+((d.exercises||[]).length)+' حرکت</div>').join(''):'<div style="text-align:center;color:var(--tm);padding:14px;font-size:.8rem">برنامه‌ای ندارد</div>')+
+      (ov.notes&&ov.notes.length?'<div class="sh">📝 یادداشت‌ها</div>'+ov.notes.map(n=>'<div style="padding:10px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.78rem">'+
+        '<div style="font-size:.62rem;color:var(--ag);margin-bottom:4px">'+new Date(n.created_at).toLocaleDateString('fa-IR')+'</div>'+esc(n.content)+'</div>').join(''):'');
+  }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
-async function coachTogglePermission(studentId, current){
-  if(!confirm(current ? 'گرفتن اجازه ویرایش برنامه؟' : 'دادن اجازه ویرایش برنامه؟')) return;
+async function coachTogglePermission(sid, cur){
+  if(!confirm(cur?'گرفتن اجازه؟':'دادن اجازه؟')) return;
+  try{ await api('POST','/api/users/'+sid+'/data/permissions',{value:{canEditProgram:!cur}}); toast('انجام شد ✓'); openStudentDetail(sid); }
+  catch(e){ toast('خطا','error'); }
+}
+async function openNutritionForStudent(sid){
+  await loadNutritionFor(sid);
+  closeDrawer('studentDetailDrawer');
+  state.currentView = 'nutrition';
+  renderView();
+}
+
+/* ============ PROGRAM EDITOR ============ */
+function renderEditorDay(day, di){
+  const exs=day.exercises||[];
+  let rows;
+  if(exs.length===0) rows='<tr><td colspan="5" style="text-align:center;color:var(--tm);padding:14px;font-size:.78rem">هنوز حرکتی ندارد</td></tr>';
+  else rows=exs.map((ex,ei)=>{
+    const def=DB.exercises.find(e=>e.id===ex.exId)||{};
+    const cat=DB.categories[def.cat]||{};
+    return '<tr><td><div style="font-weight:700;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">'+esc(def.name||ex.exId)+'</div>'+
+      '<div style="font-size:.6rem;color:var(--tm)">'+(cat.emoji||'')+' '+(cat.name||'')+'</div></td>'+
+      '<td><input type="number" value="'+(ex.sets||3)+'" min="1" max="10" onchange="updateExField('+di+','+ei+',\'sets\',this.value)"></td>'+
+      '<td><input type="text" value="'+esc(ex.reps||'۸-۱۲')+'" onchange="updateExField('+di+','+ei+',\'reps\',this.value)"></td>'+
+      '<td><input type="text" value="'+esc(ex.rpe||'۸')+'" onchange="updateExField('+di+','+ei+',\'rpe\',this.value)"></td>'+
+      '<td style="text-align:center"><button class="icon-btn del" onclick="removeExerciseFromDay('+di+','+ei+')" style="width:26px;height:26px;font-size:.7rem">✕</button></td></tr>';
+  }).join('');
+  return '<div class="editor-day"><div class="editor-day-header">'+
+    '<div class="editor-day-icon">'+(day.icon||'💪')+'</div>'+
+    '<div class="editor-day-info"><div class="editor-day-name">'+esc(day.name)+'</div>'+
+    '<div class="editor-day-focus">'+weekdayName(day.weekday)+' · '+esc(day.focus||'—')+' · '+exs.length+' حرکت</div></div>'+
+    '<button class="icon-btn" onclick="openEditDayDrawer('+di+')">✏️</button>'+
+    '<button class="icon-btn del" onclick="deleteDay('+di+')">🗑️</button></div>'+
+    '<table class="prog-table"><thead><tr><th>حرکت</th><th style="width:50px">ست</th><th style="width:70px">تکرار</th><th style="width:50px">RPE</th><th style="width:30px"></th></tr></thead>'+
+    '<tbody>'+rows+'</tbody></table>'+
+    '<div style="display:flex;gap:6px;margin-top:10px">'+
+      '<button class="btn primary" style="flex:1;justify-content:center;font-size:.76rem" onclick="openExercisePickerForDay('+di+')">➕ افزودن حرکت</button>'+
+      (exs.length?'<button class="btn danger" style="font-size:.72rem;padding:6px 10px" onclick="clearDay('+di+')">🗑️</button>':'')+
+    '</div></div>';
+}
+function renderProgramEditor(){
+  const el=document.getElementById('programEditorBody'); if(!el) return;
+  const stu=state.currentStudent;
+  document.getElementById('programEditorTitle').textContent='🗓️ ویرایش برنامه'+(stu?' — '+stu.displayName:'');
+  let h='<div style="display:flex;gap:8px;margin-bottom:12px">'+
+    '<button class="btn primary" style="flex:1;justify-content:center" onclick="openAddDayDrawer()">➕ روز جدید</button>'+
+    '<button class="btn success" style="flex:1;justify-content:center" onclick="saveProgramAndClose()">💾 ذخیره و بستن</button>'+
+  '</div>';
+  if(!state.program.days||!state.program.days.length){
+    h+='<div class="empty"><div class="icon">📭</div><div>هنوز روزی ندارد</div></div>';
+    el.innerHTML=h; return;
+  }
+  sortDays();
+  h+=state.program.days.map((day,di)=>renderEditorDay(day,di)).join('');
+  el.innerHTML=h;
+}
+function updateExField(di,ei,field,val){
+  const ex=state.program.days[di]&&state.program.days[di].exercises[ei]; if(!ex) return;
+  if(field==='sets') ex.sets=Math.max(1,Math.min(10,parseInt(val)||3)); else ex[field]=val;
+  autoSaveProgram();
+}
+function clearDay(di){ if(!confirm('پاک شود؟')) return; state.program.days[di].exercises=[]; autoSaveProgram(); renderProgramEditor(); }
+function deleteDay(di){ const d=state.program.days[di]; if(!d) return; if(!confirm('حذف «'+(d.name||'')+'»؟')) return; state.program.days.splice(di,1); autoSaveProgram(); renderProgramEditor(); }
+function removeExerciseFromDay(di,ei){ state.program.days[di].exercises.splice(ei,1); autoSaveProgram(); renderProgramEditor(); }
+function autoSaveProgram(){ const tid=state.programOwnerId||state.user.id; api('POST','/api/users/'+tid+'/data/program',{value:state.program}).catch(()=>{}); }
+function saveProgramAndClose(){
+  const tid=state.programOwnerId||state.user.id;
+  api('POST','/api/users/'+tid+'/data/program',{value:state.program}).then(()=>{
+    toast('ذخیره شد ✓');
+    closeDrawer('programEditorDrawer');
+    state.programOwnerId=null; state.editingProgramFor=null; state.currentStudent=null;
+    if(tid===state.user.id){
+      api('GET','/api/users/'+state.user.id+'/data').then(d=>{ if(d.program) state.program=d.program; renderView(); }).catch(()=>renderView());
+    } else renderView();
+  }).catch(e=>toast('خطا','error'));
+}
+function openAddDayDrawer(){ if(!state.programOwnerId) state.programOwnerId=state.user.id; dayDrawerMode='add'; dayDrawerEditIndex=-1; showDayDrawerForm({ name:'', focus:'', icon:'💪', weekday:null }); }
+function openEditDayDrawer(di){ dayDrawerMode='edit'; dayDrawerEditIndex=di; showDayDrawerForm(state.program.days[di]); }
+let dayDrawerMode='add', dayDrawerEditIndex=-1;
+function showDayDrawerForm(day){
+  let backdrop=document.getElementById('dayFormBackdrop');
+  if(!backdrop){
+    backdrop=document.createElement('div'); backdrop.id='dayFormBackdrop'; backdrop.className='backdrop'; backdrop.style.zIndex='105';
+    backdrop.onclick=()=>closeDrawer('dayFormDrawer'); document.body.appendChild(backdrop);
+  }
+  let drawer=document.getElementById('dayFormDrawer');
+  if(!drawer){
+    drawer=document.createElement('div'); drawer.id='dayFormDrawer'; drawer.className='drawer right'; drawer.style.zIndex='106'; drawer.style.width='420px';
+    drawer.innerHTML='<div class="drawer-header"><h2 id="dayFormTitle">➕ روز جدید</h2><button class="close-btn" onclick="closeDrawer(\'dayFormDrawer\')">✕</button></div><div class="drawer-body" id="dayFormBody"></div>';
+    document.body.appendChild(drawer);
+  }
+  const initialWd=day.weekday!=null?day.weekday:null;
+  const tj=todayWeekday();
+  const wdHtml=[6,0,1,2,3,4,5].map(j=>{
+    const sel=initialWd===j;
+    const used=state.program.days.some((d,i)=>d.weekday===j&&i!==dayDrawerEditIndex);
+    const dis=used&&!sel;
+    return '<button type="button" class="wdchip '+(sel?'sel':'')+'" '+(dis?'disabled style="opacity:.3;cursor:not-allowed"':'')+' onclick="pickDayWD('+j+',this)">'+weekdayName(j)+(j===tj?' ⭐':'')+'</button>';
+  }).join('');
+  document.getElementById('dayFormTitle').textContent=dayDrawerMode==='add'?'➕ روز جدید':'✏️ ویرایش روز';
+  document.getElementById('dayFormBody').innerHTML='<div class="form-row"><label>روز هفته *</label><div class="wdpick" id="dayFormWD">'+wdHtml+'</div></div>'+
+    '<div class="form-row"><label>نام روز</label><input type="text" id="dayFormName" value="'+esc(day.name||'')+'"></div>'+
+    '<div class="form-row"><label>تمرکز (اختیاری)</label><input type="text" id="dayFormFocus" value="'+esc(day.focus||'')+'"></div>'+
+    '<div class="form-row"><label>آیکن</label><input type="text" id="dayFormIcon" value="'+esc(day.icon||'💪')+'" maxlength="4" style="text-align:center;font-size:1.4rem"></div>'+
+    '<div style="display:flex;gap:8px;margin-top:16px">'+
+      '<button class="btn" style="flex:1;justify-content:center" onclick="closeDrawer(\'dayFormDrawer\')">لغو</button>'+
+      '<button class="btn primary" style="flex:1;justify-content:center" onclick="saveDayForm()">💾 ذخیره</button>'+
+    '</div>';
+  drawer.dataset.selectedWd=initialWd!=null?String(initialWd):'';
+  openDrawer('dayFormDrawer');
+}
+function pickDayWD(j, btn){
+  const parent=btn.parentElement;
+  parent.querySelectorAll('.wdchip').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('dayFormDrawer').dataset.selectedWd=String(j);
+  const ni=document.getElementById('dayFormName');
+  if(!ni.value.trim()||ni.value.trim().startsWith('روز ')) ni.value='روز '+weekdayName(j);
+}
+async function saveDayForm(){
+  const drawer=document.getElementById('dayFormDrawer');
+  const wdStr=drawer.dataset.selectedWd;
+  const name=document.getElementById('dayFormName').value.trim();
+  const focus=document.getElementById('dayFormFocus').value.trim();
+  const icon=document.getElementById('dayFormIcon').value.trim()||'💪';
+  if(!name){ toast('نام روز','error'); return; }
+  if(wdStr===''){ toast('روز هفته','error'); return; }
+  const wd=parseInt(wdStr);
+  const dup=state.program.days.findIndex((d,i)=>d.weekday===wd&&i!==dayDrawerEditIndex);
+  if(dup!==-1){ toast('این روز برنامه دارد','warn'); return; }
+  const isNew=dayDrawerMode==='add';
+  if(isNew){
+    state.program.days.push({ id:'day_'+Date.now(), weekday:wd, name, focus, icon, exercises:[] });
+  } else {
+    const d=state.program.days[dayDrawerEditIndex];
+    d.weekday=wd; d.name=name; d.focus=focus; d.icon=icon;
+  }
+  closeDrawer('dayFormDrawer');
+  autoSaveProgram();
+  renderProgramEditor();
+  if(isNew){
+    sortDays();
+    const ni=state.program.days.findIndex(d=>d.weekday===wd);
+    if(ni!==-1){ toast('روز اضافه شد'); setTimeout(()=>openExercisePickerForDay(ni), 250); }
+  } else toast('ذخیره شد ✓');
+}
+/* Exercise Picker */
+let pickerCat='all', pickerSearch='';
+function openExercisePickerForDay(di){
+  if(!state.programOwnerId) state.programOwnerId=state.user.id;
+  state.pendingAddExerciseDay=di; pickerCat='all'; pickerSearch='';
+  renderExercisePicker(); openDrawer('exercisePickerDrawer');
+}
+function renderExercisePicker(){
+  const el=document.getElementById('exercisePickerBody'); if(!el) return;
+  const di=state.pendingAddExerciseDay;
+  if(di===null||di===undefined) return;
+  const day=state.program.days[di]; if(!day){ el.innerHTML='<div class="empty">یافت نشد</div>'; return; }
+  const exs_=day.exercises||[];
+  let h='<div style="background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));padding:12px;border-radius:10px;margin-bottom:12px;font-size:.85rem"><strong>'+(day.icon||'💪')+' '+esc(day.name)+'</strong>'+
+    '<div style="font-size:.7rem;color:var(--tx2);margin-top:3px">'+exs_.length+' حرکت اضافه شده</div></div>';
+  h+='<input type="text" class="food-search" placeholder="جستجو..." value="'+esc(pickerSearch)+'" oninput="pickerSearch=this.value;renderExercisePicker()">';
+  h+='<div class="food-cats">';
+  h+='<button class="food-cat '+(pickerCat==='all'?'active':'')+'" onclick="pickerCat=\'all\';renderExercisePicker()">🌐 همه</button>';
+  Object.keys(DB.categories).forEach(k=>{
+    const c=DB.categories[k];
+    h+='<button class="food-cat '+(pickerCat===k?'active':'')+'" onclick="pickerCat=\''+k+'\';renderExercisePicker()">'+c.emoji+' '+c.name+'</button>';
+  });
+  h+='</div>';
+  let exs=DB.exercises;
+  if(pickerCat!=='all') exs=exs.filter(e=>e.cat===pickerCat);
+  if(pickerSearch){ const t=pickerSearch.toLowerCase(); exs=exs.filter(e=>e.name.toLowerCase().includes(t)||(e.en||'').toLowerCase().includes(t)); }
+  const alreadyIn=new Set(exs_.map(e=>e.exId));
+  h+='<div style="font-size:.72rem;color:var(--tm);margin-bottom:6px">'+exs.length+' حرکت</div>';
+  if(!exs.length) h+='<div class="empty" style="padding:20px"><div class="icon">🔍</div><div>یافت نشد</div></div>';
+  else {
+    h+=exs.slice(0,200).map(e=>{
+      const inD=alreadyIn.has(e.id);
+      return '<div class="u-item clickable" style="'+(inD?'border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.01))':'')+'" onclick="quickAddExercise(\''+e.id+'\')">'+
+        '<div class="u-avatar" style="background:var(--card2);color:var(--tx)">'+((DB.categories[e.cat]||{}).emoji||'🏋️')+'</div>'+
+        '<div class="u-info"><div class="u-name">'+esc(e.name)+(inD?' <span style="font-size:.6rem;color:var(--gr);font-weight:800">✓</span>':'')+'</div>'+
+        '<div class="u-meta">'+esc(e.en||'')+' · '+((DB.categories[e.cat]||{}).name||'')+'</div></div>'+
+        '<div style="color:'+(inD?'var(--gr)':'var(--bl)')+';font-size:1.3rem;font-weight:900">'+(inD?'↻':'+')+'</div></div>';
+    }).join('');
+  }
+  h+='<div class="sticky-bottom"><button class="btn success full" onclick="closeDrawer(\'exercisePickerDrawer\')">✓ تمام — بازگشت</button></div>';
+  el.innerHTML=h;
+}
+function quickAddExercise(exId){
+  const di=state.pendingAddExerciseDay; if(di===null||di===undefined) return;
+  const def=DB.exercises.find(e=>e.id===exId); if(!def) return;
+  const vol=DB.volumeByLevel.intermediate;
+  if(!state.program.days[di].exercises) state.program.days[di].exercises=[];
+  const ei=state.program.days[di].exercises.findIndex(e=>e.exId===exId);
+  if(ei!==-1){ state.program.days[di].exercises.splice(ei,1); toast('حذف شد','info'); }
+  else {
+    state.program.days[di].exercises.push({
+      exId, sets:def.type==='comp'?vol.sets:Math.max(3,vol.sets-1),
+      reps:def.type==='comp'?vol.repsCompound:vol.repsIsolation, rpe:'۸'
+    });
+    toast('✓ '+def.name);
+  }
+  autoSaveProgram();
+  renderExercisePicker();
+  renderProgramEditor();
+}
+async function openProgramEditor(sid){
+  state.editingProgramFor=sid; state.programOwnerId=sid;
   try{
-    await api('POST', '/api/users/' + studentId + '/data/permissions', { value: { canEditProgram: !current } });
-    toast('انجام شد ✓');
-    openStudentDetail(studentId);
-  } catch(e){ toast('خطا: ' + e.message, 'error'); }
+    const d=await api('GET','/api/users/'+sid+'/data');
+    state.program=d.program&&d.program.days?d.program:{days:[]};
+  }catch(e){ state.program={days:[]}; }
+  if(sid===state.user.id) state.currentStudent=null;
+  else { const s=state.students.find(x=>x.id===sid); if(s) state.currentStudent=s; }
+  renderProgramEditor(); openDrawer('programEditorDrawer');
 }
 
 /* ============ WIZARD ============ */
-let wizSelectedDays = [];
-let wizDaysCount = 3;
+let wizSelectedDays=[], wizDaysCount=3;
 function openWizard(){
-  wizSelectedDays = []; wizDaysCount = 3;
-  document.getElementById('wizDays').value = '3';
+  wizSelectedDays=[]; wizDaysCount=3;
+  document.getElementById('wizDays').value='3';
   document.getElementById('wizStep1').classList.add('active');
   document.getElementById('wizStep2').classList.remove('active');
-  document.getElementById('wizWDRow').style.display = 'block';
-  document.getElementById('wizLevelRow').style.display = 'block';
+  document.getElementById('wizWDRow').style.display='block';
+  document.getElementById('wizLevelRow').style.display='block';
   renderWizWD();
   document.getElementById('wizardOverlay').classList.remove('hidden');
 }
 function closeWizard(){ document.getElementById('wizardOverlay').classList.add('hidden'); }
 function wizDaysChanged(){
-  wizDaysCount = parseInt(document.getElementById('wizDays').value) || 0;
-  const show = wizDaysCount > 0;
-  document.getElementById('wizWDRow').style.display = show ? 'block' : 'none';
-  document.getElementById('wizLevelRow').style.display = show ? 'block' : 'none';
+  wizDaysCount=parseInt(document.getElementById('wizDays').value)||0;
+  const s=wizDaysCount>0;
+  document.getElementById('wizWDRow').style.display=s?'block':'none';
+  document.getElementById('wizLevelRow').style.display=s?'block':'none';
 }
 function renderWizWD(){
-  const c = document.getElementById('wizWD');
-  const todayJsd = todayWeekday();
-  c.innerHTML = [6,0,1,2,3,4,5].map(jsd => {
-    const s = wizSelectedDays.includes(jsd);
-    const t = jsd === todayJsd;
-    return '<button class="wdchip ' + (s ? 'sel' : '') + '" onclick="wizToggleDay(' + jsd + ',this)">' + weekdayName(jsd) + (t ? ' ⭐' : '') + '</button>';
+  const c=document.getElementById('wizWD'); const tj=todayWeekday();
+  c.innerHTML=[6,0,1,2,3,4,5].map(j=>{
+    const sel=wizSelectedDays.includes(j);
+    return '<button class="wdchip '+(sel?'sel':'')+'" onclick="wizToggleDay('+j+',this)">'+weekdayName(j)+(j===tj?' ⭐':'')+'</button>';
   }).join('');
 }
-function wizToggleDay(jsd, btn){
-  if(wizSelectedDays.includes(jsd)){ wizSelectedDays = wizSelectedDays.filter(d => d !== jsd); btn.classList.remove('sel'); }
-  else{
-    if(wizSelectedDays.length >= wizDaysCount){ toast('فقط ' + wizDaysCount + ' روز انتخاب کن', 'warn'); return; }
-    wizSelectedDays.push(jsd); btn.classList.add('sel');
+function wizToggleDay(j, btn){
+  if(wizSelectedDays.includes(j)){ wizSelectedDays=wizSelectedDays.filter(x=>x!==j); btn.classList.remove('sel'); }
+  else {
+    if(wizSelectedDays.length>=wizDaysCount){ toast('فقط '+wizDaysCount,'warn'); return; }
+    wizSelectedDays.push(j); btn.classList.add('sel');
   }
 }
 function wizNext(){
-  wizDaysCount = parseInt(document.getElementById('wizDays').value) || 0;
-  if(wizDaysCount > 0 && wizSelectedDays.length !== wizDaysCount){
-    toast('لطفاً ' + wizDaysCount + ' روز انتخاب کن', 'warn'); return;
-  }
+  wizDaysCount=parseInt(document.getElementById('wizDays').value)||0;
+  if(wizDaysCount>0&&wizSelectedDays.length!==wizDaysCount){ toast('لطفاً '+wizDaysCount+' روز','warn'); return; }
   document.getElementById('wizStep1').classList.remove('active');
   document.getElementById('wizStep2').classList.add('active');
 }
-function wizBack(){
-  document.getElementById('wizStep2').classList.remove('active');
-  document.getElementById('wizStep1').classList.add('active');
-}
+function wizBack(){ document.getElementById('wizStep2').classList.remove('active'); document.getElementById('wizStep1').classList.add('active'); }
 async function wizFinish(){
-  const days = wizDaysCount;
-  const level = document.getElementById('wizLevel').value;
-  const profile = {
-    gender: document.getElementById('wizGender').value,
-    age: parseInt(document.getElementById('wizAge').value) || 30,
-    weight: parseFloat(document.getElementById('wizWeight').value) || 75,
-    height: parseFloat(document.getElementById('wizHeight').value) || 175,
-    activity: parseFloat(document.getElementById('wizActivity').value) || 1.55,
-    goal: document.getElementById('wizGoal').value
-  };
-  try{ await api('POST', '/api/users/' + state.user.id + '/data/nutritionProfile', { value: profile }); } catch(e){}
-
-  if(days > 0){
-    generateSmartProgram(days, wizSelectedDays, level);
-  } else {
-    state.program = { days: [] };
-  }
-  try{ await api('POST', '/api/users/' + state.user.id + '/data/program', { value: state.program }); } catch(e){}
-  localStorage.setItem('profit-onboarded-' + state.user.id, '1');
-  closeWizard();
-  state.selectedDayKey = null;
-  state.currentView = 'program';
-  renderView();
+  const days=wizDaysCount; const level=document.getElementById('wizLevel').value;
+  const profile={ gender:document.getElementById('wizGender').value, age:parseInt(document.getElementById('wizAge').value)||30, weight:parseFloat(document.getElementById('wizWeight').value)||75, height:parseFloat(document.getElementById('wizHeight').value)||175, activity:parseFloat(document.getElementById('wizActivity').value)||1.55, goal:document.getElementById('wizGoal').value, bodyfat:20, formula:'mifflin' };
+  state.nutrition.profile=profile;
+  try{ await api('POST','/api/users/'+state.user.id+'/data/nutrition',{value:state.nutrition}); }catch(e){}
+  if(days>0) generateSmartProgram(days,wizSelectedDays,level);
+  else state.program={days:[]};
+  try{ await api('POST','/api/users/'+state.user.id+'/data/program',{value:state.program}); }catch(e){}
+  localStorage.setItem('profit-onboarded-'+state.user.id,'1');
+  closeWizard(); state.selectedDayKey=null; state.currentView='program'; renderView();
   toast('🎉 برنامه ساخته شد!');
 }
 function generateSmartProgram(daysCount, weekdays, level){
-  const splits = DB.splits[daysCount];
-  if(!splits){ toast('حداقل ۲ روز', 'error'); return; }
-  const vol = DB.volumeByLevel[level] || DB.volumeByLevel.intermediate;
-  const order = weekdayOrder();
-  const sorted = weekdays.slice().sort((a,b) => order[a] - order[b]);
-  const newDays = sorted.map((jsd, i) => {
-    const splitKey = splits[i % splits.length];
-    const tpl = DB.templates[splitKey];
-    const usedIds = new Set();
-    const exercises = [];
-    tpl.groups.forEach(g => {
-      const catExs = DB.exercises.filter(e => e.cat === g.cat && !usedIds.has(e.id));
-      for(let k = 0; k < g.n && k < catExs.length; k++){
-        const ex = catExs[k];
-        usedIds.add(ex.id);
-        exercises.push({
-          exId: ex.id,
-          sets: ex.type === 'comp' ? vol.sets : Math.max(3, vol.sets - 1),
-          reps: ex.type === 'comp' ? vol.repsCompound : vol.repsIsolation,
-          rpe: '۸'
-        });
+  const splits=DB.splits[daysCount]; if(!splits){ toast('حداقل ۲ روز','error'); return; }
+  const vol=DB.volumeByLevel[level]||DB.volumeByLevel.intermediate;
+  const order=weekdayOrder();
+  const sorted=weekdays.slice().sort((a,b)=>order[a]-order[b]);
+  const newDays=sorted.map((jsd,i)=>{
+    const sk=splits[i%splits.length]; const tpl=DB.templates[sk];
+    const used=new Set(); const exercises=[];
+    tpl.groups.forEach(g=>{
+      const catExs=DB.exercises.filter(e=>e.cat===g.cat&&!used.has(e.id));
+      for(let k=0;k<g.n&&k<catExs.length;k++){
+        const ex=catExs[k]; used.add(ex.id);
+        exercises.push({ exId:ex.id, sets:ex.type==='comp'?vol.sets:Math.max(3,vol.sets-1), reps:ex.type==='comp'?vol.repsCompound:vol.repsIsolation, rpe:'۸' });
       }
     });
-    return { id: 'day_' + Date.now() + '_' + i, weekday: jsd, name: 'روز ' + weekdayName(jsd), icon: tpl.icon, focus: tpl.focus, exercises };
+    return { id:'day_'+Date.now()+'_'+i, weekday:jsd, name:'روز '+weekdayName(jsd), icon:tpl.icon, focus:tpl.focus, exercises };
   });
-  state.program = { days: newDays };
+  state.program={days:newDays};
 }
 
 /* ============ BOOT ============ */
 (async function(){
-  const t = localStorage.getItem('profit-theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', t);
+  const t=localStorage.getItem('profit-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',t);
   if(!state.token) return;
   try{
-    state.user = await api('GET', '/api/auth/me', null, true);
+    state.user=await api('GET','/api/auth/me',null,true);
     await bootAfterLogin();
-  } catch(e){
-    localStorage.removeItem('profit-jwt');
-    state.token = null;
+  }catch(e){
+    localStorage.removeItem('profit-jwt'); state.token=null;
   }
 })();
-
-setInterval(() => {
-  if(state.token){
-    fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + state.token } }).catch(() => {});
-  }
-}, 4 * 60 * 1000);
-
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeAllDrawers(); });
+setInterval(()=>{ if(state.token) fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+state.token}}).catch(()=>{}); }, 4*60*1000);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAllDrawers(); });
 </script>
 </body>
   </html>
