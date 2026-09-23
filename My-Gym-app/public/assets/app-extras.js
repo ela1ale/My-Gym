@@ -6,54 +6,51 @@
 'use strict';
 
 /* ============================================================
-   PART 1: POLISH — Confirm Modal سفارشی
+   PART 1: POLISH — Custom Confirm (Named Function Only)
    ============================================================ */
+// Note: نمیتونیم window.confirm رو override کنیم چون کد اصلی ازش
+// به صورت synchronous استفاده میکنه. پس یه تابع جدید میذاریم.
 
-// Override window.confirm with custom modal (returns Promise)
-const _originalConfirm = window.confirm;
-let confirmResolve = null;
+window.askConfirm = function(message, title) {
+  return new Promise((resolve) => {
+    let modal = document.getElementById('askConfirmModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'askConfirmModal';
+      modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)';
+      modal.innerHTML = `
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:22px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+          <div style="font-size:2rem;text-align:center;margin-bottom:10px">⚠️</div>
+          <div id="askConfirmTitle" style="font-size:.95rem;font-weight:800;text-align:center;color:var(--tx);margin-bottom:6px"></div>
+          <div id="askConfirmMessage" style="font-size:.82rem;font-weight:600;line-height:1.8;text-align:center;color:var(--tx2);margin-bottom:18px"></div>
+          <div style="display:flex;gap:8px">
+            <button id="askConfirmCancel" style="flex:1;padding:11px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-weight:700;font-size:.85rem;cursor:pointer">لغو</button>
+            <button id="askConfirmOk" style="flex:1;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,#f43f5e,#be123c);color:#fff;font-family:inherit;font-weight:700;font-size:.85rem;cursor:pointer">تأیید</button>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
 
-window.confirm = function(message) {
-  // Fallback for non-string messages
-  if (typeof message !== 'string') return _originalConfirm(message);
-
-  // Create modal if not exists
-  let modal = document.getElementById('confirmModal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'confirmModal';
-    modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)';
-    modal.innerHTML = `
-      <div style="background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:22px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.5)">
-        <div style="font-size:2rem;text-align:center;margin-bottom:10px" id="confirmIcon">⚠️</div>
-        <div id="confirmMessage" style="font-size:.9rem;font-weight:700;line-height:1.7;text-align:center;color:var(--tx);margin-bottom:18px"></div>
-        <div style="display:flex;gap:8px">
-          <button id="confirmCancel" style="flex:1;padding:11px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-weight:700;font-size:.85rem;cursor:pointer">لغو</button>
-          <button id="confirmOk" style="flex:1;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,#f43f5e,#be123c);color:#fff;font-family:inherit;font-weight:700;font-size:.85rem;cursor:pointer">تأیید</button>
-        </div>
-      </div>`;
-    document.body.appendChild(modal);
-
-    modal.querySelector('#confirmOk').onclick = () => {
-      modal.style.display = 'none';
-      if (confirmResolve) { confirmResolve(true); confirmResolve = null; }
-    };
-    modal.querySelector('#confirmCancel').onclick = () => {
-      modal.style.display = 'none';
-      if (confirmResolve) { confirmResolve(false); confirmResolve = null; }
-    };
-    modal.onclick = (e) => {
-      if (e.target === modal) {
+      modal.querySelector('#askConfirmOk').onclick = () => {
         modal.style.display = 'none';
-        if (confirmResolve) { confirmResolve(false); confirmResolve = null; }
-      }
-    };
-  }
+        if (window._askConfirmResolve) { window._askConfirmResolve(true); window._askConfirmResolve = null; }
+      };
+      modal.querySelector('#askConfirmCancel').onclick = () => {
+        modal.style.display = 'none';
+        if (window._askConfirmResolve) { window._askConfirmResolve(false); window._askConfirmResolve = null; }
+      };
+      modal.onclick = (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          if (window._askConfirmResolve) { window._askConfirmResolve(false); window._askConfirmResolve = null; }
+        }
+      };
+    }
 
-  document.getElementById('confirmMessage').textContent = message;
-  modal.style.display = 'flex';
-
-  return new Promise(resolve => { confirmResolve = resolve; });
+    document.getElementById('askConfirmTitle').textContent = title || 'تأیید';
+    document.getElementById('askConfirmMessage').textContent = message;
+    modal.style.display = 'flex';
+    window._askConfirmResolve = resolve;
+  });
 };
 
 // Note: For existing code that used confirm() synchronously, we need
