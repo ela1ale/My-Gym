@@ -64,7 +64,7 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .close-btn:hover{background:var(--rd);color:#fff;border-color:var(--rd)}
 .drawer-tabs{display:flex;border-bottom:1px solid var(--bd);overflow-x:auto;flex-shrink:0;scrollbar-width:none}
 .drawer-tabs::-webkit-scrollbar{display:none}
-.tab{padding:10px 14px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.tab{padding:10px 14px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;position:relative}
 .tab.active{color:var(--bl);border-bottom-color:var(--bl)}
 .drawer-body{flex:1;overflow-y:auto;padding:12px 14px;-webkit-overflow-scrolling:touch}
 .u-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);margin-bottom:6px;transition:all .15s}
@@ -155,8 +155,8 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .ex-body{border-top:1px solid var(--bd);padding:12px}
 .ex-anim{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(168,85,247,.06));border-radius:10px;height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;position:relative}
 .ex-anim svg{width:90%;height:90%}
-.ex-img-holder{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;overflow:hidden}
-.ex-img-holder img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6px;background:transparent;border-radius:10px;mix-blend-mode:multiply}
+.ex-img-holder{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#f1f5f9 0%,#e2e8f0 100%);border:1px solid rgba(148,163,184,.2);box-shadow:inset 0 1px 3px rgba(0,0,0,.04)}
+.ex-img-holder img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;border-radius:12px}
 .ex-img-holder img.f1{z-index:1}
 .ex-img-holder img.f2{z-index:2;animation:imgSwap 1.8s infinite}
 @keyframes imgSwap{0%,45%{opacity:0}55%,100%{opacity:1}}
@@ -211,7 +211,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .ts input:checked+.sl::before{transform:translateX(20px)}
 .sticky-bottom{position:sticky;bottom:0;background:var(--card);padding-top:10px;margin-top:10px;border-top:1px solid var(--bd);display:flex;gap:6px}
 .sticky-bottom .btn{flex:1;justify-content:center}
-/* Nutrition */
 .nut-summary{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(5,150,105,.04));border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px;margin-bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .ns-item{text-align:center}
 .ns-val{font-size:1.05rem;font-weight:900;color:var(--gr)}
@@ -273,13 +272,11 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .supp-row{font-size:.72rem;color:var(--tx2);margin-top:2px;line-height:1.6}
 .supp-row strong{color:var(--am);font-weight:800}
 .macro-donut{height:220px}
-/* Nutrition tabs */
 .ntabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:4px;margin-bottom:12px;position:sticky;top:-10px;z-index:20;box-shadow:0 4px 12px rgba(0,0,0,.2)}
 .ntab{flex:1;padding:9px 6px;border-radius:9px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.75rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s}
 .ntab .nt-ic{font-size:1.15rem;line-height:1}
 .ntab.active{background:linear-gradient(135deg,var(--bl),var(--pu));color:#fff}
 .ntab:hover:not(.active){background:rgba(148,163,184,.08)}
-/* Program choice cards */
 .choice-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
 .choice-card{display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;border:1px solid var(--bd);background:var(--card2);cursor:pointer;text-align:right;font-family:inherit;color:var(--tx);transition:all .15s;width:100%}
 .choice-card:hover{border-color:var(--bl);transform:translateY(-2px);box-shadow:0 8px 20px rgba(59,130,246,.15)}
@@ -289,10 +286,11 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .choice-card .cc-title{font-weight:800;font-size:.92rem;margin-bottom:3px}
 .choice-card .cc-desc{font-size:.72rem;color:var(--tx2);line-height:1.5}
 .choice-card .cc-arrow{color:var(--tm);font-size:1.4rem;flex-shrink:0}
-/* Hint text */
 .hint-text{font-size:.68rem;color:var(--tm);margin-top:5px;line-height:1.7;padding:8px 10px;background:rgba(148,163,184,.06);border-radius:8px;border-right:3px solid var(--bl)}
 .hint-text strong{color:var(--bl)}
 .hint-text .rec{color:var(--am);font-weight:800}
+.req-card{background:var(--card2);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px}
+.req-card.pending{border-color:rgba(245,158,11,.35);background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.01))}
 @media(max-width:600px){
   body{padding:8px;padding-bottom:88px}
   .drawer{width:100vw}
@@ -393,12 +391,14 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 <div class="drawer right" id="adminDrawer">
   <div class="drawer-header"><h2>👑 پنل مدیر</h2><button class="close-btn" onclick="closeDrawer('adminDrawer')">✕</button></div>
   <div class="drawer-tabs">
-    <button class="tab active" data-atab="pending" onclick="switchAdminTab('pending')">⏳ در انتظار</button>
+    <button class="tab active" data-atab="pending" onclick="switchAdminTab('pending')">⏳ مربیان</button>
+    <button class="tab" data-atab="requests" onclick="switchAdminTab('requests')">📨 درخواست برنامه <span id="adminReqBadge" style="display:none;background:var(--rd);color:#fff;padding:0 5px;border-radius:10px;font-size:.6rem;margin-right:3px"></span></button>
     <button class="tab" data-atab="users" onclick="switchAdminTab('users')">👥 کاربران</button>
     <button class="tab" data-atab="audit" onclick="switchAdminTab('audit')">📜 لاگ</button>
     <button class="tab" data-atab="system" onclick="switchAdminTab('system')">⚙️ سیستم</button>
   </div>
   <div class="drawer-body" id="adminPendingBody"></div>
+  <div class="drawer-body hidden" id="adminRequestsBody"></div>
   <div class="drawer-body hidden" id="adminUsersBody"></div>
   <div class="drawer-body hidden" id="adminAuditBody"></div>
   <div class="drawer-body hidden" id="adminSystemBody"></div>
@@ -458,14 +458,20 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   </div>
 </div>
 
-<!-- Coach Request Drawer (new) -->
 <div class="backdrop" id="coachRequestBackdrop" onclick="closeDrawer('coachRequestDrawer')"></div>
 <div class="drawer right" id="coachRequestDrawer" style="z-index:102">
   <div class="drawer-header"><h2>👨‍🏫 ارجاع به مربی</h2><button class="close-btn" onclick="closeDrawer('coachRequestDrawer')">✕</button></div>
   <div class="drawer-body">
-    <div class="form-row"><label>نام مربی موردنظر (اختیاری)</label><input type="text" id="coachReqName" placeholder="مثلاً: علی — یا خالی بگذار"></div>
+    <div class="form-row">
+      <label>انتخاب مربی</label>
+      <select id="coachReqCoachId">
+        <option value="">🔄 خودکار — بذار مدیر انتخاب کنه</option>
+      </select>
+      <div class="hint-text" style="margin-top:6px">💡 اگه مربی خاصی مدنظرته، انتخابش کن. اگه نه، خالی بذار — مدیر بهت مربی مناسب اختصاص می‌ده.</div>
+    </div>
+    <div class="form-row"><label>نام مربی موردنظر (اختیاری — اگه توی لیست نبود)</label><input type="text" id="coachReqName" placeholder="مثلاً: علی"></div>
     <div class="form-row"><label>یادداشت برای مربی</label><textarea id="coachReqNote" placeholder="هدفت چیه؟ سابقه‌ات چقدره؟ چند روز میتونی تمرین کنی؟ تجهیزات چی داری؟"></textarea></div>
-    <div class="hint-text" style="margin-bottom:10px">💡 <strong>توجه:</strong> درخواست شما به مدیران ارسال می‌شود و پس از بررسی، به یک مربی متصل خواهید شد. می‌توانید در این فاصله از گزینه‌های دیگر (هوشمند یا دستی) هم استفاده کنید.</div>
+    <div class="hint-text" style="margin-bottom:10px">💡 <strong>توجه:</strong> درخواست به مدیر ارسال می‌شه و به یه مربی متصل می‌شی.</div>
     <button class="btn primary full" onclick="submitCoachRequest()">📩 ارسال درخواست</button>
   </div>
 </div>
@@ -519,9 +525,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 </div>
 
 <script>
-/* ==========================================================
-   ProFit v2 — Phase 3 Complete (revised)
-   ========================================================== */
 const DB = window.PRO_DATA || { categories:{}, exercises:[], splits:{}, templates:{}, volumeByLevel:{}, animations:{} };
 const NUT = window.PRO_NUTRITION || { categories:{}, foods:[], supplements:{}, meals:[], bmrFormulas:{} };
 const IMG_MAP = window.PRO_IMG_MAP || {};
@@ -761,7 +764,6 @@ function renderHome(c){
   } else {
     h+='<div class="card"><h2>☕ امروز</h2><div style="color:var(--tx2);font-size:.82rem">امروز روز استراحت است یا برنامه‌ای تنظیم نشده.</div></div>';
   }
-  // Coach request status on home
   if(state.user.role==='student' && state.coachRequest && state.coachRequest.status==='pending'){
     h+='<div class="card" style="background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(217,119,6,.04));border-color:rgba(245,158,11,.3)">'+
       '<div style="display:flex;align-items:center;gap:10px"><div style="font-size:1.6rem">⏳</div>'+
@@ -806,7 +808,7 @@ function renderProgramView(c){
         h='<div class="card"><div class="empty">'+
           '<div class="icon">⏳</div>'+
           '<div style="font-weight:800;font-size:.95rem;margin-bottom:6px;color:var(--am)">درخواست ارجاع به مربی ارسال شد</div>'+
-          '<div style="font-size:.78rem;color:var(--tx2);line-height:1.8;max-width:340px;margin:0 auto">در انتظار بررسی مدیر هستید. پس از تأیید، یک مربی به شما متصل می‌شود و برنامه‌تان را می‌نویسد.</div>'+
+          '<div style="font-size:.78rem;color:var(--tx2);line-height:1.8;max-width:340px;margin:0 auto">در انتظار بررسی مدیر هستید. پس از تأیید، یک مربی به شما متصل می‌شود.</div>'+
           '<button class="btn danger" style="margin-top:14px" onclick="cancelCoachRequest()">🗑️ لغو درخواست</button>'+
         '</div></div>';
       } else {
@@ -825,10 +827,10 @@ function renderProgramView(c){
               '<div class="cc-desc">خودت روزها، حرکات، ست و تکرار را انتخاب کن</div></div>'+
               '<div class="cc-arrow">‹</div>'+
             '</button>'+
-            '<button class="choice-card" onclick="openDrawer(\'coachRequestDrawer\')">'+
+            '<button class="choice-card" onclick="openCoachRequestDrawer()">'+
               '<div class="cc-ic" style="background:linear-gradient(135deg,#f59e0b,#d97706)">👨‍🏫</div>'+
               '<div class="cc-info"><div class="cc-title">ارجاع به مربی</div>'+
-              '<div class="cc-desc">درخواست بفرست تا یک مربی برنامه‌ات را بنویسد</div></div>'+
+              '<div class="cc-desc">مربی انتخاب کن یا بذار مدیر برات یه مربی مناسب پیدا کنه</div></div>'+
               '<div class="cc-arrow">‹</div>'+
             '</button>'+
           '</div>'+
@@ -908,7 +910,6 @@ function renderExerciseCard(ex,dayIdx,exIdx){
   } else {
     summaryText='✅ '+fN(sets)+' ست کامل'+(maxW>0?' · بیشترین '+fN(maxW)+'kg · حجم '+fN(Math.round(totalVol))+'kg':'');
   }
-  // Summary row under table
   let extraSummary = '';
   if(doneSets>0){
     const avgW = (function(){ let s=0,n=0; Object.values(logs).forEach(l=>{ if(l.weight&&l.reps){ s+=l.weight*l.reps; n+=l.reps; } }); return n>0?Math.round(s/n*10)/10:0; })();
@@ -1014,21 +1015,54 @@ function logTodayStats(){
   saveHistory();
 }
 
-/* ============ COACH REQUEST ============ */
+/* ============ COACH REQUEST (student side) ============ */
+async function openCoachRequestDrawer(){
+  document.getElementById('coachReqName').value = '';
+  document.getElementById('coachReqNote').value = '';
+  const sel = document.getElementById('coachReqCoachId');
+  sel.innerHTML = '<option value="">🔄 خودکار — بذار مدیر انتخاب کنه</option>';
+  openDrawer('coachRequestDrawer');
+  try {
+    const coaches = await api('GET','/api/coaches');
+    if(coaches.length === 0){
+      sel.innerHTML = '<option value="">— هنوز مربی‌ای تأیید نشده —</option>';
+      return;
+    }
+    coaches.forEach(c=>{
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = c.emoji + ' ' + c.displayName + ' (@' + c.username + ')';
+      sel.appendChild(opt);
+    });
+    if(state.coachRequest && state.coachRequest.coachId){
+      sel.value = state.coachRequest.coachId;
+    }
+  } catch(e){ /* silent */ }
+}
+
 async function submitCoachRequest(){
+  const coachId = document.getElementById('coachReqCoachId').value || null;
   const name = document.getElementById('coachReqName').value.trim();
   const note = document.getElementById('coachReqNote').value.trim();
-  const req = { coachName:name||null, note:note||null, date:new Date().toISOString(), status:'pending' };
+  const req = {
+    coachId: coachId,
+    coachName: name || null,
+    note: note || null,
+    date: new Date().toISOString(),
+    status: 'pending'
+  };
   try{
     await api('POST','/api/users/'+state.user.id+'/data/coachRequest',{value:req});
     state.coachRequest = req;
     closeDrawer('coachRequestDrawer');
     document.getElementById('coachReqName').value='';
     document.getElementById('coachReqNote').value='';
+    document.getElementById('coachReqCoachId').value='';
     toast('درخواست ارسال شد ✓');
     renderView();
   }catch(e){ toast('خطا: '+e.message,'error'); }
 }
+
 async function cancelCoachRequest(){
   if(!confirm('درخواست ارجاع به مربی لغو شود؟')) return;
   try{ await api('POST','/api/users/'+state.user.id+'/data/coachRequest',{value:null}); }catch(e){}
@@ -1059,13 +1093,10 @@ function renderNutritionView(c){
     '<button class="ntab '+(state.nutritionTab==='supps'?'active':'')+'" onclick="setNutritionTab(\'supps\')"><span class="nt-ic">💊</span>مکمل‌ها</button>'+
   '</div>';
 
-  if(state.nutritionTab==='calc'){
-    h+=renderNutritionCalcTab(t);
-  } else if(state.nutritionTab==='meals'){
-    h+=renderNutritionMealsTab(t);
-  } else {
-    h+=renderNutritionSuppsTab(t);
-  }
+  if(state.nutritionTab==='calc') h+=renderNutritionCalcTab(t);
+  else if(state.nutritionTab==='meals') h+=renderNutritionMealsTab(t);
+  else h+=renderNutritionSuppsTab(t);
+
   c.innerHTML=h;
   if(state.nutritionTab==='calc' && t) drawMacrosChart(t);
 }
@@ -1316,7 +1347,7 @@ function removeSupp(i){
   saveNutrition(); renderView();
 }
 function regenerateSupplements(){
-  if(!confirm('پیشنهادها بر اساس هدف فعلی بازتولید شوند؟ (مکمل‌های سفارشی حفظ می‌شوند)')) return;
+  if(!confirm('پیشنهادها بر اساس هدف فعلی بازتولید شوند؟')) return;
   const customs = state.nutrition.supplements.filter(s=>s.custom);
   const goal = state.nutrition.profile.goal;
   const gk = goal==='cut'?'cut':goal==='lose'?'lose':goal==='gain'?'gain':goal==='bulk'?'bulk':'maintain';
@@ -1345,7 +1376,6 @@ function drawMacrosChart(t){
   state.charts.macros = new ApexCharts(el, opts);
   state.charts.macros.render();
 }
-/* Food Picker */
 function openFoodPicker(mealKey){
   state.foodPickerTarget = mealKey;
   state.foodPickerCat = 'all';
@@ -1604,8 +1634,6 @@ function renderSettingsView(c){
     '<div class="card"><h2>🎨 نمایش</h2>'+
     '<div class="toggle-row"><div class="toggle-lbl">🌙 حالت روشن</div>'+
     '<label class="ts"><input type="checkbox" '+(isLight?'checked':'')+' onchange="toggleTheme()"><span class="sl"></span></label></div>'+
-    '<div class="toggle-row"><div class="toggle-lbl">💾 ذخیره خودکار</div>'+
-    '<label class="ts"><input type="checkbox" checked disabled><span class="sl"></span></label></div>'+
     '</div>'+
 
     '<div class="card"><h2>⚙️ امکانات</h2>'+
@@ -1615,7 +1643,7 @@ function renderSettingsView(c){
     '</div>'+
 
     '<div class="card"><h2>📱 درباره</h2>'+
-    '<div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">ProFit نسخه <strong>3.0</strong><br>'+fN(DB.exercises.length)+' حرکت ورزشی · '+fN(NUT.foods.length)+' غذا</div>'+
+    '<div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">ProFit نسخه <strong>3.1</strong><br>'+fN(DB.exercises.length)+' حرکت ورزشی · '+fN(NUT.foods.length)+' غذا</div>'+
     '</div>'+
 
     '<div class="card"><h2>⚠️ خروج</h2>'+
@@ -1665,14 +1693,21 @@ function renderUserDrawer(){
 }
 
 /* ============ ADMIN ============ */
-function renderAdminAll(){ renderAdminPending(); renderAdminUsers(); renderAdminAudit(); renderAdminSystem(); }
+function renderAdminAll(){
+  renderAdminPending();
+  renderAdminCoachRequests();
+  renderAdminUsers();
+  renderAdminAudit();
+  renderAdminSystem();
+}
 function switchAdminTab(t){
   state.adminTab=t;
   document.querySelectorAll('[data-atab]').forEach(b=>b.classList.toggle('active',b.dataset.atab===t));
-  ['pending','users','audit','system'].forEach(x=>{
+  ['pending','requests','users','audit','system'].forEach(x=>{
     const el=document.getElementById('admin'+x.charAt(0).toUpperCase()+x.slice(1)+'Body');
     if(el) el.classList.toggle('hidden',x!==t);
   });
+  if(t==='requests') renderAdminCoachRequests();
 }
 async function renderAdminPending(){
   const el=document.getElementById('adminPendingBody'); if(!el) return;
@@ -1687,6 +1722,81 @@ async function renderAdminPending(){
       '<button class="icon-btn reject" onclick="rejectCoach(\''+u.id+'\')">❌</button></div></div>').join('');
   }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
+async function renderAdminCoachRequests(){
+  const el = document.getElementById('adminRequestsBody'); if(!el) return;
+  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  try {
+    const reqs = await api('GET','/api/coach-requests');
+    const badge = document.getElementById('adminReqBadge');
+    if(badge){
+      if(reqs.length > 0){ badge.textContent = fN(reqs.length); badge.style.display = 'inline-block'; }
+      else badge.style.display = 'none';
+    }
+    if(!reqs.length){
+      el.innerHTML = '<div class="empty"><div class="icon">📭</div><div>درخواست برنامه‌ای نیست</div></div>';
+      return;
+    }
+    const coaches = await api('GET','/api/coaches');
+    let h = '<div style="font-size:.75rem;color:var(--tx2);margin-bottom:10px">📨 '+fN(reqs.length)+' درخواست در انتظار</div>';
+    reqs.forEach(r=>{
+      const coachOpts = coaches.map(c =>
+        '<option value="'+c.id+'" '+(r.preferredCoachId === c.id ? 'selected' : '')+'>'+
+          c.emoji + ' ' + esc(c.displayName) + '</option>'
+      ).join('');
+      const prefText = r.preferredCoachId ? '⭐ مربی انتخابی خود شاگرد' : '';
+      h += '<div class="req-card pending">'+
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'+
+          '<div class="u-avatar" style="background:'+r.studentColor+'">'+r.studentEmoji+'</div>'+
+          '<div class="u-info">'+
+            '<div class="u-name">'+esc(r.studentName)+'</div>'+
+            '<div class="u-meta">@'+esc(r.studentUsername)+' · '+new Date(r.date).toLocaleDateString('fa-IR')+'</div>'+
+          '</div>'+
+          '<span class="badge pending">در انتظار</span>'+
+        '</div>'+
+        (r.note ? '<div style="padding:8px 10px;background:var(--card);border-radius:8px;font-size:.74rem;color:var(--tx2);line-height:1.7;margin-bottom:8px">💬 '+esc(r.note)+'</div>' : '')+
+        (r.coachName && !r.preferredCoachId ? '<div style="font-size:.72rem;color:var(--am);margin-bottom:6px">✏️ مربی موردنظر: '+esc(r.coachName)+'</div>' : '')+
+        (r.preferredCoachId ? '<div style="font-size:.68rem;color:var(--gr);margin-bottom:6px">'+prefText+'</div>' : '')+
+        '<div style="display:flex;gap:6px;align-items:stretch;flex-wrap:wrap">'+
+          '<select id="assignCoach_'+r.studentId+'" style="flex:1;min-width:130px;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-size:.76rem;font-weight:700">'+
+            '<option value="">— انتخاب مربی —</option>'+coachOpts+
+          '</select>'+
+          '<button class="btn success" style="font-size:.72rem;padding:6px 10px" onclick="assignCoachRequest(\''+r.studentId+'\')">✅ تخصیص</button>'+
+          '<button class="btn danger" style="font-size:.72rem;padding:6px 10px" onclick="rejectCoachRequest(\''+r.studentId+'\')">❌ رد</button>'+
+        '</div>'+
+      '</div>';
+    });
+    el.innerHTML = h;
+  } catch(e){
+    el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>';
+  }
+}
+async function assignCoachRequest(studentId){
+  const sel = document.getElementById('assignCoach_'+studentId);
+  const coachId = sel ? sel.value : '';
+  if(!coachId){ toast('مربی را انتخاب کن','warn'); return; }
+  try {
+    await api('POST','/api/coach-requests/'+studentId+'/assign', { coachId });
+    toast('✓ به مربی تخصیص داده شد');
+    renderAdminCoachRequests();
+    renderAdminUsers();
+  } catch(e){ toast('خطا: '+e.message, 'error'); }
+}
+async function rejectCoachRequest(studentId){
+  if(!confirm('درخواست رد شود؟')) return;
+  try {
+    await api('POST','/api/coach-requests/'+studentId+'/reject');
+    toast('رد شد','info');
+    renderAdminCoachRequests();
+  } catch(e){ toast('خطا','error'); }
+}
+async function claimCoachRequest(studentId){
+  if(!confirm('این شاگرد رو قبول می‌کنی؟')) return;
+  try {
+    await api('POST','/api/coach-requests/'+studentId+'/claim');
+    toast('✓ شاگرد به شما متصل شد');
+    renderCoachPanel();
+  } catch(e){ toast('خطا: '+e.message, 'error'); }
+}
 async function renderAdminUsers(){
   const el=document.getElementById('adminUsersBody'); if(!el) return;
   el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
@@ -1700,7 +1810,7 @@ async function renderAdminUsers(){
     const rc={admin:'#f59e0b',coach:'#3b82f6',student:'#10b981'};
     order.forEach(r=>{
       const list=groups[r]; if(!list.length) return;
-      h+='<div style="font-size:.7rem;font-weight:800;color:'+rc[r]+';margin:12px 0 6px">'+rl[r]+' ('+list.length+')</div>';
+      h+='<div style="font-size:.7rem;font-weight:800;color:'+rc[r]+';margin:12px 0 6px">'+rl[r]+' ('+fN(list.length)+')</div>';
       h+=list.map(u=>{
         const coach=u.coachId?state.users.find(c=>c.id===u.coachId):null;
         const badges=[];
@@ -1736,7 +1846,7 @@ async function renderAdminAudit(){
   try{
     state.audit=await api('GET','/api/admin/audit');
     if(!state.audit.length){ el.innerHTML='<div class="empty"><div class="icon">📜</div><div>فعالیتی نیست</div></div>'; return; }
-    const labels={login_success:'✅ ورود',login_failed:'❌ ورود ناموفق',user_created:'➕ ساخت',user_updated:'✏️ ویرایش',user_deleted:'🗑️ حذف',password_changed:'🔑 تغییر رمز',user_registered:'✨ ثبت‌نام',coach_approved:'✅ تأیید مربی',coach_rejected:'❌ رد مربی'};
+    const labels={login_success:'✅ ورود',login_failed:'❌ ورود ناموفق',user_created:'➕ ساخت',user_updated:'✏️ ویرایش',user_deleted:'🗑️ حذف',password_changed:'🔑 تغییر رمز',user_registered:'✨ ثبت‌نام',coach_approved:'✅ تأیید مربی',coach_rejected:'❌ رد مربی',coach_request_assigned:'📨 تخصیص مربی',coach_request_claimed:'🙋 قبول درخواست',coach_request_rejected:'❌ رد درخواست'};
     el.innerHTML=state.audit.map(r=>{
       const actor=state.users.find(x=>x.id===r.actor_id);
       const an=actor?actor.displayName:(r.actor_id||'سیستم');
@@ -1765,7 +1875,7 @@ function renderAdminSystem(){
     'در انتظار: <strong>'+fN(state.pending.length)+'</strong><br>'+
     'حرکات: <strong>'+fN(DB.exercises.length)+'</strong><br>'+
     'غذاها: <strong>'+fN(NUT.foods.length)+'</strong><br>'+
-    'نسخه: <strong>3.0</strong></div></div>';
+    'نسخه: <strong>3.1</strong></div></div>';
 }
 function toggleTheme(){
   const cur=themeMode(); const next=cur==='light'?'dark':'light';
@@ -1846,11 +1956,37 @@ async function renderCoachPanel(){
   el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
   try{
     state.students=await api('GET','/api/coach/students');
-    let h='<button class="btn primary full" style="margin-bottom:14px" onclick="openCreateStudent()">➕ افزودن شاگرد</button>';
+    let requests = [];
+    try { requests = await api('GET','/api/coach-requests'); } catch(e){}
+
+    let h='';
+    if(requests.length > 0){
+      h += '<div style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.04));border:1px solid rgba(245,158,11,.35);border-radius:12px;padding:12px;margin-bottom:14px">'+
+        '<div style="font-weight:800;font-size:.88rem;margin-bottom:8px;color:var(--am)">📨 '+fN(requests.length)+' درخواست برنامه در انتظار</div>';
+      requests.forEach(r=>{
+        const prefersMe = r.preferredCoachId === state.user.id;
+        h += '<div style="background:var(--card);border-radius:10px;padding:10px;margin-bottom:8px">'+
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'+
+            '<div class="u-avatar" style="background:'+r.studentColor+';width:32px;height:32px;font-size:1rem">'+r.studentEmoji+'</div>'+
+            '<div style="flex:1;min-width:0">'+
+              '<div style="font-weight:700;font-size:.82rem">'+esc(r.studentName)+'</div>'+
+              '<div style="font-size:.62rem;color:var(--tm)">@'+esc(r.studentUsername)+(prefersMe?' · ⭐ شما رو انتخاب کرده':'')+'</div>'+
+            '</div>'+
+          '</div>'+
+          (r.note?'<div style="font-size:.7rem;color:var(--tx2);line-height:1.7;padding:6px 8px;background:var(--card2);border-radius:6px;margin-bottom:8px">💬 '+esc(r.note)+'</div>':'')+
+          '<div style="display:flex;gap:6px">'+
+            '<button class="btn success" style="flex:1;justify-content:center;font-size:.74rem;padding:6px 10px" onclick="claimCoachRequest(\''+r.studentId+'\')">✓ قبول می‌کنم</button>'+
+          '</div>'+
+        '</div>';
+      });
+      h += '</div>';
+    }
+
+    h+='<button class="btn primary full" style="margin-bottom:14px" onclick="openCreateStudent()">➕ افزودن شاگرد</button>';
     if(!state.students.length){
       h+='<div class="empty"><div class="icon">👥</div><div>هنوز شاگردی نداری</div></div>';
     } else {
-      h+='<div style="font-weight:800;margin-bottom:10px">👥 '+state.students.length+' شاگرد</div>';
+      h+='<div style="font-weight:800;margin-bottom:10px">👥 '+fN(state.students.length)+' شاگرد</div>';
       h+=state.students.map(s=>'<div class="u-item clickable" onclick="openStudentDetail(\''+s.id+'\')">'+
         '<div class="u-avatar" style="background:'+s.color+'">'+s.emoji+'</div>'+
         '<div class="u-info"><div class="u-name">'+esc(s.displayName)+'</div>'+
@@ -1909,10 +2045,10 @@ async function openStudentDetail(id){
       '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--bl)">'+fN(s7)+'</div><div style="font-size:.68rem;color:var(--tm)">جلسات</div></div>'+
       '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--gr)">'+fN(v7)+'</div><div style="font-size:.68rem;color:var(--tm)">حجم (kg)</div></div>'+
       '</div>'+
-      '<div class="sh">🗓️ برنامه ('+(prog.days||[]).length+' روز)</div>'+
-      (prog.days&&prog.days.length?prog.days.map(d=>'<div style="padding:8px 12px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.8rem"><strong>'+d.icon+' '+esc(d.name)+'</strong> · '+((d.exercises||[]).length)+' حرکت</div>').join(''):'<div style="text-align:center;color:var(--tm);padding:14px;font-size:.8rem">برنامه‌ای ندارد</div>')+
+      '<div class="sh">🗓️ برنامه ('+fN((prog.days||[]).length)+' روز)</div>'+
+      (prog.days&&prog.days.length?prog.days.map(d=>'<div style="padding:8px 12px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.8rem"><strong>'+(d.icon||'💪')+' '+esc(d.name)+'</strong> · '+fN((d.exercises||[]).length)+' حرکت</div>').join(''):'<div style="text-align:center;color:var(--tm);padding:14px;font-size:.8rem">برنامه‌ای ندارد</div>')+
       (ov.notes&&ov.notes.length?'<div class="sh">📝 یادداشت‌ها</div>'+ov.notes.map(n=>'<div style="padding:10px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.78rem">'+
-        '<div style="font-size:.62rem;color:var(--ag);margin-bottom:4px">'+new Date(n.created_at).toLocaleDateString('fa-IR')+'</div>'+esc(n.content)+'</div>').join(''):'');
+        '<div style="font-size:.62rem;color:var(--am);margin-bottom:4px">'+new Date(n.created_at).toLocaleDateString('fa-IR')+'</div>'+esc(n.content)+'</div>').join(''):'');
   }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
 async function coachTogglePermission(sid, cur){
@@ -1946,7 +2082,7 @@ function renderEditorDay(day, di){
   return '<div class="editor-day"><div class="editor-day-header">'+
     '<div class="editor-day-icon">'+(day.icon||'💪')+'</div>'+
     '<div class="editor-day-info"><div class="editor-day-name">'+esc(day.name)+'</div>'+
-    '<div class="editor-day-focus">'+weekdayName(day.weekday)+' · '+esc(day.focus||'—')+' · '+exs.length+' حرکت</div></div>'+
+    '<div class="editor-day-focus">'+weekdayName(day.weekday)+' · '+esc(day.focus||'—')+' · '+fN(exs.length)+' حرکت</div></div>'+
     '<button class="icon-btn" onclick="openEditDayDrawer('+di+')">✏️</button>'+
     '<button class="icon-btn del" onclick="deleteDay('+di+')">🗑️</button></div>'+
     '<table class="prog-table"><thead><tr><th>حرکت</th><th style="width:50px">ست</th><th style="width:70px">تکرار</th><th style="width:50px">RPE</th><th style="width:30px"></th></tr></thead>'+
@@ -2062,7 +2198,6 @@ async function saveDayForm(){
     if(ni!==-1){ toast('روز اضافه شد'); setTimeout(()=>openExercisePickerForDay(ni), 250); }
   } else toast('ذخیره شد ✓');
 }
-/* Exercise Picker */
 let pickerCat='all', pickerSearch='';
 function openExercisePickerForDay(di){
   if(!state.programOwnerId) state.programOwnerId=state.user.id;
@@ -2076,7 +2211,7 @@ function renderExercisePicker(){
   const day=state.program.days[di]; if(!day){ el.innerHTML='<div class="empty">یافت نشد</div>'; return; }
   const exs_=day.exercises||[];
   let h='<div style="background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));padding:12px;border-radius:10px;margin-bottom:12px;font-size:.85rem"><strong>'+(day.icon||'💪')+' '+esc(day.name)+'</strong>'+
-    '<div style="font-size:.7rem;color:var(--tx2);margin-top:3px">'+exs_.length+' حرکت اضافه شده</div></div>';
+    '<div style="font-size:.7rem;color:var(--tx2);margin-top:3px">'+fN(exs_.length)+' حرکت اضافه شده</div></div>';
   h+='<input type="text" class="food-search" placeholder="جستجو..." value="'+esc(pickerSearch)+'" oninput="pickerSearch=this.value;renderExercisePicker()">';
   h+='<div class="food-cats">';
   h+='<button class="food-cat '+(pickerCat==='all'?'active':'')+'" onclick="pickerCat=\'all\';renderExercisePicker()">🌐 همه</button>';
@@ -2089,7 +2224,7 @@ function renderExercisePicker(){
   if(pickerCat!=='all') exs=exs.filter(e=>e.cat===pickerCat);
   if(pickerSearch){ const t=pickerSearch.toLowerCase(); exs=exs.filter(e=>e.name.toLowerCase().includes(t)||(e.en||'').toLowerCase().includes(t)); }
   const alreadyIn=new Set(exs_.map(e=>e.exId));
-  h+='<div style="font-size:.72rem;color:var(--tm);margin-bottom:6px">'+exs.length+' حرکت</div>';
+  h+='<div style="font-size:.72rem;color:var(--tm);margin-bottom:6px">'+fN(exs.length)+' حرکت</div>';
   if(!exs.length) h+='<div class="empty" style="padding:20px"><div class="icon">🔍</div><div>یافت نشد</div></div>';
   else {
     h+=exs.slice(0,200).map(e=>{
