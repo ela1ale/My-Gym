@@ -1,11 +1,11 @@
 /* ============================================================
-   ProFit Extras v1.2 — Polish + Guide + Export + Charts
+   ProFit Extras v1.5 — Complete (Export + Help + Charts)
    ============================================================ */
 (function() {
 'use strict';
 
 /* ============================================================
-   PART 1: POLISH — Custom Confirm (Named Function)
+   PART 1: POLISH — Custom Confirm
    ============================================================ */
 window.askConfirm = function(message, title) {
   return new Promise((resolve) => {
@@ -120,7 +120,7 @@ function showAutosaveIndicator(text = 'در حال ذخیره...', done = false)
 window.showAutosaveIndicator = showAutosaveIndicator;
 
 /* ============================================================
-   PART 5: EXPORT — Full Backup & Restore
+   PART 5: EXPORT — Backup & Restore
    ============================================================ */
 async function exportUserData(userId, username) {
   try {
@@ -263,14 +263,8 @@ async function exportWorkoutCSV() {
           const l = logs[si] || {};
           const vol = (l.weight && l.reps) ? l.weight * l.reps : 0;
           rows.push([
-            date,
-            idx + 1,
-            exNameMap[idx] || ('حرکت ' + (idx + 1)),
-            parseInt(si) + 1,
-            l.weight || '',
-            l.reps || '',
-            vol,
-            isDone ? 'بله' : 'خیر'
+            date, idx + 1, exNameMap[idx] || ('حرکت ' + (idx + 1)),
+            parseInt(si) + 1, l.weight || '', l.reps || '', vol, isDone ? 'بله' : 'خیر'
           ]);
         });
       }
@@ -283,8 +277,7 @@ async function exportWorkoutCSV() {
       rows.push([k, history[k].completed || 0, history[k].volume || 0]);
     });
 
-    const filename = 'workout-log-' + new Date().toISOString().slice(0,10) + '.csv';
-    downloadCSV(filename, rows);
+    downloadCSV('workout-log-' + new Date().toISOString().slice(0,10) + '.csv', rows);
     window.toast('CSV دانلود شد ✓');
   } catch (e) {
     console.error('CSV error:', e);
@@ -341,10 +334,7 @@ async function exportNutritionCSV() {
         const grams = (it.qty || 0) * unit.g;
         const k = grams / 100;
         rows.push([
-          meal.name,
-          food.name,
-          it.qty,
-          unit.n,
+          meal.name, food.name, it.qty, unit.n,
           Math.round((food.cal || 0) * k),
           Math.round((food.prot || 0) * k * 10) / 10,
           Math.round((food.carb || 0) * k * 10) / 10,
@@ -362,8 +352,7 @@ async function exportNutritionCSV() {
       });
     }
 
-    const filename = 'nutrition-plan-' + new Date().toISOString().slice(0,10) + '.csv';
-    downloadCSV(filename, rows);
+    downloadCSV('nutrition-plan-' + new Date().toISOString().slice(0,10) + '.csv', rows);
     window.toast('CSV تغذیه دانلود شد ✓');
   } catch (e) {
     console.error('Nutrition CSV error:', e);
@@ -405,8 +394,7 @@ async function exportBodyCSV() {
       rows.push(row);
     });
 
-    const filename = 'body-measurements-' + new Date().toISOString().slice(0,10) + '.csv';
-    downloadCSV(filename, rows);
+    downloadCSV('body-measurements-' + new Date().toISOString().slice(0,10) + '.csv', rows);
     window.toast('CSV اندازه‌های بدن دانلود شد ✓');
   } catch (e) {
     console.error('Body CSV error:', e);
@@ -418,7 +406,6 @@ window.exportBodyCSV = exportBodyCSV;
 /* ============================================================
    PART 7: CHART HELPERS — Line & Bar SVG
    ============================================================ */
-
 function generateLineChartSVG(data, labels, opts = {}) {
   const width = opts.width || 480;
   const height = opts.height || 180;
@@ -494,21 +481,16 @@ function generateBarChartSVG(data, labels, opts = {}) {
   const chartH = height - padding.top - padding.bottom;
   const color = opts.color || '#3b82f6';
   const color2 = opts.color2 || '#a855f7';
-  const unit = opts.unit || '';
-  const dualSeries = opts.dualSeries || false;
 
   if (!data || data.length === 0) return '<div style="text-align:center;color:#94a3b8;padding:20px;font-size:12px">داده‌ای نیست</div>';
 
-  const allVals = dualSeries ? [...data, ...(opts.data2 || [])] : data;
-  const max = Math.max(...allVals, 1);
+  const max = Math.max(...data, 1);
   const realMax = max * 1.15;
 
   const barCount = data.length;
   const groupW = chartW / barCount;
-  const barW = dualSeries ? (groupW * 0.35) : (groupW * 0.6);
-  const gap = dualSeries ? (groupW * 0.08) : 0;
+  const barW = groupW * 0.6;
 
-  // Grid lines
   let grid = '';
   for (let i = 0; i <= 4; i++) {
     const y = padding.top + (i / 4) * chartH;
@@ -520,45 +502,20 @@ function generateBarChartSVG(data, labels, opts = {}) {
   let bars = '';
   data.forEach((v, i) => {
     const groupX = padding.left + i * groupW;
-
-    if (dualSeries) {
-      const data2 = opts.data2 || [];
-      const v2 = data2[i] || 0;
-
-      // Bar 1 (volume)
-      const h1 = (v / realMax) * chartH;
-      const x1 = groupX + groupW / 2 - barW - gap / 2;
-      const y1 = padding.top + chartH - h1;
-      bars += '<rect x="' + x1 + '" y="' + y1 + '" width="' + barW + '" height="' + h1 + '" rx="3" fill="' + color + '" opacity="0.85"/>';
-      if (v > 0) {
-        bars += '<text x="' + (x1 + barW / 2) + '" y="' + (y1 - 4) + '" text-anchor="middle" font-size="8" fill="#475569" font-weight="700">' + Math.round(v).toLocaleString('fa-IR') + '</text>';
-      }
-
-      // Bar 2 (sessions)
-      const h2 = (v2 / realMax) * chartH;
-      const x2 = groupX + groupW / 2 + gap / 2;
-      const y2 = padding.top + chartH - h2;
-      bars += '<rect x="' + x2 + '" y="' + y2 + '" width="' + barW + '" height="' + h2 + '" rx="3" fill="' + color2 + '" opacity="0.85"/>';
-      if (v2 > 0) {
-        bars += '<text x="' + (x2 + barW / 2) + '" y="' + (y2 - 4) + '" text-anchor="middle" font-size="8" fill="#475569" font-weight="700">' + v2 + '</text>';
-      }
-    } else {
-      const h = (v / realMax) * chartH;
-      const x = groupX + (groupW - barW) / 2;
-      const y = padding.top + chartH - h;
-      const gid = 'bargrad_' + Math.random().toString(36).slice(2, 8);
-      bars += '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
-        '<stop offset="0%" stop-color="' + color + '"/>' +
-        '<stop offset="100%" stop-color="' + color2 + '"/>' +
-      '</linearGradient></defs>';
-      bars += '<rect x="' + x + '" y="' + y + '" width="' + barW + '" height="' + h + '" rx="4" fill="url(#' + gid + ')" opacity="0.9"/>';
-      if (v > 0) {
-        bars += '<text x="' + (x + barW / 2) + '" y="' + (y - 5) + '" text-anchor="middle" font-size="9" fill="#475569" font-weight="800">' + Math.round(v).toLocaleString('fa-IR') + '</text>';
-      }
+    const h = (v / realMax) * chartH;
+    const x = groupX + (groupW - barW) / 2;
+    const y = padding.top + chartH - h;
+    const gid = 'bargrad_' + Math.random().toString(36).slice(2, 8);
+    bars += '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="' + color + '"/>' +
+      '<stop offset="100%" stop-color="' + color2 + '"/>' +
+    '</linearGradient></defs>';
+    bars += '<rect x="' + x + '" y="' + y + '" width="' + barW + '" height="' + h + '" rx="4" fill="url(#' + gid + ')" opacity="0.9"/>';
+    if (v > 0) {
+      bars += '<text x="' + (x + barW / 2) + '" y="' + (y - 5) + '" text-anchor="middle" font-size="9" fill="#475569" font-weight="800">' + Math.round(v).toLocaleString('fa-IR') + '</text>';
     }
   });
 
-  // X labels
   let xLabels = '';
   labels.forEach((l, i) => {
     const x = padding.left + i * groupW + groupW / 2;
@@ -571,17 +528,60 @@ function generateBarChartSVG(data, labels, opts = {}) {
 }
 
 /* ============================================================
-   PART 8: PRINT / PDF REPORT — کامل با نمودارها
+   PART 8: PRINT / PDF REPORT — v1.5
    ============================================================ */
-async function printReport() {
+async function printReport(targetUserIdOverride) {
   try {
-    const userId = window.state.user.id;
-    const d = await window.api('GET', '/api/users/' + userId + '/data');
-    const program = d.program || { days: [] };
-    const history = d.history || {};
-    const nutrition = d.nutrition || {};
-    const body = d.body || [];
-    const workout = d.workout || { logs: {}, completed: {} };
+    let targetId = targetUserIdOverride;
+    let targetUser = null;
+
+    if (!targetId) {
+      if (window.state.currentStudent && window.state.user.role !== 'student') {
+        targetId = window.state.currentStudent.id;
+        targetUser = window.state.currentStudent;
+      } else {
+        targetId = window.state.user.id;
+        targetUser = window.state.user;
+      }
+    }
+
+    if (!targetUser || targetUser.id !== targetId) {
+      try {
+        const allUsers = await window.api('GET', '/api/users');
+        targetUser = allUsers.find(u => u.id === targetId) || window.state.user;
+      } catch(e) {
+        targetUser = window.state.user;
+      }
+    }
+
+    // ============ Get data (from LIVE state if self) ============
+    const isSelf = targetId === window.state.user.id;
+    let program, history, nutrition, body;
+
+    if (isSelf) {
+      program = window.state.program || { days: [] };
+      history = window.state.history || {};
+      nutrition = window.state.nutrition || {};
+      body = window.state.body || [];
+      console.log('[Report] ✅ Using LIVE state (self)');
+    } else {
+      const d = await window.api('GET', '/api/users/' + targetId + '/data');
+      program = d.program || { days: [] };
+      history = d.history || {};
+      nutrition = d.nutrition || {};
+      body = d.body || [];
+      console.log('[Report] 📡 Fetched for ' + targetId);
+    }
+
+    // Debug logs
+    const mealsDebug = nutrition.meals
+      ? Object.keys(nutrition.meals).map(k => k + ':' + (Array.isArray(nutrition.meals[k]) ? nutrition.meals[k].length : 0)).join(', ')
+      : 'no meals data';
+    console.log('[Report] Meals:', mealsDebug);
+    console.log('[Report] Foods:', window.NUT?.foods?.length || 0);
+    console.log('[Report] Program days:', (program.days || []).length);
+    console.log('[Report] Body records:', body.length);
+    console.log('[Report] Supplements:', (nutrition.supplements || []).length);
 
     // ============ Weekly stats ============
     const now = Date.now();
@@ -594,21 +594,17 @@ async function printReport() {
       }
     });
 
-    // ============ Weekly Volume/Sessions Chart Data (last 12 weeks) ============
-    const weeks = [];
+    // ============ Weekly Volume Chart ============
     const weekLabels = [];
     const weekVolumes = [];
     const weekSessions = [];
+    const weeks = [];
 
     for (let w = 11; w >= 0; w--) {
       const weekStart = new Date();
       weekStart.setDate(weekStart.getDate() - (weekStart.getDay() + 1) % 7);
       weekStart.setHours(0,0,0,0);
       weekStart.setDate(weekStart.getDate() - w * 7);
-
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-      weekEnd.setHours(23,59,59,999);
 
       let vol = 0, sess = 0;
       for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
@@ -632,130 +628,101 @@ async function printReport() {
     const totalSessions12w = weekSessions.reduce((s, v) => s + v, 0);
     const avgVolume = Math.round(totalVolume12w / 12);
     const avgSessions = (totalSessions12w / 12).toFixed(1);
+    const hasVolumeData = totalVolume12w > 0;
 
     const u = window.state.user;
     const roles = { admin: 'مدیر', coach: 'مربی', student: 'شاگرد' };
 
-    // ============ Nutrition tables ============
-// ============ Nutrition tables (robust) ============
-// تعریف‌های ثابت وعده‌ها (اگه window.NUT نبود)
-const MEAL_META = {
-  breakfast: { name: 'صبحانه', emoji: '🌅', pct: 0.25 },
-  snack1: { name: 'میان‌وعده صبح', emoji: '🍎', pct: 0.10 },
-  lunch: { name: 'ناهار', emoji: '🍽️', pct: 0.35 },
-  snack2: { name: 'میان‌وعده عصر', emoji: '🥤', pct: 0.10 },
-  dinner: { name: 'شام', emoji: '🌙', pct: 0.20 }
-};
+    // ============ Nutrition tables (robust) ============
+    const MEAL_META = {
+      breakfast: { name: 'صبحانه', emoji: '🌅', pct: 0.25 },
+      snack1: { name: 'میان‌وعده صبح', emoji: '🍎', pct: 0.10 },
+      lunch: { name: 'ناهار', emoji: '🍽️', pct: 0.35 },
+      snack2: { name: 'میان‌وعده عصر', emoji: '🥤', pct: 0.10 },
+      dinner: { name: 'شام', emoji: '🌙', pct: 0.20 }
+    };
 
-// === Find meal definitions (multi-source) ===
-let mealDefs = [];
-if (window.NUT && Array.isArray(window.NUT.meals) && window.NUT.meals.length > 0) {
-  mealDefs = window.NUT.meals;
-  console.log('[Report] ✅ Using window.NUT.meals (' + mealDefs.length + ' items)');
-} else {
-  mealDefs = Object.keys(MEAL_META).map(k => ({ key: k, ...MEAL_META[k] }));
-  console.log('[Report] ⚠️ window.NUT.meals not available — using hardcoded defs');
-}
+    let mealDefs = [];
+    if (window.NUT && Array.isArray(window.NUT.meals) && window.NUT.meals.length > 0) {
+      mealDefs = window.NUT.meals;
+    } else {
+      mealDefs = Object.keys(MEAL_META).map(k => ({ key: k, ...MEAL_META[k] }));
+    }
 
-// === Find foods data (multi-source) ===
-let foods = [];
-if (window.NUT && Array.isArray(window.NUT.foods)) {
-  foods = window.NUT.foods;
-}
-console.log('[Report] Foods available: ' + foods.length);
+    let foods = [];
+    if (window.NUT && Array.isArray(window.NUT.foods)) {
+      foods = window.NUT.foods;
+    }
 
-// === Get nutrition data (prefer in-memory state) ===
-let nutritionData = nutrition;
-if ((!nutritionData.meals || Object.keys(nutritionData.meals).length === 0) && window.state?.nutrition?.meals) {
-  nutritionData = window.state.nutrition;
-  console.log('[Report] 📦 Using state.nutrition instead of fetched data');
-}
+    const meals = nutrition.meals || {};
+    const dataKeysWithItems = Object.keys(meals).filter(k =>
+      Array.isArray(meals[k]) && meals[k].length > 0
+    );
 
-const meals = nutritionData.meals || {};
-console.log('[Report] Meal keys in data:', Object.keys(meals));
-Object.keys(meals).forEach(k => {
-  const cnt = Array.isArray(meals[k]) ? meals[k].length : 0;
-  console.log('[Report]   ' + k + ': ' + cnt + ' items');
-});
-
-// === Detect which meals have items ===
-const dataKeysWithItems = Object.keys(meals).filter(k => 
-  Array.isArray(meals[k]) && meals[k].length > 0
-);
-
-// === Add missing meal defs from data keys ===
-dataKeysWithItems.forEach(k => {
-  if (!mealDefs.find(m => m.key === k)) {
-    const meta = MEAL_META[k] || { name: k, emoji: '🍽️', pct: 0 };
-    mealDefs.push({ key: k, ...meta });
-    console.log('[Report] ➕ Added missing meal def: ' + k);
-  }
-});
-
-const hasMeals = dataKeysWithItems.length > 0;
-console.log('[Report] hasMeals: ' + hasMeals);
-
-// === Build nutrition table ===
-let nutritionTableHTML = '';
-let mealTotalsGlobal = { cal: 0, prot: 0, carb: 0, fat: 0 };
-
-if (hasMeals) {
-  // Only render meals that have items
-  const activeMealDefs = mealDefs.filter(m => (meals[m.key] || []).length > 0);
-
-  nutritionTableHTML = activeMealDefs.map(meal => {
-    const items = meals[meal.key] || [];
-    let mTot = { cal: 0, prot: 0, carb: 0, fat: 0 };
-
-    const rows = items.map(it => {
-      const food = foods.find(f => f.id === it.foodId);
-
-      if (!food) {
-        console.warn('[Report] ⚠️ Food not found: ' + it.foodId);
-        return '<tr><td colspan="6" style="text-align:center;color:#f43f5e;font-size:10px;padding:6px">⚠️ غذای ناشناخته: ' + (it.foodId || '?') + '</td></tr>';
+    // Add missing meal defs from data
+    dataKeysWithItems.forEach(k => {
+      if (!mealDefs.find(m => m.key === k)) {
+        const meta = MEAL_META[k] || { name: k, emoji: '🍽️', pct: 0 };
+        mealDefs.push({ key: k, ...meta });
       }
+    });
 
-      const unit = (food.units && food.units[it.unitIdx || 0]) || { n: 'گرم', g: 1 };
-      const grams = (it.qty || 0) * unit.g;
-      const k = grams / 100;
-      const cal = Math.round((food.cal || 0) * k);
-      const prot = Math.round((food.prot || 0) * k * 10) / 10;
-      const carb = Math.round((food.carb || 0) * k * 10) / 10;
-      const fat = Math.round((food.fat || 0) * k * 10) / 10;
+    const hasMeals = dataKeysWithItems.length > 0;
 
-      mTot.cal += cal;
-      mTot.prot += prot;
-      mTot.carb += carb;
-      mTot.fat += fat;
+    let nutritionTableHTML = '';
+    let mealTotalsGlobal = { cal: 0, prot: 0, carb: 0, fat: 0 };
 
-      return '<tr>' +
-        '<td>' + (food.emoji || '🍽️') + ' ' + food.name + '</td>' +
-        '<td style="text-align:center">' + it.qty + ' ' + unit.n + '</td>' +
-        '<td style="text-align:center;color:#3b82f6;font-weight:700">' + cal + '</td>' +
-        '<td style="text-align:center">' + prot + '</td>' +
-        '<td style="text-align:center">' + carb + '</td>' +
-        '<td style="text-align:center">' + fat + '</td>' +
-      '</tr>';
-    }).join('');
+    if (hasMeals) {
+      const activeMealDefs = mealDefs.filter(m => (meals[m.key] || []).length > 0);
 
-    mealTotalsGlobal.cal += mTot.cal;
-    mealTotalsGlobal.prot += mTot.prot;
-    mealTotalsGlobal.carb += mTot.carb;
-    mealTotalsGlobal.fat += mTot.fat;
+      nutritionTableHTML = activeMealDefs.map(meal => {
+        const items = meals[meal.key] || [];
+        let mTot = { cal: 0, prot: 0, carb: 0, fat: 0 };
 
-    return '<div class="meal-block">' +
-      '<h3>' + (meal.emoji || '🍽️') + ' ' + meal.name + ' — ' + Math.round(mTot.cal) + ' kcal</h3>' +
-      '<table><thead><tr>' +
-        '<th style="text-align:right">غذا</th>' +
-        '<th style="text-align:center;width:80px">مقدار</th>' +
-        '<th style="text-align:center;width:55px">کالری</th>' +
-        '<th style="text-align:center;width:50px">پروتئین</th>' +
-        '<th style="text-align:center;width:50px">کرب</th>' +
-        '<th style="text-align:center;width:50px">چربی</th>' +
-      '</tr></thead><tbody>' + rows + '</tbody></table>' +
-    '</div>';
-  }).join('');
-}
+        const rows = items.map(it => {
+          const food = foods.find(f => f.id === it.foodId);
+          if (!food) {
+            return '<tr><td colspan="6" style="text-align:center;color:#f43f5e;font-size:10px;padding:6px">⚠️ غذای ناشناخته: ' + (it.foodId || '?') + '</td></tr>';
+          }
+
+          const unit = (food.units && food.units[it.unitIdx || 0]) || { n: 'گرم', g: 1 };
+          const grams = (it.qty || 0) * unit.g;
+          const k = grams / 100;
+          const cal = Math.round((food.cal || 0) * k);
+          const prot = Math.round((food.prot || 0) * k * 10) / 10;
+          const carb = Math.round((food.carb || 0) * k * 10) / 10;
+          const fat = Math.round((food.fat || 0) * k * 10) / 10;
+
+          mTot.cal += cal; mTot.prot += prot; mTot.carb += carb; mTot.fat += fat;
+
+          return '<tr>' +
+            '<td>' + (food.emoji || '🍽️') + ' ' + food.name + '</td>' +
+            '<td style="text-align:center">' + it.qty + ' ' + unit.n + '</td>' +
+            '<td style="text-align:center;color:#3b82f6;font-weight:700">' + cal + '</td>' +
+            '<td style="text-align:center">' + prot + '</td>' +
+            '<td style="text-align:center">' + carb + '</td>' +
+            '<td style="text-align:center">' + fat + '</td>' +
+          '</tr>';
+        }).join('');
+
+        mealTotalsGlobal.cal += mTot.cal;
+        mealTotalsGlobal.prot += mTot.prot;
+        mealTotalsGlobal.carb += mTot.carb;
+        mealTotalsGlobal.fat += mTot.fat;
+
+        return '<div class="meal-block">' +
+          '<h3>' + (meal.emoji || '🍽️') + ' ' + meal.name + ' — ' + Math.round(mTot.cal) + ' kcal</h3>' +
+          '<table><thead><tr>' +
+            '<th style="text-align:right">غذا</th>' +
+            '<th style="text-align:center;width:80px">مقدار</th>' +
+            '<th style="text-align:center;width:55px">کالری</th>' +
+            '<th style="text-align:center;width:50px">پروتئین</th>' +
+            '<th style="text-align:center;width:50px">کرب</th>' +
+            '<th style="text-align:center;width:50px">چربی</th>' +
+          '</tr></thead><tbody>' + rows + '</tbody></table>' +
+        '</div>';
+      }).join('');
+    }
 
     // ============ Supplements ============
     const supplements = nutrition.supplements || [];
@@ -763,170 +730,153 @@ if (hasMeals) {
     if (supplements.length) {
       supplementsHTML = '<table><thead><tr>' +
         '<th style="text-align:right">مکمل</th>' +
-        '<th style="text-align:center;width:90px">دوز</th>' +
-        '<th style="text-align:center;width:100px">زمان</th>' +
-        '<th style="text-align:center;width:60px">وضعیت</th>' +
+        '<th style="text-align:center;width:100px">دوز</th>' +
+        '<th style="text-align:center;width:110px">زمان</th>' +
+        '<th style="text-align:center;width:70px">وضعیت</th>' +
       '</tr></thead><tbody>' +
       supplements.map(s => '<tr>' +
-        '<td style="font-weight:700;font-size:.75rem">' + s.name + '</td>' +
-        '<td style="text-align:center;font-size:.72rem;color:#f59e0b;font-weight:700">' + (s.dose || '—') + '</td>' +
-        '<td style="text-align:center;font-size:.72rem">' + (s.timing || '—') + '</td>' +
-        '<td style="text-align:center;font-size:.72rem;color:' + (s.enabled ? '#10b981' : '#94a3b8') + ';font-weight:700">' + (s.enabled ? '✓ فعال' : 'غیرفعال') + '</td>' +
+        '<td style="font-weight:700">' + s.name + '</td>' +
+        '<td style="text-align:center;color:#f59e0b;font-weight:700">' + (s.dose || '—') + '</td>' +
+        '<td style="text-align:center">' + (s.timing || '—') + '</td>' +
+        '<td style="text-align:center;color:' + (s.enabled ? '#10b981' : '#94a3b8') + ';font-weight:700">' + (s.enabled ? '✓ فعال' : 'غیرفعال') + '</td>' +
       '</tr>').join('') +
       '</tbody></table>';
     }
 
-    // ============ Body measurements ============
+    // ============ Body charts ============
     const bodySorted = body.slice().sort((a, b) => a.date.localeCompare(b.date));
-
     let bodyChartHTML = '';
     let bodyTableHTML = '';
 
     if (bodySorted.length > 0) {
       const weightData = bodySorted.filter(e => e.weight != null);
-      if (weightData.length > 0) {
+      if (weightData.length >= 2) {
         const wData = weightData.map(e => e.weight);
         const wLabels = weightData.map(e => e.date.slice(5));
-        const firstW = wData[0], lastW = wData[wData.length - 1];
-        const diffW = lastW - firstW;
+        const diffW = wData[wData.length - 1] - wData[0];
         const diffColor = diffW > 0 ? '#f43f5e' : (diffW < 0 ? '#10b981' : '#94a3b8');
-
-        bodyChartHTML += '<div style="margin-bottom:16px">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
-            '<div style="font-weight:800;font-size:.82rem;color:#1e293b">⚖️ روند وزن (kg)</div>' +
-            '<div style="font-size:.72rem;font-weight:800;color:' + diffColor + '">' +
-              (diffW > 0 ? '+' : '') + diffW.toFixed(1) + ' kg در ' + weightData.length + ' ثبت' +
-            '</div>' +
-          '</div>' +
+        bodyChartHTML += '<div class="chart-item">' +
+          '<div class="chart-head"><span>⚖️ روند وزن (kg)</span><span style="color:' + diffColor + '">' + (diffW > 0 ? '+' : '') + diffW.toFixed(1) + ' kg</span></div>' +
           generateLineChartSVG(wData, wLabels, { color: '#3b82f6', unit: ' kg' }) +
         '</div>';
       }
 
       const waistData = bodySorted.filter(e => e.waist != null);
       if (waistData.length >= 2) {
-        const data = waistData.map(e => e.waist);
-        const labels = waistData.map(e => e.date.slice(5));
-        bodyChartHTML += '<div style="margin-bottom:16px">' +
-          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">👖 روند دور کمر (cm)</div>' +
-          generateLineChartSVG(data, labels, { color: '#a855f7', unit: ' cm' }) +
+        bodyChartHTML += '<div class="chart-item">' +
+          '<div class="chart-head"><span>👖 روند دور کمر (cm)</span></div>' +
+          generateLineChartSVG(waistData.map(e => e.waist), waistData.map(e => e.date.slice(5)), { color: '#a855f7', unit: ' cm' }) +
         '</div>';
       }
 
       const chestData = bodySorted.filter(e => e.chest != null);
       if (chestData.length >= 2) {
-        const data = chestData.map(e => e.chest);
-        const labels = chestData.map(e => e.date.slice(5));
-        bodyChartHTML += '<div style="margin-bottom:16px">' +
-          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">💪 روند دور سینه (cm)</div>' +
-          generateLineChartSVG(data, labels, { color: '#06b6d4', unit: ' cm' }) +
+        bodyChartHTML += '<div class="chart-item">' +
+          '<div class="chart-head"><span>💪 روند دور سینه (cm)</span></div>' +
+          generateLineChartSVG(chestData.map(e => e.chest), chestData.map(e => e.date.slice(5)), { color: '#06b6d4', unit: ' cm' }) +
         '</div>';
       }
 
       const armData = bodySorted.filter(e => e.arm != null);
       if (armData.length >= 2) {
-        const data = armData.map(e => e.arm);
-        const labels = armData.map(e => e.date.slice(5));
-        bodyChartHTML += '<div style="margin-bottom:16px">' +
-          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">💪 روند دور بازو (cm)</div>' +
-          generateLineChartSVG(data, labels, { color: '#f43f5e', unit: ' cm' }) +
+        bodyChartHTML += '<div class="chart-item">' +
+          '<div class="chart-head"><span>💪 روند دور بازو (cm)</span></div>' +
+          generateLineChartSVG(armData.map(e => e.arm), armData.map(e => e.date.slice(5)), { color: '#f43f5e', unit: ' cm' }) +
         '</div>';
       }
 
       const fatData = bodySorted.filter(e => e.bodyfat != null);
       if (fatData.length >= 2) {
-        const data = fatData.map(e => e.bodyfat);
-        const labels = fatData.map(e => e.date.slice(5));
-        bodyChartHTML += '<div style="margin-bottom:16px">' +
-          '<div style="font-weight:800;font-size:.82rem;color:#1e293b;margin-bottom:6px">🔥 روند درصد چربی (%)</div>' +
-          generateLineChartSVG(data, labels, { color: '#f59e0b', unit: ' %' }) +
+        bodyChartHTML += '<div class="chart-item">' +
+          '<div class="chart-head"><span>🔥 روند درصد چربی (%)</span></div>' +
+          generateLineChartSVG(fatData.map(e => e.bodyfat), fatData.map(e => e.date.slice(5)), { color: '#f59e0b', unit: ' %' }) +
         '</div>';
       }
 
       const metrics = [
-        { key: 'weight', name: 'وزن' },
-        { key: 'bodyfat', name: 'چربی' },
-        { key: 'neck', name: 'گردن' },
-        { key: 'chest', name: 'سینه' },
-        { key: 'waist', name: 'کمر' },
-        { key: 'hip', name: 'باسن' },
-        { key: 'arm', name: 'بازو' },
-        { key: 'forearm', name: 'ساعد' },
-        { key: 'thigh', name: 'ران' },
-        { key: 'calf', name: 'ساق' }
+        { key: 'weight', name: 'وزن' }, { key: 'bodyfat', name: 'چربی' },
+        { key: 'neck', name: 'گردن' }, { key: 'chest', name: 'سینه' },
+        { key: 'waist', name: 'کمر' }, { key: 'hip', name: 'باسن' },
+        { key: 'arm', name: 'بازو' }, { key: 'forearm', name: 'ساعد' },
+        { key: 'thigh', name: 'ران' }, { key: 'calf', name: 'ساق' }
       ];
 
       const recent = bodySorted.slice(-15).reverse();
-
       bodyTableHTML = '<table><thead><tr>' +
         '<th style="text-align:right">تاریخ</th>' +
         metrics.map(m => '<th style="text-align:center">' + m.name + '</th>').join('') +
       '</tr></thead><tbody>' +
       recent.map(e => '<tr>' +
-        '<td style="font-size:.7rem;font-weight:700">' + e.date + '</td>' +
-        metrics.map(m => '<td style="text-align:center;font-size:.7rem">' + (e[m.key] != null ? e[m.key] : '—') + '</td>').join('') +
+        '<td style="font-weight:700">' + e.date + '</td>' +
+        metrics.map(m => '<td style="text-align:center">' + (e[m.key] != null ? e[m.key] : '—') + '</td>').join('') +
       '</tr>').join('') +
       '</tbody></table>';
     }
 
-    // ============ Build HTML ============
+    // ============ BUILD HTML ============
     const html = `<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>گزارش ProFit — ${u.displayName}</title>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>گزارش ProFit — ${targetUser.displayName}</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-  body { padding: 24px; background: #fff; color: #0f172a; line-height: 1.7; max-width: 850px; margin: 0 auto; }
-  .header { text-align: center; padding-bottom: 22px; margin-bottom: 24px; border-bottom: 3px solid #3b82f6; }
-  .header h1 { font-size: 1.7rem; color: #3b82f6; margin-bottom: 8px; }
-  .header .sub { font-size: .82rem; color: #64748b; }
-  .section { margin-bottom: 28px; page-break-inside: avoid; }
-  .section h2 { font-size: 1.05rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; color: #1e293b; display: flex; align-items: center; gap: 8px; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .stat { padding: 14px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; }
-  .stat .lbl { font-size: .7rem; color: #64748b; font-weight: 700; }
-  .stat .val { font-size: 1.3rem; font-weight: 900; color: #3b82f6; margin-top: 6px; }
+  @page { size: A4 portrait; margin: 12mm 10mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { width: 100%; }
+  body { padding: 0; background: #fff; color: #0f172a; line-height: 1.6; font-size: 11px; }
+
+  .header { text-align: center; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 3px solid #3b82f6; }
+  .header h1 { font-size: 20px; color: #3b82f6; margin-bottom: 5px; }
+  .header .sub { font-size: 10px; color: #64748b; }
+
+  .section { margin-bottom: 16px; }
+  .section h2 { font-size: 13px; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #e2e8f0; color: #1e293b; }
+
+  .new-page { page-break-before: always; break-before: page; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .stat { padding: 8px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
+  .stat .lbl { font-size: 9px; color: #64748b; font-weight: 700; }
+  .stat .val { font-size: 16px; font-weight: 900; color: #3b82f6; margin-top: 3px; }
   .stat.green .val { color: #10b981; }
   .stat.orange .val { color: #f59e0b; }
   .stat.purple .val { color: #a855f7; }
-  .stat.red .val { color: #f43f5e; }
-  .chart-box { background: #fafbfc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 16px; }
-  .chart-box h4 { font-size: .82rem; color: #1e293b; margin-bottom: 8px; font-weight: 800; }
-  table { width: 100%; border-collapse: collapse; font-size: .78rem; margin-bottom: 14px; }
-  th { background: #f1f5f9; padding: 8px 6px; text-align: right; font-weight: 800; color: #475569; font-size: .72rem; }
-  td { padding: 7px 6px; border-bottom: 1px solid #f1f5f9; }
-  tbody tr:hover { background: #fafbfc; }
-  .day-block { margin-bottom: 18px; page-break-inside: avoid; background: #fafbfc; padding: 12px; border-radius: 10px; border: 1px solid #f1f5f9; }
-  .day-block h3 { font-size: .88rem; color: #1e293b; margin-bottom: 8px; padding-right: 10px; border-right: 4px solid #3b82f6; font-weight: 800; }
-  .macro-summary { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
-  .macro-box { text-align: center; padding: 10px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0; }
-  .macro-box .mb-lbl { font-size: .62rem; color: #64748b; font-weight: 700; }
-  .macro-box .mb-val { font-size: 1.05rem; font-weight: 900; margin-top: 3px; }
+
+  .chart-item { page-break-inside: avoid; break-inside: avoid; margin-bottom: 12px; }
+  .chart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 11px; font-weight: 800; color: #1e293b; }
+  .chart-head span:last-child { font-size: 10px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 10px; page-break-inside: avoid; break-inside: avoid; }
+  th { background: #f1f5f9; padding: 5px 4px; text-align: right; font-weight: 800; color: #475569; font-size: 9px; }
+  td { padding: 4px; border-bottom: 1px solid #f1f5f9; }
+
+  .meal-block { page-break-inside: avoid; break-inside: avoid; margin-bottom: 10px; padding: 8px; background: #fafbfc; border-radius: 6px; border: 1px solid #f1f5f9; }
+  .meal-block h3 { font-size: 11px; color: #1e293b; margin-bottom: 6px; padding-right: 8px; border-right: 3px solid #3b82f6; font-weight: 800; }
+
+  .macro-summary { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin: 10px 0; page-break-inside: avoid; }
+  .macro-box { text-align: center; padding: 8px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; }
+  .macro-box .mb-lbl { font-size: 8px; color: #64748b; font-weight: 700; }
+  .macro-box .mb-val { font-size: 13px; font-weight: 900; margin-top: 2px; }
   .macro-box.cal .mb-val { color: #10b981; }
   .macro-box.prot .mb-val { color: #f43f5e; }
   .macro-box.carb .mb-val { color: #3b82f6; }
   .macro-box.fat .mb-val { color: #f59e0b; }
-  .legend { display: flex; gap: 16px; justify-content: center; font-size: .72rem; margin-top: 8px; }
-  .legend span { display: flex; align-items: center; gap: 5px; }
-  .legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
-  .footer { text-align: center; padding-top: 24px; margin-top: 40px; border-top: 1px solid #e2e8f0; font-size: .72rem; color: #94a3b8; }
-  .page-break { page-break-before: always; }
+
+  .empty-state { text-align: center; padding: 24px 16px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 10px; color: #64748b; font-size: 12px; }
+  .empty-state .icon { font-size: 32px; margin-bottom: 8px; opacity: 0.6; }
+  .empty-state .title { font-weight: 800; color: #475569; font-size: 13px; margin-bottom: 4px; }
+  .empty-state .hint { font-size: 10px; color: #94a3b8; }
+
+  .footer { text-align: center; padding-top: 14px; margin-top: 20px; border-top: 1px solid #e2e8f0; font-size: 9px; color: #94a3b8; page-break-inside: avoid; }
+
+  .no-print { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 8px; z-index: 1000; }
+  .no-print button { padding: 10px 20px; border-radius: 10px; font-family: inherit; font-weight: 800; font-size: 13px; cursor: pointer; }
+
   @media print {
-    body { padding: 12px; max-width: 100%; }
+    body { padding: 0; }
     .no-print { display: none !important; }
-    .section { page-break-inside: avoid; }
-    .day-block { page-break-inside: avoid; }
-    h2 { page-break-after: avoid; }
-    .chart-box { page-break-inside: avoid; }
-    .grid, .grid2, .grid4 { page-break-inside: avoid; }
-  }
-  @media (max-width: 600px) {
-    .grid { grid-template-columns: 1fr 1fr; }
-    .grid4 { grid-template-columns: 1fr 1fr; }
-    .macro-summary { grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
@@ -934,11 +884,12 @@ if (hasMeals) {
 
 <div class="header">
   <h1>🏋️ گزارش کامل ProFit</h1>
-  <div class="sub"><b>${u.displayName}</b> — @${u.username} — ${roles[u.role] || u.role}</div>
-  <div class="sub" style="margin-top:6px">تاریخ گزارش: ${new Date().toLocaleDateString('fa-IR')} — ساعت ${new Date().toLocaleTimeString('fa-IR', {hour:'2-digit',minute:'2-digit'})}</div>
+  <div class="sub"><b>${targetUser.displayName}</b> — @${targetUser.username} — ${roles[targetUser.role] || targetUser.role}</div>
+  <div class="sub" style="margin-top:4px">${new Date().toLocaleDateString('fa-IR')} — ${new Date().toLocaleTimeString('fa-IR', {hour:'2-digit',minute:'2-digit'})}</div>
+  ${targetId !== u.id ? '<div class="sub" style="margin-top:4px;color:#f59e0b;font-weight:700">تولیدشده توسط: ' + u.displayName + '</div>' : ''}
 </div>
 
-<!-- ============ WEEKLY STATS ============ -->
+<!-- PAGE 1: Weekly Summary -->
 <div class="section">
   <h2>📊 خلاصه عملکرد هفتگی</h2>
   <div class="grid">
@@ -948,64 +899,65 @@ if (hasMeals) {
   </div>
 </div>
 
-<!-- ============ WORKOUT VOLUME CHART ============ -->
-${weekVolumes.some(v => v > 0) ? `
+<!-- Volume Chart -->
 <div class="section">
   <h2>💪 نمودار حجم تمرین (۱۲ هفته اخیر)</h2>
-  <div class="grid4">
-    <div class="stat"><div class="lbl">حجم کل ۱۲ هفته</div><div class="val">${totalVolume12w.toLocaleString('fa-IR')}</div></div>
-    <div class="stat green"><div class="lbl">میانگین هفتگی</div><div class="val">${avgVolume.toLocaleString('fa-IR')}</div></div>
-    <div class="stat orange"><div class="lbl">جلسات ۱۲ هفته</div><div class="val">${totalSessions12w}</div></div>
-    <div class="stat purple"><div class="lbl">میانگین جلسه/هفته</div><div class="val">${avgSessions}</div></div>
-  </div>
+  ${hasVolumeData ? `
+    <div class="grid4">
+      <div class="stat"><div class="lbl">حجم کل</div><div class="val">${totalVolume12w.toLocaleString('fa-IR')}</div></div>
+      <div class="stat green"><div class="lbl">میانگین هفتگی</div><div class="val">${avgVolume.toLocaleString('fa-IR')}</div></div>
+      <div class="stat orange"><div class="lbl">جلسات</div><div class="val">${totalSessions12w}</div></div>
+      <div class="stat purple"><div class="lbl">میانگین جلسه</div><div class="val">${avgSessions}</div></div>
+    </div>
+    <div class="chart-item">
+      <div class="chart-head"><span>📊 حجم تمرین هفتگی (kg)</span></div>
+      ${generateBarChartSVG(weekVolumes, weekLabels, { color: '#3b82f6', color2: '#a855f7' })}
+    </div>
+    <div class="chart-item">
+      <div class="chart-head"><span>🎯 جلسات هفتگی</span></div>
+      ${generateBarChartSVG(weekSessions, weekLabels, { color: '#10b981', color2: '#059669' })}
+    </div>
+    <table>
+      <thead><tr>
+        <th style="text-align:right">هفته</th>
+        <th style="text-align:center">بازه</th>
+        <th style="text-align:center">جلسات</th>
+        <th style="text-align:center">حجم (kg)</th>
+      </tr></thead>
+      <tbody>
+        ${weeks.map((w, i) => {
+          const e = new Date(w.start); e.setDate(e.getDate() + 6);
+          return '<tr>' +
+            '<td style="font-weight:700">هفته ' + (12 - i) + '</td>' +
+            '<td style="text-align:center;color:#64748b">' + w.start.getDate() + '/' + (w.start.getMonth()+1) + ' — ' + e.getDate() + '/' + (e.getMonth()+1) + '</td>' +
+            '<td style="text-align:center;font-weight:700;color:#3b82f6">' + w.sess + '</td>' +
+            '<td style="text-align:center;font-weight:700;color:#10b981">' + w.vol.toLocaleString('fa-IR') + '</td>' +
+          '</tr>';
+        }).join('')}
+      </tbody>
+    </table>
+  ` : `
+    <div class="empty-state">
+      <div class="icon">📭</div>
+      <div class="title">هنوز داده تمرینی ثبت نشده</div>
+      <div class="hint">به تب «برنامه» برو، یه حرکت رو انجام بده و وزنه/تکرار ثبت کن.</div>
+    </div>
+  `}
+</div>
 
-  <div class="chart-box">
-    <h4>📊 حجم تمرین هفتگی (kg)</h4>
-    ${generateBarChartSVG(weekVolumes, weekLabels, { color: '#3b82f6', color2: '#a855f7', unit: ' kg' })}
-  </div>
-
-  <div class="chart-box">
-    <h4>🎯 جلسات هفتگی</h4>
-    ${generateBarChartSVG(weekSessions, weekLabels, { color: '#10b981', color2: '#059669', unit: '' })}
-  </div>
-
-  <table>
-    <thead><tr>
-      <th style="text-align:right">هفته</th>
-      <th style="text-align:center">بازه</th>
-      <th style="text-align:center">جلسات</th>
-      <th style="text-align:center">حجم (kg)</th>
-    </tr></thead>
-    <tbody>
-      ${weeks.map((w, i) => {
-        const endDate = new Date(w.start);
-        endDate.setDate(endDate.getDate() + 6);
-        return '<tr>' +
-          '<td style="font-size:.72rem;font-weight:700">هفته ' + (12 - i) + '</td>' +
-          '<td style="text-align:center;font-size:.7rem;color:#64748b">' + w.start.getDate() + '/' + (w.start.getMonth()+1) + ' — ' + endDate.getDate() + '/' + (endDate.getMonth()+1) + '</td>' +
-          '<td style="text-align:center;font-weight:700;color:#3b82f6">' + w.sess + '</td>' +
-          '<td style="text-align:center;font-weight:700;color:#10b981">' + w.vol.toLocaleString('fa-IR') + '</td>' +
-        '</tr>';
-      }).join('')}
-    </tbody>
-  </table>
-</div>` : ''}
-
-<!-- ============ PROGRAM ============ -->
-${(program.days && program.days.length) ? `
-<div class="section">
+<!-- PAGE 2: Program -->
+<div class="section new-page">
   <h2>🗓️ برنامه تمرینی</h2>
-  ${program.days.map(day => {
-    const totalEx = (day.exercises || []).length;
-    return `<div class="day-block">
-      <h3>${day.icon || '💪'} ${day.name} — ${day.focus || ''} (${totalEx} حرکت)</h3>
+  ${(program.days && program.days.length) ? program.days.map(day => `
+    <div class="meal-block">
+      <h3>${day.icon || '💪'} ${day.name} — ${day.focus || ''} (${(day.exercises || []).length} حرکت)</h3>
       <table>
         <thead><tr>
-          <th style="width:30px;text-align:center">#</th>
+          <th style="width:25px;text-align:center">#</th>
           <th style="text-align:right">حرکت</th>
-          <th style="text-align:center;width:50px">ست</th>
-          <th style="text-align:center;width:70px">تکرار</th>
-          <th style="text-align:center;width:50px">RPE</th>
+          <th style="text-align:center;width:45px">ست</th>
+          <th style="text-align:center;width:65px">تکرار</th>
+          <th style="text-align:center;width:45px">RPE</th>
         </tr></thead>
         <tbody>
           ${(day.exercises || []).map((ex, i) => {
@@ -1020,85 +972,122 @@ ${(program.days && program.days.length) ? `
           }).join('')}
         </tbody>
       </table>
-    </div>`;
-  }).join('')}
-</div>` : ''}
+    </div>
+  `).join('') : `
+    <div class="empty-state">
+      <div class="icon">📭</div>
+      <div class="title">هنوز برنامه تمرینی ساخته نشده</div>
+      <div class="hint">به تب «برنامه» برو و یه برنامه هوشمند یا دستی بساز.</div>
+    </div>
+  `}
+</div>
 
-<!-- ============ NUTRITION TARGETS ============ -->
-${(nutrition.targets) ? `
-<div class="section">
+<!-- PAGE 3: Nutrition Targets -->
+<div class="section new-page">
   <h2>🎯 اهداف تغذیه</h2>
-  <div class="grid">
-    <div class="stat"><div class="lbl">BMR (سوخت پایه)</div><div class="val">${(nutrition.targets.bmr || 0).toLocaleString('fa-IR')}</div></div>
-    <div class="stat"><div class="lbl">TDEE (سوخت کل)</div><div class="val">${(nutrition.targets.tdee || 0).toLocaleString('fa-IR')}</div></div>
-    <div class="stat green"><div class="lbl">کالری هدف</div><div class="val">${(nutrition.targets.calories || 0).toLocaleString('fa-IR')}</div></div>
-  </div>
-  <div class="macro-summary">
-    <div class="macro-box prot"><div class="mb-lbl">پروتئین</div><div class="mb-val">${nutrition.targets.protein || 0}g</div></div>
-    <div class="macro-box carb"><div class="mb-lbl">کربوهیدرات</div><div class="mb-val">${nutrition.targets.carbs || 0}g</div></div>
-    <div class="macro-box fat"><div class="mb-lbl">چربی</div><div class="mb-val">${nutrition.targets.fat || 0}g</div></div>
-    <div class="macro-box cal"><div class="mb-lbl">جمع کل</div><div class="mb-val">${((nutrition.targets.protein||0)*4 + (nutrition.targets.carbs||0)*4 + (nutrition.targets.fat||0)*9).toLocaleString('fa-IR')}</div></div>
-  </div>
-</div>` : ''}
+  ${nutrition.targets ? `
+    <div class="grid">
+      <div class="stat"><div class="lbl">BMR</div><div class="val">${(nutrition.targets.bmr || 0).toLocaleString('fa-IR')}</div></div>
+      <div class="stat"><div class="lbl">TDEE</div><div class="val">${(nutrition.targets.tdee || 0).toLocaleString('fa-IR')}</div></div>
+      <div class="stat green"><div class="lbl">کالری هدف</div><div class="val">${(nutrition.targets.calories || 0).toLocaleString('fa-IR')}</div></div>
+    </div>
+    <div class="macro-summary">
+      <div class="macro-box prot"><div class="mb-lbl">پروتئین</div><div class="mb-val">${nutrition.targets.protein || 0}g</div></div>
+      <div class="macro-box carb"><div class="mb-lbl">کربوهیدرات</div><div class="mb-val">${nutrition.targets.carbs || 0}g</div></div>
+      <div class="macro-box fat"><div class="mb-lbl">چربی</div><div class="mb-val">${nutrition.targets.fat || 0}g</div></div>
+      <div class="macro-box cal"><div class="mb-lbl">جمع</div><div class="mb-val">${((nutrition.targets.protein||0)*4 + (nutrition.targets.carbs||0)*4 + (nutrition.targets.fat||0)*9).toLocaleString('fa-IR')}</div></div>
+    </div>
+  ` : `
+    <div class="empty-state">
+      <div class="icon">🧮</div>
+      <div class="title">کالری روزانه محاسبه نشده</div>
+      <div class="hint">به تب «تغذیه» → «محاسبه» برو، اطلاعات بدنی رو پر کن.</div>
+    </div>
+  `}
+</div>
 
-<!-- ============ FULL MEAL PLAN ============ -->
-${mealDefs.length ? `
+<!-- Full Meal Plan -->
 <div class="section">
   <h2>🍽️ برنامه غذایی روزانه</h2>
-  ${nutritionTableHTML}
-  <div class="macro-summary" style="margin-top:18px;background:#f0fdf4;padding:12px;border-radius:10px;border:1px solid #bbf7d0">
-    <div class="macro-box cal"><div class="mb-lbl">کالری امروز</div><div class="mb-val">${Math.round(mealTotalsGlobal.cal).toLocaleString('fa-IR')}</div></div>
-    <div class="macro-box prot"><div class="mb-lbl">پروتئین</div><div class="mb-val">${mealTotalsGlobal.prot.toFixed(1)}g</div></div>
-    <div class="macro-box carb"><div class="mb-lbl">کربوهیدرات</div><div class="mb-val">${mealTotalsGlobal.carb.toFixed(1)}g</div></div>
-    <div class="macro-box fat"><div class="mb-lbl">چربی</div><div class="mb-val">${mealTotalsGlobal.fat.toFixed(1)}g</div></div>
-  </div>
-</div>` : ''}
+  ${hasMeals ? nutritionTableHTML + `
+    <div class="macro-summary" style="background:#f0fdf4;padding:10px;border-radius:8px;border:1px solid #bbf7d0">
+      <div class="macro-box cal"><div class="mb-lbl">کالری</div><div class="mb-val">${Math.round(mealTotalsGlobal.cal).toLocaleString('fa-IR')}</div></div>
+      <div class="macro-box prot"><div class="mb-lbl">پروتئین</div><div class="mb-val">${mealTotalsGlobal.prot.toFixed(1)}g</div></div>
+      <div class="macro-box carb"><div class="mb-lbl">کربوهیدرات</div><div class="mb-val">${mealTotalsGlobal.carb.toFixed(1)}g</div></div>
+      <div class="macro-box fat"><div class="mb-lbl">چربی</div><div class="mb-val">${mealTotalsGlobal.fat.toFixed(1)}g</div></div>
+    </div>
+  ` : `
+    <div class="empty-state">
+      <div class="icon">🍽️</div>
+      <div class="title">هنوز غذایی اضافه نشده</div>
+      <div class="hint">به تب «تغذیه» → «غذاها» برو و وعده‌هات رو پر کن.</div>
+    </div>
+  `}
+</div>
 
-<!-- ============ SUPPLEMENTS ============ -->
-${supplements.length ? `
-<div class="section page-break">
+<!-- PAGE 4: Supplements -->
+<div class="section new-page">
   <h2>💊 مکمل‌های تجویزشده</h2>
-  <div style="font-size:.75rem;color:#64748b;margin-bottom:12px;padding:8px 12px;background:#fef3c7;border-radius:8px;border-right:4px solid #f59e0b">
-    ⚠️ قبل از مصرف هر مکمل با پزشک یا متخصص تغذیه مشورت کن.
-  </div>
-  ${supplementsHTML}
-</div>` : ''}
+  ${supplements.length ? `
+    <div style="font-size:10px;color:#64748b;margin-bottom:10px;padding:6px 10px;background:#fef3c7;border-radius:6px;border-right:3px solid #f59e0b">
+      ⚠️ قبل از مصرف هر مکمل با پزشک یا متخصص تغذیه مشورت کن.
+    </div>
+    ${supplementsHTML}
+  ` : `
+    <div class="empty-state">
+      <div class="icon">💊</div>
+      <div class="title">مکملی تنظیم نشده</div>
+      <div class="hint">به تب «تغذیه» → «مکمل‌ها» برو تا پیشنهادها بر اساس هدفت ساخته بشن.</div>
+    </div>
+  `}
+</div>
 
-<!-- ============ BODY CHARTS ============ -->
-${bodyChartHTML ? `
-<div class="section page-break">
+<!-- PAGE 5: Body Charts -->
+<div class="section new-page">
   <h2>📈 نمودارهای پیشرفت — وزن و اندازه‌ها</h2>
-  ${bodyChartHTML}
-</div>` : ''}
+  ${bodyChartHTML || `
+    <div class="empty-state">
+      <div class="icon">📊</div>
+      <div class="title">هنوز اندازه‌های بدن ثبت نشده</div>
+      <div class="hint">به تب «بدن» برو و حداقل ۲ بار وزن، دور کمر یا سایر اندازه‌ها رو ثبت کن.</div>
+    </div>
+  `}
+</div>
 
-<!-- ============ BODY TABLE ============ -->
-${bodyTableHTML ? `
-<div class="section">
-  <h2>📏 جدول کامل اندازه‌های بدن (۱۵ ثبت آخر)</h2>
-  ${bodyTableHTML}
-</div>` : ''}
+<!-- PAGE 6: Body Table -->
+<div class="section new-page">
+  <h2>📏 جدول کامل اندازه‌های بدن</h2>
+  ${bodyTableHTML || `
+    <div class="empty-state">
+      <div class="icon">📏</div>
+      <div class="title">جدولی برای نمایش نیست</div>
+      <div class="hint">با ثبت اولین اندازه‌ها، جدول اینجا نمایش داده می‌شه.</div>
+    </div>
+  `}
+</div>
 
 <div class="footer">
   <div>گزارش تولیدشده توسط <b>ProFit</b> — ${new Date().toLocaleString('fa-IR')}</div>
-  <div style="margin-top:4px">این گزارش اطلاعات شخصی است و محرمانه می‌باشد.</div>
+  <div style="margin-top:3px">این گزارش اطلاعات شخصی است و محرمانه می‌باشد.</div>
 </div>
 
-<div class="no-print" style="position:fixed;bottom:20px;left:20px;display:flex;gap:8px;z-index:1000">
-  <button onclick="window.print()" style="padding:12px 24px;border-radius:12px;border:none;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 8px 24px rgba(59,130,246,.4)">
-    🖨️ چاپ / ذخیره PDF
-  </button>
-  <button onclick="window.close()" style="padding:12px 24px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer">
-    بستن
-  </button>
+<div class="no-print">
+  <button onclick="window.print()" style="border:none;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;box-shadow:0 8px 24px rgba(59,130,246,.4)">🖨️ چاپ / ذخیره PDF</button>
+  <button onclick="window.close()" style="border:1px solid #cbd5e1;background:#fff;color:#334155">بستن</button>
 </div>
 
 </body>
 </html>`;
 
-    const w = window.open('', '_blank');
-    if (!w) { window.toast('پاپ‌آپ بلاک شده — اجازه بده', 'warn'); return; }
-    w.document.write(html);
-    w.document.close();
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const w = window.open(url, '_blank');
+    if (!w) {
+      URL.revokeObjectURL(url);
+      window.toast('پاپ‌آپ بلاک شده — اجازه بده', 'warn');
+      return;
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
   } catch (e) {
     console.error('Print error:', e);
     window.toast('خطا: ' + e.message, 'error');
@@ -1158,7 +1147,7 @@ function renderExportBody() {
       <span style="font-size:1.2rem">💾</span>
       <div style="flex:1;text-align:right">
         <div style="font-weight:800">دانلود بکاپ کامل</div>
-        <div style="font-size:.68rem;opacity:.8;font-weight:500">همه داده‌ها: برنامه، تغذیه، اندازه‌ها، پیشرفت</div>
+        <div style="font-size:.68rem;opacity:.8;font-weight:500">همه داده‌ها</div>
       </div>
     </button>
     <button class="btn full" style="margin-bottom:14px;justify-content:flex-start;padding:14px" onclick="importUserData('${u.id}')">
@@ -1184,7 +1173,7 @@ function renderExportBody() {
     </button>
 
     <div class="sh">🖨️ گزارش چاپی / PDF</div>
-    <button class="btn success full" style="margin-bottom:14px;justify-content:flex-start;padding:14px" onclick="printReport()">
+    <button class="btn success full" style="margin-bottom:14px;justify-content:flex-start;padding:14px" onclick="printReport('${u.id}')">
       <span style="font-size:1.2rem">📄</span>
       <div style="flex:1;text-align:right">
         <div style="font-weight:800">گزارش کامل</div>
@@ -1241,103 +1230,70 @@ async function exportAllUsersBackup() {
 window.exportAllUsersBackup = exportAllUsersBackup;
 
 /* ============================================================
-   PART 10: GUIDE — Help Drawer
+   PART 10: HELP DRAWER
    ============================================================ */
 const HELP_CONTENT = {
   student: {
     icon: '🎓',
     title: 'راهنمای شاگرد',
     sections: [
-      {
-        title: '🚀 شروع سریع',
-        items: [
-          { q: 'چطور برنامه بسازم؟', a: 'به تب «برنامه» برو. سه گزینه داری: <b>هوشمند</b> (با سؤال جواب)، <b>دستی</b> (خودت طراحی کن) یا <b>ارجاع به مربی</b>.' },
-          { q: 'تفاوت هوشمند و دستی چیه؟', a: '<b>هوشمند</b>: با چند سؤال، برنامه آماده بهت می‌ده. <b>دستی</b>: خودت روز، حرکت، ست و تکرار رو انتخاب می‌کنی.' },
-          { q: 'چطور به مربی وصل شم؟', a: 'تب «برنامه» → «ارجاع به مربی». می‌تونی یه مربی خاص انتخاب کنی یا بذاری مدیر برات انتخاب کنه.' }
-        ]
-      },
-      {
-        title: '💪 تمرین کردن',
-        items: [
-          { q: 'چطور یه حرکت رو انجام‌شده علامت بزنم؟', a: 'تیک سبز کنار هر حرکت رو بزن.' },
-          { q: 'وزنه و تکرار رو چطور وارد کنم؟', a: 'توی جدول هر حرکت، ستون «وزنه» و «تکرار» رو پر کن. دکمه ⤴ از ست قبلی کپی می‌کنه.' },
-          { q: 'تایمر ست چیه؟', a: 'دکمه ▶ کنار هر ست، زمان استراحت رو می‌شماره.' }
-        ]
-      },
-      {
-        title: '🥗 تغذیه',
-        items: [
-          { q: 'چطور کالری روزانم رو حساب کنم؟', a: 'تب «تغذیه» → تب «محاسبه». اطلاعات بدنی رو پر کن و «محاسبه» رو بزن.' },
-          { q: 'چطور غذا اضافه کنم؟', a: 'تب «غذاها» → روی وعده بزن تا باز شه → «افزودن غذا».' }
-        ]
-      },
-      {
-        title: '📤 خروجی گرفتن',
-        items: [
-          { q: 'چطور بکاپ بگیرم؟', a: 'روی آیکن 👤 بالا → «خروجی و بکاپ» → «دانلود بکاپ کامل».' },
-          { q: 'چطور داده‌ها رو به Excel ببرم؟', a: 'توی بخش خروجی، دکمه «CSV» رو بزن.' },
-          { q: 'گزارش چاپی چیه؟', a: 'دکمه «گزارش کامل» → یه صفحه باز می‌شه با همه نمودارها و جدول‌ها.' }
-        ]
-      }
+      { title: '🚀 شروع سریع', items: [
+        { q: 'چطور برنامه بسازم؟', a: 'به تب «برنامه» برو. سه گزینه داری: <b>هوشمند</b>، <b>دستی</b> یا <b>ارجاع به مربی</b>.' },
+        { q: 'تفاوت هوشمند و دستی چیه؟', a: '<b>هوشمند</b>: با چند سؤال، برنامه آماده. <b>دستی</b>: خودت طراحی می‌کنی.' },
+        { q: 'چطور به مربی وصل شم؟', a: 'تب «برنامه» → «ارجاع به مربی».' }
+      ]},
+      { title: '💪 تمرین کردن', items: [
+        { q: 'چطور حرکت رو انجام‌شده علامت بزنم؟', a: 'تیک سبز کنار هر حرکت.' },
+        { q: 'وزنه و تکرار؟', a: 'توی جدول هر حرکت، ستون «وزنه» و «تکرار» رو پر کن. دکمه ⤴ از ست قبلی کپی می‌کنه.' },
+        { q: 'تایمر ست؟', a: 'دکمه ▶ کنار هر ست.' }
+      ]},
+      { title: '🥗 تغذیه', items: [
+        { q: 'محاسبه کالری؟', a: 'تب «تغذیه» → «محاسبه».' },
+        { q: 'افزودن غذا؟', a: 'تب «غذاها» → روی وعده بزن → «افزودن غذا».' }
+      ]},
+      { title: '📤 خروجی گرفتن', items: [
+        { q: 'بکاپ؟', a: 'آیکن 👤 → «خروجی و بکاپ» → «دانلود بکاپ کامل».' },
+        { q: 'Excel؟', a: 'توی بخش خروجی، دکمه «CSV».' },
+        { q: 'گزارش چاپی؟', a: 'دکمه «گزارش کامل» → PDF.' }
+      ]}
     ]
   },
   coach: {
     icon: '👨‍🏫',
     title: 'راهنمای مربی',
     sections: [
-      {
-        title: '👥 مدیریت شاگردان',
-        items: [
-          { q: 'چطور شاگرد اضافه کنم؟', a: 'پنل مربی → «افزودن شاگرد».' },
-          { q: 'شاگردانم کجان؟', a: 'پنل مربی، لیست همه شاگردان با آمار.' }
-        ]
-      },
-      {
-        title: '📨 درخواست‌های برنامه',
-        items: [
-          { q: 'درخواست شاگرد کجا میاد؟', a: 'توی پنل مربی، بالای صفحه، بخش نارنجی.' },
-          { q: 'چطور درخواست رو قبول کنم؟', a: 'روی «✓ قبول می‌کنم» بزن.' }
-        ]
-      },
-      {
-        title: '✏️ نوشتن برنامه',
-        items: [
-          { q: 'چطور برنامه بنویسم؟', a: 'پنل مربی → روی شاگرد بزن → «ویرایش برنامه».' },
-          { q: 'اجازه ویرایش چیه؟', a: 'توی جزئیات شاگرد، می‌تونی بهش اجازه ویرایش بدی.' }
-        ]
-      }
+      { title: '👥 مدیریت شاگردان', items: [
+        { q: 'افزودن شاگرد؟', a: 'پنل مربی → «افزودن شاگرد».' },
+        { q: 'لیست شاگردان؟', a: 'پنل مربی، با آمار.' }
+      ]},
+      { title: '📨 درخواست‌ها', items: [
+        { q: 'کجا میاد؟', a: 'بالای پنل مربی، بخش نارنجی.' },
+        { q: 'قبول؟', a: 'روی «✓ قبول می‌کنم».' }
+      ]},
+      { title: '✏️ نوشتن برنامه', items: [
+        { q: 'چطور؟', a: 'پنل مربی → روی شاگرد → «ویرایش برنامه».' },
+        { q: 'اجازه ویرایش؟', a: 'توی جزئیات شاگرد.' }
+      ]}
     ]
   },
   admin: {
     icon: '👑',
     title: 'راهنمای مدیر',
     sections: [
-      {
-        title: '⏳ تأیید مربی',
-        items: [
-          { q: 'چطور مربی تأیید کنم؟', a: 'پنل مدیر → تب «مربیان» → روی ✅ بزن.' }
-        ]
-      },
-      {
-        title: '📨 درخواست‌های برنامه',
-        items: [
-          { q: 'درخواست‌ها کجان؟', a: 'تب «درخواست برنامه» توی پنل مدیر.' },
-          { q: 'چطور تخصیص بدم؟', a: 'از dropdown مربی انتخاب کن → «✅ تخصیص».' }
-        ]
-      },
-      {
-        title: '👥 مدیریت کاربران',
-        items: [
-          { q: 'چطور کاربر بسازم؟', a: 'تب «کاربران» → «افزودن کاربر».' },
-          { q: 'تغییر رمز؟', a: 'روی 🔑 بزن.' }
-        ]
-      },
-      {
-        title: '📤 خروجی گرفتن',
-        items: [
-          { q: 'بکاپ کل؟', a: 'آیکن 👤 → «خروجی و بکاپ» → «بکاپ همه کاربران».' }
-        ]
-      }
+      { title: '⏳ تأیید مربی', items: [
+        { q: 'چطور؟', a: 'پنل مدیر → تب «مربیان» → ✅.' }
+      ]},
+      { title: '📨 درخواست‌ها', items: [
+        { q: 'کجان؟', a: 'تب «درخواست برنامه».' },
+        { q: 'تخصیص؟', a: 'dropdown مربی → «✅ تخصیص».' }
+      ]},
+      { title: '👥 کاربران', items: [
+        { q: 'ساخت کاربر؟', a: 'تب «کاربران» → «افزودن کاربر».' },
+        { q: 'تغییر رمز؟', a: 'روی 🔑.' }
+      ]},
+      { title: '📤 خروجی', items: [
+        { q: 'بکاپ کل؟', a: 'آیکن 👤 → «خروجی و بکاپ» → «بکاپ همه کاربران».' }
+      ]}
     ]
   }
 };
@@ -1403,10 +1359,6 @@ function renderHelpBody() {
         </div>
       </div>
     `).join('')}
-    <div style="margin-top:20px;padding:14px;background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(168,85,247,.05));border-radius:12px;border:1px solid rgba(59,130,246,.2)">
-      <div style="font-weight:800;font-size:.85rem;margin-bottom:6px">💡 نکته</div>
-      <div style="font-size:.74rem;color:var(--tx2);line-height:1.8">اگه سؤالی داری که اینجا نیست، از «خروجی و بکاپ» یه گزارش PDF بگیر و برای مربی‌ات بفرست.</div>
-    </div>
   `;
 
   setTimeout(() => window.toggleHelpSection(0), 100);
@@ -1429,7 +1381,7 @@ window.toggleHelpItem = function(headerEl) {
 };
 
 /* ============================================================
-   PART 11: GUIDE — First-time Hints
+   PART 11: FIRST-TIME HINTS
    ============================================================ */
 function showFirstTimeHints() {
   const u = window.state?.user;
@@ -1465,7 +1417,7 @@ function showFirstTimeHints() {
 }
 
 /* ============================================================
-   PART 12: POLISH — Keyboard Shortcuts
+   PART 12: KEYBOARD SHORTCUTS
    ============================================================ */
 document.addEventListener('keydown', (e) => {
   const t = e.target.tagName;
@@ -1482,7 +1434,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ============================================================
-   PART 13: INIT — Add toolbar buttons
+   PART 13: TOOLBAR BUTTONS
    ============================================================ */
 function addToolbarButtons() {
   const tb = document.getElementById('toolbar');
@@ -1538,7 +1490,7 @@ if (document.readyState === 'loading') {
   setTimeout(showFirstTimeHints, 1500);
 }
 
-console.log('✨ ProFit Extras v1.2 loaded');
+console.log('✨ ProFit Extras v1.5 loaded');
 console.log('   Shortcuts: Ctrl+H (راهنما) · Ctrl+E (خروجی)');
 
 })();
