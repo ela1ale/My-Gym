@@ -1,45 +1,48 @@
 /* ============================================================
-  ProFit Server v4.2 — Complete (Fixed + Coach Requests)
+   ProFit Server v4.3 — Bulletproof (works with any package.json)
    ============================================================ */
-require('dotenv').config();
-require('express-async-errors');
+try { require('dotenv').config(); } catch(e) {}
+
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const rateLimit = require('express-rate-limit');
-const compression = require('compression');
-const helmet = require('helmet');
 const { Pool } = require('pg');
+
+/* ============ OPTIONAL PACKAGES (safe require) ============ */
+let compression, helmet, rateLimit;
+try { compression = require('compression'); } catch(e) { console.warn('⚠️  compression not installed — skipping'); }
+try { helmet = require('helmet'); } catch(e) { console.warn('⚠️  helmet not installed — skipping'); }
+try { rateLimit = require('express-rate-limit'); } catch(e) { console.warn('⚠️  express-rate-limit not installed — skipping'); }
+try { require('express-async-errors'); } catch(e) { console.warn('⚠️  express-async-errors not installed'); }
 
 const PORT = process.env.PORT || 3000;
 
 if (!process.env.JWT_SECRET) {
   console.error('❌ FATAL: JWT_SECRET environment variable is required!');
+  console.error('   Set it in Render → Environment → JWT_SECRET');
   process.exit(1);
 }
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'admin123';
-if (!process.env.ADMIN_PASSWORD) {
-  console.warn('⚠️  Using default admin password. Set ADMIN_PASSWORD!');
-}
+if (!process.env.ADMIN_PASSWORD) console.warn('⚠️  Using default admin password!');
 
 const app = express();
 app.set('trust proxy', 1);
 
-/* ============ SECURITY & SPEED ============ */
-app.use(helmet({
-  contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: 'cross-origin' }
-}));
-
-app.use(compression({
-  level: 6,
-  threshold: 1024
-}));
+/* ============ MIDDLEWARE (conditional) ============ */
+if (helmet) {
+  app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' }
+  }));
+}
+if (compression) {
+  app.use(compression({ level: 6, threshold: 1024 }));
+}
 
 app.use(express.json({ limit: '10mb' }));
 
@@ -66,21 +69,22 @@ const pool = new Pool({
 const query = (t, p) => pool.query(t, p);
 pool.on('error', (err) => console.error('🔥 Pool error:', err.message));
 
-/* ============ RATE LIMITERS ============ */
-const loginLimiter = rateLimit({
+/* ============ RATE LIMITERS (conditional) ============ */
+const loginLimiter = rateLimit ? rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 15,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'too_many_attempts' }
-});
-const registerLimiter = rateLimit({
+}) : (req, res, next) => next();
+
+const registerLimiter = rateLimit ? rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'too_many_registrations' }
-});
+}) : (req, res, next) => next();
 
 /* ============ SCHEMA ============ */
 async function initSchema() {
@@ -213,66 +217,76 @@ const canAccess = (a, t) =>
 
 /* ============ HEALTH ============ */
 app.get('/health', (req, res) => res.json({ ok: true, uptime: process.uptime() }));
-app.get('/api/version', (req, res) => res.json({ version: '4.2' }));
+app.get('/api/version', (req, res) => res.json({ version: '4.3' }));
 
 /* ============ REGISTER ============ */
 app.post('/api/auth/register', registerLimiter, async (req, res) => {
-  const { username, password, displayName, requestedRole = 'student' } = req.body || {};
-  if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
-  if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
-  if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
-
-  const role = requestedRole === 'coach' ? 'coach' : 'student';
-  const approvalStatus = role === 'coach' ? 'pending' : 'approved';
-
-  const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
-  const now = Date.now();
-
   try {
-    await query(
-      `INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, approval_status, created_at, updated_at)
-       VALUES ($1,$2,$3,$4,$5,NULL,'💪','#3b82f6',1,$6,$7,$8)`,
-      [id, username, displayName, bcrypt.hashSync(password, 10), role, approvalStatus, now, now]
-    );
-  } catch (e) {
-    if (e.code === '23505') return res.status(409).json({ error: 'username_taken' });
-    console.error('register error:', e);
-    return res.status(500).json({ error: 'db_error', message: e.message });
-  }
+    const { username, password, displayName, requestedRole = 'student' } = req.body || {};
+    if (!username || !password || !displayName) return res.status(400).json({ error: 'missing_fields' });
+    if (password.length < 6) return res.status(400).json({ error: 'password_too_short' });
+    if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(username)) return res.status(400).json({ error: 'invalid_username' });
 
-  await log(null, 'user_registered', id, { username, role });
-  const u = await query('SELECT * FROM users WHERE id = $1', [id]);
+    const role = requestedRole === 'coach' ? 'coach' : 'student';
+    const approvalStatus = role === 'coach' ? 'pending' : 'approved';
 
-  if (role === 'coach') {
-    return res.json({ pending: true, message: 'منتظر تأیید مدیر باشید.', user: publicUser(u.rows[0]) });
+    const id = 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
+    const now = Date.now();
+
+    try {
+      await query(
+        `INSERT INTO users (id, username, display_name, password_hash, role, coach_id, emoji, color, active, approval_status, created_at, updated_at)
+         VALUES ($1,$2,$3,$4,$5,NULL,'💪','#3b82f6',1,$6,$7,$8)`,
+        [id, username, displayName, bcrypt.hashSync(password, 10), role, approvalStatus, now, now]
+      );
+    } catch (e) {
+      if (e.code === '23505') return res.status(409).json({ error: 'username_taken' });
+      console.error('register error:', e);
+      return res.status(500).json({ error: 'db_error', message: e.message });
+    }
+
+    await log(null, 'user_registered', id, { username, role });
+    const u = await query('SELECT * FROM users WHERE id = $1', [id]);
+
+    if (role === 'coach') {
+      return res.json({ pending: true, message: 'منتظر تأیید مدیر باشید.', user: publicUser(u.rows[0]) });
+    }
+    const token = jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '30d' });
+    res.json({ token, user: publicUser(u.rows[0]) });
+  } catch(e) {
+    console.error('register handler error:', e);
+    res.status(500).json({ error: 'server_error', message: e.message });
   }
-  const token = jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '30d' });
-  res.json({ token, user: publicUser(u.rows[0]) });
 });
 
 /* ============ LOGIN ============ */
 app.post('/api/auth/login', loginLimiter, async (req, res) => {
-  const { username, password } = req.body || {};
-  if (!username || !password) return res.status(400).json({ error: 'missing_fields' });
+  try {
+    const { username, password } = req.body || {};
+    if (!username || !password) return res.status(400).json({ error: 'missing_fields' });
 
-  const r = await query('SELECT * FROM users WHERE username = $1', [username]);
-  const user = r.rows[0];
+    const r = await query('SELECT * FROM users WHERE username = $1', [username]);
+    const user = r.rows[0];
 
-  if (!user) {
-    await log(null, 'login_failed', null, { username, reason: 'no_user' });
-    return res.status(401).json({ error: 'invalid_credentials' });
+    if (!user) {
+      await log(null, 'login_failed', null, { username, reason: 'no_user' });
+      return res.status(401).json({ error: 'invalid_credentials' });
+    }
+    if (!bcrypt.compareSync(password, user.password_hash)) {
+      await log(user.id, 'login_failed', user.id, { reason: 'wrong_password' });
+      return res.status(401).json({ error: 'invalid_credentials' });
+    }
+    if (user.approval_status === 'pending') return res.status(403).json({ error: 'pending_approval' });
+    if (user.approval_status === 'rejected') return res.status(403).json({ error: 'rejected' });
+    if (!user.active) return res.status(403).json({ error: 'inactive' });
+
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
+    await log(user.id, 'login_success', user.id, {});
+    res.json({ token, user: publicUser(user) });
+  } catch(e) {
+    console.error('login handler error:', e);
+    res.status(500).json({ error: 'server_error', message: e.message });
   }
-  if (!bcrypt.compareSync(password, user.password_hash)) {
-    await log(user.id, 'login_failed', user.id, { reason: 'wrong_password' });
-    return res.status(401).json({ error: 'invalid_credentials' });
-  }
-  if (user.approval_status === 'pending') return res.status(403).json({ error: 'pending_approval' });
-  if (user.approval_status === 'rejected') return res.status(403).json({ error: 'rejected' });
-  if (!user.active) return res.status(403).json({ error: 'inactive' });
-
-  const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
-  await log(user.id, 'login_success', user.id, {});
-  res.json({ token, user: publicUser(user) });
 });
 
 app.get('/api/auth/me', auth, (req, res) => res.json(publicUser(req.user)));
@@ -288,7 +302,7 @@ app.post('/api/auth/change-password', auth, async (req, res) => {
   res.json({ ok: true });
 });
 
-/* ============ COACHES LIST (for students to pick) ============ */
+/* ============ COACHES LIST ============ */
 app.get('/api/coaches', auth, async (req, res) => {
   const r = await query(
     `SELECT id, display_name, username, emoji, color FROM users
@@ -305,7 +319,6 @@ app.get('/api/coaches', auth, async (req, res) => {
 });
 
 /* ============ COACH REQUESTS ============ */
-// List pending coach requests (admin: all, coach: those assigned to them OR for them)
 app.get('/api/coach-requests', auth, requireRole('coach','admin'), async (req, res) => {
   const r = await query(
     `SELECT ud.user_id, ud.value, u.display_name, u.username, u.emoji, u.color, u.coach_id, ud.updated_at
@@ -319,7 +332,6 @@ app.get('/api/coach-requests', auth, requireRole('coach','admin'), async (req, r
     try {
       const rd = JSON.parse(row.value);
       if (!rd || rd.status !== 'pending') continue;
-      // Coach sees only requests that prefer them, or requests to unassigned students
       if (req.user.role === 'coach') {
         const prefersMe = rd.coachId === req.user.id;
         const unassigned = !row.coach_id;
@@ -343,7 +355,6 @@ app.get('/api/coach-requests', auth, requireRole('coach','admin'), async (req, r
   res.json(requests);
 });
 
-// Admin assigns a request to a coach
 app.post('/api/coach-requests/:userId/assign', auth, requireRole('admin'), async (req, res) => {
   const { coachId } = req.body || {};
   if (!coachId) return res.status(400).json({ error: 'coach_id_required' });
@@ -376,7 +387,6 @@ app.post('/api/coach-requests/:userId/assign', auth, requireRole('admin'), async
   res.json({ ok: true });
 });
 
-// Coach claims an unassigned request
 app.post('/api/coach-requests/:userId/claim', auth, requireRole('coach'), async (req, res) => {
   const coachId = req.user.id;
 
@@ -402,7 +412,6 @@ app.post('/api/coach-requests/:userId/claim', auth, requireRole('coach'), async 
   res.json({ ok: true });
 });
 
-// Admin rejects a request
 app.post('/api/coach-requests/:userId/reject', auth, requireRole('admin'), async (req, res) => {
   const r = await query('SELECT value FROM user_data WHERE user_id = $1 AND key = $2',
     [req.params.userId, 'coachRequest']);
@@ -731,6 +740,7 @@ app.get('/api/admin/audit', auth, requireRole('admin'), async (req, res) => {
 /* ============ SPA FALLBACK ============ */
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
+/* ============ ERROR HANDLER ============ */
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err);
   if (res.headersSent) return next(err);
@@ -771,6 +781,7 @@ process.on('uncaughtException', (err) => console.error('🔥 Uncaught exception:
     await bootstrapAdmin();
     app.listen(PORT, () => {
       console.log('\n🚀 ProFit running on port ' + PORT + '\n');
+      console.log('✅ Service ready at: http://localhost:' + PORT);
     });
   } catch(e) {
     console.error('❌ Startup failed:', e);
