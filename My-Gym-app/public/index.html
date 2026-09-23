@@ -561,6 +561,13 @@ const state = {
   charts: {}
 };
 
+/* ⬇️ این ۴ خط جدید ⬇️ */
+window.state = state;
+window.DB = DB;
+window.NUT = NUT;
+window.BODY_METRICS = BODY_METRICS;
+/* ⬆️ پایان ۴ خط جدید ⬆️ */
+
 /* ============ API ============ */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let wakingShown = false;
