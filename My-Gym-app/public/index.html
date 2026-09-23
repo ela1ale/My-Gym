@@ -2374,7 +2374,15 @@ function generateSmartProgram(daysCount, weekdays, level){
 })();
 setInterval(()=>{ if(state.token) fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+state.token}}).catch(()=>{}); }, 4*60*1000);
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAllDrawers(); });
-</script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof state !== 'undefined') window.state = state;
+    if (typeof DB !== 'undefined') window.DB = DB;
+    if (typeof NUT !== 'undefined') window.NUT = NUT;
+    if (typeof BODY_METRICS !== 'undefined') window.BODY_METRICS = BODY_METRICS;
+  });
+<script>
 <script src="assets/app-extras.js"></script>
 </body>
 </html>
