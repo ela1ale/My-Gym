@@ -2368,5 +2368,6 @@ function generateSmartProgram(daysCount, weekdays, level){
 setInterval(()=>{ if(state.token) fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+state.token}}).catch(()=>{}); }, 4*60*1000);
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAllDrawers(); });
 </script>
+<script src="assets/app-extras.js"></script>
 </body>
 </html>
