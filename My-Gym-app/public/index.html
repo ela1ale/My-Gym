@@ -80,7 +80,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .icon-btn.del:hover{background:var(--rd);border-color:var(--rd)}
 .icon-btn.approve:hover{background:var(--gr);border-color:var(--gr)}
 .icon-btn.reject:hover{background:var(--rd);border-color:var(--rd)}
-.icon-btn.grant.on{background:var(--gr);color:#fff;border-color:var(--gr)}
 .badge{padding:2px 8px;border-radius:20px;font-size:.62rem;font-weight:800;display:inline-block;margin-right:4px}
 .badge.admin{background:rgba(245,158,11,.2);color:#fbbf24}
 .badge.coach{background:rgba(59,130,246,.2);color:#60a5fa}
@@ -88,7 +87,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .badge.pending{background:rgba(245,158,11,.2);color:#fbbf24}
 .badge.rejected{background:rgba(244,63,94,.2);color:#fda4af}
 .badge.inactive{background:rgba(100,116,139,.25);color:#94a3b8}
-.badge.active{background:rgba(16,185,129,.2);color:#34d399}
 .toasts{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none;max-width:92vw}
 .toast{padding:10px 16px;border-radius:12px;font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);animation:slideIn .25s ease;pointer-events:auto;max-width:100%}
 .toast.success{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
@@ -188,7 +186,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .prog-table td:first-child{padding-right:8px;text-align:right}
 .prog-table input{width:100%;padding:5px 4px;text-align:center;font-size:.78rem;border-radius:6px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-weight:700;outline:none}
 .prog-table input:focus{border-color:var(--bl)}
-.prog-table tr:last-child td{border-bottom:none}
 .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .metric-input{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
 .metric-input label{font-size:.65rem;color:var(--tx2);margin:0;display:flex;align-items:center;gap:4px}
@@ -288,7 +285,6 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 .choice-card .cc-arrow{color:var(--tm);font-size:1.4rem;flex-shrink:0}
 .hint-text{font-size:.68rem;color:var(--tm);margin-top:5px;line-height:1.7;padding:8px 10px;background:rgba(148,163,184,.06);border-radius:8px;border-right:3px solid var(--bl)}
 .hint-text strong{color:var(--bl)}
-.hint-text .rec{color:var(--am);font-weight:800}
 .req-card{background:var(--card2);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px}
 .req-card.pending{border-color:rgba(245,158,11,.35);background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.01))}
 @media(max-width:600px){
@@ -316,6 +312,7 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 <body>
 <div class="toasts" id="toasts"></div>
 
+<!-- ============ AUTH SCREEN ============ -->
 <div class="auth-screen" id="authScreen">
   <div class="auth-card" id="loginView">
     <div class="auth-logo">🏋️</div>
@@ -358,6 +355,7 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   </div>
 </div>
 
+<!-- ============ MAIN APP ============ -->
 <div id="mainApp" class="hidden">
   <div class="container">
     <div class="header">
@@ -381,6 +379,7 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
   <button class="bn-item" data-view="settings" onclick="switchView('settings')"><span class="ic">⚙️</span>تنظیمات</button>
 </div>
 
+<!-- ============ DRAWERS ============ -->
 <div class="backdrop" id="userBackdrop" onclick="closeDrawer('userDrawer')"></div>
 <div class="drawer left" id="userDrawer">
   <div class="drawer-header"><h2>👤 حساب کاربری</h2><button class="close-btn" onclick="closeDrawer('userDrawer')">✕</button></div>
@@ -467,15 +466,15 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
       <select id="coachReqCoachId">
         <option value="">🔄 خودکار — بذار مدیر انتخاب کنه</option>
       </select>
-      <div class="hint-text" style="margin-top:6px">💡 اگه مربی خاصی مدنظرته، انتخابش کن. اگه نه، خالی بذار — مدیر بهت مربی مناسب اختصاص می‌ده.</div>
+      <div class="hint-text" style="margin-top:6px">💡 اگه مربی خاصی مدنظرته، انتخابش کن. اگه نه، خالی بذار.</div>
     </div>
-    <div class="form-row"><label>نام مربی موردنظر (اختیاری — اگه توی لیست نبود)</label><input type="text" id="coachReqName" placeholder="مثلاً: علی"></div>
+    <div class="form-row"><label>نام مربی موردنظر (اختیاری)</label><input type="text" id="coachReqName" placeholder="مثلاً: علی"></div>
     <div class="form-row"><label>یادداشت برای مربی</label><textarea id="coachReqNote" placeholder="هدفت چیه؟ سابقه‌ات چقدره؟ چند روز میتونی تمرین کنی؟ تجهیزات چی داری؟"></textarea></div>
-    <div class="hint-text" style="margin-bottom:10px">💡 <strong>توجه:</strong> درخواست به مدیر ارسال می‌شه و به یه مربی متصل می‌شی.</div>
     <button class="btn primary full" onclick="submitCoachRequest()">📩 ارسال درخواست</button>
   </div>
 </div>
 
+<!-- ============ WIZARD ============ -->
 <div class="wizard-overlay hidden" id="wizardOverlay">
   <div class="wizard-card">
     <button class="close-btn wizard-close" onclick="confirmCloseWizard()" title="بستن">✕</button>
@@ -511,7 +510,7 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
       </div>
       <div class="form-row"><label>فعالیت روزانه</label>
         <select id="wizActivity"><option value="1.2">🛋️ کم‌تحرک</option><option value="1.375">🚶 سبک</option><option value="1.55" selected>🏃 متوسط</option><option value="1.725">💪 بالا</option><option value="1.9">🔥 خیلی بالا</option></select>
-        <div class="hint-text">🛋️ ۱.۲ بدون ورزش · 🚶 ۱.۳۷۵ (۱-۳ روز) · 🏃 ۱.۵۵ (۳-۵ روز) · 💪 ۱.۷۲۵ (۶-۷ روز) · 🔥 ۱.۹ حرفه‌ای/کار بدنی</div>
+        <div class="hint-text">🛋️ ۱.۲ · 🚶 ۱.۳۷۵ (۱-۳ روز) · 🏃 ۱.۵۵ (۳-۵ روز) · 💪 ۱.۷۲۵ (۶-۷ روز) · 🔥 ۱.۹ حرفه‌ای</div>
       </div>
       <div class="form-row"><label>🎯 هدف</label>
         <select id="wizGoal"><option value="lose">📉 کاهش وزن</option><option value="cut">✂️ خشک</option><option value="maintain" selected>⚖️ حفظ وزن</option><option value="gain">💪 عضله</option><option value="bulk">🏋️ حجم</option></select>
@@ -525,6 +524,9 @@ label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bot
 </div>
 
 <script>
+/* ============================================================
+   ProFit v4.5 — Complete Frontend
+   ============================================================ */
 const DB = window.PRO_DATA || { categories:{}, exercises:[], splits:{}, templates:{}, volumeByLevel:{}, animations:{} };
 const NUT = window.PRO_NUTRITION || { categories:{}, foods:[], supplements:{}, meals:[], bmrFormulas:{} };
 const IMG_MAP = window.PRO_IMG_MAP || {};
@@ -561,12 +563,14 @@ const state = {
   charts: {}
 };
 
-/* ⬇️ این ۴ خط جدید ⬇️ */
+/* ============ EXPOSE TO WINDOW (for app-extras.js) ============ */
 window.state = state;
 window.DB = DB;
 window.NUT = NUT;
 window.BODY_METRICS = BODY_METRICS;
-/* ⬆️ پایان ۴ خط جدید ⬆️ */
+window.IMG_MAP = IMG_MAP;
+window.IMG_URL = IMG_URL;
+window.getExerciseImageUrl = IMG_URL;
 
 /* ============ API ============ */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -605,17 +609,23 @@ async function api(method, path, body, silent){
   }
   hideWaking(); throw lastErr;
 }
+window.api = api;
+
 function toast(msg,type){
   type=type||'success';
   const c=document.getElementById('toasts');
+  if(!c) return;
   const el=document.createElement('div');
   el.className='toast '+type;
   const ic={success:'✅',error:'❌',info:'ℹ️',warn:'⚠️'};
   el.innerHTML='<span>'+(ic[type]||'✅')+'</span><span>'+msg+'</span>';
   c.appendChild(el); setTimeout(()=>el.remove(),3500);
 }
+window.toast = toast;
+
 const esc=s=>{ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; };
 const fN=n=>{ if(n==null||isNaN(n)) return '—'; return Number(n).toLocaleString('fa-IR'); };
+window.fN = fN;
 const todayKey=()=>{ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
 const todayWeekday=()=>new Date().getDay();
 const weekdayName=j=>['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'][j];
@@ -629,6 +639,10 @@ function showRegister(){ document.getElementById('loginView').classList.add('hid
 function showLogin(){ document.getElementById('loginView').classList.remove('hidden'); document.getElementById('registerView').classList.add('hidden'); document.getElementById('pendingView').classList.add('hidden'); }
 function showPending(){ document.getElementById('loginView').classList.add('hidden'); document.getElementById('registerView').classList.add('hidden'); document.getElementById('pendingView').classList.remove('hidden'); }
 function pickRole(r){ state.registerRole=r; document.querySelectorAll('.role-btn').forEach(b=>b.classList.toggle('selected',b.dataset.role===r)); document.getElementById('roleHint').textContent=r==='coach'?'⚠️ حساب مربی نیاز به تأیید مدیر دارد':'حساب شاگرد بلافاصله فعال می‌شود'; }
+window.showRegister = showRegister;
+window.showLogin = showLogin;
+window.pickRole = pickRole;
+
 async function doLogin(){
   const u=document.getElementById('loginUser').value.trim(), p=document.getElementById('loginPass').value;
   const err=document.getElementById('loginErr'), btn=document.getElementById('loginBtn');
@@ -648,6 +662,8 @@ async function doLogin(){
     else err.textContent='خطا: '+(m||e.message);
   }finally{ btn.disabled=false; btn.textContent='ورود'; }
 }
+window.doLogin = doLogin;
+
 async function doRegister(){
   const u=document.getElementById('regUser').value.trim(), n=document.getElementById('regName').value.trim(), p=document.getElementById('regPass').value;
   const err=document.getElementById('regErr'), btn=document.getElementById('regBtn');
@@ -670,7 +686,10 @@ async function doRegister(){
     else err.textContent='خطا: '+(m||e.message);
   }finally{ btn.disabled=false; btn.textContent='✅ ایجاد حساب'; }
 }
+window.doRegister = doRegister;
+
 async function doLogout(){ if(!confirm('خروج؟')) return; localStorage.removeItem('profit-jwt'); state.token=null; state.user=null; location.reload(); }
+window.doLogout = doLogout;
 
 /* ============ DRAWERS ============ */
 function openDrawer(id){
@@ -687,6 +706,8 @@ function closeDrawer(id){
   const b=document.getElementById(id.replace('Drawer','Backdrop')); if(b) b.classList.remove('open');
 }
 function closeAllDrawers(){ document.querySelectorAll('.drawer.open, .backdrop.open').forEach(el=>el.classList.remove('open')); }
+window.openDrawer = openDrawer;
+window.closeDrawer = closeDrawer;
 
 /* ============ BOOT ============ */
 async function bootAfterLogin(){
@@ -721,6 +742,7 @@ async function bootAfterLogin(){
   }
   renderToolbar(); renderView();
 }
+
 async function saveWorkoutState(){ try{ await api('POST','/api/users/'+state.user.id+'/data/workout',{value:state.workout}); }catch(e){} }
 async function saveHistory(){ try{ await api('POST','/api/users/'+state.user.id+'/data/history',{value:state.history}); }catch(e){} }
 async function saveBody(){ try{ await api('POST','/api/users/'+state.user.id+'/data/body',{value:state.body}); }catch(e){} }
@@ -739,7 +761,11 @@ function renderToolbar(){
   h+='<button class="btn" onclick="switchView(\'nutrition\')"><span>🥗</span> تغذیه</button>';
   tb.innerHTML=h;
 }
+window.renderToolbar = renderToolbar;
+
 function switchView(v){ state.currentView=v; renderView(); }
+window.switchView = switchView;
+
 function renderView(){
   const c=document.getElementById('contentArea');
   const v=state.currentView;
@@ -751,6 +777,7 @@ function renderView(){
   else if(v==='settings') renderSettingsView(c);
   document.querySelectorAll('.bn-item').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
 }
+window.renderView = renderView;
 
 /* ============ HOME ============ */
 function renderHome(c){
@@ -792,6 +819,7 @@ function renderHome(c){
   }
   c.innerHTML=h;
 }
+
 function getWeekStats(){
   const today=new Date(); const diff=(today.getDay()+1)%7;
   const start=new Date(today); start.setDate(today.getDate()-diff); start.setHours(0,0,0,0);
@@ -815,7 +843,7 @@ function renderProgramView(c){
         h='<div class="card"><div class="empty">'+
           '<div class="icon">⏳</div>'+
           '<div style="font-weight:800;font-size:.95rem;margin-bottom:6px;color:var(--am)">درخواست ارجاع به مربی ارسال شد</div>'+
-          '<div style="font-size:.78rem;color:var(--tx2);line-height:1.8;max-width:340px;margin:0 auto">در انتظار بررسی مدیر هستید. پس از تأیید، یک مربی به شما متصل می‌شود.</div>'+
+          '<div style="font-size:.78rem;color:var(--tx2);line-height:1.8;max-width:340px;margin:0 auto">در انتظار بررسی مدیر هستید.</div>'+
           '<button class="btn danger" style="margin-top:14px" onclick="cancelCoachRequest()">🗑️ لغو درخواست</button>'+
         '</div></div>';
       } else {
@@ -888,13 +916,19 @@ function renderProgramView(c){
   }
   c.innerHTML=h;
 }
+window.renderProgramView = renderProgramView;
+
 function selectDay(k){ state.selectedDayKey=k; renderView(); }
+window.selectDay = selectDay;
+
 function startManualProgram(){
   state.permissions.canEditProgram = true;
   api('POST','/api/users/'+state.user.id+'/data/permissions',{value:{canEditProgram:true}}).catch(()=>{});
   localStorage.setItem('profit-onboarded-'+state.user.id,'1');
   openProgramEditor(state.user.id);
 }
+window.startManualProgram = startManualProgram;
+
 function renderExerciseCard(ex,dayIdx,exIdx){
   const key=todayKey()+':'+exIdx;
   const isDone=!!state.workout.completed[key];
@@ -962,6 +996,7 @@ function renderExerciseCard(ex,dayIdx,exIdx){
     '<div class="ex-body"><div class="ex-anim">'+visual+'</div>'+setsHtml+extraSummary+'</div>'+
   '</div>';
 }
+
 function toggleCardCollapse(key){
   const card=document.querySelector('[data-exkey="'+key+'"]'); if(!card) return;
   card.classList.toggle('minimized');
@@ -1001,6 +1036,12 @@ function toggleSetTimer(key,idx){
   else { state.workout.sets[stKey]={ startedAt:Date.now(), elapsed:0, running:true }; }
   saveWorkoutState(); renderView(); startTicker();
 }
+window.toggleCardCollapse = toggleCardCollapse;
+window.toggleDone = toggleDone;
+window.updSet = updSet;
+window.copyPrevSet = copyPrevSet;
+window.toggleSetTimer = toggleSetTimer;
+
 let tickerInterval=null;
 function startTicker(){
   if(tickerInterval) return;
@@ -1022,7 +1063,7 @@ function logTodayStats(){
   saveHistory();
 }
 
-/* ============ COACH REQUEST (student side) ============ */
+/* ============ COACH REQUEST (student) ============ */
 async function openCoachRequestDrawer(){
   document.getElementById('coachReqName').value = '';
   document.getElementById('coachReqNote').value = '';
@@ -1044,8 +1085,9 @@ async function openCoachRequestDrawer(){
     if(state.coachRequest && state.coachRequest.coachId){
       sel.value = state.coachRequest.coachId;
     }
-  } catch(e){ /* silent */ }
+  } catch(e){}
 }
+window.openCoachRequestDrawer = openCoachRequestDrawer;
 
 async function submitCoachRequest(){
   const coachId = document.getElementById('coachReqCoachId').value || null;
@@ -1069,6 +1111,7 @@ async function submitCoachRequest(){
     renderView();
   }catch(e){ toast('خطا: '+e.message,'error'); }
 }
+window.submitCoachRequest = submitCoachRequest;
 
 async function cancelCoachRequest(){
   if(!confirm('درخواست ارجاع به مربی لغو شود؟')) return;
@@ -1077,9 +1120,12 @@ async function cancelCoachRequest(){
   toast('لغو شد','info');
   renderView();
 }
+window.cancelCoachRequest = cancelCoachRequest;
 
-/* ============ NUTRITION VIEW ============ */
+/* ============ NUTRITION ============ */
 function setNutritionTab(t){ state.nutritionTab=t; renderView(); }
+window.setNutritionTab = setNutritionTab;
+
 function renderNutritionView(c){
   const owner = state.nutritionOwnerId || state.user.id;
   const isOwnerSelf = owner === state.user.id;
@@ -1107,6 +1153,8 @@ function renderNutritionView(c){
   c.innerHTML=h;
   if(state.nutritionTab==='calc' && t) drawMacrosChart(t);
 }
+window.renderNutritionView = renderNutritionView;
+
 function renderNutritionCalcTab(t){
   const n = state.nutrition;
   const p = n.profile || {};
@@ -1130,7 +1178,7 @@ function renderNutritionCalcTab(t){
     '</select></div>'+
   '</div>'+
   '<div class="hint-text">📊 <strong>سطح فعالیت یعنی چقدر در طول روز کالری می‌سوزانی:</strong><br>'+
-    '🛋️ ۱.۲ بدون ورزش (کار اداری) · 🚶 ۱.۳۷۵ (۱-۳ روز ورزش سبک) · 🏃 ۱.۵۵ (۳-۵ روز ورزش متوسط) · 💪 ۱.۷۲۵ (۶-۷ روز ورزش سنگین) · 🔥 ۱.۹ (ورزش حرفه‌ای یا کار بدنی سنگین)</div>'+
+    '🛋️ ۱.۲ بدون ورزش · 🚶 ۱.۳۷۵ (۱-۳ روز) · 🏃 ۱.۵۵ (۳-۵ روز) · 💪 ۱.۷۲۵ (۶-۷ روز) · 🔥 ۱.۹ حرفه‌ای/کار بدنی</div>'+
   '<div class="grid2" style="margin-top:10px">'+
     '<div class="form-row"><label>🎯 هدف</label><select id="nutGoal">'+
       '<option value="lose" '+(p.goal==='lose'?'selected':'')+'>📉 کاهش وزن</option>'+
@@ -1143,14 +1191,14 @@ function renderNutritionCalcTab(t){
       Object.keys(NUT.bmrFormulas).map(k=>'<option value="'+k+'" '+(p.formula===k?'selected':'')+'>'+NUT.bmrFormulas[k].name+(k==='mifflin'?' ⭐':'')+'</option>').join('')+
     '</select></div>'+
   '</div>'+
-  '<div class="hint-text">⭐ <strong>پیشنهاد:</strong> فرمول <strong>Mifflin-St Jeor</strong> دقیق‌ترین فرمول برای عموم است و انجمن تغذیه آمریکا آن را مرجع می‌داند. برای افراد چاق با چربی بالای ۳۰٪ می‌توانی از <strong>Katch-McArdle</strong> استفاده کنی.</div>'+
+  '<div class="hint-text">⭐ <strong>پیشنهاد:</strong> فرمول <strong>Mifflin-St Jeor</strong> دقیق‌ترین برای عموم است. برای افراد با چربی بالای ۳۰٪ از <strong>Katch-McArdle</strong> استفاده کن.</div>'+
   '<button class="btn primary full" style="margin-top:12px" onclick="calculateNutrition()">🧮 محاسبه</button></div>';
 
   if(t){
     h+='<div class="card"><h2>🎯 اهداف روزانه</h2>';
     h+='<div class="grid2" style="margin-bottom:8px">'+
-      '<div class="calc-result"><div class="crv">'+fN(t.bmr)+'</div><div class="crl">BMR (سوخت پایه)</div></div>'+
-      '<div class="calc-result"><div class="crv">'+fN(t.tdee)+'</div><div class="crl">TDEE (سوخت کل)</div></div>'+
+      '<div class="calc-result"><div class="crv">'+fN(t.bmr)+'</div><div class="crl">BMR</div></div>'+
+      '<div class="calc-result"><div class="crv">'+fN(t.tdee)+'</div><div class="crl">TDEE</div></div>'+
     '</div>'+
     '<div class="calc-result hl" style="margin-bottom:12px"><div class="crv">'+fN(t.calories)+'</div><div class="crl">کالری هدف روزانه</div></div>'+
     '<div class="macros-row"><span class="macro-lbl">پروتئین</span><div class="macro-track"><div class="macro-fill prot" style="width:'+Math.min(100,t.protein*4/t.calories*100)+'%"></div></div><span class="macro-val">'+fN(t.protein)+'g</span></div>'+
@@ -1161,6 +1209,7 @@ function renderNutritionCalcTab(t){
   }
   return h;
 }
+
 function renderNutritionMealsTab(t){
   if(!t){
     return '<div class="card"><div class="empty"><div class="icon">🧮</div><div style="font-size:.82rem">ابتدا از تب «محاسبه» اهداف روزانه را بساز</div></div></div>';
@@ -1229,13 +1278,14 @@ function renderNutritionMealsTab(t){
   h+='</div>';
   return h;
 }
+
 function renderNutritionSuppsTab(t){
   const n = state.nutrition;
   const p = n.profile || {};
   const goal = p.goal||'maintain';
   const gk = goal==='cut'?'cut':goal==='lose'?'lose':goal==='gain'?'gain':goal==='bulk'?'bulk':'maintain';
   if(!n.supplements.length||n.suppGoalUsed!==gk){
-    const recs = NUT.supplements[gk]||NUT.supplements.maintain;
+    const recs = NUT.supplements[gk]||NUT.supplements.maintain||[];
     n.supplements = recs.map((s,i)=>({ id:'sup_'+Date.now()+'_'+i, name:s.name, dose:s.dose, timing:s.timing, note:s.note, enabled:true, custom:false }));
     n.suppGoalUsed = gk;
     saveNutrition();
@@ -1257,10 +1307,13 @@ function renderNutritionSuppsTab(t){
   h+='</div>';
   return h;
 }
+
 function toggleMealItems(key){
   const el=document.getElementById('meal-items-'+key);
   if(el) el.classList.toggle('open');
 }
+window.toggleMealItems = toggleMealItems;
+
 function getFoodById(id){ return NUT.foods.find(f=>f.id===id)||null; }
 function getFoodUnit(food, idx){
   if(!food.units||!food.units.length) return { n:'گرم', g:1 };
@@ -1284,6 +1337,7 @@ function getDayNutritionTotals(){
   NUT.meals.forEach(m=>{ const t=calcMealTotals(m.key); cal+=t.cal; prot+=t.prot; carb+=t.carb; fat+=t.fat; });
   return { cal, prot, carb, fat };
 }
+
 function calculateNutrition(){
   const p={
     gender:document.getElementById('nutGender').value,
@@ -1316,6 +1370,8 @@ function calculateNutrition(){
   toast('محاسبه شد ✓');
   renderView();
 }
+window.calculateNutrition = calculateNutrition;
+
 function updateFoodQty(mk, idx, v){
   const q = Math.max(0.1, Math.min(2000, parseFloat(v)||100));
   if(!state.nutrition.meals[mk]||!state.nutrition.meals[mk][idx]) return;
@@ -1354,11 +1410,11 @@ function removeSupp(i){
   saveNutrition(); renderView();
 }
 function regenerateSupplements(){
-  if(!confirm('پیشنهادها بر اساس هدف فعلی بازتولید شوند؟')) return;
+  if(!confirm('پیشنهادها بازتولید شوند؟')) return;
   const customs = state.nutrition.supplements.filter(s=>s.custom);
   const goal = state.nutrition.profile.goal;
   const gk = goal==='cut'?'cut':goal==='lose'?'lose':goal==='gain'?'gain':goal==='bulk'?'bulk':'maintain';
-  const recs = NUT.supplements[gk]||NUT.supplements.maintain;
+  const recs = NUT.supplements[gk]||NUT.supplements.maintain||[];
   state.nutrition.supplements = [
     ...recs.map((s,i)=>({ id:'sup_'+Date.now()+'_'+i, name:s.name, dose:s.dose, timing:s.timing, note:s.note, enabled:true, custom:false })),
     ...customs
@@ -1367,6 +1423,15 @@ function regenerateSupplements(){
   saveNutrition(); renderView();
   toast('بازتولید شد ✓');
 }
+window.updateFoodQty = updateFoodQty;
+window.updateFoodUnit = updateFoodUnit;
+window.removeFoodFromMeal = removeFoodFromMeal;
+window.clearMeal = clearMeal;
+window.clearAllMeals = clearAllMeals;
+window.toggleSupp = toggleSupp;
+window.removeSupp = removeSupp;
+window.regenerateSupplements = regenerateSupplements;
+
 function drawMacrosChart(t){
   const el = document.getElementById('chartMacros'); if(!el) return;
   if(state.charts.macros){ state.charts.macros.destroy(); state.charts.macros = null; }
@@ -1383,6 +1448,8 @@ function drawMacrosChart(t){
   state.charts.macros = new ApexCharts(el, opts);
   state.charts.macros.render();
 }
+
+/* Food Picker */
 function openFoodPicker(mealKey){
   state.foodPickerTarget = mealKey;
   state.foodPickerCat = 'all';
@@ -1390,6 +1457,8 @@ function openFoodPicker(mealKey){
   renderFoodPicker();
   openDrawer('foodPickerDrawer');
 }
+window.openFoodPicker = openFoodPicker;
+
 function renderFoodPicker(){
   const el=document.getElementById('foodPickerBody'); if(!el) return;
   const meal = NUT.meals.find(m=>m.key===state.foodPickerTarget);
@@ -1397,7 +1466,7 @@ function renderFoodPicker(){
   let h='<input type="text" class="food-search" placeholder="جستجو..." value="'+esc(state.foodPickerSearch)+'" oninput="state.foodPickerSearch=this.value;renderFoodPicker()">';
   h+='<div class="food-cats">';
   h+='<button class="food-cat '+(state.foodPickerCat==='all'?'active':'')+'" onclick="state.foodPickerCat=\'all\';renderFoodPicker()">🌐 همه</button>';
-  Object.keys(NUT.categories).forEach(k=>{
+  Object.keys(NUT.categories||{}).forEach(k=>{
     const c=NUT.categories[k];
     h+='<button class="food-cat '+(state.foodPickerCat===k?'active':'')+'" onclick="state.foodPickerCat=\''+k+'\';renderFoodPicker()">'+c.emoji+' '+c.name+'</button>';
   });
@@ -1426,6 +1495,8 @@ function renderFoodPicker(){
   h+='<div class="sticky-bottom"><button class="btn success full" onclick="closeDrawer(\'foodPickerDrawer\')">✓ تمام</button></div>';
   el.innerHTML=h;
 }
+window.renderFoodPicker = renderFoodPicker;
+
 function quickAddFood(foodId){
   const mk = state.foodPickerTarget; if(!mk) return;
   const f = getFoodById(foodId); if(!f) return;
@@ -1437,6 +1508,8 @@ function quickAddFood(foodId){
   toast('✓ '+f.name+' — '+fN(def.qty)+' '+uName);
   renderFoodPicker();
 }
+window.quickAddFood = quickAddFood;
+
 function pickDefaultFoodEntry(food){
   const units = food.units||[{n:'گرم',g:1}];
   if(units.length<=1) return { qty:defaultGramsForCat(food.cat), unitIdx:0 };
@@ -1477,11 +1550,14 @@ function generateSampleMeals(){
   saveNutrition(); renderView();
   toast('نمونه ساخته شد ✓');
 }
+window.generateSampleMeals = generateSampleMeals;
+
 function exitNutritionOwner(){
   state.nutritionOwnerId = null;
-  const target = state.user.id;
-  loadNutritionFor(target);
+  loadNutritionFor(state.user.id);
 }
+window.exitNutritionOwner = exitNutritionOwner;
+
 async function loadNutritionFor(userId){
   try{
     const d = await api('GET','/api/users/'+userId+'/data');
@@ -1493,7 +1569,7 @@ async function loadNutritionFor(userId){
   }catch(e){ toast('خطا','warn'); }
 }
 
-/* ============ PROGRESS VIEW ============ */
+/* ============ PROGRESS ============ */
 function renderProgressView(c){
   const types=[
     { k:'volume', name:'📊 حجم هفتگی' },
@@ -1506,6 +1582,8 @@ function renderProgressView(c){
     '</div><div class="chart-box"><div id="chartMain"></div></div></div>';
   c.innerHTML=h; drawProgressChart();
 }
+window.renderProgressView = renderProgressView;
+
 function drawProgressChart(){
   const el=document.getElementById('chartMain'); if(!el) return;
   if(state.charts.main){ state.charts.main.destroy(); state.charts.main=null; }
@@ -1546,7 +1624,7 @@ function drawProgressChart(){
   state.charts.main.render();
 }
 
-/* ============ BODY VIEW ============ */
+/* ============ BODY ============ */
 function renderBodyView(c){
   const b=state.body;
   const today=b.find(e=>e.date===todayKey())||{};
@@ -1572,6 +1650,8 @@ function renderBodyView(c){
   h+='</div>';
   c.innerHTML=h; drawBodyChart();
 }
+window.renderBodyView = renderBodyView;
+
 function drawBodyChart(){
   const el=document.getElementById('chartBody'); if(!el) return;
   if(state.charts.body){ state.charts.body.destroy(); state.charts.body=null; }
@@ -1601,6 +1681,7 @@ function drawBodyChart(){
     '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">'+fN(min)+'</div><div style="font-size:.6rem;color:var(--tm)">کمینه</div></div>'+
     '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">'+fN(max)+'</div><div style="font-size:.6rem;color:var(--tm)">بیشینه</div></div>';
 }
+
 async function addBodyEntry(){
   const e={ date:todayKey() }; let hasAny=false;
   BODY_METRICS.forEach(m=>{ const v=document.getElementById('bm_'+m.key).value; e[m.key]=v===''?null:(Number(v)||null); if(e[m.key]!=null) hasAny=true; });
@@ -1610,11 +1691,14 @@ async function addBodyEntry(){
   state.body.sort((a,b)=>a.date.localeCompare(b.date));
   await saveBody(); toast('ثبت شد ✓'); renderView();
 }
+window.addBodyEntry = addBodyEntry;
+
 async function deleteBodyEntry(idx){
   if(!confirm('حذف شود؟')) return;
   state.body.splice(idx,1);
   await saveBody(); renderView();
 }
+window.deleteBodyEntry = deleteBodyEntry;
 
 /* ============ SETTINGS ============ */
 function renderSettingsView(c){
@@ -1645,17 +1729,18 @@ function renderSettingsView(c){
 
     '<div class="card"><h2>⚙️ امکانات</h2>'+
     (u.role==='student'?'<button class="btn full" style="margin-bottom:8px" onclick="openWizard()">🎯 بازسازی برنامه هوشمند</button>':'')+
-    (u.role==='student'?'<button class="btn full" style="margin-bottom:8px" onclick="switchView(\'program\')">📅 مدیریت برنامه</button>':'')+
     '<button class="btn full" style="margin-bottom:8px" onclick="switchView(\'nutrition\')">🥗 تنظیمات تغذیه</button>'+
     '</div>'+
 
     '<div class="card"><h2>📱 درباره</h2>'+
-    '<div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">ProFit نسخه <strong>3.1</strong><br>'+fN(DB.exercises.length)+' حرکت ورزشی · '+fN(NUT.foods.length)+' غذا</div>'+
+    '<div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">ProFit نسخه <strong>4.5</strong><br>'+fN(DB.exercises.length)+' حرکت ورزشی · '+fN(NUT.foods.length)+' غذا</div>'+
     '</div>'+
 
     '<div class="card"><h2>⚠️ خروج</h2>'+
     '<button class="btn danger full" onclick="doLogout()">🚪 خروج از حساب</button></div>';
 }
+window.renderSettingsView = renderSettingsView;
+
 async function saveDisplayName(){
   const v=document.getElementById('setDispName').value.trim();
   if(!v){ toast('نام را وارد کن','error'); return; }
@@ -1668,6 +1753,8 @@ async function saveDisplayName(){
     renderView();
   }catch(e){ toast('خطا: '+(e.data?.error||e.message),'error'); }
 }
+window.saveDisplayName = saveDisplayName;
+
 async function savePassword(){
   const o=document.getElementById('setOldPass').value;
   const p1=document.getElementById('setNewPass').value;
@@ -1687,6 +1774,8 @@ async function savePassword(){
     else toast('خطا: '+(m||e.message),'error');
   }
 }
+window.savePassword = savePassword;
+
 function renderUserDrawer(){
   const u=state.user;
   const roles={admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'};
@@ -1698,6 +1787,7 @@ function renderUserDrawer(){
     '<button class="btn full" style="margin-bottom:8px" onclick="closeDrawer(\'userDrawer\');switchView(\'settings\')">⚙️ تنظیمات کامل</button>'+
     '<button class="btn danger full" onclick="doLogout()">🚪 خروج</button>';
 }
+window.renderUserDrawer = renderUserDrawer;
 
 /* ============ ADMIN ============ */
 function renderAdminAll(){
@@ -1707,6 +1797,8 @@ function renderAdminAll(){
   renderAdminAudit();
   renderAdminSystem();
 }
+window.renderAdminAll = renderAdminAll;
+
 function switchAdminTab(t){
   state.adminTab=t;
   document.querySelectorAll('[data-atab]').forEach(b=>b.classList.toggle('active',b.dataset.atab===t));
@@ -1716,6 +1808,8 @@ function switchAdminTab(t){
   });
   if(t==='requests') renderAdminCoachRequests();
 }
+window.switchAdminTab = switchAdminTab;
+
 async function renderAdminPending(){
   const el=document.getElementById('adminPendingBody'); if(!el) return;
   el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
@@ -1729,6 +1823,7 @@ async function renderAdminPending(){
       '<button class="icon-btn reject" onclick="rejectCoach(\''+u.id+'\')">❌</button></div></div>').join('');
   }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
+
 async function renderAdminCoachRequests(){
   const el = document.getElementById('adminRequestsBody'); if(!el) return;
   el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
@@ -1750,7 +1845,6 @@ async function renderAdminCoachRequests(){
         '<option value="'+c.id+'" '+(r.preferredCoachId === c.id ? 'selected' : '')+'>'+
           c.emoji + ' ' + esc(c.displayName) + '</option>'
       ).join('');
-      const prefText = r.preferredCoachId ? '⭐ مربی انتخابی خود شاگرد' : '';
       h += '<div class="req-card pending">'+
         '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'+
           '<div class="u-avatar" style="background:'+r.studentColor+'">'+r.studentEmoji+'</div>'+
@@ -1762,7 +1856,7 @@ async function renderAdminCoachRequests(){
         '</div>'+
         (r.note ? '<div style="padding:8px 10px;background:var(--card);border-radius:8px;font-size:.74rem;color:var(--tx2);line-height:1.7;margin-bottom:8px">💬 '+esc(r.note)+'</div>' : '')+
         (r.coachName && !r.preferredCoachId ? '<div style="font-size:.72rem;color:var(--am);margin-bottom:6px">✏️ مربی موردنظر: '+esc(r.coachName)+'</div>' : '')+
-        (r.preferredCoachId ? '<div style="font-size:.68rem;color:var(--gr);margin-bottom:6px">'+prefText+'</div>' : '')+
+        (r.preferredCoachId ? '<div style="font-size:.68rem;color:var(--gr);margin-bottom:6px">⭐ مربی انتخابی خود شاگرد</div>' : '')+
         '<div style="display:flex;gap:6px;align-items:stretch;flex-wrap:wrap">'+
           '<select id="assignCoach_'+r.studentId+'" style="flex:1;min-width:130px;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-size:.76rem;font-weight:700">'+
             '<option value="">— انتخاب مربی —</option>'+coachOpts+
@@ -1777,6 +1871,7 @@ async function renderAdminCoachRequests(){
     el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>';
   }
 }
+
 async function assignCoachRequest(studentId){
   const sel = document.getElementById('assignCoach_'+studentId);
   const coachId = sel ? sel.value : '';
@@ -1788,6 +1883,8 @@ async function assignCoachRequest(studentId){
     renderAdminUsers();
   } catch(e){ toast('خطا: '+e.message, 'error'); }
 }
+window.assignCoachRequest = assignCoachRequest;
+
 async function rejectCoachRequest(studentId){
   if(!confirm('درخواست رد شود؟')) return;
   try {
@@ -1796,6 +1893,8 @@ async function rejectCoachRequest(studentId){
     renderAdminCoachRequests();
   } catch(e){ toast('خطا','error'); }
 }
+window.rejectCoachRequest = rejectCoachRequest;
+
 async function claimCoachRequest(studentId){
   if(!confirm('این شاگرد رو قبول می‌کنی؟')) return;
   try {
@@ -1804,6 +1903,8 @@ async function claimCoachRequest(studentId){
     renderCoachPanel();
   } catch(e){ toast('خطا: '+e.message, 'error'); }
 }
+window.claimCoachRequest = claimCoachRequest;
+
 async function renderAdminUsers(){
   const el=document.getElementById('adminUsersBody'); if(!el) return;
   el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
@@ -1838,6 +1939,7 @@ async function renderAdminUsers(){
     el.innerHTML=h;
   }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
+
 async function toggleProgramPermission(userId){
   try{
     const d=await api('GET','/api/users/'+userId+'/data');
@@ -1847,6 +1949,8 @@ async function toggleProgramPermission(userId){
     toast('انجام شد ✓'); renderAdminUsers();
   }catch(e){ toast('خطا: '+e.message,'error'); }
 }
+window.toggleProgramPermission = toggleProgramPermission;
+
 async function renderAdminAudit(){
   const el=document.getElementById('adminAuditBody'); if(!el) return;
   el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
@@ -1864,51 +1968,42 @@ async function renderAdminAudit(){
     }).join('');
   }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
+
 function renderAdminSystem(){
   const el=document.getElementById('adminSystemBody'); if(!el) return;
   const t=themeMode();
-  const cp=localStorage.getItem('profit-coach-panel-enabled')!=='false';
-  const sp=localStorage.getItem('profit-student-panel-enabled')!=='false';
   el.innerHTML='<div class="card"><h2>🎨 نمایش</h2>'+
     '<div class="toggle-row"><div class="toggle-lbl">حالت روشن</div>'+
     '<label class="ts"><input type="checkbox" '+(t==='light'?'checked':'')+' onchange="toggleTheme()"><span class="sl"></span></label></div></div>'+
-    '<div class="card"><h2>👥 پنل‌ها</h2>'+
-    '<div class="toggle-row"><div class="toggle-lbl">پنل مربی</div>'+
-    '<label class="ts"><input type="checkbox" '+(cp?'checked':'')+' onchange="toggleCoachPanel()"><span class="sl"></span></label></div>'+
-    '<div class="toggle-row"><div class="toggle-lbl">صفحه شاگرد</div>'+
-    '<label class="ts"><input type="checkbox" '+(sp?'checked':'')+' onchange="toggleStudentPanel()"><span class="sl"></span></label></div></div>'+
     '<div class="card"><h2>ℹ️ سیستم</h2><div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">'+
     'کاربران: <strong>'+fN(state.users.length)+'</strong><br>'+
     'در انتظار: <strong>'+fN(state.pending.length)+'</strong><br>'+
     'حرکات: <strong>'+fN(DB.exercises.length)+'</strong><br>'+
     'غذاها: <strong>'+fN(NUT.foods.length)+'</strong><br>'+
-    'نسخه: <strong>3.1</strong></div></div>';
+    'نسخه: <strong>4.5</strong></div></div>';
 }
+
 function toggleTheme(){
   const cur=themeMode(); const next=cur==='light'?'dark':'light';
   document.documentElement.setAttribute('data-theme',next);
   localStorage.setItem('profit-theme',next); renderView();
 }
-function toggleCoachPanel(){
-  const cur=localStorage.getItem('profit-coach-panel-enabled')!=='false';
-  localStorage.setItem('profit-coach-panel-enabled',cur?'false':'true');
-  renderToolbar(); renderAdminSystem();
-}
-function toggleStudentPanel(){
-  const cur=localStorage.getItem('profit-student-panel-enabled')!=='false';
-  localStorage.setItem('profit-student-panel-enabled',cur?'false':'true');
-  renderAdminSystem();
-}
+window.toggleTheme = toggleTheme;
+
 async function approveCoach(id){
   if(!confirm('تأیید شود؟')) return;
   try{ await api('POST','/api/admin/approve/'+id); toast('تأیید شد ✓'); renderAdminPending(); renderAdminUsers(); }
   catch(e){ toast('خطا: '+e.message,'error'); }
 }
+window.approveCoach = approveCoach;
+
 async function rejectCoach(id){
   if(!confirm('رد شود؟')) return;
   try{ await api('POST','/api/admin/reject/'+id); toast('رد شد','info'); renderAdminPending(); renderAdminUsers(); }
   catch(e){ toast('خطا: '+e.message,'error'); }
 }
+window.rejectCoach = rejectCoach;
+
 async function adminDeleteUser(id){
   const u=state.users.find(x=>x.id===id); if(!u) return;
   if(!confirm('حذف «'+u.displayName+'»؟')) return;
@@ -1916,12 +2011,16 @@ async function adminDeleteUser(id){
   try{ await api('DELETE','/api/users/'+id,{adminPassword:pw}); toast('حذف شد'); renderAdminUsers(); renderAdminPending(); }
   catch(e){ toast(e.data&&e.data.error==='wrong_password'?'رمز اشتباه':'خطا: '+e.message,'error'); }
 }
+window.adminDeleteUser = adminDeleteUser;
+
 async function adminToggleActive(id){
   const u=state.users.find(x=>x.id===id); if(!u) return;
   if(!confirm((u.active?'غیرفعال':'فعال')+' شود؟')) return;
   try{ await api('PUT','/api/users/'+id,{active:!u.active}); toast('انجام شد'); renderAdminUsers(); }
   catch(e){ toast('خطا: '+e.message,'error'); }
 }
+window.adminToggleActive = adminToggleActive;
+
 async function adminResetPassword(id){
   const u=state.users.find(x=>x.id===id); if(!u) return;
   const np=prompt('رمز جدید:'); if(!np) return;
@@ -1929,6 +2028,8 @@ async function adminResetPassword(id){
   try{ await api('PUT','/api/users/'+id,{password:np}); toast('تغییر کرد'); }
   catch(e){ toast('خطا: '+e.message,'error'); }
 }
+window.adminResetPassword = adminResetPassword;
+
 function openCreateUser(){
   document.getElementById('newUserRole').value='student';
   document.getElementById('newUserUsername').value='';
@@ -1939,9 +2040,13 @@ function openCreateUser(){
   document.getElementById('newUserCoachId').innerHTML='<option value="">— بدون —</option>'+coaches.map(c=>'<option value="'+c.id+'">'+c.emoji+' '+esc(c.displayName)+'</option>').join('');
   openDrawer('createUserDrawer');
 }
+window.openCreateUser = openCreateUser;
+
 function onNewUserRoleChange(){
   document.getElementById('newUserCoachRow').style.display=document.getElementById('newUserRole').value==='student'?'block':'none';
 }
+window.onNewUserRoleChange = onNewUserRoleChange;
+
 async function submitCreateUser(){
   const username=document.getElementById('newUserUsername').value.trim();
   const displayName=document.getElementById('newUserDisplayName').value.trim();
@@ -1956,8 +2061,9 @@ async function submitCreateUser(){
     toast('ساخته شد ✓'); closeDrawer('createUserDrawer'); renderAdminUsers();
   }catch(e){ toast('خطا: '+(e.data?.error||e.message),'error'); }
 }
+window.submitCreateUser = submitCreateUser;
 
-/* ============ COACH ============ */
+/* ============ COACH PANEL ============ */
 async function renderCoachPanel(){
   const el=document.getElementById('coachBody'); if(!el) return;
   el.innerHTML='<div class="empty"><span class="spinner"></span></div>';
@@ -2003,12 +2109,16 @@ async function renderCoachPanel(){
     el.innerHTML=h;
   }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
+window.renderCoachPanel = renderCoachPanel;
+
 function openCreateStudent(){
   document.getElementById('newStudentUsername').value='';
   document.getElementById('newStudentDisplayName').value='';
   document.getElementById('newStudentPassword').value='';
   openDrawer('createStudentDrawer');
 }
+window.openCreateStudent = openCreateStudent;
+
 async function submitCreateStudent(){
   const username=document.getElementById('newStudentUsername').value.trim();
   const displayName=document.getElementById('newStudentDisplayName').value.trim();
@@ -2021,6 +2131,8 @@ async function submitCreateStudent(){
     toast('شاگرد ساخته شد ✓'); closeDrawer('createStudentDrawer'); renderCoachPanel();
   }catch(e){ toast('خطا: '+(e.data?.error||e.message),'error'); }
 }
+window.submitCreateStudent = submitCreateStudent;
+
 async function openStudentDetail(id){
   const stu=state.students.find(x=>x.id===id); if(!stu) return;
   state.currentStudent=stu;
@@ -2053,16 +2165,18 @@ async function openStudentDetail(id){
       '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--gr)">'+fN(v7)+'</div><div style="font-size:.68rem;color:var(--tm)">حجم (kg)</div></div>'+
       '</div>'+
       '<div class="sh">🗓️ برنامه ('+fN((prog.days||[]).length)+' روز)</div>'+
-      (prog.days&&prog.days.length?prog.days.map(d=>'<div style="padding:8px 12px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.8rem"><strong>'+(d.icon||'💪')+' '+esc(d.name)+'</strong> · '+fN((d.exercises||[]).length)+' حرکت</div>').join(''):'<div style="text-align:center;color:var(--tm);padding:14px;font-size:.8rem">برنامه‌ای ندارد</div>')+
-      (ov.notes&&ov.notes.length?'<div class="sh">📝 یادداشت‌ها</div>'+ov.notes.map(n=>'<div style="padding:10px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.78rem">'+
-        '<div style="font-size:.62rem;color:var(--am);margin-bottom:4px">'+new Date(n.created_at).toLocaleDateString('fa-IR')+'</div>'+esc(n.content)+'</div>').join(''):'');
+      (prog.days&&prog.days.length?prog.days.map(d=>'<div style="padding:8px 12px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.8rem"><strong>'+(d.icon||'💪')+' '+esc(d.name)+'</strong> · '+fN((d.exercises||[]).length)+' حرکت</div>').join(''):'<div style="text-align:center;color:var(--tm);padding:14px;font-size:.8rem">برنامه‌ای ندارد</div>');
   }catch(e){ el.innerHTML='<div class="empty"><div class="icon">⚠️</div><div>خطا: '+esc(e.message)+'</div></div>'; }
 }
+window.openStudentDetail = openStudentDetail;
+
 async function coachTogglePermission(sid, cur){
   if(!confirm(cur?'گرفتن اجازه؟':'دادن اجازه؟')) return;
   try{ await api('POST','/api/users/'+sid+'/data/permissions',{value:{canEditProgram:!cur}}); toast('انجام شد ✓'); openStudentDetail(sid); }
   catch(e){ toast('خطا','error'); }
 }
+window.coachTogglePermission = coachTogglePermission;
+
 async function openNutritionForStudent(sid){
   await loadNutritionFor(sid);
   closeDrawer('studentDetailDrawer');
@@ -2070,6 +2184,7 @@ async function openNutritionForStudent(sid){
   state.nutritionTab = 'calc';
   renderView();
 }
+window.openNutritionForStudent = openNutritionForStudent;
 
 /* ============ PROGRAM EDITOR ============ */
 function renderEditorDay(day, di){
@@ -2099,6 +2214,7 @@ function renderEditorDay(day, di){
       (exs.length?'<button class="btn danger" style="font-size:.72rem;padding:6px 10px" onclick="clearDay('+di+')">🗑️</button>':'')+
     '</div></div>';
 }
+
 function renderProgramEditor(){
   const el=document.getElementById('programEditorBody'); if(!el) return;
   const stu=state.currentStudent;
@@ -2115,6 +2231,7 @@ function renderProgramEditor(){
   h+=state.program.days.map((day,di)=>renderEditorDay(day,di)).join('');
   el.innerHTML=h;
 }
+
 function updateExField(di,ei,field,val){
   const ex=state.program.days[di]&&state.program.days[di].exercises[ei]; if(!ex) return;
   if(field==='sets') ex.sets=Math.max(1,Math.min(10,parseInt(val)||3)); else ex[field]=val;
@@ -2124,6 +2241,7 @@ function clearDay(di){ if(!confirm('پاک شود؟')) return; state.program.day
 function deleteDay(di){ const d=state.program.days[di]; if(!d) return; if(!confirm('حذف «'+(d.name||'')+'»؟')) return; state.program.days.splice(di,1); autoSaveProgram(); renderProgramEditor(); }
 function removeExerciseFromDay(di,ei){ state.program.days[di].exercises.splice(ei,1); autoSaveProgram(); renderProgramEditor(); }
 function autoSaveProgram(){ const tid=state.programOwnerId||state.user.id; api('POST','/api/users/'+tid+'/data/program',{value:state.program}).catch(()=>{}); }
+
 function saveProgramAndClose(){
   const tid=state.programOwnerId||state.user.id;
   api('POST','/api/users/'+tid+'/data/program',{value:state.program}).then(()=>{
@@ -2135,9 +2253,18 @@ function saveProgramAndClose(){
     } else renderView();
   }).catch(e=>toast('خطا','error'));
 }
+window.updateExField = updateExField;
+window.clearDay = clearDay;
+window.deleteDay = deleteDay;
+window.removeExerciseFromDay = removeExerciseFromDay;
+window.saveProgramAndClose = saveProgramAndClose;
+
 function openAddDayDrawer(){ if(!state.programOwnerId) state.programOwnerId=state.user.id; dayDrawerMode='add'; dayDrawerEditIndex=-1; showDayDrawerForm({ name:'', focus:'', icon:'💪', weekday:null }); }
 function openEditDayDrawer(di){ dayDrawerMode='edit'; dayDrawerEditIndex=di; showDayDrawerForm(state.program.days[di]); }
 let dayDrawerMode='add', dayDrawerEditIndex=-1;
+window.openAddDayDrawer = openAddDayDrawer;
+window.openEditDayDrawer = openEditDayDrawer;
+
 function showDayDrawerForm(day){
   let backdrop=document.getElementById('dayFormBackdrop');
   if(!backdrop){
@@ -2170,6 +2297,7 @@ function showDayDrawerForm(day){
   drawer.dataset.selectedWd=initialWd!=null?String(initialWd):'';
   openDrawer('dayFormDrawer');
 }
+
 function pickDayWD(j, btn){
   const parent=btn.parentElement;
   parent.querySelectorAll('.wdchip').forEach(b=>b.classList.remove('sel'));
@@ -2178,6 +2306,8 @@ function pickDayWD(j, btn){
   const ni=document.getElementById('dayFormName');
   if(!ni.value.trim()||ni.value.trim().startsWith('روز ')) ni.value='روز '+weekdayName(j);
 }
+window.pickDayWD = pickDayWD;
+
 async function saveDayForm(){
   const drawer=document.getElementById('dayFormDrawer');
   const wdStr=drawer.dataset.selectedWd;
@@ -2205,12 +2335,17 @@ async function saveDayForm(){
     if(ni!==-1){ toast('روز اضافه شد'); setTimeout(()=>openExercisePickerForDay(ni), 250); }
   } else toast('ذخیره شد ✓');
 }
+window.saveDayForm = saveDayForm;
+
+/* Exercise Picker */
 let pickerCat='all', pickerSearch='';
 function openExercisePickerForDay(di){
   if(!state.programOwnerId) state.programOwnerId=state.user.id;
   state.pendingAddExerciseDay=di; pickerCat='all'; pickerSearch='';
   renderExercisePicker(); openDrawer('exercisePickerDrawer');
 }
+window.openExercisePickerForDay = openExercisePickerForDay;
+
 function renderExercisePicker(){
   const el=document.getElementById('exercisePickerBody'); if(!el) return;
   const di=state.pendingAddExerciseDay;
@@ -2246,10 +2381,12 @@ function renderExercisePicker(){
   h+='<div class="sticky-bottom"><button class="btn success full" onclick="closeDrawer(\'exercisePickerDrawer\')">✓ تمام — بازگشت</button></div>';
   el.innerHTML=h;
 }
+window.renderExercisePicker = renderExercisePicker;
+
 function quickAddExercise(exId){
   const di=state.pendingAddExerciseDay; if(di===null||di===undefined) return;
   const def=DB.exercises.find(e=>e.id===exId); if(!def) return;
-  const vol=DB.volumeByLevel.intermediate;
+  const vol=DB.volumeByLevel.intermediate||{ sets:3, repsCompound:'۸-۱۲', repsIsolation:'۱۰-۱۵' };
   if(!state.program.days[di].exercises) state.program.days[di].exercises=[];
   const ei=state.program.days[di].exercises.findIndex(e=>e.exId===exId);
   if(ei!==-1){ state.program.days[di].exercises.splice(ei,1); toast('حذف شد','info'); }
@@ -2264,6 +2401,8 @@ function quickAddExercise(exId){
   renderExercisePicker();
   renderProgramEditor();
 }
+window.quickAddExercise = quickAddExercise;
+
 async function openProgramEditor(sid){
   state.editingProgramFor=sid; state.programOwnerId=sid;
   try{
@@ -2274,6 +2413,7 @@ async function openProgramEditor(sid){
   else { const s=state.students.find(x=>x.id===sid); if(s) state.currentStudent=s; }
   renderProgramEditor(); openDrawer('programEditorDrawer');
 }
+window.openProgramEditor = openProgramEditor;
 
 /* ============ WIZARD ============ */
 let wizSelectedDays=[], wizDaysCount=3;
@@ -2359,6 +2499,13 @@ function generateSmartProgram(daysCount, weekdays, level){
   });
   state.program={days:newDays};
 }
+window.openWizard = openWizard;
+window.confirmCloseWizard = confirmCloseWizard;
+window.wizDaysChanged = wizDaysChanged;
+window.wizToggleDay = wizToggleDay;
+window.wizNext = wizNext;
+window.wizBack = wizBack;
+window.wizFinish = wizFinish;
 
 /* ============ BOOT ============ */
 (async function(){
@@ -2374,8 +2521,9 @@ function generateSmartProgram(daysCount, weekdays, level){
 })();
 setInterval(()=>{ if(state.token) fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+state.token}}).catch(()=>{}); }, 4*60*1000);
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAllDrawers(); });
+</script>
 
-<script>
-<script src="assets/app-extras.js"></script>
+<!-- ============ APP EXTRAS (loads AFTER main script) ============ -->
+<script src="assets/app-extras.js" defer></script>
 </body>
-</html>
+                                                       </html>
