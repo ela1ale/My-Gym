@@ -1,7 +1,7 @@
 {
   "name": "profit-fitness",
   "version": "2.0.0",
-  "description": "سیستم تمرینی آنلاین برای مربی ها و ورزشکاران ",
+  "description": "سیستم تمرینی آنلاین",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
