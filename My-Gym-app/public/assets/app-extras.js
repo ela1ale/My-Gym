@@ -637,62 +637,125 @@ async function printReport() {
     const roles = { admin: 'مدیر', coach: 'مربی', student: 'شاگرد' };
 
     // ============ Nutrition tables ============
-    const meals = nutrition.meals || {};
-    const mealDefs = window.NUT?.meals || [];
-    const foods = window.NUT?.foods || [];
+// ============ Nutrition tables (robust) ============
+// تعریف‌های ثابت وعده‌ها (اگه window.NUT نبود)
+const MEAL_META = {
+  breakfast: { name: 'صبحانه', emoji: '🌅', pct: 0.25 },
+  snack1: { name: 'میان‌وعده صبح', emoji: '🍎', pct: 0.10 },
+  lunch: { name: 'ناهار', emoji: '🍽️', pct: 0.35 },
+  snack2: { name: 'میان‌وعده عصر', emoji: '🥤', pct: 0.10 },
+  dinner: { name: 'شام', emoji: '🌙', pct: 0.20 }
+};
 
-    let nutritionTableHTML = '';
-    let mealTotalsGlobal = { cal: 0, prot: 0, carb: 0, fat: 0 };
+// === Find meal definitions (multi-source) ===
+let mealDefs = [];
+if (window.NUT && Array.isArray(window.NUT.meals) && window.NUT.meals.length > 0) {
+  mealDefs = window.NUT.meals;
+  console.log('[Report] ✅ Using window.NUT.meals (' + mealDefs.length + ' items)');
+} else {
+  mealDefs = Object.keys(MEAL_META).map(k => ({ key: k, ...MEAL_META[k] }));
+  console.log('[Report] ⚠️ window.NUT.meals not available — using hardcoded defs');
+}
 
-    if (mealDefs.length) {
-      nutritionTableHTML = mealDefs.map(meal => {
-        const items = meals[meal.key] || [];
-        let mTot = { cal: 0, prot: 0, carb: 0, fat: 0 };
+// === Find foods data (multi-source) ===
+let foods = [];
+if (window.NUT && Array.isArray(window.NUT.foods)) {
+  foods = window.NUT.foods;
+}
+console.log('[Report] Foods available: ' + foods.length);
 
-        let rows = '';
-        if (items.length === 0) {
-          rows = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;font-size:.72rem;padding:8px">— بدون غذا —</td></tr>';
-        } else {
-          rows = items.map(it => {
-            const food = foods.find(f => f.id === it.foodId);
-            if (!food) return '';
-            const unit = (food.units && food.units[it.unitIdx || 0]) || { n: 'گرم', g: 1 };
-            const grams = (it.qty || 0) * unit.g;
-            const k = grams / 100;
-            const cal = Math.round((food.cal || 0) * k);
-            const prot = Math.round((food.prot || 0) * k * 10) / 10;
-            const carb = Math.round((food.carb || 0) * k * 10) / 10;
-            const fat = Math.round((food.fat || 0) * k * 10) / 10;
-            mTot.cal += cal; mTot.prot += prot; mTot.carb += carb; mTot.fat += fat;
-            return '<tr>' +
-              '<td style="font-size:.72rem">' + (food.emoji || '') + ' ' + food.name + '</td>' +
-              '<td style="text-align:center;font-size:.72rem">' + it.qty + ' ' + unit.n + '</td>' +
-              '<td style="text-align:center;font-size:.72rem;color:#3b82f6;font-weight:700">' + cal + '</td>' +
-              '<td style="text-align:center;font-size:.72rem">' + prot + '</td>' +
-              '<td style="text-align:center;font-size:.72rem">' + carb + '</td>' +
-              '<td style="text-align:center;font-size:.72rem">' + fat + '</td>' +
-            '</tr>';
-          }).join('');
-        }
+// === Get nutrition data (prefer in-memory state) ===
+let nutritionData = nutrition;
+if ((!nutritionData.meals || Object.keys(nutritionData.meals).length === 0) && window.state?.nutrition?.meals) {
+  nutritionData = window.state.nutrition;
+  console.log('[Report] 📦 Using state.nutrition instead of fetched data');
+}
 
-        mealTotalsGlobal.cal += mTot.cal;
-        mealTotalsGlobal.prot += mTot.prot;
-        mealTotalsGlobal.carb += mTot.carb;
-        mealTotalsGlobal.fat += mTot.fat;
+const meals = nutritionData.meals || {};
+console.log('[Report] Meal keys in data:', Object.keys(meals));
+Object.keys(meals).forEach(k => {
+  const cnt = Array.isArray(meals[k]) ? meals[k].length : 0;
+  console.log('[Report]   ' + k + ': ' + cnt + ' items');
+});
 
-        return '<div class="day-block">' +
-          '<h3>' + (meal.emoji || '🍽️') + ' ' + meal.name + ' — ' + Math.round(mTot.cal) + ' kcal</h3>' +
-          '<table><thead><tr>' +
-            '<th style="text-align:right">غذا</th>' +
-            '<th style="text-align:center;width:80px">مقدار</th>' +
-            '<th style="text-align:center;width:60px">کالری</th>' +
-            '<th style="text-align:center;width:50px">پروتئین</th>' +
-            '<th style="text-align:center;width:50px">کرب</th>' +
-            '<th style="text-align:center;width:50px">چربی</th>' +
-          '</tr></thead><tbody>' + rows + '</tbody></table>' +
-        '</div>';
-      }).join('');
-    }
+// === Detect which meals have items ===
+const dataKeysWithItems = Object.keys(meals).filter(k => 
+  Array.isArray(meals[k]) && meals[k].length > 0
+);
+
+// === Add missing meal defs from data keys ===
+dataKeysWithItems.forEach(k => {
+  if (!mealDefs.find(m => m.key === k)) {
+    const meta = MEAL_META[k] || { name: k, emoji: '🍽️', pct: 0 };
+    mealDefs.push({ key: k, ...meta });
+    console.log('[Report] ➕ Added missing meal def: ' + k);
+  }
+});
+
+const hasMeals = dataKeysWithItems.length > 0;
+console.log('[Report] hasMeals: ' + hasMeals);
+
+// === Build nutrition table ===
+let nutritionTableHTML = '';
+let mealTotalsGlobal = { cal: 0, prot: 0, carb: 0, fat: 0 };
+
+if (hasMeals) {
+  // Only render meals that have items
+  const activeMealDefs = mealDefs.filter(m => (meals[m.key] || []).length > 0);
+
+  nutritionTableHTML = activeMealDefs.map(meal => {
+    const items = meals[meal.key] || [];
+    let mTot = { cal: 0, prot: 0, carb: 0, fat: 0 };
+
+    const rows = items.map(it => {
+      const food = foods.find(f => f.id === it.foodId);
+
+      if (!food) {
+        console.warn('[Report] ⚠️ Food not found: ' + it.foodId);
+        return '<tr><td colspan="6" style="text-align:center;color:#f43f5e;font-size:10px;padding:6px">⚠️ غذای ناشناخته: ' + (it.foodId || '?') + '</td></tr>';
+      }
+
+      const unit = (food.units && food.units[it.unitIdx || 0]) || { n: 'گرم', g: 1 };
+      const grams = (it.qty || 0) * unit.g;
+      const k = grams / 100;
+      const cal = Math.round((food.cal || 0) * k);
+      const prot = Math.round((food.prot || 0) * k * 10) / 10;
+      const carb = Math.round((food.carb || 0) * k * 10) / 10;
+      const fat = Math.round((food.fat || 0) * k * 10) / 10;
+
+      mTot.cal += cal;
+      mTot.prot += prot;
+      mTot.carb += carb;
+      mTot.fat += fat;
+
+      return '<tr>' +
+        '<td>' + (food.emoji || '🍽️') + ' ' + food.name + '</td>' +
+        '<td style="text-align:center">' + it.qty + ' ' + unit.n + '</td>' +
+        '<td style="text-align:center;color:#3b82f6;font-weight:700">' + cal + '</td>' +
+        '<td style="text-align:center">' + prot + '</td>' +
+        '<td style="text-align:center">' + carb + '</td>' +
+        '<td style="text-align:center">' + fat + '</td>' +
+      '</tr>';
+    }).join('');
+
+    mealTotalsGlobal.cal += mTot.cal;
+    mealTotalsGlobal.prot += mTot.prot;
+    mealTotalsGlobal.carb += mTot.carb;
+    mealTotalsGlobal.fat += mTot.fat;
+
+    return '<div class="meal-block">' +
+      '<h3>' + (meal.emoji || '🍽️') + ' ' + meal.name + ' — ' + Math.round(mTot.cal) + ' kcal</h3>' +
+      '<table><thead><tr>' +
+        '<th style="text-align:right">غذا</th>' +
+        '<th style="text-align:center;width:80px">مقدار</th>' +
+        '<th style="text-align:center;width:55px">کالری</th>' +
+        '<th style="text-align:center;width:50px">پروتئین</th>' +
+        '<th style="text-align:center;width:50px">کرب</th>' +
+        '<th style="text-align:center;width:50px">چربی</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+    '</div>';
+  }).join('');
+}
 
     // ============ Supplements ============
     const supplements = nutrition.supplements || [];
