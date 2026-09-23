@@ -2,88 +2,100 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>ProFit</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.min.js"></script>
 <script src="assets/exercises.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Vazirmatn',sans-serif}
-:root{--bg:#0a0e1a;--bg2:#111827;--card:#1a2233;--card2:#222d42;--bd:rgba(148,163,184,.15);--tx:#f1f5f9;--tx2:#94a3b8;--tm:#64748b;--bl:#3b82f6;--gr:#10b981;--rd:#f43f5e;--am:#f59e0b;--pu:#a855f7;--cy:#06b6d4}
-[data-theme=light]{--bg:#f1f5f9;--bg2:#fff;--card:#fff;--card2:#f8fafc;--bd:rgba(148,163,184,.25);--tx:#0f172a;--tx2:#475569;--tm:#94a3b8}
-html,body{background:var(--bg);color:var(--tx);min-height:100vh}
-body{padding:12px;padding-bottom:80px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Vazirmatn',sans-serif;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0a0e1a;--bg2:#111827;--card:#1a2233;--card2:#222d42;--card3:#2d3850;--bd:rgba(148,163,184,.15);--tx:#f1f5f9;--tx2:#94a3b8;--tm:#64748b;--bl:#3b82f6;--gr:#10b981;--rd:#f43f5e;--am:#f59e0b;--pu:#a855f7;--cy:#06b6d4}
+[data-theme=light]{--bg:#f1f5f9;--bg2:#fff;--card:#fff;--card2:#f8fafc;--card3:#e2e8f0;--bd:rgba(148,163,184,.25);--tx:#0f172a;--tx2:#475569;--tm:#94a3b8}
+html,body{background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+body{padding:10px;padding-bottom:90px}
 .hidden{display:none!important}
 .container{max-width:900px;margin:0 auto}
-/* Buttons */
-.btn{padding:10px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;font-family:inherit;font-weight:700;font-size:.88rem;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;white-space:nowrap}
-.btn:hover{border-color:var(--bl);transform:translateY(-1px)}
+
+/* ============ BUTTONS ============ */
+.btn{padding:10px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;font-family:inherit;font-weight:700;font-size:.86rem;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;white-space:nowrap;user-select:none}
+.btn:active{transform:scale(.97)}
+.btn:hover{border-color:var(--bl)}
 .btn.primary{background:var(--bl);color:#fff;border-color:var(--bl)}
 .btn.success{background:var(--gr);color:#fff;border-color:var(--gr)}
 .btn.danger{background:rgba(244,63,94,.15);color:#fda4af;border-color:rgba(244,63,94,.3)}
 .btn.admin{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none}
 .btn.coach{background:linear-gradient(135deg,#3b82f6,#a855f7);color:#fff;border:none}
-.btn.sm{padding:6px 12px;font-size:.78rem;border-radius:8px}
+.btn.sm{padding:6px 12px;font-size:.76rem;border-radius:8px}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 .btn.full{width:100%}
-/* Inputs */
-input,select,textarea{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-size:.9rem;font-weight:600;outline:none;transition:border-color .2s}
+
+/* ============ INPUTS ============ */
+input,select,textarea{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-size:.9rem;font-weight:600;outline:none;transition:border-color .15s}
 input:focus,select:focus{border-color:var(--bl);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
-label{display:block;font-size:.76rem;font-weight:700;color:var(--tx2);margin-bottom:6px}
-/* Cards */
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:12px}
-.card h2{font-size:1rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-/* Header */
-.header{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.header h1{font-size:1.05rem;font-weight:900;flex:1;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.user-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 5px;border-radius:30px;background:var(--card2);border:1px solid var(--bd);cursor:pointer;font-family:inherit;color:var(--tx);font-weight:700;font-size:.82rem}
+label{display:block;font-size:.74rem;font-weight:700;color:var(--tx2);margin-bottom:5px}
+
+/* ============ CARDS ============ */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px}
+.card h2{font-size:.98rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* ============ HEADER ============ */
+.header{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.header h1{font-size:1rem;font-weight:900;flex:1;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.user-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:30px;background:var(--card2);border:1px solid var(--bd);cursor:pointer;font-family:inherit;color:var(--tx);font-weight:700;font-size:.8rem}
 .user-chip .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#fff}
-/* Toolbar */
-.toolbar{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px;margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.toolbar .btn{padding:8px 12px;font-size:.78rem}
-/* Auth */
+
+/* ============ TOOLBAR ============ */
+.toolbar{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px;margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.toolbar .btn{padding:7px 12px;font-size:.76rem}
+
+/* ============ AUTH ============ */
 .auth-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);display:flex;align-items:center;justify-content:center;padding:16px;z-index:1000;overflow-y:auto}
-.auth-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:28px 24px;max-width:420px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.5);margin:auto}
-.auth-logo{font-size:3rem;text-align:center;margin-bottom:8px}
+.auth-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:26px 22px;max-width:420px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.5);margin:auto}
+.auth-logo{font-size:3rem;text-align:center;margin-bottom:6px}
 .auth-title{text-align:center;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
-.auth-sub{text-align:center;font-size:.82rem;color:var(--tx2);margin-bottom:20px}
-.auth-err{color:#fda4af;font-size:.8rem;text-align:center;font-weight:700;min-height:18px;margin-top:8px}
-.form-row{margin-bottom:12px}
+.auth-sub{text-align:center;font-size:.8rem;color:var(--tx2);margin-bottom:18px}
+.auth-err{color:#fda4af;font-size:.78rem;text-align:center;font-weight:700;min-height:18px;margin-top:8px}
+.form-row{margin-bottom:10px}
 .role-picker{display:flex;gap:8px;margin-bottom:12px}
-.role-btn{flex:1;padding:12px 6px;border-radius:12px;border:2px solid var(--bd);background:var(--card2);color:var(--tx2);cursor:pointer;font-family:inherit;font-weight:700;font-size:.82rem;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s}
+.role-btn{flex:1;padding:12px 6px;border-radius:12px;border:2px solid var(--bd);background:var(--card2);color:var(--tx2);cursor:pointer;font-family:inherit;font-weight:700;font-size:.8rem;display:flex;flex-direction:column;align-items:center;gap:4px}
 .role-btn.selected{border-color:transparent;color:#fff}
 .role-btn[data-role=student].selected{background:linear-gradient(135deg,#10b981,#059669)}
 .role-btn[data-role=coach].selected{background:linear-gradient(135deg,#3b82f6,#a855f7)}
 .role-btn .ric{font-size:1.4rem}
-/* Drawer */
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;opacity:0;pointer-events:none;transition:opacity .3s}
+
+/* ============ DRAWER ============ */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;opacity:0;pointer-events:none;transition:opacity .25s}
 .backdrop.open{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;bottom:0;width:520px;max-width:100vw;background:var(--card);z-index:101;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.drawer{position:fixed;top:0;bottom:0;width:520px;max-width:100vw;background:var(--card);z-index:101;display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .drawer.right{right:0;transform:translateX(110%);border-left:1px solid var(--bd)}
 .drawer.left{left:0;transform:translateX(-110%);border-right:1px solid var(--bd)}
 .drawer.open{transform:translateX(0)}
-.drawer-header{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.08))}
-.drawer-header h2{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:6px}
+.drawer-header{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.08));flex-shrink:0}
+.drawer-header h2{font-size:.96rem;font-weight:800;display:flex;align-items:center;gap:6px}
 .close-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;font-family:inherit;flex-shrink:0}
 .close-btn:hover{background:var(--rd);color:#fff;border-color:var(--rd)}
-.drawer-tabs{display:flex;border-bottom:1px solid var(--bd);overflow-x:auto;flex-shrink:0}
-.tab{padding:11px 14px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.82rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.drawer-tabs{display:flex;border-bottom:1px solid var(--bd);overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.drawer-tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 14px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
 .tab.active{color:var(--bl);border-bottom-color:var(--bl)}
-.drawer-body{flex:1;overflow-y:auto;padding:14px 16px}
-/* User item */
-.u-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);margin-bottom:8px}
-.u-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;color:#fff;font-weight:700}
+.drawer-body{flex:1;overflow-y:auto;padding:12px 14px;-webkit-overflow-scrolling:touch}
+
+/* ============ USER ITEM ============ */
+.u-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);margin-bottom:6px;transition:all .15s}
+.u-item.clickable{cursor:pointer}
+.u-item.clickable:hover{border-color:var(--bl);transform:translateX(-2px)}
+.u-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;color:#fff;font-weight:700}
 .u-info{flex:1;min-width:0}
-.u-name{font-weight:800;font-size:.88rem;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.u-meta{font-size:.68rem;color:var(--tm)}
+.u-name{font-weight:800;font-size:.86rem;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.u-meta{font-size:.66rem;color:var(--tm)}
 .u-actions{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap}
-.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-family:inherit}
+.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-family:inherit;transition:all .15s}
 .icon-btn:hover{background:var(--bl);color:#fff;border-color:var(--bl)}
 .icon-btn.del:hover{background:var(--rd);border-color:var(--rd)}
 .icon-btn.approve:hover{background:var(--gr);border-color:var(--gr)}
 .icon-btn.reject:hover{background:var(--rd);border-color:var(--rd)}
 .icon-btn.grant.on{background:var(--gr);color:#fff;border-color:var(--gr)}
-.badge{padding:2px 8px;border-radius:20px;font-size:.65rem;font-weight:800;display:inline-block;margin-right:4px}
+.badge{padding:2px 8px;border-radius:20px;font-size:.62rem;font-weight:800;display:inline-block;margin-right:4px}
 .badge.admin{background:rgba(245,158,11,.2);color:#fbbf24}
 .badge.coach{background:rgba(59,130,246,.2);color:#60a5fa}
 .badge.student{background:rgba(16,185,129,.2);color:#34d399}
@@ -91,127 +103,175 @@ label{display:block;font-size:.76rem;font-weight:700;color:var(--tx2);margin-bot
 .badge.rejected{background:rgba(244,63,94,.2);color:#fda4af}
 .badge.inactive{background:rgba(100,116,139,.25);color:#94a3b8}
 .badge.active{background:rgba(16,185,129,.2);color:#34d399}
-.badge.grant{background:rgba(59,130,246,.2);color:#60a5fa}
-/* Toasts */
-.toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none;max-width:92vw}
-.toast{padding:11px 18px;border-radius:12px;font-weight:700;font-size:.85rem;display:flex;align-items:center;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);animation:slideIn .3s ease;pointer-events:auto;max-width:100%}
+
+/* ============ TOASTS ============ */
+.toasts{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none;max-width:92vw}
+.toast{padding:10px 16px;border-radius:12px;font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);animation:slideIn .25s ease;pointer-events:auto;max-width:100%}
 .toast.success{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
 .toast.error{background:linear-gradient(135deg,#f43f5e,#be123c);color:#fff}
 .toast.info{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
 .toast.warn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
 @keyframes slideIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-.empty{text-align:center;padding:32px 16px;color:var(--tm)}
+
+/* ============ EMPTY / SPINNER ============ */
+.empty{text-align:center;padding:28px 16px;color:var(--tm)}
 .empty .icon{font-size:2.5rem;margin-bottom:10px}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Wizard */
-.wizard-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
-.wizard-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:28px 24px;max-width:500px;width:100%;margin:auto;max-height:95vh;overflow-y:auto}
-.wizard-card h2{text-align:center;font-size:1.3rem;font-weight:900;margin-bottom:4px;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.wizard-card .wsub{text-align:center;font-size:.82rem;color:var(--tx2);margin-bottom:20px}
+
+/* ============ WIZARD ============ */
+.wizard-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e1a,#1a1f35);z-index:2000;display:flex;align-items:center;justify-content:center;padding:14px;overflow-y:auto}
+.wizard-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:24px 20px;max-width:500px;width:100%;margin:auto;max-height:95vh;overflow-y:auto}
+.wizard-card h2{text-align:center;font-size:1.2rem;font-weight:900;margin-bottom:4px;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.wizard-card .wsub{text-align:center;font-size:.8rem;color:var(--tx2);margin-bottom:18px}
 .wstep{display:none}.wstep.active{display:block}
 .wdpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.wdchip{padding:8px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer}
+.wdchip{padding:8px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .15s}
 .wdchip.sel{background:linear-gradient(135deg,var(--bl),var(--pu));color:#fff;border-color:transparent}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-/* Exercise Card */
-.ex-card{background:var(--card2);border:1px solid var(--bd);border-radius:12px;padding:10px;margin-bottom:10px;transition:all .3s}
-.ex-card.done{border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.02))}
-.ex-card.done.collapsed .ex-body{display:none}
-.ex-card.done.collapsed{padding:8px 12px}
-.ex-card.done.collapsed .ex-header{margin-bottom:0;padding-bottom:0;border:none}
-.ex-header{display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px solid transparent;cursor:pointer}
-.ex-card:not(.collapsed) .ex-header{border-bottom:1px solid var(--bd);margin-bottom:8px}
-.chk-btn{width:30px;height:30px;border-radius:8px;border:2px solid var(--tm);background:transparent;color:transparent;cursor:pointer;font-size:.85rem;font-weight:900;font-family:inherit;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.chk-btn.on{background:var(--gr);border-color:var(--gr);color:#fff}
-.ex-num{width:26px;height:26px;border-radius:7px;background:var(--bl);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0}
+
+/* ============ PROGRAM VIEW ============ */
+.prog-header{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:10px}
+.prog-actions{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.prog-actions .btn{flex:1;min-width:130px;justify-content:center;font-size:.8rem}
+.week-progress{background:var(--card2);border-radius:10px;padding:10px 12px}
+.week-progress .wp-top{display:flex;justify-content:space-between;font-size:.75rem;font-weight:700;margin-bottom:6px}
+.week-progress .wp-top strong{color:var(--gr)}
+.wp-track{height:8px;background:rgba(148,163,184,.15);border-radius:4px;overflow:hidden}
+.wp-fill{height:100%;background:linear-gradient(90deg,var(--bl),var(--pu));transition:width .5s;border-radius:4px}
+
+/* Day tabs */
+.day-tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;margin-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.day-tabs::-webkit-scrollbar{display:none}
+.day-tab{padding:9px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--tx2);font-family:inherit;font-weight:700;font-size:.78rem;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;display:flex;align-items:center;gap:5px;position:relative}
+.day-tab:hover{border-color:var(--bl);color:var(--tx)}
+.day-tab.active{background:linear-gradient(135deg,var(--bl),var(--pu));color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(59,130,246,.3)}
+.day-tab.is-today::before{content:'★';color:var(--am);font-size:.9rem}
+.day-tab.active.is-today::before{color:#fff}
+.day-tab .dt-count{background:rgba(255,255,255,.2);padding:1px 6px;border-radius:10px;font-size:.65rem}
+.day-tab.active .dt-count{background:rgba(255,255,255,.3)}
+
+/* Selected day header */
+.day-info-card{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));border:1px solid rgba(59,130,246,.25);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.day-info-card .dic-icon{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--bl),var(--pu));display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;flex-shrink:0}
+.day-info-card .dic-info{flex:1;min-width:0}
+.day-info-card .dic-name{font-weight:800;font-size:.95rem;margin-bottom:2px}
+.day-info-card .dic-focus{font-size:.7rem;color:var(--tx2)}
+.day-info-card .dic-prog{text-align:left;flex-shrink:0}
+.day-info-card .dic-prog .dp-num{font-size:1.2rem;font-weight:900;color:var(--gr)}
+.day-info-card .dic-prog .dp-lbl{font-size:.62rem;color:var(--tm)}
+
+/* Exercise card */
+.ex-card{background:var(--card2);border:1px solid var(--bd);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all .25s}
+.ex-card.done{border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.05),rgba(16,185,129,.02))}
+.ex-card.done.minimized{padding:8px 12px}
+.ex-card.done.minimized .ex-body{display:none}
+.ex-header{display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;transition:background .15s;user-select:none}
+.ex-header:active{background:rgba(148,163,184,.05)}
+.chk-btn{width:32px;height:32px;border-radius:9px;border:2px solid var(--tm);background:transparent;color:transparent;cursor:pointer;font-size:.85rem;font-weight:900;font-family:inherit;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.chk-btn.on{background:var(--gr);border-color:var(--gr);color:#fff;transform:scale(1.05)}
+.ex-num{width:26px;height:26px;border-radius:7px;background:var(--bl);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0}
 .ex-title{flex:1;min-width:0}
-.ex-name{font-weight:800;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ex-card.done.collapsed .ex-name{color:var(--tx2);text-decoration:line-through;text-decoration-color:rgba(16,185,129,.6)}
-.ex-info{font-size:.68rem;color:var(--tx2);margin-top:2px}
-.ex-summary{font-size:.7rem;color:var(--gr);font-weight:700;margin-top:2px}
-.expand-ic{color:var(--tm);font-size:.85rem;flex-shrink:0}
-.ex-body{}
-.ex-anim{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(168,85,247,.06));border-radius:10px;height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;position:relative}
+.ex-name{font-weight:800;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+.ex-card.done .ex-name{color:var(--tx2)}
+.ex-info{font-size:.66rem;color:var(--tx2);margin-top:3px;display:flex;gap:6px;flex-wrap:wrap}
+.ex-info span{background:rgba(148,163,184,.1);padding:1px 6px;border-radius:5px}
+.ex-summary{font-size:.68rem;color:var(--gr);font-weight:700;margin-top:3px}
+.expand-ic{color:var(--tm);font-size:.9rem;flex-shrink:0;transition:transform .2s}
+.ex-body{border-top:1px solid var(--bd);padding:12px}
+.ex-anim{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(168,85,247,.06));border-radius:10px;height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;position:relative}
 .ex-anim svg{width:90%;height:90%}
 .ex-img-holder{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .ex-img-holder img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;background:#fff;border-radius:10px}
 .ex-img-holder img.f1{z-index:1}
 .ex-img-holder img.f2{z-index:2;animation:imgSwap 1.8s infinite}
 @keyframes imgSwap{0%,45%{opacity:0}55%,100%{opacity:1}}
-.ex-img-holder.static img.f2{display:none}
-.ex-img-holder.static img.f1{position:relative;z-index:1}
+.ex-tips{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:8px 10px;font-size:.72rem;color:var(--tx2);margin-bottom:10px;line-height:1.7}
+.ex-tips strong{color:var(--bl)}
+
 /* Sets */
-.set-row{display:grid;grid-template-columns:30px 1fr 1fr 80px 34px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd)}
-.set-row:last-child{border-bottom:none}
-.set-row.hdr-row{border-bottom:1px solid var(--bd);padding-bottom:4px}
-.set-hdr{font-size:.68rem;color:var(--tm);font-weight:700;text-align:center}
-.set-num{text-align:center;font-weight:800;color:var(--tx2);font-size:.82rem}
-.set-in{padding:7px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-family:inherit;font-weight:700;font-size:.82rem;text-align:center;outline:none;width:100%}
-.set-in:focus{border-color:var(--bl)}
-.set-time{font-size:.76rem;font-weight:800;text-align:center;padding:7px 4px;border-radius:8px;background:rgba(148,163,184,.06);color:var(--tx2);direction:ltr}
-.set-time.run{color:var(--am);background:rgba(245,158,11,.12)}
-.set-btn{width:32px;height:32px;border-radius:8px;border:none;background:var(--gr);color:#fff;cursor:pointer;font-size:.85rem;font-family:inherit;display:flex;align-items:center;justify-content:center}
-.set-btn.run{background:var(--am);color:#000}
-.set-btn.dn{background:rgba(148,163,184,.2);color:var(--tx2)}
-/* Day card */
-.day-card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
-.day-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
-.day-icon{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--bl),var(--pu));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;color:#fff}
-.day-info{flex:1;min-width:0}
-.day-name{font-weight:800;font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.day-focus{font-size:.7rem;color:var(--tx2);margin-top:2px}
-.day-stat{font-size:.72rem;color:var(--gr);font-weight:700;white-space:nowrap}
-/* Toggle */
+.set-table{width:100%;border-collapse:collapse}
+.set-table th{background:rgba(148,163,184,.06);color:var(--tm);font-size:.66rem;padding:6px 4px;text-align:center;font-weight:700;border-radius:6px 6px 0 0}
+.set-table th:first-child{border-radius:0 6px 0 0}
+.set-table th:last-child{border-radius:6px 0 0 0}
+.set-table td{padding:5px 3px;text-align:center;border-bottom:1px solid var(--bd)}
+.set-table tr:last-child td{border-bottom:none}
+.set-table .sn{font-weight:800;color:var(--tx2);font-size:.8rem}
+.set-table .si{padding:7px 4px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-family:inherit;font-weight:700;font-size:.82rem;text-align:center;outline:none;width:100%}
+.set-table .si:focus{border-color:var(--bl)}
+.set-table .st{font-size:.75rem;font-weight:800;color:var(--tx2);direction:ltr;padding:7px 4px;border-radius:8px;background:rgba(148,163,184,.06);min-width:50px}
+.set-table .st.run{color:var(--am);background:rgba(245,158,11,.12)}
+.set-table .sb{width:32px;height:32px;border-radius:8px;border:none;background:var(--gr);color:#fff;cursor:pointer;font-size:.82rem;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
+.set-table .sb.run{background:var(--am);color:#000}
+.set-table .sb.dn{background:rgba(148,163,184,.2);color:var(--tx2)}
+
+/* Editor */
+.editor-day{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px}
+.editor-day-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
+.editor-day-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--bl),var(--pu));display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;flex-shrink:0}
+.editor-day-info{flex:1;min-width:0}
+.editor-day-name{font-weight:800;font-size:.88rem}
+.editor-day-focus{font-size:.66rem;color:var(--tx2);margin-top:2px}
+.prog-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.prog-table th{background:var(--card2);color:var(--tx2);font-size:.66rem;padding:6px 4px;text-align:center;font-weight:700;border-bottom:1px solid var(--bd)}
+.prog-table th:first-child{text-align:right;padding-right:8px}
+.prog-table td{padding:5px 4px;border-bottom:1px solid var(--bd)}
+.prog-table td:first-child{padding-right:8px;text-align:right}
+.prog-table input{width:100%;padding:5px 4px;text-align:center;font-size:.78rem;border-radius:6px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-weight:700;outline:none}
+.prog-table input:focus{border-color:var(--bl)}
+.prog-table tr:last-child td{border-bottom:none}
+
+/* Body metrics */
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.metric-input{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+.metric-input label{font-size:.65rem;color:var(--tx2);margin:0;display:flex;align-items:center;gap:4px}
+.metric-input input{border:none;background:transparent;padding:2px 0;font-size:1rem;font-weight:800;color:var(--tx)}
+.metric-input input:focus{box-shadow:none;border:none}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);z-index:90;display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.35);gap:2px}
+.bn-item{flex:1;padding:7px 4px;border-radius:10px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.62rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .15s;min-width:0}
+.bn-item .ic{font-size:1.25rem;line-height:1}
+.bn-item.active{color:var(--bl);background:rgba(59,130,246,.1)}
+.bn-item:active{transform:scale(.94)}
+
+/* Chart */
+.chart-box{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:8px;margin-bottom:10px;min-height:200px}
+.chart-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+
+/* Section title */
+.sh{font-size:.7rem;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 8px;padding-bottom:4px;border-bottom:1px dashed var(--bd);display:flex;align-items:center;justify-content:space-between}
+
+/* Toggle switch */
 .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd)}
 .toggle-row:last-child{border-bottom:none}
-.toggle-lbl{font-size:.85rem;font-weight:700;flex:1}
+.toggle-lbl{font-size:.84rem;font-weight:700;flex:1}
 .ts{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
 .ts input{display:none}
-.ts .sl{position:absolute;cursor:pointer;inset:0;border-radius:12px;background:rgba(148,163,184,.25);transition:.3s}
-.ts .sl::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.ts .sl{position:absolute;cursor:pointer;inset:0;border-radius:12px;background:rgba(148,163,184,.25);transition:.25s}
+.ts .sl::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s}
 .ts input:checked+.sl{background:var(--gr)}
 .ts input:checked+.sl::before{transform:translateX(20px)}
-/* Charts */
-.chart-box{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px;margin-bottom:10px}
-.chart-title{font-size:.82rem;font-weight:800;margin-bottom:8px;color:var(--tx2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
-/* Bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);z-index:90;display:flex;padding:6px 4px;box-shadow:0 -6px 20px rgba(0,0,0,.35);gap:2px}
-.bn-item{flex:1;padding:8px 4px;border-radius:10px;border:none;background:transparent;color:var(--tx2);font-family:inherit;font-weight:700;font-size:.65rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .2s;min-width:0}
-.bn-item .ic{font-size:1.3rem;line-height:1}
-.bn-item.active{color:var(--bl);background:rgba(59,130,246,.1)}
-/* Section header */
-.sh{font-size:.72rem;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:1px;margin:12px 0 8px;padding-bottom:5px;border-bottom:1px dashed var(--bd);display:flex;align-items:center;gap:5px;justify-content:space-between}
-/* Custom modal (for prompt replacement) */
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
-.modal{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:22px;max-width:400px;width:100%}
-.modal h3{font-size:1rem;font-weight:800;margin-bottom:12px}
-.modal-actions{display:flex;gap:8px;margin-top:16px}
-.modal-actions .btn{flex:1}
+
+/* Sticky actions */
+.sticky-bottom{position:sticky;bottom:0;background:var(--card);padding-top:10px;margin-top:10px;border-top:1px solid var(--bd);display:flex;gap:6px}
+.sticky-bottom .btn{flex:1;justify-content:center}
+
 @media(max-width:600px){
+  body{padding:8px;padding-bottom:88px}
   .drawer{width:100vw}
   .grid2{grid-template-columns:1fr}
   .grid3{grid-template-columns:1fr 1fr}
-  .set-row{grid-template-columns:24px 1fr 1fr 60px 28px;gap:3px}
-  .set-in{font-size:.75rem;padding:5px}
-  .set-time{font-size:.68rem;padding:5px 2px}
-  .set-btn{width:28px;height:28px;font-size:.75rem}
-  body{padding:8px;padding-bottom:80px}
+  .metric-grid{grid-template-columns:1fr 1fr}
   .header h1{font-size:.9rem}
-  .toolbar .btn{padding:7px 10px;font-size:.72rem}
-  .ex-anim{height:160px}
+  .toolbar .btn{padding:6px 10px;font-size:.7rem}
+  .ex-anim{height:170px}
+  .prog-table{font-size:.72rem}
+  .prog-table input{font-size:.72rem;padding:4px 2px}
+  .set-table .si{font-size:.78rem;padding:6px 3px}
+  .set-table .st{font-size:.7rem;min-width:45px;padding:6px 2px}
 }
-  /* Program table */
-.prog-table{width:100%;border-collapse:collapse;font-size:.82rem}
-.prog-table th{background:var(--card2);color:var(--tx2);font-size:.7rem;padding:6px 4px;text-align:center;font-weight:700;border-bottom:1px solid var(--bd)}
-.prog-table th:first-child{text-align:right;padding-right:8px}
-.prog-table td{padding:6px 4px;border-bottom:1px solid var(--bd)}
-.prog-table td:first-child{padding-right:8px}
-.prog-table input{width:100%;padding:5px 4px;text-align:center;font-size:.82rem;border-radius:6px;border:1px solid var(--bd);background:var(--card2);color:var(--tx);font-family:inherit;font-weight:700;outline:none}
-.prog-table input:focus{border-color:var(--bl);box-shadow:0 0 0 2px rgba(59,130,246,.15)}
-.prog-table tr:last-child td{border-bottom:none}
-.wdchip:disabled{opacity:.25;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -227,7 +287,7 @@ label{display:block;font-size:.76rem;font-weight:700;color:var(--tx2);margin-bot
     <div class="form-row"><label>رمز عبور</label><input type="password" id="loginPass" dir="ltr" autocomplete="current-password"></div>
     <button class="btn primary full" onclick="doLogin()" id="loginBtn">ورود</button>
     <div class="auth-err" id="loginErr"></div>
-    <div style="height:1px;background:var(--bd);margin:16px 0"></div>
+    <div style="height:1px;background:var(--bd);margin:14px 0"></div>
     <button class="btn full" onclick="showRegister()">✨ حساب ندارید؟ ثبت‌نام</button>
   </div>
   <div class="auth-card hidden" id="registerView">
@@ -238,25 +298,25 @@ label{display:block;font-size:.76rem;font-weight:700;color:var(--tx2);margin-bot
       <button type="button" class="role-btn selected" data-role="student" onclick="pickRole('student')"><span class="ric">🎓</span><span>شاگرد</span></button>
       <button type="button" class="role-btn" data-role="coach" onclick="pickRole('coach')"><span class="ric">👨‍🏫</span><span>مربی</span></button>
     </div>
-    <div id="roleHint" style="text-align:center;font-size:.72rem;color:var(--tm);margin-bottom:12px">حساب شاگرد بلافاصله فعال می‌شود</div>
+    <div id="roleHint" style="text-align:center;font-size:.7rem;color:var(--tm);margin-bottom:12px">حساب شاگرد بلافاصله فعال می‌شود</div>
     <div class="form-row"><label>نام کاربری (انگلیسی)</label><input type="text" id="regUser" dir="ltr"></div>
     <div class="form-row"><label>نام نمایشی</label><input type="text" id="regName"></div>
     <div class="form-row"><label>رمز (حداقل ۶ کاراکتر)</label><input type="password" id="regPass" dir="ltr"></div>
     <button class="btn primary full" onclick="doRegister()" id="regBtn">✅ ایجاد حساب</button>
     <div class="auth-err" id="regErr"></div>
-    <div style="height:1px;background:var(--bd);margin:16px 0"></div>
+    <div style="height:1px;background:var(--bd);margin:14px 0"></div>
     <button class="btn full" onclick="showLogin()">← بازگشت به ورود</button>
   </div>
   <div class="auth-card hidden" id="pendingView">
     <div class="auth-logo">⏳</div>
     <div class="auth-title">در انتظار تأیید</div>
     <div class="auth-sub">حساب مربی ساخته شد</div>
-    <div style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.05));border:1px solid rgba(245,158,11,.35);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px">
-      <div style="font-size:2rem;margin-bottom:8px">🔐</div>
-      <div style="font-weight:800;color:var(--am);margin-bottom:6px">منتظر تأیید مدیر</div>
-      <div style="font-size:.82rem;color:var(--tx2);line-height:1.7">پس از تأیید می‌توانید وارد شوید.</div>
+    <div style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.05));border:1px solid rgba(245,158,11,.35);border-radius:14px;padding:14px;text-align:center;margin-bottom:16px">
+      <div style="font-size:2rem;margin-bottom:6px">🔐</div>
+      <div style="font-weight:800;color:var(--am);margin-bottom:4px">منتظر تأیید مدیر</div>
+      <div style="font-size:.8rem;color:var(--tx2);line-height:1.7">پس از تأیید می‌توانید وارد شوید.</div>
     </div>
-    <button class="btn full" onclick="showLogin()">← بازگشت به ورود</button>
+    <button class="btn full" onclick="showLogin()">← بازگشت</button>
   </div>
 </div>
 
@@ -445,13 +505,15 @@ const state = {
   pendingAddExerciseDay: null,
   bodyChartMetric: 'weight',
   progressChartType: 'volume',
+  selectedDayKey: null,
   charts: {}
 };
 
 /* ============ API ============ */
 function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 let wakingShown = false;
-function showWaking(){ if(wakingShown) return; wakingShown = true;
+function showWaking(){
+  if(wakingShown) return; wakingShown = true;
   const c = document.getElementById('toasts');
   const el = document.createElement('div'); el.className = 'toast info'; el.id = 'wakingToast';
   el.innerHTML = '<span class="spinner"></span><span>سرور در حال بیدار شدن...</span>';
@@ -499,7 +561,7 @@ function toast(msg, type){
   const icons = { success:'✅', error:'❌', info:'ℹ️', warn:'⚠️' };
   el.innerHTML = '<span>' + (icons[type] || '✅') + '</span><span>' + msg + '</span>';
   c.appendChild(el);
-  setTimeout(() => el.remove(), 4000);
+  setTimeout(() => el.remove(), 3500);
 }
 
 /* ============ HELPERS ============ */
@@ -510,8 +572,17 @@ function todayWeekday(){ return new Date().getDay(); }
 function weekdayName(jsd){ return ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'][jsd]; }
 function formatTime(sec){ sec = Math.max(0, Math.floor(sec)); const m = Math.floor(sec/60), s = sec % 60; return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0'); }
 function themeMode(){ return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+function weekdayOrder(){
+  const o = { 6:0, 0:1, 1:2, 2:3, 3:4, 4:5, 5:6 };
+  return o;
+}
+function sortDays(){
+  if(!state.program.days) return;
+  const o = weekdayOrder();
+  state.program.days.sort((a,b) => (o[a.weekday] ?? 99) - (o[b.weekday] ?? 99));
+}
 
-/* ============ AUTH UI ============ */
+/* ============ AUTH ============ */
 function showRegister(){ document.getElementById('loginView').classList.add('hidden'); document.getElementById('registerView').classList.remove('hidden'); document.getElementById('pendingView').classList.add('hidden'); }
 function showLogin(){ document.getElementById('loginView').classList.remove('hidden'); document.getElementById('registerView').classList.add('hidden'); document.getElementById('pendingView').classList.add('hidden'); }
 function showPending(){ document.getElementById('loginView').classList.add('hidden'); document.getElementById('registerView').classList.add('hidden'); document.getElementById('pendingView').classList.remove('hidden'); }
@@ -574,7 +645,9 @@ async function doLogout(){
 
 /* ============ DRAWERS ============ */
 function openDrawer(id){
-  document.getElementById(id).classList.add('open');
+  const d = document.getElementById(id);
+  if(!d) return;
+  d.classList.add('open');
   const b = document.getElementById(id.replace('Drawer', 'Backdrop'));
   if(b) b.classList.add('open');
   if(id === 'userDrawer') renderUserDrawer();
@@ -582,12 +655,13 @@ function openDrawer(id){
   if(id === 'coachDrawer') renderCoachPanel();
 }
 function closeDrawer(id){
-  document.getElementById(id).classList.remove('open');
+  const d = document.getElementById(id);
+  if(d) d.classList.remove('open');
   const b = document.getElementById(id.replace('Drawer', 'Backdrop'));
   if(b) b.classList.remove('open');
 }
 function closeAllDrawers(){
-  ['userDrawer','adminDrawer','coachDrawer','createUserDrawer','createStudentDrawer','studentDetailDrawer','programEditorDrawer','exercisePickerDrawer'].forEach(closeDrawer);
+  document.querySelectorAll('.drawer.open, .backdrop.open').forEach(el => el.classList.remove('open'));
 }
 
 /* ============ BOOT ============ */
@@ -600,7 +674,6 @@ async function bootAfterLogin(){
   document.getElementById('userAvatar').style.background = u.color || '#3b82f6';
   document.getElementById('userName').textContent = u.displayName;
 
-  // Load data
   try{
     const d = await api('GET', '/api/users/' + u.id + '/data');
     if(d.workout) state.workout = d.workout;
@@ -609,6 +682,12 @@ async function bootAfterLogin(){
     if(d.program && d.program.days) state.program = d.program;
     if(d.permissions) state.permissions = d.permissions;
   } catch(e){}
+
+  // auto select today's day
+  const todayJsd = todayWeekday();
+  const todayDay = state.program.days.find(d => d.weekday === todayJsd);
+  if(todayDay) state.selectedDayKey = todayDay.id || todayDay.weekday;
+  else if(state.program.days.length > 0) state.selectedDayKey = state.program.days[0].id || state.program.days[0].weekday;
 
   if(u.role === 'student'){
     const done = localStorage.getItem('profit-onboarded-' + u.id);
@@ -621,37 +700,25 @@ async function bootAfterLogin(){
 
 async function saveWorkoutState(){ try{ await api('POST','/api/users/'+state.user.id+'/data/workout',{value:state.workout}); }catch(e){} }
 async function saveHistory(){ try{ await api('POST','/api/users/'+state.user.id+'/data/history',{value:state.history}); }catch(e){} }
-async function saveProgram(){
-  const targetId = state.programOwnerId || state.user.id;
-  try{ await api('POST','/api/users/'+targetId+'/data/program',{value:state.program}); }catch(e){}
-}
-async function saveBody(){
-  try{ await api('POST','/api/users/'+state.user.id+'/data/body',{value:state.body}); }catch(e){}
-}
+async function saveBody(){ try{ await api('POST','/api/users/'+state.user.id+'/data/body',{value:state.body}); }catch(e){} }
 
 /* ============ TOOLBAR ============ */
 function renderToolbar(){
   const u = state.user;
   const tb = document.getElementById('toolbar');
   let html = '';
-  if(u.role === 'admin'){
-    html += '<button class="btn admin" onclick="openDrawer(\'adminDrawer\')"><span>👑</span> مدیر</button>';
-  }
-  if(u.role === 'admin' || u.role === 'coach'){
-    html += '<button class="btn coach" onclick="openDrawer(\'coachDrawer\')"><span>👨‍🏫</span> مربی</button>';
-  }
+  if(u.role === 'admin') html += '<button class="btn admin" onclick="openDrawer(\'adminDrawer\')"><span>👑</span> مدیر</button>';
+  if(u.role === 'admin' || u.role === 'coach') html += '<button class="btn coach" onclick="openDrawer(\'coachDrawer\')"><span>👨‍🏫</span> مربی</button>';
   html += '<button class="btn" onclick="switchView(\'program\')"><span>📅</span> برنامه</button>';
   html += '<button class="btn" onclick="switchView(\'progress\')"><span>📊</span> پیشرفت</button>';
   tb.innerHTML = html;
 }
 
-/* ============ BOTTOM NAV ============ */
+/* ============ VIEW ============ */
 function switchView(view){
   state.currentView = view;
   renderView();
 }
-
-/* ============ VIEW ROUTER ============ */
 function renderView(){
   const c = document.getElementById('contentArea');
   const v = state.currentView;
@@ -671,7 +738,7 @@ function renderHome(c){
   const roles = { admin: '👑 مدیر', coach: '👨‍🏫 مربی', student: '🎓 شاگرد' };
 
   let html = '<div class="card"><h2>👋 سلام ' + esc(u.displayName) + '</h2>' +
-    '<div style="font-size:.82rem;color:var(--tx2);line-height:1.9">' +
+    '<div style="font-size:.8rem;color:var(--tx2);line-height:1.9">' +
     'نقش: <span class="badge ' + u.role + '">' + roles[u.role] + '</span><br>@' + esc(u.username) +
     '</div></div>';
 
@@ -679,19 +746,21 @@ function renderHome(c){
     const exs = todayDay.exercises || [];
     const total = exs.length;
     const done = exs.filter((_, i) => state.workout.completed[todayKey() + ':' + i]).length;
+    const pct = total ? Math.round(done/total*100) : 0;
     html += '<div class="card"><h2>📅 امروز — ' + esc(todayDay.name) + '</h2>' +
-      '<div style="font-size:.82rem;color:var(--tx2);margin-bottom:8px">' + esc(todayDay.focus || '') + '</div>' +
-      '<div style="font-size:.85rem;color:var(--gr);font-weight:700">✅ ' + fN(done) + ' از ' + fN(total) + '</div>' +
-      '<button class="btn primary full" style="margin-top:10px" onclick="switchView(\'program\')">مشاهده تمرین امروز</button></div>';
+      '<div style="font-size:.8rem;color:var(--tx2);margin-bottom:10px">' + esc(todayDay.focus || '') + '</div>' +
+      '<div class="week-progress" style="margin-bottom:10px"><div class="wp-top"><span>پیشرفت امروز</span><strong>' + fN(done) + '/' + fN(total) + '</strong></div>' +
+      '<div class="wp-track"><div class="wp-fill" style="width:' + pct + '%"></div></div></div>' +
+      '<button class="btn primary full" onclick="state.selectedDayKey=\'' + (todayDay.id || todayDay.weekday) + '\';switchView(\'program\')">مشاهده تمرین امروز</button></div>';
   } else {
-    html += '<div class="card"><h2>☕ امروز</h2><div style="color:var(--tx2);font-size:.85rem;line-height:1.8">امروز روز استراحت است یا برنامه‌ای تنظیم نشده.</div></div>';
+    html += '<div class="card"><h2>☕ امروز</h2><div style="color:var(--tx2);font-size:.82rem;line-height:1.8">امروز روز استراحت است یا برنامه‌ای تنظیم نشده.</div></div>';
   }
 
   const ws = getWeekStats();
   html += '<div class="card"><h2>📊 این هفته</h2>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center">' +
-    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--bl)">' + fN(ws.sessions) + '</div><div style="font-size:.7rem;color:var(--tm);margin-top:2px">جلسات</div></div>' +
-    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--gr)">' + fN(ws.volume) + '</div><div style="font-size:.7rem;color:var(--tm);margin-top:2px">حجم (kg)</div></div>' +
+    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--bl)">' + fN(ws.sessions) + '</div><div style="font-size:.68rem;color:var(--tm);margin-top:2px">جلسات</div></div>' +
+    '<div style="background:var(--card2);padding:12px;border-radius:10px"><div style="font-size:1.4rem;font-weight:900;color:var(--gr)">' + fN(ws.volume) + '</div><div style="font-size:.68rem;color:var(--tm);margin-top:2px">حجم (kg)</div></div>' +
     '</div></div>';
 
   if(u.role === 'admin' || u.role === 'coach'){
@@ -717,66 +786,108 @@ function getWeekStats(){
   return { sessions, volume: Math.round(volume) };
 }
 
-/* ============ PROGRAM VIEW ============ */
+/* ============ PROGRAM VIEW (with tabs) ============ */
 function renderProgramView(c){
   const canEdit = state.user.role !== 'student' || state.permissions.canEditProgram;
-  if(!state.program.days || !state.program.days.length){
-    let html = '<div class="card"><div class="empty"><div class="icon">📭</div><div>هنوز برنامه‌ای نداری</div>';
+  const days = state.program.days || [];
+
+  if(!days.length){
+    let html = '<div class="card"><div class="empty"><div class="icon">📭</div><div style="font-weight:700;margin-bottom:6px">هنوز برنامه‌ای نداری</div>';
     if(state.user.role === 'student'){
       html += '<button class="btn primary" style="margin-top:12px" onclick="openWizard()">🎯 ساخت برنامه هوشمند</button>';
       if(canEdit){
-        html += '<button class="btn" style="margin-top:8px" onclick="addDayManual()">➕ افزودن روز دستی</button>';
+        html += '<button class="btn" style="margin-top:8px" onclick="openProgramEditor(\'' + state.user.id + '\')">✏️ ساخت دستی برنامه</button>';
       } else {
-        html += '<div style="font-size:.75rem;color:var(--tm);margin-top:14px">برای ویرایش دستی، از مدیر یا مربی خود اجازه بگیرید</div>';
+        html += '<div style="font-size:.74rem;color:var(--tm);margin-top:14px">برای ویرایش دستی، از مدیر یا مربی خود اجازه بگیرید</div>';
       }
     } else {
-      html += '<button class="btn primary" style="margin-top:12px" onclick="addDayManual()">➕ افزودن روز</button>';
+      html += '<button class="btn primary" style="margin-top:12px" onclick="openProgramEditor(\'' + state.user.id + '\')">✏️ ویرایش برنامه</button>';
     }
     html += '</div></div>';
     c.innerHTML = html;
     return;
   }
 
+  // Ensure selected day
   const todayJsd = todayWeekday();
-  let html = '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">';
+  let selectedKey = state.selectedDayKey;
+  let selectedDay = days.find(d => (d.id || d.weekday) === selectedKey);
+  if(!selectedDay){
+    selectedDay = days.find(d => d.weekday === todayJsd) || days[0];
+    state.selectedDayKey = selectedDay.id || selectedDay.weekday;
+  }
+
+  // Compute week stats
+  let totalEx = 0, totalDone = 0;
+  days.forEach((day, dayIdx) => {
+    const exs = day.exercises || [];
+    exs.forEach((_, i) => {
+      totalEx++;
+      if(state.workout.completed[todayKey() + ':' + i]) totalDone++;
+    });
+  });
+  const weekPct = totalEx ? Math.round(totalDone/totalEx*100) : 0;
+
+  let html = '<div class="prog-header">';
+  html += '<div class="prog-actions">';
   if(canEdit){
-    html += '<button class="btn primary" onclick="addDayManual()">➕ روز جدید</button>';
+    html += '<button class="btn primary" onclick="openProgramEditor(\'' + state.user.id + '\')">✏️ ویرایش برنامه</button>';
   }
   if(state.user.role === 'student'){
     html += '<button class="btn" onclick="openWizard()">🎯 برنامه هوشمند</button>';
   }
   html += '</div>';
+  html += '<div class="week-progress"><div class="wp-top"><span>📊 پیشرفت این هفته</span><strong>' + fN(totalDone) + '/' + fN(totalEx) + ' حرکت</strong></div>' +
+    '<div class="wp-track"><div class="wp-fill" style="width:' + weekPct + '%"></div></div></div>';
+  html += '</div>';
 
-  state.program.days.forEach((day, dayIdx) => {
-    const exs = day.exercises || [];
+  // Day tabs
+  sortDays();
+  html += '<div class="day-tabs">';
+  days.forEach(day => {
     const isToday = day.weekday === todayJsd;
-    const total = exs.length;
-    const done = exs.filter((_, i) => state.workout.completed[todayKey() + ':' + i]).length;
+    const exs = day.exercises || [];
+    const key = day.id || day.weekday;
+    const isActive = key === state.selectedDayKey;
+    html += '<button class="day-tab ' + (isActive ? 'active' : '') + ' ' + (isToday ? 'is-today' : '') + '" onclick="selectDay(\'' + key + '\')">' +
+      (day.icon || '💪') + ' ' + esc(day.name.replace('روز ', '')) +
+      '<span class="dt-count">' + exs.length + '</span>' +
+    '</button>';
+  });
+  html += '</div>';
 
-    html += '<div class="day-card">' +
-      '<div class="day-header">' +
-      '<div class="day-icon">' + (day.icon || '💪') + '</div>' +
-      '<div class="day-info">' +
-      '<div class="day-name">' + esc(day.name) + (isToday ? ' <span class="badge active">امروز</span>' : '') + '</div>' +
-      '<div class="day-focus">' + esc(day.focus || '') + ' · ' + weekdayName(day.weekday) + '</div>' +
-      '</div>' +
-      '<div class="day-stat">' + fN(done) + '/' + fN(total) + '</div>' +
-      '</div>';
+  // Selected day info
+  const exs = selectedDay.exercises || [];
+  const done = exs.filter((_, i) => state.workout.completed[todayKey() + ':' + i]).length;
+  html += '<div class="day-info-card">' +
+    '<div class="dic-icon">' + (selectedDay.icon || '💪') + '</div>' +
+    '<div class="dic-info">' +
+      '<div class="dic-name">' + esc(selectedDay.name) + '</div>' +
+      '<div class="dic-focus">' + esc(selectedDay.focus || '—') + ' · ' + weekdayName(selectedDay.weekday) + '</div>' +
+    '</div>' +
+    '<div class="dic-prog">' +
+      '<div class="dp-num">' + fN(done) + '/' + fN(exs.length) + '</div>' +
+      '<div class="dp-lbl">انجام‌شده</div>' +
+    '</div>' +
+  '</div>';
 
-    if(exs.length === 0){
-      html += '<div style="text-align:center;color:var(--tm);padding:14px;font-size:.82rem">هنوز حرکتی اضافه نشده</div>';
-    } else {
-      html += exs.map((ex, i) => renderExerciseCard(ex, dayIdx, i)).join('');
-    }
+  if(exs.length === 0){
+    html += '<div class="empty" style="padding:20px"><div class="icon">📝</div><div style="font-size:.82rem">هنوز حرکتی برای این روز نیست</div>';
     if(canEdit){
-      html += '<button class="btn full" style="margin-top:8px;font-size:.8rem" onclick="addExerciseManually(' + dayIdx + ')">➕ افزودن حرکت به این روز</button>';
-    }
-    if(canEdit && exs.length > 0){
-      html += '<button class="btn danger full" style="margin-top:6px;font-size:.75rem" onclick="clearDay(' + dayIdx + ')">🗑️ پاک کردن حرکات این روز</button>';
+      html += '<button class="btn primary" style="margin-top:12px" onclick="openProgramEditor(\'' + state.user.id + '\')">➕ افزودن حرکت</button>';
     }
     html += '</div>';
-  });
+  } else {
+    const dayIdx = days.indexOf(selectedDay);
+    html += exs.map((ex, i) => renderExerciseCard(ex, dayIdx, i)).join('');
+  }
+
   c.innerHTML = html;
+}
+
+function selectDay(key){
+  state.selectedDayKey = key;
+  renderView();
 }
 
 function renderExerciseCard(ex, dayIdx, exIdx){
@@ -790,34 +901,33 @@ function renderExerciseCard(ex, dayIdx, exIdx){
   const img2 = imgName ? IMG_URL(imgName, 1) : null;
   const anim = (DB.animations && DB.animations[def.anim]) || '';
 
-  // Compute summary (max weight, total volume)
   let maxW = 0, totalVol = 0;
   Object.values(logs).forEach(l => {
     if(l.weight && l.reps){ totalVol += l.weight * l.reps; if(l.weight > maxW) maxW = l.weight; }
   });
-  const summary = isDone && maxW > 0 ? 'بیشترین: ' + fN(maxW) + 'kg · حجم: ' + fN(Math.round(totalVol)) + 'kg' : '';
+  const summary = isDone && maxW > 0 ? '✓ بیشترین: ' + fN(maxW) + 'kg · حجم: ' + fN(Math.round(totalVol)) + 'kg' : '';
 
-  let setsHtml = '<div class="set-row hdr-row"><div class="set-hdr">#</div><div class="set-hdr">وزنه</div><div class="set-hdr">تکرار</div><div class="set-hdr">زمان</div><div></div></div>';
+  let setsHtml = '<div style="margin-bottom:8px"><table class="set-table"><thead><tr><th style="width:32px">ست</th><th>وزنه</th><th>تکرار</th><th style="width:60px">زمان</th><th style="width:36px"></th></tr></thead><tbody>';
   for(let i = 0; i < sets; i++){
     const log = logs[i] || {};
     const stKey = key + ':' + i;
     const st = state.workout.sets[stKey];
     const elapsed = st ? (st.running ? Math.floor((Date.now() - st.startedAt)/1000) + (st.elapsed||0) : (st.elapsed||0)) : 0;
-    setsHtml += '<div class="set-row">' +
-      '<div class="set-num">' + fN(i+1) + '</div>' +
-      '<input class="set-in" type="number" step="0.5" min="0" placeholder="وزنه" value="' + (log.weight != null ? log.weight : '') + '" onchange="updSet(\'' + key + '\',' + i + ',\'weight\',this.value)">' +
-      '<input class="set-in" type="number" min="0" placeholder="تکرار" value="' + (log.reps != null ? log.reps : '') + '" onchange="updSet(\'' + key + '\',' + i + ',\'reps\',this.value)">' +
-      '<div class="set-time ' + (st && st.running ? 'run' : '') + '">' + formatTime(elapsed) + '</div>' +
-      '<button class="set-btn ' + (st && st.running ? 'run' : (st && st.elapsed > 0 ? 'dn' : '')) + '" onclick="toggleSetTimer(\'' + key + '\',' + i + ')">' + (st && st.running ? '⏸' : '▶') + '</button>' +
-    '</div>';
+    setsHtml += '<tr>' +
+      '<td class="sn">' + fN(i+1) + '</td>' +
+      '<td><input class="si" type="number" step="0.5" min="0" placeholder="—" value="' + (log.weight != null ? log.weight : '') + '" onchange="updSet(\'' + key + '\',' + i + ',\'weight\',this.value)"></td>' +
+      '<td><input class="si" type="number" min="0" placeholder="—" value="' + (log.reps != null ? log.reps : '') + '" onchange="updSet(\'' + key + '\',' + i + ',\'reps\',this.value)"></td>' +
+      '<td class="st ' + (st && st.running ? 'run' : '') + '">' + formatTime(elapsed) + '</td>' +
+      '<td><button class="sb ' + (st && st.running ? 'run' : (st && st.elapsed > 0 ? 'dn' : '')) + '" onclick="event.stopPropagation();toggleSetTimer(\'' + key + '\',' + i + ')">' + (st && st.running ? '⏸' : '▶') + '</button></td>' +
+    '</tr>';
   }
+  setsHtml += '</tbody></table></div>';
 
-  // Image or SVG fallback
   let visual;
   if(img1){
-    visual = '<div class="ex-img-holder" id="imgholder-' + exIdx + '">' +
-      '<img class="f1" src="' + img1 + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'none\';">' +
-      '<img class="f2" src="' + img2 + '" loading="lazy" onerror="this.style.display=\'none\';">' +
+    visual = '<div class="ex-img-holder">' +
+      '<img class="f1" src="' + img1 + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+      '<img class="f2" src="' + img2 + '" loading="lazy" onerror="this.style.display=\'none\'">' +
     '</div>';
   } else if(anim){
     visual = anim;
@@ -825,13 +935,20 @@ function renderExerciseCard(ex, dayIdx, exIdx){
     visual = '<div style="color:var(--tm);font-size:2rem">🏋️</div>';
   }
 
-  return '<div class="ex-card ' + (isDone ? 'done collapsed' : '') + '" data-exkey="' + key + '">' +
+  const cat = DB.categories[def.cat] || {};
+
+  return '<div class="ex-card ' + (isDone ? 'done minimized' : '') + '" data-exkey="' + key + '">' +
     '<div class="ex-header" onclick="toggleCardCollapse(\'' + key + '\')">' +
       '<button class="chk-btn ' + (isDone ? 'on' : '') + '" onclick="event.stopPropagation();toggleDone(\'' + key + '\')">' + (isDone ? '✓' : '') + '</button>' +
       '<div class="ex-num">' + fN(exIdx+1) + '</div>' +
       '<div class="ex-title">' +
         '<div class="ex-name">' + esc(def.name || ex.exId) + '</div>' +
-        '<div class="ex-info">' + fN(sets) + ' ست × ' + esc(ex.reps || '۸-۱۲') + ' · RPE ' + esc(ex.rpe || '۸') + '</div>' +
+        '<div class="ex-info">' +
+          '<span>' + fN(sets) + ' ست</span>' +
+          '<span>' + esc(ex.reps || '۸-۱۲') + '</span>' +
+          '<span>RPE ' + esc(ex.rpe || '۸') + '</span>' +
+          (cat.name ? '<span>' + cat.emoji + ' ' + cat.name + '</span>' : '') +
+        '</div>' +
         (summary ? '<div class="ex-summary">' + summary + '</div>' : '') +
       '</div>' +
       '<div class="expand-ic">' + (isDone ? '▶' : '▼') + '</div>' +
@@ -846,9 +963,9 @@ function renderExerciseCard(ex, dayIdx, exIdx){
 function toggleCardCollapse(key){
   const card = document.querySelector('[data-exkey="' + key + '"]');
   if(!card) return;
-  card.classList.toggle('collapsed');
+  card.classList.toggle('minimized');
   const ic = card.querySelector('.expand-ic');
-  if(ic) ic.textContent = card.classList.contains('collapsed') ? '▶' : '▼';
+  if(ic) ic.textContent = card.classList.contains('minimized') ? '▶' : '▼';
 }
 
 function toggleDone(key){
@@ -911,60 +1028,282 @@ function logTodayStats(){
 }
 
 /* ============ MANUAL PROGRAM EDITING ============ */
-function addDayManual(){
-  const modal = document.createElement('div');
-  modal.className = 'modal-backdrop';
-  modal.innerHTML = '<div class="modal">' +
-    '<h3>➕ افزودن روز جدید</h3>' +
-    '<div class="form-row"><label>روز هفته</label><select id="mDayWD">' +
-      [6,0,1,2,3,4,5].map(j => '<option value="' + j + '">' + weekdayName(j) + '</option>').join('') +
-    '</select></div>' +
-    '<div class="form-row"><label>نام روز</label><input type="text" id="mDayName" placeholder="روز شنبه"></div>' +
-    '<div class="form-row"><label>تمرکز (اختیاری)</label><input type="text" id="mDayFocus" placeholder="بالاتنه قدرتی"></div>' +
-    '<div class="form-row"><label>آیکن</label><input type="text" id="mDayIcon" value="💪" maxlength="4"></div>' +
-    '<div class="modal-actions"><button class="btn" onclick="this.closest(\'.modal-backdrop\').remove()">لغو</button>' +
-    '<button class="btn primary" onclick="confirmAddDay(this)">ذخیره</button></div>' +
+function renderEditorDay(day, di){
+  const exs = day.exercises || [];
+  let rowsHtml;
+  if(exs.length === 0){
+    rowsHtml = '<tr><td colspan="5" style="text-align:center;color:var(--tm);padding:14px;font-size:.78rem">هنوز حرکتی ندارد — روی «➕ افزودن حرکت» بزن</td></tr>';
+  } else {
+    rowsHtml = exs.map((ex, ei) => {
+      const def = DB.exercises.find(e => e.id === ex.exId) || {};
+      const cat = DB.categories[def.cat] || {};
+      return '<tr>' +
+        '<td><div style="font-weight:700;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">' + esc(def.name || ex.exId) + '</div>' +
+        '<div style="font-size:.6rem;color:var(--tm)">' + (cat.emoji||'') + ' ' + (cat.name||'') + '</div></td>' +
+        '<td><input type="number" value="' + (ex.sets || 3) + '" min="1" max="10" onchange="updateExField(' + di + ',' + ei + ',\'sets\',this.value)"></td>' +
+        '<td><input type="text" value="' + esc(ex.reps || '۸-۱۲') + '" onchange="updateExField(' + di + ',' + ei + ',\'reps\',this.value)"></td>' +
+        '<td><input type="text" value="' + esc(ex.rpe || '۸') + '" onchange="updateExField(' + di + ',' + ei + ',\'rpe\',this.value)"></td>' +
+        '<td style="text-align:center"><button class="icon-btn del" onclick="removeExerciseFromDay(' + di + ',' + ei + ')" style="width:26px;height:26px;font-size:.7rem">✕</button></td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  return '<div class="editor-day">' +
+    '<div class="editor-day-header">' +
+      '<div class="editor-day-icon">' + (day.icon||'💪') + '</div>' +
+      '<div class="editor-day-info">' +
+        '<div class="editor-day-name">' + esc(day.name) + '</div>' +
+        '<div class="editor-day-focus">' + weekdayName(day.weekday) + ' · ' + esc(day.focus || '—') + ' · ' + exs.length + ' حرکت</div>' +
+      '</div>' +
+      '<button class="icon-btn" onclick="openEditDayDrawer(' + di + ')" title="ویرایش">✏️</button>' +
+      '<button class="icon-btn del" onclick="deleteDay(' + di + ')" title="حذف">🗑️</button>' +
+    '</div>' +
+    '<table class="prog-table">' +
+    '<thead><tr><th>حرکت</th><th style="width:50px">ست</th><th style="width:70px">تکرار</th><th style="width:50px">RPE</th><th style="width:30px"></th></tr></thead>' +
+    '<tbody>' + rowsHtml + '</tbody>' +
+    '</table>' +
+    '<div style="display:flex;gap:6px;margin-top:10px">' +
+      '<button class="btn primary" style="flex:1;justify-content:center;font-size:.76rem" onclick="openExercisePickerForDay(' + di + ')">➕ افزودن حرکت</button>' +
+      (exs.length ? '<button class="btn danger" style="font-size:.72rem;padding:6px 10px" onclick="clearDay(' + di + ')">🗑️</button>' : '') +
+    '</div>' +
   '</div>';
-  document.body.appendChild(modal);
-  document.getElementById('mDayName').value = 'روز ' + weekdayName(parseInt(document.getElementById('mDayWD').value));
 }
-async function confirmAddDay(btn){
-  const modal = btn.closest('.modal-backdrop');
-  const wd = parseInt(document.getElementById('mDayWD').value);
-  const name = document.getElementById('mDayName').value.trim();
-  const focus = document.getElementById('mDayFocus').value.trim();
-  const icon = document.getElementById('mDayIcon').value.trim() || '💪';
-  if(!name){ toast('نام روز را وارد کنید', 'error'); return; }
-  if(!state.program.days) state.program.days = [];
-  if(state.program.days.some(d => d.weekday === wd)){ toast('برای این روز قبلاً برنامه هست', 'warn'); return; }
-  state.program.days.push({ id: 'day_' + Date.now(), weekday: wd, name, focus, icon, exercises: [] });
-  state.program.days.sort((a,b) => {
-    const order = { 6:0, 0:1, 1:2, 2:3, 3:4, 4:5, 5:6 };
-    return order[a.weekday] - order[b.weekday];
-  });
-  await saveProgram();
-  modal.remove();
-  toast('روز اضافه شد ✓');
-  renderView();
+
+function renderProgramEditor(){
+  const el = document.getElementById('programEditorBody');
+  if(!el) return;
+  const stu = state.currentStudent;
+  document.getElementById('programEditorTitle').textContent = '🗓️ ویرایش برنامه' + (stu ? ' — ' + stu.displayName : '');
+
+  let html = '<div style="display:flex;gap:8px;margin-bottom:12px">' +
+    '<button class="btn primary" style="flex:1;justify-content:center" onclick="openAddDayDrawer()">➕ روز جدید</button>' +
+    '<button class="btn success" style="flex:1;justify-content:center" onclick="saveProgramAndClose()">💾 ذخیره و بستن</button>' +
+  '</div>';
+
+  if(!state.program.days || !state.program.days.length){
+    html += '<div class="empty"><div class="icon">📭</div><div>هنوز روزی ندارد</div>' +
+      '<div style="font-size:.74rem;color:var(--tm);margin-top:10px">روی «افزودن روز جدید» بزن</div></div>';
+    el.innerHTML = html;
+    return;
+  }
+
+  sortDays();
+  html += state.program.days.map((day, di) => renderEditorDay(day, di)).join('');
+  el.innerHTML = html;
 }
+
+function updateExField(di, ei, field, val){
+  const ex = state.program.days[di] && state.program.days[di].exercises[ei];
+  if(!ex) return;
+  if(field === 'sets') ex.sets = Math.max(1, Math.min(10, parseInt(val) || 3));
+  else ex[field] = val;
+  autoSaveProgram();
+}
+
 function clearDay(di){
   if(!confirm('تمام حرکات این روز پاک شوند؟')) return;
   state.program.days[di].exercises = [];
-  saveProgram().then(() => { toast('پاک شد', 'info'); renderView(); });
+  autoSaveProgram();
+  renderProgramEditor();
 }
-function addExerciseManually(dayIdx){
-  state.pendingAddExerciseDay = dayIdx;
-  pickerCat = 'all'; pickerSearch = '';
-  renderExercisePicker();
-  openDrawer('exercisePickerDrawer');
+
+function deleteDay(di){
+  const day = state.program.days[di];
+  if(!day) return;
+  if(!confirm('روز «' + (day.name || '') + '» حذف شود؟')) return;
+  state.program.days.splice(di, 1);
+  autoSaveProgram();
+  renderProgramEditor();
+}
+
+function removeExerciseFromDay(di, ei){
+  state.program.days[di].exercises.splice(ei, 1);
+  autoSaveProgram();
+  renderProgramEditor();
+}
+
+function autoSaveProgram(){
+  const targetId = state.programOwnerId || state.user.id;
+  api('POST', '/api/users/' + targetId + '/data/program', { value: state.program }).catch(() => {});
+}
+
+function saveProgramAndClose(){
+  const targetId = state.programOwnerId || state.user.id;
+  api('POST', '/api/users/' + targetId + '/data/program', { value: state.program })
+    .then(() => {
+      toast('برنامه ذخیره شد ✓');
+      closeDrawer('programEditorDrawer');
+      state.programOwnerId = null;
+      state.editingProgramFor = null;
+      state.currentStudent = null;
+      if(targetId === state.user.id){
+        api('GET', '/api/users/' + state.user.id + '/data').then(d => {
+          if(d.program) state.program = d.program;
+          renderView();
+        }).catch(() => renderView());
+      } else {
+        renderView();
+      }
+    }).catch(e => toast('خطا: ' + e.message, 'error'));
+}
+
+/* ============ DAY DRAWER ============ */
+let dayDrawerMode = 'add';
+let dayDrawerEditIndex = -1;
+
+function openAddDayDrawer(){
+  if(!state.programOwnerId) state.programOwnerId = state.user.id;
+  dayDrawerMode = 'add';
+  dayDrawerEditIndex = -1;
+  showDayDrawerForm({ name: '', focus: '', icon: '💪', weekday: null });
+}
+
+function openEditDayDrawer(di){
+  dayDrawerMode = 'edit';
+  dayDrawerEditIndex = di;
+  showDayDrawerForm(state.program.days[di]);
+}
+
+function showDayDrawerForm(day){
+  let backdrop = document.getElementById('dayFormBackdrop');
+  if(!backdrop){
+    backdrop = document.createElement('div');
+    backdrop.id = 'dayFormBackdrop';
+    backdrop.className = 'backdrop';
+    backdrop.style.zIndex = '104';
+    backdrop.onclick = () => closeDrawer('dayFormDrawer');
+    document.body.appendChild(backdrop);
+  }
+  let drawer = document.getElementById('dayFormDrawer');
+  if(!drawer){
+    drawer = document.createElement('div');
+    drawer.id = 'dayFormDrawer';
+    drawer.className = 'drawer right';
+    drawer.style.zIndex = '105';
+    drawer.style.width = '420px';
+    drawer.innerHTML =
+      '<div class="drawer-header"><h2 id="dayFormTitle">➕ روز جدید</h2><button class="close-btn" onclick="closeDrawer(\'dayFormDrawer\')">✕</button></div>' +
+      '<div class="drawer-body" id="dayFormBody"></div>';
+    document.body.appendChild(drawer);
+  }
+
+  const initialWd = day.weekday != null ? day.weekday : null;
+  const todayJs = todayWeekday();
+  const wdHtml = [6,0,1,2,3,4,5].map(jsd => {
+    const isSel = initialWd === jsd;
+    const isUsed = state.program.days.some((d, i) => d.weekday === jsd && i !== dayDrawerEditIndex);
+    const disabled = isUsed && !isSel;
+    const todayBadge = jsd === todayJs ? ' ⭐' : '';
+    return '<button type="button" class="wdchip ' + (isSel ? 'sel' : '') + '" ' +
+      (disabled ? 'disabled style="opacity:.3;cursor:not-allowed"' : '') +
+      ' onclick="pickDayWD(' + jsd + ',this)">' +
+      weekdayName(jsd) + todayBadge + '</button>';
+  }).join('');
+
+  document.getElementById('dayFormTitle').textContent = dayDrawerMode === 'add' ? '➕ روز جدید' : '✏️ ویرایش روز';
+  document.getElementById('dayFormBody').innerHTML =
+    '<div class="form-row"><label>روز هفته *</label><div class="wdpick" id="dayFormWD">' + wdHtml + '</div></div>' +
+    '<div class="form-row"><label>نام روز</label><input type="text" id="dayFormName" value="' + esc(day.name || '') + '" placeholder="روز شنبه"></div>' +
+    '<div class="form-row"><label>تمرکز (اختیاری)</label><input type="text" id="dayFormFocus" value="' + esc(day.focus || '') + '" placeholder="بالاتنه قدرتی"></div>' +
+    '<div class="form-row"><label>آیکن</label><input type="text" id="dayFormIcon" value="' + esc(day.icon || '💪') + '" maxlength="4" style="text-align:center;font-size:1.4rem"></div>' +
+    '<div style="display:flex;gap:8px;margin-top:16px">' +
+      '<button class="btn" style="flex:1;justify-content:center" onclick="closeDrawer(\'dayFormDrawer\')">لغو</button>' +
+      '<button class="btn primary" style="flex:1;justify-content:center" onclick="saveDayForm()">💾 ذخیره</button>' +
+    '</div>';
+
+  drawer.dataset.selectedWd = initialWd != null ? String(initialWd) : '';
+  openDrawer('dayFormDrawer');
+}
+
+function pickDayWD(jsd, btn){
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.wdchip').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('dayFormDrawer').dataset.selectedWd = String(jsd);
+  const nameInput = document.getElementById('dayFormName');
+  if(!nameInput.value.trim() || nameInput.value.trim().startsWith('روز ')){
+    nameInput.value = 'روز ' + weekdayName(jsd);
+  }
+}
+
+async function saveDayForm(){
+  const drawer = document.getElementById('dayFormDrawer');
+  const wdStr = drawer.dataset.selectedWd;
+  const name = document.getElementById('dayFormName').value.trim();
+  const focus = document.getElementById('dayFormFocus').value.trim();
+  const icon = document.getElementById('dayFormIcon').value.trim() || '💪';
+
+  if(!name){ toast('نام روز را وارد کنید', 'error'); return; }
+  if(wdStr === ''){ toast('روز هفته را انتخاب کنید', 'error'); return; }
+  const wd = parseInt(wdStr);
+
+  const dup = state.program.days.findIndex((d, i) => d.weekday === wd && i !== dayDrawerEditIndex);
+  if(dup !== -1){ toast('این روز قبلاً برنامه دارد', 'warn'); return; }
+
+  const isNew = dayDrawerMode === 'add';
+
+  if(isNew){
+    state.program.days.push({
+      id: 'day_' + Date.now(),
+      weekday: wd,
+      name: name,
+      focus: focus,
+      icon: icon,
+      exercises: []
+    });
+  } else {
+    const d = state.program.days[dayDrawerEditIndex];
+    d.weekday = wd;
+    d.name = name;
+    d.focus = focus;
+    d.icon = icon;
+  }
+
+  closeDrawer('dayFormDrawer');
+  autoSaveProgram();
+  renderProgramEditor();
+
+  if(isNew){
+    sortDays();
+    const newIdx = state.program.days.findIndex(d => d.weekday === wd);
+    if(newIdx !== -1){
+      toast('روز اضافه شد — حالا حرکات اضافه کن');
+      setTimeout(() => openExercisePickerForDay(newIdx), 250);
+    }
+  } else {
+    toast('ذخیره شد ✓');
+  }
 }
 
 /* ============ EXERCISE PICKER ============ */
 let pickerCat = 'all';
 let pickerSearch = '';
+
+function openExercisePickerForDay(dayIdx){
+  if(!state.programOwnerId) state.programOwnerId = state.user.id;
+  state.pendingAddExerciseDay = dayIdx;
+  pickerCat = 'all';
+  pickerSearch = '';
+  renderExercisePicker();
+  openDrawer('exercisePickerDrawer');
+}
+
 function renderExercisePicker(){
   const el = document.getElementById('exercisePickerBody');
-  let html = '<input type="text" placeholder="جستجو..." value="' + esc(pickerSearch) + '" oninput="pickerSearch=this.value;renderExercisePicker()" style="margin-bottom:10px">';
+  if(!el) return;
+  const di = state.pendingAddExerciseDay;
+  if(di === null || di === undefined) return;
+  const day = state.program.days[di];
+  if(!day){ el.innerHTML = '<div class="empty">روز پیدا نشد</div>'; return; }
+  const exs_ = day.exercises || [];
+
+  let html = '<div style="background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));padding:12px;border-radius:10px;margin-bottom:12px;font-size:.85rem">' +
+    '<strong>' + (day.icon || '💪') + ' ' + esc(day.name) + '</strong>' +
+    '<div style="font-size:.7rem;color:var(--tx2);margin-top:3px">' + exs_.length + ' حرکت — می‌تونی چند تا پشت سر هم اضافه کنی</div>' +
+  '</div>';
+
+  html += '<input type="text" id="pickerSearchInput" placeholder="جستجوی حرکت..." value="' + esc(pickerSearch) + '" oninput="pickerSearch=this.value;renderExercisePicker()" style="margin-bottom:10px">';
+
   html += '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px">';
   html += '<button class="btn sm" style="' + (pickerCat === 'all' ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="pickerCat=\'all\';renderExercisePicker()">🌐 همه</button>';
   Object.keys(DB.categories).forEach(k => {
@@ -972,40 +1311,71 @@ function renderExercisePicker(){
     html += '<button class="btn sm" style="' + (pickerCat === k ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="pickerCat=\'' + k + '\';renderExercisePicker()">' + c.emoji + ' ' + c.name + '</button>';
   });
   html += '</div>';
+
   let exs = DB.exercises;
   if(pickerCat !== 'all') exs = exs.filter(e => e.cat === pickerCat);
   if(pickerSearch){
     const t = pickerSearch.toLowerCase();
     exs = exs.filter(e => e.name.toLowerCase().includes(t) || (e.en || '').toLowerCase().includes(t));
   }
-  html += '<div style="font-size:.72rem;color:var(--tm);margin-bottom:6px">' + exs.length + ' حرکت</div>';
-  html += exs.slice(0, 200).map(e =>
-    '<div class="u-item" style="cursor:pointer" onclick="addExerciseToDay(\'' + e.id + '\')">' +
-      '<div class="u-avatar" style="background:var(--card2);color:var(--tx)">' + ((DB.categories[e.cat] || {}).emoji || '🏋️') + '</div>' +
-      '<div class="u-info"><div class="u-name">' + esc(e.name) + '</div>' +
-      '<div class="u-meta">' + esc(e.en || '') + ' · ' + ((DB.categories[e.cat] || {}).name || '') + '</div></div>' +
-    '</div>').join('');
+  const alreadyIn = new Set(exs_.map(e => e.exId));
+
+  html += '<div style="font-size:.72rem;color:var(--tm);margin-bottom:6px">' + exs.length + ' حرکت موجود</div>';
+
+  if(exs.length === 0){
+    html += '<div class="empty" style="padding:20px"><div class="icon">🔍</div><div>یافت نشد</div></div>';
+  } else {
+    html += '<div>';
+    html += exs.slice(0, 200).map(e => {
+      const isIn = alreadyIn.has(e.id);
+      return '<div class="u-item clickable" style="' +
+        (isIn ? 'border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.01))' : '') +
+        '" onclick="quickAddExercise(\'' + e.id + '\')">' +
+        '<div class="u-avatar" style="background:var(--card2);color:var(--tx)">' + ((DB.categories[e.cat] || {}).emoji || '🏋️') + '</div>' +
+        '<div class="u-info"><div class="u-name">' + esc(e.name) +
+        (isIn ? ' <span style="font-size:.6rem;color:var(--gr);font-weight:800">✓ اضافه شد</span>' : '') +
+        '</div>' +
+        '<div class="u-meta">' + esc(e.en || '') + ' · ' + ((DB.categories[e.cat] || {}).name || '') + '</div></div>' +
+        '<div style="color:' + (isIn ? 'var(--gr)' : 'var(--bl)') + ';font-size:1.3rem;font-weight:900">' + (isIn ? '↻' : '+') + '</div>' +
+      '</div>';
+    }).join('');
+    html += '</div>';
+  }
+
+  html += '<div class="sticky-bottom">' +
+    '<button class="btn success full" onclick="closeDrawer(\'exercisePickerDrawer\')">✓ تمام — بازگشت</button>' +
+  '</div>';
+
   el.innerHTML = html;
 }
-function addExerciseToDay(exId){
-  const dayIdx = state.pendingAddExerciseDay;
-  if(dayIdx === null || dayIdx === undefined) return;
+
+function quickAddExercise(exId){
+  const di = state.pendingAddExerciseDay;
+  if(di === null || di === undefined) return;
   const def = DB.exercises.find(e => e.id === exId);
   if(!def) return;
+
   const vol = DB.volumeByLevel.intermediate;
-  if(!state.program.days[dayIdx].exercises) state.program.days[dayIdx].exercises = [];
-  state.program.days[dayIdx].exercises.push({
-    exId: exId,
-    sets: def.type === 'comp' ? vol.sets : Math.max(3, vol.sets - 1),
-    reps: def.type === 'comp' ? vol.repsCompound : vol.repsIsolation,
-    rpe: '۸'
-  });
-  toast('✓ اضافه شد');
-  closeDrawer('exercisePickerDrawer');
-  saveProgram().then(() => renderView());
+  if(!state.program.days[di].exercises) state.program.days[di].exercises = [];
+
+  const existIdx = state.program.days[di].exercises.findIndex(e => e.exId === exId);
+  if(existIdx !== -1){
+    state.program.days[di].exercises.splice(existIdx, 1);
+    toast('حذف شد', 'info');
+  } else {
+    state.program.days[di].exercises.push({
+      exId: exId,
+      sets: def.type === 'comp' ? vol.sets : Math.max(3, vol.sets - 1),
+      reps: def.type === 'comp' ? vol.repsCompound : vol.repsIsolation,
+      rpe: '۸'
+    });
+    toast('✓ ' + def.name);
+  }
+  autoSaveProgram();
+  renderExercisePicker();
+  renderProgramEditor();
 }
 
-/* ============ PROGRAM EDITOR (for coach/admin) ============ */
 async function openProgramEditor(studentId){
   state.editingProgramFor = studentId;
   state.programOwnerId = studentId;
@@ -1013,98 +1383,27 @@ async function openProgramEditor(studentId){
     const d = await api('GET', '/api/users/' + studentId + '/data');
     state.program = d.program && d.program.days ? d.program : { days: [] };
   } catch(e){ state.program = { days: [] }; }
+
+  if(studentId === state.user.id){
+    state.currentStudent = null;
+  } else {
+    const s = state.students.find(x => x.id === studentId);
+    if(s) state.currentStudent = s;
+  }
   renderProgramEditor();
   openDrawer('programEditorDrawer');
-}
-function renderProgramEditor(){
-  const el = document.getElementById('programEditorBody');
-  const stu = state.currentStudent;
-  document.getElementById('programEditorTitle').textContent = '🗓️ ویرایش برنامه' + (stu ? ' — ' + stu.displayName : '');
-
-  let html = '<div style="display:flex;gap:8px;margin-bottom:12px">' +
-    '<button class="btn primary" style="flex:1;justify-content:center" onclick="addDayManual()">➕ روز جدید</button>' +
-    '<button class="btn success" style="flex:1;justify-content:center" onclick="saveProgramAndClose()">💾 ذخیره و بستن</button>' +
-  '</div>';
-
-  if(!state.program.days || !state.program.days.length){
-    html += '<div class="empty"><div class="icon">📭</div><div>هنوز روزی ندارد</div></div>';
-    el.innerHTML = html; return;
-  }
-
-  html += state.program.days.map((day, di) => {
-    const exs = day.exercises || [];
-    return '<div class="card" style="margin-bottom:10px">' +
-      '<div class="day-header" style="padding-bottom:8px;margin-bottom:8px">' +
-      '<div class="day-icon" style="width:38px;height:38px;font-size:1.1rem">' + (day.icon || '💪') + '</div>' +
-      '<div class="day-info"><div class="day-name">' + esc(day.name) + '</div>' +
-      '<div class="day-focus">' + weekdayName(day.weekday) + ' · ' + esc(day.focus || '') + '</div></div>' +
-      '<button class="icon-btn del" onclick="deleteDay(' + di + ')">🗑️</button></div>' +
-      '<div style="font-size:.75rem;color:var(--tx2);margin-bottom:6px">' + exs.length + ' حرکت</div>' +
-      exs.map((ex, ei) => {
-        const def = DB.exercises.find(e => e.id === ex.exId) || {};
-        return '<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--card2);border-radius:8px;margin-bottom:4px">' +
-          '<div style="font-size:1rem">' + ((DB.categories[def.cat] || {}).emoji || '🏋️') + '</div>' +
-          '<div style="flex:1;min-width:0">' +
-            '<div style="font-weight:700;font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(def.name || ex.exId) + '</div>' +
-            '<div style="font-size:.65rem;color:var(--tx2)">' + (ex.sets || 3) + '×' + esc(ex.reps || '۸-۱۲') + ' · RPE ' + esc(ex.rpe || '۸') + '</div>' +
-          '</div>' +
-          '<button class="icon-btn" onclick="editExerciseInDay(' + di + ',' + ei + ')">✏️</button>' +
-          '<button class="icon-btn del" onclick="removeExerciseFromDay(' + di + ',' + ei + ')">🗑️</button>' +
-        '</div>';
-      }).join('') +
-      '<button class="btn full" style="margin-top:8px;font-size:.78rem" onclick="addExerciseManually(' + di + ')">➕ افزودن حرکت</button>' +
-    '</div>';
-  }).join('');
-  el.innerHTML = html;
-}
-function saveProgramAndClose(){
-  const targetId = state.programOwnerId;
-  api('POST', '/api/users/' + targetId + '/data/program', { value: state.program })
-    .then(() => {
-      toast('برنامه ذخیره شد ✓');
-      closeDrawer('programEditorDrawer');
-      state.programOwnerId = null;
-      state.editingProgramFor = null;
-      // reload own program if we're the owner
-      if(targetId === state.user.id){
-        state.program = JSON.parse(JSON.stringify(state.program));
-        renderView();
-      }
-    }).catch(e => toast('خطا: ' + e.message, 'error'));
-}
-function deleteDay(di){
-  if(!confirm('این روز حذف شود؟')) return;
-  state.program.days.splice(di, 1);
-  renderProgramEditor();
-}
-function removeExerciseFromDay(di, ei){
-  state.program.days[di].exercises.splice(ei, 1);
-  renderProgramEditor();
-}
-function editExerciseInDay(di, ei){
-  const ex = state.program.days[di].exercises[ei];
-  const sets = prompt('تعداد ست:', ex.sets || 3);
-  if(sets === null) return;
-  const reps = prompt('تکرار:', ex.reps || '۸-۱۲');
-  if(reps === null) return;
-  const rpe = prompt('RPE:', ex.rpe || '۸');
-  if(rpe === null) return;
-  ex.sets = parseInt(sets) || 3;
-  ex.reps = reps;
-  ex.rpe = rpe;
-  renderProgramEditor();
 }
 
 /* ============ PROGRESS VIEW ============ */
 function renderProgressView(c){
   const chartTypes = [
-    { k:'volume', name:'حجم هفتگی (kg)' },
-    { k:'sessions', name:'جلسات هفتگی' },
-    { k:'muscles', name:'تعادل عضلات' },
-    { k:'monthly', name:'روند ماهانه' }
+    { k:'volume', name:'📊 حجم هفتگی' },
+    { k:'sessions', name:'✅ جلسات' },
+    { k:'muscles', name:'🎯 تعادل عضلات' },
+    { k:'monthly', name:'📈 روند ماهانه' }
   ];
   let html = '<div class="card"><h2>📊 نمودار پیشرفت</h2>' +
-    '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px">' +
+    '<div class="chart-tabs">' +
     chartTypes.map(t => '<button class="btn sm" style="' + (state.progressChartType === t.k ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="state.progressChartType=\'' + t.k + '\';renderView()">' + t.name + '</button>').join('') +
     '</div>' +
     '<div class="chart-box"><div id="chartMain"></div></div></div>';
@@ -1114,7 +1413,7 @@ function renderProgressView(c){
 function drawProgressChart(){
   const el = document.getElementById('chartMain');
   if(!el) return;
-  if(state.charts.main) { state.charts.main.destroy(); state.charts.main = null; }
+  if(state.charts.main){ state.charts.main.destroy(); state.charts.main = null; }
   const t = state.progressChartType;
   let opts;
   if(t === 'volume' || t === 'sessions'){
@@ -1134,7 +1433,7 @@ function drawProgressChart(){
     opts = {
       chart: { type:'bar', height:220, toolbar:{show:false}, fontFamily:'Vazirmatn' },
       series: [{ name: t === 'volume' ? 'حجم' : 'ست‌ها', data }],
-      xaxis: { categories: labels, labels: { style: { colors:'#94a3b8', fontSize:'11px' } } },
+      xaxis: { categories: labels, labels: { style: { colors:'#94a3b8', fontSize:'10px' } } },
       yaxis: { labels: { style: { colors:'#94a3b8' } } },
       plotOptions: { bar: { borderRadius:8, columnWidth:'55%' } },
       colors: [t === 'volume' ? '#3b82f6' : '#10b981'],
@@ -1143,9 +1442,7 @@ function drawProgressChart(){
       theme: { mode: themeMode() }
     };
   } else if(t === 'muscles'){
-    // count exercises per category from the last 30 days of training
     const cats = {};
-    const now = Date.now();
     state.program.days.forEach(day => {
       (day.exercises || []).forEach(ex => {
         const def = DB.exercises.find(e => e.id === ex.exId);
@@ -1168,7 +1465,6 @@ function drawProgressChart(){
       yaxis:{show:false}, theme:{ mode: themeMode() }
     };
   } else if(t === 'monthly'){
-    // Last 6 months
     const today = new Date();
     const labels = [], data = [];
     for(let i = 5; i >= 0; i--){
@@ -1197,9 +1493,10 @@ function drawProgressChart(){
 /* ============ BODY VIEW ============ */
 function renderBodyView(c){
   const b = state.body;
+  const today = b.find(e => e.date === todayKey()) || {};
   let html = '<div class="card"><h2>📏 ثبت اندازه‌های بدن</h2>' +
-    '<div class="grid3">' +
-    BODY_METRICS.map(m => '<div class="form-row"><label>' + m.emoji + ' ' + m.name + ' (' + m.unit + ')</label><input type="number" step="0.1" id="bm_' + m.key + '" placeholder="—"></div>').join('') +
+    '<div class="metric-grid">' +
+    BODY_METRICS.map(m => '<div class="metric-input"><label>' + m.emoji + ' ' + m.name + ' (' + m.unit + ')</label><input type="number" step="0.1" id="bm_' + m.key + '" placeholder="—" value="' + (today[m.key] != null ? today[m.key] : '') + '"></div>').join('') +
     '</div>' +
     '<button class="btn primary full" style="margin-top:8px" onclick="addBodyEntry()">💾 ثبت امروز</button>' +
   '</div>';
@@ -1217,10 +1514,10 @@ function renderBodyView(c){
   else {
     html += b.slice().reverse().slice(0, 30).map((e) => {
       const idx = b.indexOf(e);
-      const parts = BODY_METRICS.filter(m => e[m.key] != null).map(m => m.emoji + ' ' + m.name + ': <strong>' + fN(e[m.key]) + m.unit + '</strong>').join(' · ');
+      const parts = BODY_METRICS.filter(m => e[m.key] != null).map(m => m.emoji + ' <strong>' + fN(e[m.key]) + m.unit + '</strong>').join(' · ');
       return '<div class="u-item"><div style="flex:1">' +
-        '<div style="font-size:.8rem;font-weight:700">📅 ' + e.date + '</div>' +
-        '<div style="font-size:.7rem;color:var(--tx2);margin-top:3px;line-height:1.7">' + parts + '</div></div>' +
+        '<div style="font-size:.78rem;font-weight:700">📅 ' + e.date + '</div>' +
+        '<div style="font-size:.68rem;color:var(--tx2);margin-top:3px;line-height:1.7">' + parts + '</div></div>' +
         '<button class="icon-btn del" onclick="deleteBodyEntry(' + idx + ')">🗑️</button>' +
       '</div>';
     }).join('');
@@ -1237,8 +1534,8 @@ function drawBodyChart(){
   const m = BODY_METRICS.find(x => x.key === mk);
   const filtered = state.body.filter(e => e[mk] != null);
   if(filtered.length < 2){
-    el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--tm)">برای نمودار حداقل ۲ ثبت لازم است</div>';
-    document.getElementById('bodyStats').innerHTML = '';
+    el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--tm);font-size:.8rem">برای نمودار حداقل ۲ ثبت لازم است</div>';
+    const s = document.getElementById('bodyStats'); if(s) s.innerHTML = '';
     return;
   }
   const labels = filtered.map(e => e.date.slice(5));
@@ -1259,10 +1556,11 @@ function drawBodyChart(){
   const diff = last - first;
   const min = Math.min(...data), max = Math.max(...data);
   const dc = diff > 0 ? 'var(--rd)' : (diff < 0 ? 'var(--gr)' : 'var(--tm)');
-  document.getElementById('bodyStats').innerHTML =
-    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:' + dc + '">' + (diff>0?'+':'') + fN(Math.round(diff*10)/10) + m.unit + '</div><div style="font-size:.62rem;color:var(--tm)">تغییر</div></div>' +
-    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">' + fN(min) + '</div><div style="font-size:.62rem;color:var(--tm)">کمترین</div></div>' +
-    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">' + fN(max) + '</div><div style="font-size:.62rem;color:var(--tm)">بیشترین</div></div>';
+  const statsEl = document.getElementById('bodyStats');
+  if(statsEl) statsEl.innerHTML =
+    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:' + dc + '">' + (diff>0?'+':'') + fN(Math.round(diff*10)/10) + m.unit + '</div><div style="font-size:.6rem;color:var(--tm)">تغییر</div></div>' +
+    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">' + fN(min) + '</div><div style="font-size:.6rem;color:var(--tm)">کمینه</div></div>' +
+    '<div style="text-align:center;padding:8px;background:var(--card2);border-radius:8px"><div style="font-size:.95rem;font-weight:800;color:var(--bl)">' + fN(max) + '</div><div style="font-size:.6rem;color:var(--tm)">بیشینه</div></div>';
 }
 async function addBodyEntry(){
   const entry = { date: todayKey() };
@@ -1292,7 +1590,7 @@ async function deleteBodyEntry(idx){
 function renderSettingsView(c){
   const u = state.user;
   c.innerHTML = '<div class="card"><h2>👤 حساب من</h2>' +
-    '<div style="font-size:.85rem;line-height:1.9;color:var(--tx2)">' +
+    '<div style="font-size:.82rem;line-height:1.9;color:var(--tx2)">' +
     'نام: <strong style="color:var(--tx)">' + esc(u.displayName) + '</strong><br>' +
     'نام کاربری: <strong style="color:var(--tx)" dir="ltr">' + esc(u.username) + '</strong><br>' +
     'نقش: <strong style="color:var(--tx)">' + ({admin:'👑 مدیر',coach:'👨‍🏫 مربی',student:'🎓 شاگرد'})[u.role] + '</strong>' +
@@ -1361,7 +1659,7 @@ async function renderAdminUsers(){
     order.forEach(r => {
       const list = groups[r];
       if(!list.length) return;
-      html += '<div style="font-size:.72rem;font-weight:800;color:' + rc[r] + ';margin:12px 0 6px">' + rl[r] + ' (' + list.length + ')</div>';
+      html += '<div style="font-size:.7rem;font-weight:800;color:' + rc[r] + ';margin:12px 0 6px">' + rl[r] + ' (' + list.length + ')</div>';
       html += list.map(u => {
         const coach = u.coachId ? state.users.find(c => c.id === u.coachId) : null;
         const badges = [];
@@ -1377,8 +1675,8 @@ async function renderAdminUsers(){
           '<div class="u-meta">@' + esc(u.username) + (coach ? ' · 👨‍🏫 ' + esc(coach.displayName) : '') + '</div></div>' +
           '<div class="u-actions">' +
             grantBtn +
-            '<button class="icon-btn" onclick="adminResetPassword(\'' + u.id + '\')" title="بازنشانی رمز">🔑</button>' +
-            '<button class="icon-btn" onclick="adminToggleActive(\'' + u.id + '\')" title="فعال/غیرفعال">' + (u.active ? '🚫' : '✅') + '</button>' +
+            '<button class="icon-btn" onclick="adminResetPassword(\'' + u.id + '\')" title="بازنشانی">🔑</button>' +
+            '<button class="icon-btn" onclick="adminToggleActive(\'' + u.id + '\')">' + (u.active ? '🚫' : '✅') + '</button>' +
             '<button class="icon-btn del" onclick="adminDeleteUser(\'' + u.id + '\')" title="حذف">🗑️</button>' +
           '</div>' +
         '</div>';
@@ -1391,7 +1689,7 @@ async function toggleProgramPermission(userId){
   try{
     const d = await api('GET', '/api/users/' + userId + '/data');
     const cur = d.permissions && d.permissions.canEditProgram;
-    const msg = cur ? 'گرفتن اجازه ویرایش برنامه از این شاگرد؟' : 'دادن اجازه ویرایش برنامه به این شاگرد؟';
+    const msg = cur ? 'گرفتن اجازه ویرایش برنامه؟' : 'دادن اجازه ویرایش برنامه؟';
     if(!confirm(msg)) return;
     await api('POST', '/api/users/' + userId + '/data/permissions', { value: { canEditProgram: !cur } });
     toast('انجام شد ✓');
@@ -1406,18 +1704,18 @@ async function renderAdminAudit(){
     state.audit = await api('GET', '/api/admin/audit');
     if(!state.audit.length){ el.innerHTML = '<div class="empty"><div class="icon">📜</div><div>فعالیتی نیست</div></div>'; return; }
     const labels = {
-      login_success:'✅ ورود موفق', login_failed:'❌ ورود ناموفق',
-      user_created:'➕ ساخت کاربر', user_updated:'✏️ ویرایش',
+      login_success:'✅ ورود', login_failed:'❌ ورود ناموفق',
+      user_created:'➕ ساخت', user_updated:'✏️ ویرایش',
       user_deleted:'🗑️ حذف', password_changed:'🔑 تغییر رمز',
       user_registered:'✨ ثبت‌نام', coach_approved:'✅ تأیید مربی', coach_rejected:'❌ رد مربی'
     };
     el.innerHTML = state.audit.map(r => {
       const actor = state.users.find(x => x.id === r.actor_id);
       const an = actor ? actor.displayName : (r.actor_id || 'سیستم');
-      return '<div style="padding:10px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;margin-bottom:6px;font-size:.76rem">' +
-        '<div style="display:flex;justify-content:space-between;margin-bottom:3px"><strong>' + (labels[r.action] || r.action) + '</strong>' +
-        '<span style="color:var(--tm);font-size:.65rem">' + new Date(r.created_at).toLocaleString('fa-IR') + '</span></div>' +
-        '<div style="color:var(--tx2)">' + esc(an) + '</div></div>';
+      return '<div style="padding:8px 10px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;margin-bottom:5px;font-size:.74rem">' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:2px"><strong>' + (labels[r.action] || r.action) + '</strong>' +
+        '<span style="color:var(--tm);font-size:.62rem">' + new Date(r.created_at).toLocaleString('fa-IR') + '</span></div>' +
+        '<div style="color:var(--tx2);font-size:.68rem">' + esc(an) + '</div></div>';
     }).join('');
   } catch(e){ el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: ' + esc(e.message) + '</div></div>'; }
 }
@@ -1431,15 +1729,15 @@ function renderAdminSystem(){
     '<div class="toggle-row"><div class="toggle-lbl">حالت روشن</div>' +
     '<label class="ts"><input type="checkbox" ' + (currentTheme === 'light' ? 'checked' : '') + ' onchange="toggleTheme()"><span class="sl"></span></label></div></div>' +
     '<div class="card"><h2>👥 دسترسی پنل‌ها</h2>' +
-    '<div class="toggle-row"><div class="toggle-lbl">پنل مربی فعال باشد</div>' +
+    '<div class="toggle-row"><div class="toggle-lbl">پنل مربی فعال</div>' +
     '<label class="ts"><input type="checkbox" ' + (coachPanelEnabled ? 'checked' : '') + ' onchange="toggleCoachPanel()"><span class="sl"></span></label></div>' +
-    '<div class="toggle-row"><div class="toggle-lbl">صفحه شاگرد فعال باشد</div>' +
+    '<div class="toggle-row"><div class="toggle-lbl">صفحه شاگرد فعال</div>' +
     '<label class="ts"><input type="checkbox" ' + (studentPanelEnabled ? 'checked' : '') + ' onchange="toggleStudentPanel()"><span class="sl"></span></label></div></div>' +
-    '<div class="card"><h2>ℹ️ سیستم</h2><div style="font-size:.8rem;line-height:1.9;color:var(--tx2)">' +
+    '<div class="card"><h2>ℹ️ سیستم</h2><div style="font-size:.78rem;line-height:1.9;color:var(--tx2)">' +
     'کاربران: <strong>' + fN(state.users.length) + '</strong><br>' +
     'در انتظار: <strong>' + fN(state.pending.length) + '</strong><br>' +
     'بانک حرکات: <strong>' + fN(DB.exercises.length) + '</strong><br>' +
-    'نسخه: <strong>2.1</strong></div></div>';
+    'نسخه: <strong>2.2</strong></div></div>';
 }
 function toggleTheme(){
   const cur = themeMode();
@@ -1536,11 +1834,11 @@ async function renderCoachPanel(){
     } else {
       html += '<div style="font-weight:800;margin-bottom:10px">👥 ' + state.students.length + ' شاگرد</div>';
       html += state.students.map(s =>
-        '<div class="u-item" style="cursor:pointer" onclick="openStudentDetail(\'' + s.id + '\')">' +
+        '<div class="u-item clickable" onclick="openStudentDetail(\'' + s.id + '\')">' +
         '<div class="u-avatar" style="background:' + s.color + '">' + s.emoji + '</div>' +
         '<div class="u-info"><div class="u-name">' + esc(s.displayName) + '</div>' +
         '<div class="u-meta">@' + esc(s.username) + ' · ' + fN(s.stats?.sessions7 || 0) + ' جلسه این هفته</div></div>' +
-        '<div style="color:var(--tx2);font-size:.85rem">›</div>' +
+        '<div style="color:var(--tx2);font-size:1.2rem">‹</div>' +
         '</div>').join('');
     }
     el.innerHTML = html;
@@ -1556,368 +1854,65 @@ async function submitCreateStudent(){
   const username = document.getElementById('newStudentUsername').value.trim();
   const displayName = document.getElementById('newStudentDisplayName').value.trim();
   const password = document.getElementById('newStudentPassword').value;
-/* ============ MANUAL PROGRAM EDITING ============ */
-
-function renderEditorDay(day, di){
-  const exs = day.exercises || [];
-  let rowsHtml;
-  if(exs.length === 0){
-    rowsHtml = '<tr><td colspan="5" style="text-align:center;color:var(--tm);padding:14px;font-size:.78rem">هنوز حرکتی ندارد — روی «➕ افزودن حرکت» بزن</td></tr>';
-  } else {
-    rowsHtml = exs.map((ex, ei) => {
-      const def = DB.exercises.find(e => e.id === ex.exId) || {};
-      const cat = DB.categories[def.cat] || {};
-      return '<tr>' +
-        '<td><div style="font-weight:700;font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">' + esc(def.name || ex.exId) + '</div>' +
-        '<div style="font-size:.62rem;color:var(--tm)">' + (cat.emoji||'') + ' ' + (cat.name||'') + '</div></td>' +
-        '<td><input type="number" value="' + (ex.sets || 3) + '" min="1" max="10" onchange="updateExField(' + di + ',' + ei + ',\'sets\',this.value)"></td>' +
-        '<td><input type="text" value="' + esc(ex.reps || '۸-۱۲') + '" onchange="updateExField(' + di + ',' + ei + ',\'reps\',this.value)"></td>' +
-        '<td><input type="text" value="' + esc(ex.rpe || '۸') + '" onchange="updateExField(' + di + ',' + ei + ',\'rpe\',this.value)"></td>' +
-        '<td style="text-align:center"><button class="icon-btn del" onclick="removeExerciseFromDay(' + di + ',' + ei + ')" style="width:26px;height:26px;font-size:.72rem">✕</button></td>' +
-      '</tr>';
-    }).join('');
-  }
-
-  return '<div class="card" style="margin-bottom:12px;padding:12px">' +
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
-      '<div class="day-icon" style="width:38px;height:38px;font-size:1.1rem">' + (day.icon||'💪') + '</div>' +
-      '<div style="flex:1;min-width:0">' +
-        '<div style="font-weight:800;font-size:.9rem">' + esc(day.name) + '</div>' +
-        '<div style="font-size:.68rem;color:var(--tx2)">' + weekdayName(day.weekday) + ' · ' + esc(day.focus || '—') + ' · ' + exs.length + ' حرکت</div>' +
+  if(!username || !displayName || !password){ toast('همه فیلدها را پر کنید', 'error'); return; }
+  if(!/^[a-zA-Z0-9_.-]+$/.test(username)){ toast('نام کاربری نامعتبر', 'error'); return; }
+  if(password.length < 6){ toast('رمز حداقل ۶', 'error'); return; }
+  try{
+    await api('POST', '/api/users', { username, displayName, password, role: 'student' });
+    toast('شاگرد ساخته شد ✓');
+    closeDrawer('createStudentDrawer');
+    renderCoachPanel();
+  } catch(e){ toast('خطا: ' + (e.data?.error || e.message), 'error'); }
+}
+async function openStudentDetail(id){
+  const stu = state.students.find(x => x.id === id);
+  if(!stu) return;
+  state.currentStudent = stu;
+  document.getElementById('studentDetailTitle').textContent = '👤 ' + stu.displayName;
+  const el = document.getElementById('studentDetailBody');
+  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  openDrawer('studentDetailDrawer');
+  try{
+    const ov = await api('GET', '/api/coach/students/' + id + '/overview');
+    state.currentStudentData = ov.data || {};
+    const data = ov.data || {};
+    const prog = data.program || { days: [] };
+    const hist = data.history || {};
+    const perms = data.permissions || { canEditProgram: false };
+    let s7 = 0, v7 = 0;
+    const now = Date.now();
+    Object.keys(hist).forEach(k => {
+      const t = new Date(k).getTime();
+      if(now - t < 7 * 86400000){ if(hist[k].completed > 0) s7++; v7 += hist[k].volume || 0; }
+    });
+    el.innerHTML =
+      '<button class="btn coach full" style="margin-bottom:8px" onclick="openProgramEditor(\'' + stu.id + '\')">🗓️ ویرایش برنامه شاگرد</button>' +
+      '<button class="btn ' + (perms.canEditProgram ? 'success' : 'primary') + ' full" style="margin-bottom:12px" onclick="coachTogglePermission(\'' + stu.id + '\',' + !!perms.canEditProgram + ')">' +
+        (perms.canEditProgram ? '🔓 لغو اجازه ویرایش برنامه' : '🔐 دادن اجازه ویرایش برنامه') +
+      '</button>' +
+      '<div class="sh">📊 آمار این هفته</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">' +
+      '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--bl)">' + fN(s7) + '</div><div style="font-size:.68rem;color:var(--tm)">جلسات</div></div>' +
+      '<div style="background:var(--card2);padding:12px;border-radius:10px;text-align:center"><div style="font-size:1.3rem;font-weight:900;color:var(--gr)">' + fN(v7) + '</div><div style="font-size:.68rem;color:var(--tm)">حجم (kg)</div></div>' +
       '</div>' +
-      '<button class="icon-btn" onclick="openEditDayDrawer(' + di + ')" title="ویرایش روز">✏️</button>' +
-      '<button class="icon-btn del" onclick="deleteDay(' + di + ')" title="حذف">🗑️</button>' +
-    '</div>' +
-    '<table class="prog-table">' +
-    '<thead><tr><th>حرکت</th><th style="width:55px">ست</th><th style="width:75px">تکرار</th><th style="width:55px">RPE</th><th style="width:34px"></th></tr></thead>' +
-    '<tbody>' + rowsHtml + '</tbody>' +
-    '</table>' +
-    '<div style="display:flex;gap:6px;margin-top:10px">' +
-      '<button class="btn primary" style="flex:1;justify-content:center;font-size:.78rem" onclick="openExercisePickerForDay(' + di + ')">➕ افزودن حرکت</button>' +
-      (exs.length ? '<button class="btn danger" style="font-size:.75rem;padding:8px" onclick="clearDay(' + di + ')">🗑️ پاک کردن روز</button>' : '') +
-    '</div>' +
-  '</div>';
+      '<div class="sh">🗓️ برنامه (' + (prog.days || []).length + ' روز)</div>' +
+      (prog.days && prog.days.length
+        ? prog.days.map(d => '<div style="padding:8px 12px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.8rem"><strong>' + d.icon + ' ' + esc(d.name) + '</strong> · ' + ((d.exercises||[]).length) + ' حرکت</div>').join('')
+        : '<div style="text-align:center;color:var(--tm);padding:14px;font-size:.8rem">برنامه‌ای ندارد</div>') +
+      (ov.notes && ov.notes.length ? '<div class="sh">📝 یادداشت‌ها</div>' + ov.notes.map(n =>
+        '<div style="padding:10px;background:var(--card2);border-radius:8px;margin-bottom:6px;font-size:.78rem">' +
+        '<div style="font-size:.62rem;color:var(--ag);margin-bottom:4px">' + new Date(n.created_at).toLocaleDateString('fa-IR') + '</div>' +
+        esc(n.content) + '</div>').join('') : '');
+  } catch(e){ el.innerHTML = '<div class="empty"><div class="icon">⚠️</div><div>خطا: ' + esc(e.message) + '</div></div>'; }
 }
-
-function renderProgramEditor(){
-  const el = document.getElementById('programEditorBody');
-  if(!el) return;
-  const stu = state.currentStudent;
-  document.getElementById('programEditorTitle').textContent = '🗓️ ویرایش برنامه' + (stu ? ' — ' + stu.displayName : '');
-
-  let html = '<div style="display:flex;gap:8px;margin-bottom:12px">' +
-    '<button class="btn primary" style="flex:1;justify-content:center" onclick="openAddDayDrawer()">➕ روز جدید</button>' +
-    '<button class="btn success" style="flex:1;justify-content:center" onclick="saveProgramAndClose()">💾 ذخیره و بستن</button>' +
-  '</div>';
-
-  if(!state.program.days || !state.program.days.length){
-    html += '<div class="empty"><div class="icon">📭</div><div>هنوز روزی ندارد</div>' +
-      '<div style="font-size:.75rem;color:var(--tm);margin-top:10px">روی «افزودن روز جدید» بزن</div></div>';
-    el.innerHTML = html;
-    return;
-  }
-
-  // Sort by weekday order
-  const order = { 6:0, 0:1, 1:2, 2:3, 3:4, 4:5, 5:6 };
-  state.program.days.sort((a,b) => (order[a.weekday] ?? 99) - (order[b.weekday] ?? 99));
-
-  html += state.program.days.map((day, di) => renderEditorDay(day, di)).join('');
-  el.innerHTML = html;
+async function coachTogglePermission(studentId, current){
+  if(!confirm(current ? 'گرفتن اجازه ویرایش برنامه؟' : 'دادن اجازه ویرایش برنامه؟')) return;
+  try{
+    await api('POST', '/api/users/' + studentId + '/data/permissions', { value: { canEditProgram: !current } });
+    toast('انجام شد ✓');
+    openStudentDetail(studentId);
+  } catch(e){ toast('خطا: ' + e.message, 'error'); }
 }
-
-function updateExField(di, ei, field, val){
-  const ex = state.program.days[di] && state.program.days[di].exercises[ei];
-  if(!ex) return;
-  if(field === 'sets') ex.sets = Math.max(1, Math.min(10, parseInt(val) || 3));
-  else ex[field] = val;
-}
-
-function clearDay(di){
-  if(!confirm('تمام حرکات این روز پاک شوند؟')) return;
-  state.program.days[di].exercises = [];
-  autoSaveProgram();
-  renderProgramEditor();
-}
-
-function deleteDay(di){
-  const day = state.program.days[di];
-  if(!day) return;
-  if(!confirm('روز «' + (day.name || '') + '» حذف شود؟')) return;
-  state.program.days.splice(di, 1);
-  autoSaveProgram();
-  renderProgramEditor();
-}
-
-function removeExerciseFromDay(di, ei){
-  state.program.days[di].exercises.splice(ei, 1);
-  autoSaveProgram();
-  renderProgramEditor();
-}
-
-function autoSaveProgram(){
-  const targetId = state.programOwnerId || state.user.id;
-  api('POST', '/api/users/' + targetId + '/data/program', { value: state.program }).catch(() => {});
-}
-
-function saveProgramAndClose(){
-  const targetId = state.programOwnerId || state.user.id;
-  api('POST', '/api/users/' + targetId + '/data/program', { value: state.program })
-    .then(() => {
-      toast('برنامه ذخیره شد ✓');
-      closeDrawer('programEditorDrawer');
-      state.programOwnerId = null;
-      state.editingProgramFor = null;
-      if(targetId === state.user.id){
-        api('GET', '/api/users/' + state.user.id + '/data').then(d => {
-          if(d.program) state.program = d.program;
-          renderView();
-        }).catch(() => renderView());
-      }
-    }).catch(e => toast('خطا: ' + e.message, 'error'));
-}
-
-/* ============ ADD / EDIT DAY DRAWER ============ */
-let dayDrawerMode = 'add';
-let dayDrawerEditIndex = -1;
-
-function openAddDayDrawer(){
-  dayDrawerMode = 'add';
-  dayDrawerEditIndex = -1;
-  showDayDrawerForm({ name: '', focus: '', icon: '💪', weekday: null });
-}
-
-function openEditDayDrawer(di){
-  dayDrawerMode = 'edit';
-  dayDrawerEditIndex = di;
-  showDayDrawerForm(state.program.days[di]);
-}
-
-function showDayDrawerForm(day){
-  // Create backdrop if not exists
-  let backdrop = document.getElementById('dayFormBackdrop');
-  if(!backdrop){
-    backdrop = document.createElement('div');
-    backdrop.id = 'dayFormBackdrop';
-    backdrop.className = 'backdrop';
-    backdrop.style.zIndex = '104';
-    backdrop.onclick = () => closeDrawer('dayFormDrawer');
-    document.body.appendChild(backdrop);
-  }
-
-  // Create drawer if not exists
-  let drawer = document.getElementById('dayFormDrawer');
-  if(!drawer){
-    drawer = document.createElement('div');
-    drawer.id = 'dayFormDrawer';
-    drawer.className = 'drawer right';
-    drawer.style.zIndex = '105';
-    drawer.style.width = '420px';
-    drawer.innerHTML =
-      '<div class="drawer-header"><h2 id="dayFormTitle">➕ روز جدید</h2><button class="close-btn" onclick="closeDrawer(\'dayFormDrawer\')">✕</button></div>' +
-      '<div class="drawer-body" id="dayFormBody"></div>';
-    document.body.appendChild(drawer);
-  }
-
-  const initialWd = day.weekday != null ? day.weekday : null;
-  const wdHtml = [6,0,1,2,3,4,5].map(jsd => {
-    const isSel = initialWd === jsd;
-    const isUsed = state.program.days.some((d, i) => d.weekday === jsd && i !== dayDrawerEditIndex);
-    const disabled = isUsed && !isSel;
-    const todayJs = todayWeekday();
-    const todayBadge = jsd === todayJs ? ' ⭐' : '';
-    return '<button type="button" class="wdchip ' + (isSel ? 'sel' : '') + '" ' +
-      (disabled ? 'disabled' : '') +
-      ' data-wd="' + jsd + '" onclick="pickDayWD(' + jsd + ',this)">' +
-      weekdayName(jsd) + todayBadge + '</button>';
-  }).join('');
-
-  document.getElementById('dayFormTitle').textContent = dayDrawerMode === 'add' ? '➕ روز جدید' : '✏️ ویرایش روز';
-  document.getElementById('dayFormBody').innerHTML =
-    '<div class="form-row"><label>روز هفته *</label><div class="wdpick" id="dayFormWD">' + wdHtml + '</div></div>' +
-    '<div class="form-row"><label>نام روز</label><input type="text" id="dayFormName" value="' + esc(day.name || '') + '" placeholder="روز شنبه"></div>' +
-    '<div class="form-row"><label>تمرکز (اختیاری)</label><input type="text" id="dayFormFocus" value="' + esc(day.focus || '') + '" placeholder="بالاتنه قدرتی"></div>' +
-    '<div class="form-row"><label>آیکن</label><input type="text" id="dayFormIcon" value="' + esc(day.icon || '💪') + '" maxlength="4" style="text-align:center;font-size:1.4rem"></div>' +
-    '<div style="display:flex;gap:8px;margin-top:16px">' +
-      '<button class="btn" style="flex:1;justify-content:center" onclick="closeDrawer(\'dayFormDrawer\')">لغو</button>' +
-      '<button class="btn primary" style="flex:1;justify-content:center" onclick="saveDayForm()">💾 ذخیره</button>' +
-    '</div>';
-
-  drawer.dataset.selectedWd = initialWd != null ? String(initialWd) : '';
-  openDrawer('dayFormDrawer');
-}
-
-function pickDayWD(jsd, btn){
-  const parent = btn.parentElement;
-  parent.querySelectorAll('.wdchip').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  const drawer = document.getElementById('dayFormDrawer');
-  drawer.dataset.selectedWd = String(jsd);
-  const nameInput = document.getElementById('dayFormName');
-  if(!nameInput.value.trim() || nameInput.value.trim().startsWith('روز ')){
-    nameInput.value = 'روز ' + weekdayName(jsd);
-  }
-}
-
-async function saveDayForm(){
-  const drawer = document.getElementById('dayFormDrawer');
-  const wdStr = drawer.dataset.selectedWd;
-  const name = document.getElementById('dayFormName').value.trim();
-  const focus = document.getElementById('dayFormFocus').value.trim();
-  const icon = document.getElementById('dayFormIcon').value.trim() || '💪';
-
-  if(!name){ toast('نام روز را وارد کنید', 'error'); return; }
-  if(wdStr === ''){ toast('روز هفته را انتخاب کنید', 'error'); return; }
-  const wd = parseInt(wdStr);
-
-  const dup = state.program.days.findIndex((d, i) => d.weekday === wd && i !== dayDrawerEditIndex);
-  if(dup !== -1){ toast('این روز قبلاً برنامه دارد', 'warn'); return; }
-
-  const isNew = dayDrawerMode === 'add';
-
-  if(isNew){
-    state.program.days.push({
-      id: 'day_' + Date.now(),
-      weekday: wd,
-      name: name,
-      focus: focus,
-      icon: icon,
-      exercises: []
-    });
-  } else {
-    const d = state.program.days[dayDrawerEditIndex];
-    d.weekday = wd;
-    d.name = name;
-    d.focus = focus;
-    d.icon = icon;
-  }
-
-  closeDrawer('dayFormDrawer');
-  autoSaveProgram();
-
-  // Re-render editor (this also sorts by weekday)
-  renderProgramEditor();
-
-  // After adding a new day, auto-open exercise picker for it
-  if(isNew){
-    // Find the index after sort
-    const newIdx = state.program.days.findIndex(d => d.weekday === wd);
-    if(newIdx !== -1){
-      toast('روز اضافه شد — حالا حرکات اضافه کن');
-      setTimeout(() => openExercisePickerForDay(newIdx), 250);
-    }
-  } else {
-    toast('ذخیره شد ✓');
-  }
-}
-
-/* ============ EXERCISE PICKER ============ */
-let pickerCat = 'all';
-let pickerSearch = '';
-
-function openExercisePickerForDay(dayIdx){
-  state.pendingAddExerciseDay = dayIdx;
-  pickerCat = 'all';
-  pickerSearch = '';
-  renderExercisePicker();
-  openDrawer('exercisePickerDrawer');
-}
-
-function renderExercisePicker(){
-  const el = document.getElementById('exercisePickerBody');
-  const di = state.pendingAddExerciseDay;
-  if(di === null || di === undefined) return;
-  const day = state.program.days[di];
-  if(!day){ el.innerHTML = '<div class="empty">روز پیدا نشد</div>'; return; }
-  const exs_ = day.exercises || [];
-
-  let html = '<div style="background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.06));padding:12px;border-radius:10px;margin-bottom:12px;font-size:.85rem">' +
-    '<strong>' + (day.icon || '💪') + ' ' + esc(day.name) + '</strong>' +
-    '<div style="font-size:.72rem;color:var(--tx2);margin-top:3px">' + exs_.length + ' حرکت اضافه شده — می‌توانی چند حرکت پشت سر هم اضافه کنی</div>' +
-  '</div>';
-
-  html += '<input type="text" id="pickerSearchInput" placeholder="جستجوی حرکت..." value="' + esc(pickerSearch) + '" oninput="pickerSearch=this.value;renderExercisePicker()" style="margin-bottom:10px">';
-
-  html += '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px">';
-  html += '<button class="btn sm" style="' + (pickerCat === 'all' ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="pickerCat=\'all\';renderExercisePicker()">🌐 همه</button>';
-  Object.keys(DB.categories).forEach(k => {
-    const c = DB.categories[k];
-    html += '<button class="btn sm" style="' + (pickerCat === k ? 'background:var(--bl);color:#fff;border-color:var(--bl)' : '') + '" onclick="pickerCat=\'' + k + '\';renderExercisePicker()">' + c.emoji + ' ' + c.name + '</button>';
-  });
-  html += '</div>';
-
-  let exs = DB.exercises;
-  if(pickerCat !== 'all') exs = exs.filter(e => e.cat === pickerCat);
-  if(pickerSearch){
-    const t = pickerSearch.toLowerCase();
-    exs = exs.filter(e => e.name.toLowerCase().includes(t) || (e.en || '').toLowerCase().includes(t));
-  }
-
-  const alreadyIn = new Set(exs_.map(e => e.exId));
-
-  html += '<div style="font-size:.72rem;color:var(--tm);margin-bottom:6px">' + exs.length + ' حرکت موجود</div>';
-
-  if(exs.length === 0){
-    html += '<div class="empty" style="padding:20px"><div class="icon">🔍</div><div>یافت نشد</div></div>';
-  } else {
-    html += '<div style="max-height:50vh;overflow-y:auto">';
-    html += exs.slice(0, 200).map(e => {
-      const isIn = alreadyIn.has(e.id);
-      return '<div class="u-item" style="cursor:pointer;' +
-        (isIn ? 'border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.01))' : '') +
-        '" onclick="quickAddExercise(\'' + e.id + '\')">' +
-        '<div class="u-avatar" style="background:var(--card2);color:var(--tx)">' + ((DB.categories[e.cat] || {}).emoji || '🏋️') + '</div>' +
-        '<div class="u-info"><div class="u-name">' + esc(e.name) +
-        (isIn ? ' <span style="font-size:.6rem;color:var(--gr);font-weight:800">✓ اضافه شد</span>' : '') +
-        '</div>' +
-        '<div class="u-meta">' + esc(e.en || '') + ' · ' + ((DB.categories[e.cat] || {}).name || '') + '</div></div>' +
-        '<div style="color:' + (isIn ? 'var(--gr)' : 'var(--bl)') + ';font-size:1.3rem;font-weight:900">' + (isIn ? '↻' : '+') + '</div>' +
-      '</div>';
-    }).join('');
-    html += '</div>';
-  }
-
-  html += '<div style="position:sticky;bottom:0;background:var(--card);padding-top:10px;margin-top:10px;border-top:1px solid var(--bd)">' +
-    '<button class="btn success full" onclick="closeDrawer(\'exercisePickerDrawer\')">✓ تمام — بازگشت به برنامه</button>' +
-  '</div>';
-
-  el.innerHTML = html;
-}
-
-function quickAddExercise(exId){
-  const di = state.pendingAddExerciseDay;
-  if(di === null || di === undefined) return;
-  const def = DB.exercises.find(e => e.id === exId);
-  if(!def) return;
-
-  const vol = DB.volumeByLevel.intermediate;
-  if(!state.program.days[di].exercises) state.program.days[di].exercises = [];
-
-  // If already exists, remove it (toggle)
-  const existIdx = state.program.days[di].exercises.findIndex(e => e.exId === exId);
-  if(existIdx !== -1){
-    state.program.days[di].exercises.splice(existIdx, 1);
-    toast('حذف شد', 'info');
-  } else {
-    state.program.days[di].exercises.push({
-      exId: exId,
-      sets: def.type === 'comp' ? vol.sets : Math.max(3, vol.sets - 1),
-      reps: def.type === 'comp' ? vol.repsCompound : vol.repsIsolation,
-      rpe: '۸'
-    });
-    toast('✓ ' + def.name);
-  }
-
-  // Save immediately
-  autoSaveProgram();
-
-  // Re-render picker (updates badges)
-  renderExercisePicker();
-
-  // Re-render editor behind
-  renderProgramEditor();
-}
-
-/* ============ WIZARD ============ */
 
 /* ============ WIZARD ============ */
 let wizSelectedDays = [];
@@ -1958,7 +1953,7 @@ function wizToggleDay(jsd, btn){
 function wizNext(){
   wizDaysCount = parseInt(document.getElementById('wizDays').value) || 0;
   if(wizDaysCount > 0 && wizSelectedDays.length !== wizDaysCount){
-    toast('لطفاً ' + wizDaysCount + ' روز انتخاب کن (' + wizSelectedDays.length + ' انتخاب شده)', 'warn'); return;
+    toast('لطفاً ' + wizDaysCount + ' روز انتخاب کن', 'warn'); return;
   }
   document.getElementById('wizStep1').classList.remove('active');
   document.getElementById('wizStep2').classList.add('active');
@@ -1985,9 +1980,10 @@ async function wizFinish(){
   } else {
     state.program = { days: [] };
   }
-  await saveProgram();
+  try{ await api('POST', '/api/users/' + state.user.id + '/data/program', { value: state.program }); } catch(e){}
   localStorage.setItem('profit-onboarded-' + state.user.id, '1');
   closeWizard();
+  state.selectedDayKey = null;
   state.currentView = 'program';
   renderView();
   toast('🎉 برنامه ساخته شد!');
@@ -1996,10 +1992,8 @@ function generateSmartProgram(daysCount, weekdays, level){
   const splits = DB.splits[daysCount];
   if(!splits){ toast('حداقل ۲ روز', 'error'); return; }
   const vol = DB.volumeByLevel[level] || DB.volumeByLevel.intermediate;
-  const sorted = weekdays.slice().sort((a, b) => {
-    const order = { 6:0, 0:1, 1:2, 2:3, 3:4, 4:5, 5:6 };
-    return order[a] - order[b];
-  });
+  const order = weekdayOrder();
+  const sorted = weekdays.slice().sort((a,b) => order[a] - order[b]);
   const newDays = sorted.map((jsd, i) => {
     const splitKey = splits[i % splits.length];
     const tpl = DB.templates[splitKey];
